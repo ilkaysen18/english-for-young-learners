@@ -18,7 +18,7 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 3. Learn vocabulary with emojis and example sentences
 
 ## View Live
-[Click here to see the website](https://github.com/ilkaysen18/english-for-young-learners.git)
+[Click here to see the website](https://github.io/ilkaysen18/english-for-young-learners)
 
 ## Technologies
 - HTML5
