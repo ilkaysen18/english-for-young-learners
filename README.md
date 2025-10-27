@@ -1,7 +1,7 @@
-#### This is a Kids English Course initially adapted from Engoo's Course titled English for Young Learners.
+#### This is a Kids English Course inspired by Engoo's Course titled English for Young Learners.
 
 
-# English for Young Learners
+# Kids English
 
 A fun, interactive website to help kids learn basic English vocabulary through 5 colorful lessons.
 
