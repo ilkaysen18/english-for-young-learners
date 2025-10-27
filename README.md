@@ -1,4 +1,4 @@
-#### This is a Kids English Course inspired by Engoo's Course titled English for Young Learners.
+#### This is an English Course inspired by Engoo's Courses titled "English for Young Learners" and "English for Conversation".
 
 
 # Kids English
