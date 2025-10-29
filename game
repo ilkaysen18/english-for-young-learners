@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Puzzle Games for Kids</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes bounce-in {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-5deg); }
+            75% { transform: scale(1.2) rotate(5deg); }
+        }
+        .bounce-in { animation: bounce-in 0.5s ease-out; }
+        .shake { animation: shake 0.5s ease-in-out; }
+        .celebrate { animation: celebrate 0.6s ease-in-out; }
+        .dragging { opacity: 0.5; transform: scale(1.05); }
+        .drop-target { border: 3px dashed #5D5CDE !important; background-color: rgba(93, 92, 222, 0.1); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 min-h-screen p-4 transition-colors">
+    <div id="app" class="max-w-4xl mx-auto">
+        <!-- Topic Selection Screen -->
+        <div id="topicScreen" class="space-y-6">
+            <div class="text-center bounce-in">
+                <h1 class="text-4xl md:text-5xl font-bold text-primary mb-2">🎮 English Puzzle Games</h1>
+                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300">Choose a topic to start learning!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="selectTopic('animals')" class="topic-card bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-6xl mb-3">🦁</div>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Animals</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Learn animal names</p>
+                </button>
+
+                <button onclick="selectTopic('family')" class="topic-card bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-6xl mb-3">👨‍👩‍👧‍👦</div>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Family</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Learn family members</p>
+                </button>
+
+                <button onclick="selectTopic('food')" class="topic-card bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-6xl mb-3">🍕</div>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Food</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Learn food names</p>
+                </button>
+
+                <button onclick="selectTopic('time')" class="topic-card bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-6xl mb-3">🕐</div>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">The Time</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Learn to tell time</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Mode Selection -->
+        <div id="gameModeScreen" class="hidden space-y-6">
+            <div class="flex justify-between items-center">
+                <button onclick="backToTopics()" class="text-primary hover:text-purple-600 font-semibold text-lg flex items-center gap-2">
+                    ← Back
+                </button>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Choose a Game</h2>
+                <div class="w-20"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="startGame('match')" class="bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-5xl mb-3">🎯</div>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white">Match Game</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Match pictures with words</p>
+                </button>
+
+                <button onclick="startGame('scramble')" class="bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-5xl mb-3">🔤</div>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white">Word Scramble</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Unscramble the letters</p>
+                </button>
+
+                <button onclick="startGame('memory')" class="bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-5xl mb-3">🧠</div>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white">Memory Game</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Find matching pairs</p>
+                </button>
+
+                <button onclick="startGame('quiz')" class="bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                    <div class="text-5xl mb-3">❓</div>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white">Quiz Game</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Answer questions</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="hidden space-y-4">
+            <div class="flex justify-between items-center bg-white dark:bg-gray-700 p-4 rounded-xl shadow-lg">
+                <button onclick="backToGameModes()" class="text-primary hover:text-purple-600 font-semibold flex items-center gap-2">
+                    ← Back
+                </button>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-gray-800 dark:text-white" id="gameTitle">Game</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-300" id="topicName"></div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">Score</div>
+                    <div class="text-2xl font-bold text-primary" id="score">0</div>
+                </div>
+            </div>
+
+            <div id="gameContent" class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg min-h-96">
+                <!-- Game content will be inserted here -->
+            </div>
+
+            <div class="text-center">
+                <button onclick="resetGame()" class="bg-primary hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-all">
+                    🔄 Play Again
+                </button>
+            </div>
+        </div>
+
+        <!-- Victory Modal -->
+        <div id="victoryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl max-w-md w-full text-center bounce-in">
+                <div class="text-8xl mb-4 celebrate">🎉</div>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">Awesome!</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-4">You completed the game!</p>
+                <div class="text-4xl font-bold text-primary mb-6" id="finalScore">Score: 0</div>
+                <div class="space-y-3">
+                    <button onclick="resetGame(); closeVictoryModal();" class="w-full bg-primary hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-full text-lg">
+                        🔄 Play Again
+                    </button>
+                    <button onclick="closeVictoryModal(); backToGameModes();" class="w-full bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-full text-lg">
+                        Choose Another Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Game data
+        const gameData = {
+            animals: [
+                { emoji: '🐶', word: 'dog' },
+                { emoji: '🐱', word: 'cat' },
+                { emoji: '🐭', word: 'mouse' },
+                { emoji: '🐰', word: 'rabbit' },
+                { emoji: '🦁', word: 'lion' },
+                { emoji: '🐯', word: 'tiger' },
+                { emoji: '🐻', word: 'bear' },
+                { emoji: '🐼', word: 'panda' },
+                { emoji: '🐨', word: 'koala' },
+                { emoji: '🦊', word: 'fox' },
+                { emoji: '🐸', word: 'frog' },
+                { emoji: '🐵', word: 'monkey' }
+            ],
+            family: [
+                { emoji: '👨', word: 'father' },
+                { emoji: '👩', word: 'mother' },
+                { emoji: '👦', word: 'brother' },
+                { emoji: '👧', word: 'sister' },
+                { emoji: '👴', word: 'grandfather' },
+                { emoji: '👵', word: 'grandmother' },
+                { emoji: '👶', word: 'baby' },
+                { emoji: '👨‍👩‍👧', word: 'family' },
+                { emoji: '🧒', word: 'child' },
+                { emoji: '👪', word: 'parents' }
+            ],
+            food: [
+                { emoji: '🍎', word: 'apple' },
+                { emoji: '🍌', word: 'banana' },
+                { emoji: '🍊', word: 'orange' },
+                { emoji: '🍕', word: 'pizza' },
+                { emoji: '🍔', word: 'burger' },
+                { emoji: '🍟', word: 'fries' },
+                { emoji: '🍦', word: 'ice cream' },
+                { emoji: '🍪', word: 'cookie' },
+                { emoji: '🍰', word: 'cake' },
+                { emoji: '🥛', word: 'milk' },
+                { emoji: '🍞', word: 'bread' },
+                { emoji: '🥚', word: 'egg' }
+            ],
+            time: [
+                { emoji: '🕐', word: 'one o\'clock' },
+                { emoji: '🕑', word: 'two o\'clock' },
+                { emoji: '🕒', word: 'three o\'clock' },
+                { emoji: '🕓', word: 'four o\'clock' },
+                { emoji: '🕔', word: 'five o\'clock' },
+                { emoji: '🕕', word: 'six o\'clock' },
+                { emoji: '🌅', word: 'morning' },
+                { emoji: '🌞', word: 'afternoon' },
+                { emoji: '🌙', word: 'night' },
+                { emoji: '⏰', word: 'clock' }
+            ]
+        };
+
+        // Sound effects using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(frequency, duration) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playCorrectSound() {
+            playSound(523.25, 0.2); // C5
+            setTimeout(() => playSound(659.25, 0.3), 100); // E5
+        }
+
+        function playWrongSound() {
+            playSound(200, 0.3);
+        }
+
+        function playVictorySound() {
+            playSound(523.25, 0.15); // C
+            setTimeout(() => playSound(659.25, 0.15), 150); // E
+            setTimeout(() => playSound(783.99, 0.15), 300); // G
+            setTimeout(() => playSound(1046.50, 0.4), 450); // C
+        }
+
+        // Game state
+        let currentTopic = '';
+        let currentGameMode = '';
+        let score = 0;
+        let gameItems = [];
+
+        // Navigation functions
+        function selectTopic(topic) {
+            currentTopic = topic;
+            document.getElementById('topicScreen').classList.add('hidden');
+            document.getElementById('gameModeScreen').classList.remove('hidden');
+        }
+
+        function backToTopics() {
+            document.getElementById('gameModeScreen').classList.add('hidden');
+            document.getElementById('topicScreen').classList.remove('hidden');
+        }
+
+        function startGame(mode) {
+            currentGameMode = mode;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            document.getElementById('gameModeScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+
+            const topicEmojis = {
+                'animals': '🦁',
+                'family': '👨‍👩‍👧‍👦',
+                'food': '🍕',
+                'time': '🕐'
+            };
+
+            document.getElementById('topicName').textContent = topicEmojis[currentTopic] + ' ' + currentTopic.charAt(0).toUpperCase() + currentTopic.slice(1);
+
+            initializeGame();
+        }
+
+        function backToGameModes() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('gameModeScreen').classList.remove('hidden');
+        }
+
+        function resetGame() {
+            score = 0;
+            document.getElementById('score').textContent = score;
+            initializeGame();
+        }
+
+        function closeVictoryModal() {
+            document.getElementById('victoryModal').classList.add('hidden');
+        }
+
+        function showVictory() {
+            document.getElementById('finalScore').textContent = `Score: ${score}`;
+            document.getElementById('victoryModal').classList.remove('hidden');
+            playVictorySound();
+        }
+
+        function updateScore(points) {
+            score += points;
+            document.getElementById('score').textContent = score;
+            const scoreEl = document.getElementById('score');
+            scoreEl.classList.add('celebrate');
+            setTimeout(() => scoreEl.classList.remove('celebrate'), 600);
+        }
+
+        // Initialize game based on mode
+        function initializeGame() {
+            gameItems = [...gameData[currentTopic]];
+
+            switch(currentGameMode) {
+                case 'match':
+                    initMatchGame();
+                    break;
+                case 'scramble':
+                    initScrambleGame();
+                    break;
+                case 'memory':
+                    initMemoryGame();
+                    break;
+                case 'quiz':
+                    initQuizGame();
+                    break;
+            }
+        }
+
+        // Match Game
+        function initMatchGame() {
+            document.getElementById('gameTitle').textContent = '🎯 Match Game';
+            const content = document.getElementById('gameContent');
+
+            const items = gameItems.slice(0, 6).sort(() => Math.random() - 0.5);
+            const words = [...items].sort(() => Math.random() - 0.5);
+
+            let matched = [];
+            let selectedEmoji = null;
+
+            content.innerHTML = `
+                <p class="text-lg text-gray-700 dark:text-gray-300 mb-4 text-center">Click an emoji, then click the matching word!</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-3">
+                        ${items.map((item, i) => `
+                            <button id="emoji-${i}" onclick="selectEmoji(${i})"
+                                class="emoji-btn w-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 hover:from-blue-200 hover:to-purple-200 dark:hover:from-blue-800 dark:hover:to-purple-800 p-4 rounded-xl text-4xl transform hover:scale-105 transition-all shadow-md">
+                                ${item.emoji}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="space-y-3">
+                        ${words.map((item, i) => `
+                            <button id="word-${i}" onclick="selectWord(${i})"
+                                class="word-btn w-full bg-gradient-to-r from-green-100 to-yellow-100 dark:from-green-900 dark:to-yellow-900 hover:from-green-200 hover:to-yellow-200 dark:hover:from-green-800 dark:hover:to-yellow-800 p-4 rounded-xl text-xl font-bold text-gray-800 dark:text-white transform hover:scale-105 transition-all shadow-md">
+                                ${item.word}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            window.selectEmoji = function(index) {
+                if (matched.includes(index)) return;
+
+                document.querySelectorAll('.emoji-btn').forEach(btn =>
+                    btn.classList.remove('ring-4', 'ring-primary'));
+
+                selectedEmoji = index;
+                document.getElementById(`emoji-${index}`).classList.add('ring-4', 'ring-primary');
+            };
+
+            window.selectWord = function(wordIndex) {
+                if (selectedEmoji === null) return;
+                if (matched.includes(selectedEmoji)) return;
+
+                const wordBtn = document.getElementById(`word-${wordIndex}`);
+                const emojiBtn = document.getElementById(`emoji-${selectedEmoji}`);
+
+                if (items[selectedEmoji].word === words[wordIndex].word) {
+                    playCorrectSound();
+                    updateScore(10);
+                    matched.push(selectedEmoji);
+
+                    wordBtn.classList.add('celebrate');
+                    emojiBtn.classList.add('celebrate');
+
+                    setTimeout(() => {
+                        wordBtn.style.opacity = '0.3';
+                        emojiBtn.style.opacity = '0.3';
+                        wordBtn.disabled = true;
+                        emojiBtn.disabled = true;
+                    }, 600);
+
+                    if (matched.length === items.length) {
+                        setTimeout(showVictory, 1000);
+                    }
+                } else {
+                    playWrongSound();
+                    wordBtn.classList.add('shake');
+                    setTimeout(() => wordBtn.classList.remove('shake'), 500);
+                }
+
+                emojiBtn.classList.remove('ring-4', 'ring-primary');
+                selectedEmoji = null;
+            };
+        }
+
+        // Scramble Game
+        function initScrambleGame() {
+            document.getElementById('gameTitle').textContent = '🔤 Word Scramble';
+            const content = document.getElementById('gameContent');
+
+            let currentIndex = 0;
+            const items = gameItems.slice(0, 8);
+
+            function scrambleWord(word) {
+                const arr = word.split('');
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr.join('');
+            }
+
+            function showQuestion() {
+                if (currentIndex >= items.length) {
+                    showVictory();
+                    return;
+                }
+
+                const item = items[currentIndex];
+                const scrambled = scrambleWord(item.word);
+
+                content.innerHTML = `
+                    <div class="text-center space-y-6 bounce-in">
+                        <div class="text-8xl mb-4">${item.emoji}</div>
+                        <p class="text-2xl text-gray-700 dark:text-gray-300 font-bold">Unscramble this word:</p>
+                        <div class="text-4xl font-bold text-primary tracking-widest">${scrambled.toUpperCase()}</div>
+                        <input type="text" id="answerInput"
+                            class="w-full max-w-md mx-auto text-center text-2xl p-4 border-4 border-primary rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-gray-600 dark:text-white text-base"
+                            placeholder="Type your answer..." autocomplete="off">
+                        <button onclick="checkScrambleAnswer('${item.word}')"
+                            class="bg-primary hover:bg-purple-600 text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg transform hover:scale-105 transition-all">
+                            Check Answer
+                        </button>
+                        <div id="feedback" class="text-xl font-bold h-8"></div>
+                    </div>
+                `;
+
+                document.getElementById('answerInput').focus();
+                document.getElementById('answerInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        window.checkScrambleAnswer(item.word);
+                    }
+                });
+            }
+
+            window.checkScrambleAnswer = function(correctAnswer) {
+                const input = document.getElementById('answerInput').value.trim().toLowerCase();
+                const feedback = document.getElementById('feedback');
+
+                if (input === correctAnswer) {
+                    playCorrectSound();
+                    updateScore(15);
+                    feedback.textContent = '✅ Correct!';
+                    feedback.className = 'text-xl font-bold text-green-600 dark:text-green-400 celebrate';
+
+                    currentIndex++;
+                    setTimeout(showQuestion, 1500);
+                } else {
+                    playWrongSound();
+                    feedback.textContent = '❌ Try again!';
+                    feedback.className = 'text-xl font-bold text-red-600 dark:text-red-400 shake';
+                    setTimeout(() => {
+                        feedback.textContent = '';
+                    }, 1500);
+                }
+            };
+
+            showQuestion();
+        }
+
+        // Memory Game
+        function initMemoryGame() {
+            document.getElementById('gameTitle').textContent = '🧠 Memory Game';
+            const content = document.getElementById('gameContent');
+
+            const items = gameItems.slice(0, 6);
+            const cards = [...items, ...items].sort(() => Math.random() - 0.5);
+
+            let flipped = [];
+            let matched = [];
+            let canFlip = true;
+
+            content.innerHTML = `
+                <p class="text-lg text-gray-700 dark:text-gray-300 mb-4 text-center">Find matching pairs!</p>
+                <div class="grid grid-cols-3 md:grid-cols-4 gap-3">
+                    ${cards.map((item, i) => `
+                        <button id="card-${i}" onclick="flipCard(${i})"
+                            class="card aspect-square bg-gradient-to-br from-primary to-purple-600 hover:from-purple-600 hover:to-primary rounded-xl text-4xl flex items-center justify-center transform hover:scale-105 transition-all shadow-lg">
+                            <span class="card-back">❓</span>
+                            <span class="card-front hidden">${item.emoji}<br><span class="text-sm">${item.word}</span></span>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+
+            window.flipCard = function(index) {
+                if (!canFlip || flipped.includes(index) || matched.includes(index)) return;
+                if (flipped.length >= 2) return;
+
+                const card = document.getElementById(`card-${index}`);
+                const back = card.querySelector('.card-back');
+                const front = card.querySelector('.card-front');
+
+                back.classList.add('hidden');
+                front.classList.remove('hidden');
+                flipped.push(index);
+
+                if (flipped.length === 2) {
+                    canFlip = false;
+                    const [first, second] = flipped;
+
+                    if (cards[first].word === cards[second].word && first !== second) {
+                        playCorrectSound();
+                        updateScore(20);
+                        matched.push(first, second);
+
+                        setTimeout(() => {
+                            document.getElementById(`card-${first}`).classList.add('celebrate');
+                            document.getElementById(`card-${second}`).classList.add('celebrate');
+                        }, 500);
+
+                        if (matched.length === cards.length) {
+                            setTimeout(showVictory, 1500);
+                        }
+
+                        flipped = [];
+                        canFlip = true;
+                    } else {
+                        playWrongSound();
+                        setTimeout(() => {
+                            const card1 = document.getElementById(`card-${first}`);
+                            const card2 = document.getElementById(`card-${second}`);
+
+                            card1.querySelector('.card-back').classList.remove('hidden');
+                            card1.querySelector('.card-front').classList.add('hidden');
+                            card2.querySelector('.card-back').classList.remove('hidden');
+                            card2.querySelector('.card-front').classList.add('hidden');
+
+                            flipped = [];
+                            canFlip = true;
+                        }, 1000);
+                    }
+                }
+            };
+        }
+
+        // Quiz Game
+        function initQuizGame() {
+            document.getElementById('gameTitle').textContent = '❓ Quiz Game';
+            const content = document.getElementById('gameContent');
+
+            let currentIndex = 0;
+            const items = gameItems.slice(0, 8);
+
+            function showQuestion() {
+                if (currentIndex >= items.length) {
+                    showVictory();
+                    return;
+                }
+
+                const item = items[currentIndex];
+                const wrongAnswers = gameItems
+                    .filter(i => i.word !== item.word)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3);
+
+                const allAnswers = [item, ...wrongAnswers].sort(() => Math.random() - 0.5);
+
+                content.innerHTML = `
+                    <div class="text-center space-y-6 bounce-in">
+                        <p class="text-xl text-gray-600 dark:text-gray-400">Question ${currentIndex + 1} of ${items.length}</p>
+                        <div class="text-8xl mb-4">${item.emoji}</div>
+                        <p class="text-2xl text-gray-700 dark:text-gray-300 font-bold">What is this?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                            ${allAnswers.map((answer, i) => `
+                                <button onclick="checkQuizAnswer('${item.word}', '${answer.word}', this)"
+                                    class="quiz-option bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 hover:from-blue-200 hover:to-purple-200 dark:hover:from-blue-800 dark:hover:to-purple-800 p-6 rounded-xl text-xl font-bold text-gray-800 dark:text-white transform hover:scale-105 transition-all shadow-md">
+                                    ${answer.word}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            window.checkQuizAnswer = function(correct, selected, button) {
+                const options = document.querySelectorAll('.quiz-option');
+                options.forEach(opt => opt.disabled = true);
+
+                if (correct === selected) {
+                    playCorrectSound();
+                    updateScore(10);
+                    button.classList.add('celebrate');
+                    button.classList.remove('from-blue-100', 'to-purple-100', 'dark:from-blue-900', 'dark:to-purple-900');
+                    button.classList.add('bg-green-500', 'text-white');
+
+                    currentIndex++;
+                    setTimeout(showQuestion, 1500);
+                } else {
+                    playWrongSound();
+                    button.classList.add('shake');
+                    button.classList.remove('from-blue-100', 'to-purple-100', 'dark:from-blue-900', 'dark:to-purple-900');
+                    button.classList.add('bg-red-500', 'text-white');
+
+                    options.forEach(opt => {
+                        if (opt.textContent.trim() === correct) {
+                            opt.classList.add('bg-green-500', 'text-white');
+                        }
+                    });
+
+                    setTimeout(() => {
+                        currentIndex++;
+                        showQuestion();
+                    }, 2000);
+                }
+            };
+
+            showQuestion();
+        }
+    </script>
+</body>
+</html>
