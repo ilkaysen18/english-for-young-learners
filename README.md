@@ -1,4 +1,4 @@
-#### This is an English Course inspired by Engoo's Courses titled "English for Young Learners" and "English for Conversation".
+#### This is an English Course designed for Kids Lessons
 
 
 # Kids English
@@ -20,7 +20,13 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 ## View Live
 [Click here to see the website](https://ilkaysen18.github.io/english-for-young-learners/)
 
-## Technologies
+## Technologies & Methodologies
+- Agile
 - HTML5
 - CSS3
 - JavaScript
+
+## Steps Taken Using Agile Methodology
+1️⃣ Initial UI featuring the 5 mini lessons for testing
+2️⃣ Lesson content updated to suit audience
+3️⃣ A game feature with puzzles for practicing words - with sound and a scoring system
