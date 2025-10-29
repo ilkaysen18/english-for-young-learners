@@ -26,7 +26,8 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 - CSS3
 - JavaScript
 
-## Steps Taken Using Agile Methodology
+## Steps Taken
+## Using Agile Methodology
 1️⃣ Initial UI featuring the 5 mini lessons for testing
 2️⃣ Lesson content updated to suit audience
 3️⃣ A game feature with puzzles for practicing words - with sound and a scoring system
