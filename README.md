@@ -35,7 +35,33 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 * with puzzles for practicing words - with sound and a scoring system
 
 
-# Updates
+...
+
+
+# English Training Hub
+
+#### Goal: To build and develop the Foreign Language Learning Platform.
 
 ## Link: General English
 [Click here to see the website](https://ilkaysen18.github.io/english-for-young-learners/gen-eng)
+
+## Steps Taken Using Agile Methodology
+#### 4️⃣ Course expansion
+* featuring a mini General English Course for adults
+#### 4️⃣ CMS
+* a Content Management System - for a Content Team to create and share further courses and lessons
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
