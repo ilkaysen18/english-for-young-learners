@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>English Lessons CMS + Viewer</title>
+<style>
+body{font-family:sans-serif;margin:0;background:#f4f4f4;text-align:center;}
+header{background:#0078d7;color:#fff;padding:1.3rem;}
+.container{max-width:650px;margin:1rem auto;background:#fff;padding:1rem;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+input,textarea,select{width:100%;padding:.5rem;margin:.4rem 0;border:1px solid #ccc;border-radius:6px;}
+button{background:#0078d7;color:#fff;border:none;padding:.6rem 1.2rem;margin-top:.5rem;border-radius:5px;cursor:pointer;}
+button:hover{background:#005fa3;}
+.lesson{padding:1rem;margin:1rem 0;border-radius:8px;box-shadow:0 1px 5px rgba(0,0,0,.1);}
+.lesson h2{color:#0078d7;}
+nav a{text-decoration:none;background:#0078d7;color:#fff;padding:.4rem .8rem;border-radius:5px;margin:.3rem;}
+nav a:hover{background:#005fa3;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌍 English Lesson Hub</h1>
+  <p>CMS (Admin) + Public Viewer</p>
+</header>
+
+<!-- AUTH -->
+<div class="container" id="auth">
+  <h2>Login</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login / Register</button>
+  <p style="color:red;" id="authMsg"></p>
+</div>
+
+<!-- DASHBOARD -->
+<div class="container" id="dashboard" style="display:none;">
+  <h2>Welcome, <span id="userEmail"></span></h2>
+  <button onclick="logout()" style="background:#555;">Logout</button>
+  <hr>
+  <button onclick="toggleForm()">➕ New Lesson</button>
+  <form id="lessonForm" onsubmit="saveLesson(event)" style="display:none;">
+    <input id="lessonOrder" type="number" placeholder="Lesson Number" required>
+    <input id="lessonTitle" placeholder="Lesson Title (e.g., Lesson 1 – Animals 🐶)" required>
+    <textarea id="lessonBody" rows="5" placeholder="Each line: emoji + sentence" required></textarea>
+    <button type="submit">Save Lesson</button>
+  </form>
+  <div id="lessonsList"><h3>📘 All Lessons</h3></div>
+</div>
+
+<!-- PUBLIC VIEW -->
+<div class="container" id="public">
+  <h2>🌏 Course Viewer</h2>
+  <div id="viewerList"></div>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import {getFirestore,collection,addDoc,query,orderBy,getDocs} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+// 1️⃣ Replace with YOUR Firebase config
+const firebaseConfig = {
+  apiKey:"YOUR_API_KEY",
+  authDomain:"YOUR_PROJECT_ID.firebaseapp.com",
+  projectId:"YOUR_PROJECT_ID",
+  storageBucket:"YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId:"X",
+  appId:"X"
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+// UI References
+const authDiv=document.getElementById('auth');
+const dash=document.getElementById('dashboard');
+const publicDiv=document.getElementById('public');
+const lessonForm=document.getElementById('lessonForm');
+const list=document.getElementById('lessonsList');
+const viewer=document.getElementById('viewerList');
+const userEmail=document.getElementById('userEmail');
+
+// LOGIN / REGISTER
+window.login=async function(){
+  const email=document.getElementById('email').value.trim();
+  const pw=document.getElementById('password').value.trim();
+  try{
+    await signInWithEmailAndPassword(auth,email,pw);
+  }catch(e){
+    await createUserWithEmailAndPassword(auth,email,pw);
+  }
+}
+window.logout=()=>signOut(auth);
+window.toggleForm=()=>lessonForm.style.display=lessonForm.style.display==='block'?'none':'block';
+
+// SAVE LESSON
+window.saveLesson=async e=>{
+  e.preventDefault();
+  const order=parseInt(document.getElementById('lessonOrder').value);
+  const title=document.getElementById('lessonTitle').value.trim();
+  const content=document.getElementById('lessonBody').value.trim();
+  await addDoc(collection(db,'lessons'),{order,title,content,timestamp:Date.now()});
+  lessonForm.reset(); lessonForm.style.display='none';
+  loadLessons(); loadPublic();
+}
+
+// LOAD ALL LESSONS FOR CMS
+async function loadLessons(){
+  list.innerHTML="<h3>📘 All Lessons</h3>";
+  const q=query(collection(db,'lessons'),orderBy('order','asc'));
+  const snap=await getDocs(q);
+  snap.forEach(doc=>{
+    const d=doc.data();
+    list.innerHTML+=`<div class="lesson"><strong>#${d.order}</strong> ${d.title}</div>`;
+  });
+}
+
+// LOAD PUBLIC VIEWER
+async function loadPublic(){
+  viewer.innerHTML="";
+  const q=query(collection(db,'lessons'),orderBy('order','asc'));
+  const snap=await getDocs(q);
+  const lessons=snap.docs.map(x=>x.data());
+  lessons.forEach((l,i)=>{
+    const div=document.createElement('div');
+    div.className='lesson';
+    div.innerHTML=`
+      <h2>${l.title}</h2>
+      ${l.content.split('\n').map(line=>{
+        const [emoji,...words]=line.split(' ');
+        return `<p>${emoji} ${words.join(' ')}</p>`;
+      }).join('')}
+      <nav>
+        ${i>0?`<a href="#lesson${lessons[i-1].order}" onclick="scrollToLesson(${i-1})">← Previous</a>`:''}
+        <a href="#top">Back to Course</a>
+        ${i<lessons.length-1?`<a href="#lesson${lessons[i+1].order}" onclick="scrollToLesson(${i+1})">Next →</a>`:''}
+      </nav>`;
+    div.id=`lesson${l.order}`;
+    viewer.appendChild(div);
+  });
+}
+window.scrollToLesson=i=>{
+  document.getElementsByClassName('lesson')[i].scrollIntoView({behavior:'smooth'});
+}
+
+// AUTH STATE
+onAuthStateChanged(auth,user=>{
+  if(user){
+    authDiv.style.display='none';
+    dash.style.display='block';
+    userEmail.textContent=user.email;
+    loadLessons();
+  } else {
+    authDiv.style.display='block';
+    dash.style.display='none';
+  }
+  loadPublic();
+});
+</script>
+</body>
+</html>
