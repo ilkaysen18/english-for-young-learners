@@ -48,8 +48,9 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 ## Steps Taken Using Agile Methodology
 #### 4️⃣ Course expansion
 * featuring a mini General English Course for adults
-#### 4️⃣ CMS
+#### 5️⃣ CMS
 * a Content Management System - for a Content Team to create and share further courses and lessons
+* added login system
 
 
 
