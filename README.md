@@ -32,7 +32,7 @@
 #### 5️⃣ Firebase API
 * Google cloud storage added for CMS:
 * CMS login authentication
-* lesson content backup
+* lesson content storage / backup
 
 
 
