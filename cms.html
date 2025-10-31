@@ -54,7 +54,8 @@ nav a:hover{background:#005fa3;}
   <div id="viewerList"></div>
 </div>
 
-<script type="module">
+
+<script type="module"> 
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import {getFirestore,collection,addDoc,query,orderBy,getDocs} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -95,6 +96,7 @@ window.login=async function(){
 window.logout=()=>signOut(auth);
 window.toggleForm=()=>lessonForm.style.display=lessonForm.style.display==='block'?'none':'block';
 
+  
 // SAVE LESSON
 window.saveLesson=async e=>{
   e.preventDefault();
@@ -159,5 +161,23 @@ onAuthStateChanged(auth,user=>{
   loadPublic();
 });
 </script>
+  
+  
+<!-- Demo Login Button -->
+<button id="demoBtn" style="background:#28a745;">Login as Demo User</button>
+
+<script type="module">
+document.getElementById('demoBtn').addEventListener('click', async () => {
+  const email = "demo@example.com";
+  const password = "demopassword";
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch {
+    await createUserWithEmailAndPassword(auth, email, password);
+  }
+});
+</script>
 </body>
 </html>
+
+
