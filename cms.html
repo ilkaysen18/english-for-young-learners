@@ -82,32 +82,13 @@ nav a:hover{background:#005fa3;}
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-</script>
 
 
 
 
 
   
-<script type="module"> 
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import {getFirestore,collection,addDoc,query,orderBy,getDocs} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-// 1️⃣ Replace with YOUR Firebase config
-const firebaseConfig = {
-  apiKey:"YOUR_API_KEY",
-  authDomain:"YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:"YOUR_PROJECT_ID",
-  storageBucket:"YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId:"X",
-  appId:"X"
-};
-
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
-
+  
 // UI References
 const authDiv=document.getElementById('auth');
 const dash=document.getElementById('dashboard');
