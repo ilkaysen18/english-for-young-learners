@@ -16,14 +16,18 @@
 # Progress
 
 ## Steps Taken Using Agile Methodology
+
 🚀
+
 #### 1️⃣ Initial UI
 * featuring the 5 mini lessons for testing
 #### 2️⃣ Lesson content
 * updated to suit audience
 #### 3️⃣ A game feature
 * with puzzles for practicing words - with sound and a scoring system
+
 🚀
+
 #### 4️⃣ Course expansion
 * featuring a mini General English Course for adults
 #### 5️⃣ CMS expansion
@@ -33,6 +37,9 @@
 * Google cloud storage added for CMS:
 * CMS login authentication
 * lesson content storage / backup
+
+🚀
+
 
 
 
