@@ -35,7 +35,9 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 * with puzzles for practicing words - with sound and a scoring system
 
 
-...
+.
+.
+.
 
 
 # English Training Hub
@@ -48,11 +50,9 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 ## Steps Taken Using Agile Methodology
 #### 4️⃣ Course expansion
 * featuring a mini General English Course for adults
-#### 5️⃣ CMS
-* a Content Management System - for a Content Team to create and share further courses and lessons
+#### 5️⃣ CMS expansion
+* Content Management System - for creating and sharing courses and lessons
 * added login system
-
-
 
 
 
