@@ -54,7 +54,8 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 [Link](https://ilkaysen18.github.io/english-for-young-learners/cms)
 * integration for creating and sharing new course + lesson content
 * added login system
-
+#### 5️⃣ Next
+➡️ To make sure all the buttons/elements are fully working
 
 
 
