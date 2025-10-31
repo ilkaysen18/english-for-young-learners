@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>General English for Adults</title>
+<style>
+  body{font-family:sans-serif;margin:0;background:#f4f4f4;text-align:center;color:#333;}
+  header{background:#0078d7;color:#fff;padding:1.2rem;}
+  main{max-width:600px;margin:auto;padding:1rem;}
+  section{display:none;background:#fff;margin:1rem auto;padding:1rem;border-radius:10px;
+          box-shadow:0 2px 5px rgba(0,0,0,.1);}
+  section.active{display:block;}
+  a.button{display:inline-block;margin:.3rem .2rem;padding:.6rem 1rem;background:#0078d7;color:#fff;
+           text-decoration:none;border-radius:5px;}
+  a.button:hover{background:#005fa3;}
+  h2{color:#0078d7;margin-top:0;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌍 General English for Adults</h1>
+  <p>Everyday English through simple emoji lessons.</p>
+</header>
+
+<main>
+  <!-- COURSE PAGE -->
+  <section id="course" class="active">
+    <h2>Choose a Lesson 📘</h2>
+    <a href="#lesson1" class="button">Lesson 1 – Greetings 👋</a>
+    <a href="#lesson2" class="button">Lesson 2 – At a Café ☕</a>
+    <a href="#lesson3" class="button">Lesson 3 – Travel ✈️</a>
+    <a href="#lesson4" class="button">Lesson 4 – Work 💼</a>
+    <a href="#lesson5" class="button">Lesson 5 – Daily Routine ⏰</a>
+  </section>
+
+  <!-- LESSON 1 -->
+  <section id="lesson1">
+    <h2>Lesson 1 – Greetings 👋</h2>
+    <p>👋 Hello / Hi – Common greetings.</p>
+    <p>🙋‍♂️ How are you? – I'm good, thanks.</p>
+    <p>🤝 Nice to meet you! – A polite introduction.</p>
+    <a href="#course" class="button">⬅ Back to Course</a>
+    <a href="#lesson2" class="button">Next Lesson ➡</a>
+  </section>
+
+  <!-- LESSON 2 -->
+  <section id="lesson2">
+    <h2>Lesson 2 – At a Café ☕</h2>
+    <p>☕ I'd like a coffee, please.</p>
+    <p>🥐 Can I have a croissant?</p>
+    <p>💳 How much is it?</p>
+    <a href="#lesson1" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+    <a href="#lesson3" class="button">Next ➡</a>
+  </section>
+
+  <!-- LESSON 3 -->
+  <section id="lesson3">
+    <h2>Lesson 3 – Travel ✈️</h2>
+    <p>🧳 Where is the airport?</p>
+    <p>🗺️ I need a taxi to the hotel.</p>
+    <p>📸 Let's take some photos!</p>
+    <a href="#lesson2" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+    <a href="#lesson4" class="button">Next ➡</a>
+  </section>
+
+  <!-- LESSON 4 -->
+  <section id="lesson4">
+    <h2>Lesson 4 – Work 💼</h2>
+    <p>💬 I work as a teacher.</p>
+    <p>📅 I start work at 9 a.m.</p>
+    <p>🖥️ I use email and join meetings.</p>
+    <a href="#lesson3" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+    <a href="#lesson5" class="button">Next ➡</a>
+  </section>
+
+  <!-- LESSON 5 -->
+  <section id="lesson5">
+    <h2>Lesson 5 – Daily Routine ⏰</h2>
+    <p>🛏️ I wake up at 7 a.m.</p>
+    <p>🍳 I have breakfast and go to work.</p>
+    <p>📺 In the evening, I watch TV.</p>
+    <a href="#lesson4" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+  </section>
+</main>
+
+<script>
+  const sections=document.querySelectorAll('section');
+  function showSection(id){
+    sections.forEach(s=>s.classList.remove('active'));
+    const active=document.querySelector(id); if(active) active.classList.add('active');
+  }
+  window.addEventListener('hashchange',()=>showSection(location.hash||'#course'));
+  showSection(location.hash||'#course');
+</script>
+
+</body>
+</html>
