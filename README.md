@@ -17,8 +17,8 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 2. Click on any lesson
 3. Learn vocabulary with emojis and example sentences
 
-## Link: Kids English
-[Click here to see the website](https://ilkaysen18.github.io/english-for-young-learners/)
+## Kids English
+[Link](https://ilkaysen18.github.io/english-for-young-learners/)
 
 ## Technologies & Methodologies
 - Agile
@@ -44,14 +44,15 @@ A fun, interactive website to help kids learn basic English vocabulary through 5
 
 #### Goal: To build and develop the Foreign Language Learning Platform.
 
-## Link: General English
-[Click here to see the website](https://ilkaysen18.github.io/english-for-young-learners/gen-eng)
+## General English
+[Link](https://ilkaysen18.github.io/english-for-young-learners/gen-eng)
 
 ## Steps Taken Using Agile Methodology
 #### 4️⃣ Course expansion
 * featuring a mini General English Course for adults
 #### 5️⃣ CMS expansion
-* Content Management System - for creating and sharing courses and lessons
+[Link](https://ilkaysen18.github.io/english-for-young-learners/gen-eng)
+* integration for creating & sharing new course & lesson content
 * added login system
 
 
