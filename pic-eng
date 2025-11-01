@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Speaking With Pictures - Lesson 1 (A1–A2)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+  body{
+    margin:0;
+    font-family:'Comic Neue',sans-serif;
+    background:linear-gradient(to bottom,#a7dfff,#f6faff);
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .container{width:100%;max-width:900px;height:90vh;perspective:1500px;position:relative;}
+  .page{
+    position:absolute;width:100%;height:100%;background:white;border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);display:flex;flex-direction:column;
+    align-items:center;transition:transform 0.8s ease,opacity 0.8s ease;
+    backface-visibility:hidden;overflow-y:auto;padding:20px;box-sizing:border-box;
+  }
+  .visible{opacity:1;transform:translateX(0);}
+  .hidden{opacity:0;pointer-events:none;transform:translateX(100%);}
+  h1{font-size:2em;margin-top:10px;text-align:center;}
+  h2{font-size:1.4em;margin-top:10px;text-align:center;}
+  p{font-size:1em;text-align:center;margin:10px 0;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;margin:20px 0;width:100%;max-width:800px;}
+  .vocab{font-size:2rem;background:#fdf6e3;border-radius:15px;padding:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1);text-align:center;min-height:60px;display:flex;align-items:center;justify-content:center;}
+  .nav{margin-top:20px;margin-bottom:20px;display:flex;flex-wrap:wrap;justify-content:center;}
+  button{margin:10px;padding:10px 20px;background:#ffd34e;border:none;border-radius:10px;font-size:1em;cursor:pointer;box-shadow:0 3px 0 #e0a800;}
+  button:hover{background:#ffe678;}
+  ul{list-style-type:none;padding:0;margin:0;width:90%;}
+  li{margin:8px 0;font-size:1.1em;}
+  .section{width:100%;max-width:800px;margin-top:10px;text-align:left;}
+  .section h3{text-align:center;background:#fff7cc;padding:10px;border-radius:10px;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- SPEAKING WITH PICTURES - COURSE PAGE -->
+  <div class="page visible" id="course">
+    <h1>Speaking With Pictures 🖼</h1>
+    <h2>Level: A1–A2</h2>
+    <p>Choose a lesson:</p>
+    <div class="grid">
+      <button onclick="goLesson(1)">Lesson 1<br>At the Beach 🏖️</button>
+    </div>
+  </div>
+
+  <!-- Lesson 1 -->
+  <div class="page hidden" id="lesson1">
+    <h1>Lesson 1 – At the Beach 🏖️</h1>
+    <h2>Vocabulary</h2>
+    <div class="grid">
+      <div><div class="vocab">🏖️</div><p>sand</p></div>
+      <div><div class="vocab">🌊</div><p>sea</p></div>
+      <div><div class="vocab">🧺</div><p>towel</p></div>
+      <div><div class="vocab">🏊</div><p>swim</p></div>
+      <div><div class="vocab">👒</div><p>hat</p></div>
+      <div><div class="vocab">☀️</div><p>sun</p></div>
+      <div><div class="vocab">🏐</div><p>ball</p></div>
+      <div><div class="vocab">⛱️</div><p>umbrella</p></div>
+      <div><div class="vocab">🌊🌊</div><p>waves</p></div>
+      <div><div class="vocab">🕶️</div><p>sunglasses</p></div>
+    </div>
+
+    <div class="section">
+      <h3>💬 Conversation Questions</h3>
+      <ul>
+        <li>1. Do you like going to the beach?</li>
+        <li>2. What do you do there?</li>
+        <li>3. Who do you go with?</li>
+        <li>4. What do you wear at the beach?</li>
+        <li>5. Can you swim well?</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>✅ Agree or Disagree</h3>
+      <ul>
+        <li>1. The beach is the best place to relax.</li>
+        <li>2. I don’t like swimming in the sea.</li>
+        <li>3. It’s fun to play ball on the sand.</li>
+        <li>4. The sun is too hot in summer.</li>
+        <li>5. I like watching the waves.</li>
+      </ul>
+    </div>
+
+    <div class="nav">
+      <button onclick="goCourse()">Back to Course</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let current='course';
+function showPage(id){
+  document.getElementById(current).classList.add('hidden');
+  document.getElementById(current).classList.remove('visible');
+  const next=document.getElementById(id);
+  next.classList.remove('hidden');
+  next.classList.add('visible');
+  current=id;
+}
+function goCourse(){showPage('course');}
+function goLesson(n){showPage('lesson'+n);}
+</script>
+</body>
+</html>
