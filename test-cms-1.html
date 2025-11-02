@@ -132,27 +132,9 @@ nav a:hover{background:var(--primary-dark)}
 </header>
 
 <div class="wrap">
-<!-- AUTH -->
-<div class="container" id="auth">
-<h2>Login</h2>
-<div class="row">
-<input type="email" id="email" placeholder="Email" >
-<input type="password" id="password" placeholder="Password" >
-</div>
-<div class="row">
-<button id="loginBtn">Login</button>
-</div>
-<p id="authMsg"></p>
-<p class="muted">Enter your credentials to access the CMS.</p>
-</div>
-
 <!-- DASHBOARD -->
-<div class="container" id="dashboard" style="display:none;">
-<div class="row" style="align-items:center;justify-content:space-between">
-<h2 style="flex:auto">Welcome, <span id="userEmail"></span></h2>
-<button id="logoutBtn" class="btn-secondary" style="flex:none">Logout</button>
-</div>
-<hr >
+<div class="container" id="dashboard">
+<h2>Content Management</h2>
 <button id="toggleFormBtn">➕ New Lesson</button>
 
 <form id="lessonForm" style="display:none;margin-top:.6rem" class="">
@@ -220,41 +202,12 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // UI elements
-const authDiv = document.getElementById("auth");
 const dash = document.getElementById("dashboard");
 const lessonForm = document.getElementById("lessonForm");
 const list = document.getElementById("lessonsList");
 const viewer = document.getElementById("viewerList");
-const userEmail = document.getElementById("userEmail");
-const authMsg = document.getElementById("authMsg");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
 const toggleFormBtn = document.getElementById("toggleFormBtn");
 const courseSelect = document.getElementById("courseSelect");
-
-function setAuthMsg(msg) {
-authMsg.textContent = msg || "";
-}
-
-// Auth handlers - LOGIN ONLY (no registration)
-loginBtn.addEventListener("click", async () => {
-const email = document.getElementById("email").value.trim();
-const pw = document.getElementById("password").value.trim();
-if (!email || !pw) {
-setAuthMsg("Please enter email and password.");
-return;
-}
-setAuthMsg("");
-try {
-await signInWithEmailAndPassword(auth, email, pw);
-} catch (e) {
-setAuthMsg("Login failed. Please check your credentials.");
-}
-});
-
-logoutBtn?.addEventListener("click", () => {
-signOut(auth).catch(()=>{});
-});
 
 toggleFormBtn.addEventListener("click", () => {
 lessonForm.style.display = lessonForm.style.display === "block" ? "none" : "block";
@@ -389,19 +342,9 @@ viewer.appendChild(courseDiv);
 });
 }
 
-// Auth state
-onAuthStateChanged(auth, (user) => {
-if (user) {
-authDiv.style.display = "none";
-dash.style.display = "block";
-userEmail.textContent = user.email || "";
+// Load on page load
 loadLessons();
-} else {
-authDiv.style.display = "block";
-dash.style.display = "none";
-}
 loadPublic();
-});
 </script>
 </body>
 </html>
