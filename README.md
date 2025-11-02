@@ -28,9 +28,9 @@
 
 🚀
 
-#### 4️⃣ Course expansion
+#### 4️⃣ Courses section
 * featuring a mini General English Course for adults
-#### 5️⃣ CMS expansion
+#### 5️⃣ CMS page
 * integration for creating and sharing new course + lesson content
 * added login system
 #### 5️⃣ Firebase API
@@ -39,7 +39,14 @@
 * lesson content storage / backup
 
 🚀
-
+#### 5️⃣ CMS enhancement
+* admin authentication & password management feature
+* course-specific font & styling modifications
+* new lessons in CMS integrated with courses page
+* admin approval feature added
+  - user approval
+  - lessons approval
+#### 6️⃣ CMS enhancement
 
 
 
