@@ -49,7 +49,7 @@
 * public viewer section updated to group lessons by course
 * new lessons in CMS integrated with courses page
 #### 2:
-* 
+* moved the CMS within the courses page for better integration
 #### 9️⃣ -
 
 
