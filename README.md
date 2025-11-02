@@ -42,16 +42,11 @@
 #### 7️⃣ Courses section update 
 * new course added - "Speaking With Pictures"
 #### 8️⃣ CMS enhancement
-* admin authentication & password management feature
+* user auto-registration removed
+* course-selection dropdown added
 * course-specific font & styling modifications
+* public viewer section updated to group lessons by course
 * new lessons in CMS integrated with courses page
-* admin approval feature added
-  - user approval
-  - lessons approval
-##### Updated CMS to admin-only access
-* Admin Authentication: Only users listed in the admins Firestore collection can access the CMS
-* Public Viewer: Anyone can view lessons without logging in
-* Admin Management: Admins can add other admins through the dashboard
 #### 9️⃣ -
 
 
