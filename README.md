@@ -48,6 +48,7 @@
 * admin approval feature added
   - user approval
   - lessons approval
+
 ** updated CMS to admin only access
 #### 9️⃣ -
 
