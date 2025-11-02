@@ -48,8 +48,10 @@
 * admin approval feature added
   - user approval
   - lessons approval
-
-** updated CMS to admin-only access
+##### Updated CMS to admin-only access
+* Admin Authentication: Only users listed in the admins Firestore collection can access the CMS
+* Public Viewer: Anyone can view lessons without logging in
+* Admin Management: Admins can add other admins through the dashboard
 #### 9️⃣ -
 
 
