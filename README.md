@@ -49,7 +49,7 @@
   - user approval
   - lessons approval
 
-** updated CMS to admin only access
+** updated CMS to admin-only access
 #### 9️⃣ -
 
 
