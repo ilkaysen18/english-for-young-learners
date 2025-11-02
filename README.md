@@ -33,20 +33,22 @@
 #### 5️⃣ CMS page
 * integration for creating and sharing new course + lesson content
 * added login system
-#### 5️⃣ Firebase API
+#### 6️⃣ Firebase API
 * Google cloud storage added for CMS:
 * CMS login authentication
 * lesson content storage / backup
 
 🚀
-#### 5️⃣ CMS enhancement
+#### 7️⃣ Courses section update 
+* new course added - "Speaking With Pictures"
+#### 8️⃣ CMS enhancement
 * admin authentication & password management feature
 * course-specific font & styling modifications
 * new lessons in CMS integrated with courses page
 * admin approval feature added
   - user approval
   - lessons approval
-#### 6️⃣ CMS enhancement
+#### 9️⃣ -
 
 
 
