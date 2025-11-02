@@ -41,17 +41,6 @@
 🚀
 #### 7️⃣ Courses section update 
 * new course added - "Speaking With Pictures"
-#### 8️⃣ CMS enhancement
-#### 1:
-* user auto-registration removed
-* course-selection dropdown added
-* course-specific font & styling modifications
-* public viewer section updated to group lessons by course
-* new lessons in CMS integrated with courses page
-#### 2:
-* moved the CMS within the courses page for better integration
-#### 9️⃣ -
-
 
 
 
