@@ -1,96 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-scale=no, initial-scale=1.0">
-    <title>Candy Crush Clone</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #b2e0e6;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            max-width: 100%;
-            margin: auto;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        h1 {
-            color: #ff1e56;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
-            margin: 20px 0;
-        }
-        .cell {
-            width: 100%;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px; /* Bigger font for better visibility */
-            cursor: pointer;
-            background: #f0f0f0;
-            border-radius: 5px;
-            transition: background 0.3s; /* Smooth transition */
-        }
-        .cell:hover {
-            background: #d3d3d3; /* Change background on hover */
-        }
-        .cell.selected {
-            background: rgba(0, 0, 255, 0.3); /* Highlight selected cell */
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Letter Candy Match 🍭</title>
+<style>
+  :root {
+    --cell-size: 55px;
+  }
+  body {
+    margin: 0;
+    background: linear-gradient(45deg, #ffb6c1, #ff69b4, #ff1493);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    margin: 20px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  }
+
+  #scoreboard, #word-display {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+  }
+
+  #board {
+    display: grid;
+    grid-template-columns: repeat(8, var(--cell-size));
+    grid-template-rows: repeat(8, var(--cell-size));
+    border: 5px solid #fff;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    border-radius: 10px;
+  }
+
+  .cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.2em;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    cursor: grab;
+  }
+
+  .cell:hover {
+    transform: scale(1.1);
+  }
+
+  /* Candy colors */
+  .red { background-color: #ff4d4d; }
+  .orange { background-color: #ffa64d; }
+  .yellow { background-color: #ffde59; color: #000; }
+  .green { background-color: #66cc66; }
+  .blue { background-color: #4da6ff; }
+  .purple { background-color: #c266ff; }
+
+  button {
+    margin-top: 15px;
+    background-color: #fff;
+    color: #ff1493;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  button:hover {
+    background-color: #ffd6eb;
+  }
+
+  #message {
+    margin-top: 15px;
+    font-size: 1.2em;
+  }
+
+  @media (max-width: 500px) {
+    :root {
+      --cell-size: 42px;
+    }
+  }
+</style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Candy Crush Clone</h1>
-    <div class="grid" id="grid"></div>
-    
-    <audio id="matchSound" src="https://www.soundjay.com/button/sounds/button-3.mp3" preload="auto"></audio>
-</div>
+  <h1>Letter Candy Match 🍭</h1>
+  <div id="word-display">Word: <span id="word-progress">_ _ _ _ _</span></div>
+  <div id="scoreboard">Score: <span id="score">0</span></div>
+  <div id="board"></div>
+  <button id="restart">Restart Game</button>
+  <div id="message"></div>
 
 <script>
-const candies = ['🍬', '🍭', '🍫', '🍪', '🍩']; 
-const gridSize = 5; 
-const grid = document.getElementById('grid');
+  const board = document.getElementById('board');
+  const scoreDisplay = document.getElementById('score');
+  const wordProgressDisplay = document.getElementById('word-progress');
+  const message = document.getElementById('message');
+  const restartBtn = document.getElementById('restart');
 
-const matchSound = document.getElementById('matchSound');
+  const width = 8;
+  const candies = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+  const letters = ['C', 'A', 'N', 'D', 'Y']; // target word = "CANDY"
+  const neededLetters = { C: 1, A: 1, N: 1, D: 1, Y: 1 };
+  let collectedLetters = { C: 0, A: 0, N: 0, D: 0, Y: 0 };
 
-// Create the game grid
-function createGrid() {
-    grid.innerHTML = '';
-    const allItems = Array.from({ length: gridSize * gridSize }, () => 
-        candies[Math.floor(Math.random() * candies.length)]
-    );
+  let squares = [];
+  let score = 0;
 
-    allItems.forEach(item => {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.textContent = item;
-        cell.addEventListener('click', handleCellClick);
-        grid.appendChild(cell);
-    });
-}
+  function updateWordProgress() {
+    let display = letters.map(l => (collectedLetters[l] >= neededLetters[l]) ? l : '_').join(' ');
+    wordProgressDisplay.textContent = display;
+    if (letters.every(l => collectedLetters[l] >= neededLetters[l])) {
+      message.innerHTML = "🎉 Congratulations! You spelled <strong>CANDY</strong>! 🍬";
+    }
+  }
 
-// Handle cell click events
-function handleCellClick(event) {
-    const cell = event.target;
-    cell.classList.toggle('selected'); // Toggle selected state
-    matchSound.play(); // Play sound on click
-}
+  function createBoard() {
+    board.innerHTML = '';
+    squares = [];
+    score = 0;
+    scoreDisplay.textContent = score;
+    message.textContent = '';
+    collectedLetters = { C: 0, A: 0, N: 0, D: 0, Y: 0 };
+    updateWordProgress();
 
-// Initialize the grid
-createGrid();
+    for (let i = 0; i < width * width; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      let randomCandy = candies[Math.floor(Math.random() * candies.length)];
+      cell.classList.add(randomCandy);
+      cell.setAttribute('draggable', true);
+      cell.setAttribute('data-id', i);
+
+      if (Math.random() < 0.1) {
+        // 10% chance candy has a letter
+        const letter = letters[Math.floor(Math.random() * letters.length)];
+        cell.textContent = letter;
+        cell.dataset.letter = letter;
+      } else {
+        cell.textContent = '';
+        cell.dataset.letter = '';
+      }
+
+      board.appendChild(cell);
+      squares.push(cell);
+    }
+
+    attachEvents();
+  }
+
+  function attachEvents() {
+    squares.forEach(square => square.addEventListener('dragstart', dragStart));
+    squares.forEach(square => square.addEventListener('dragend', dragEnd));
+    squares.forEach(square => square.addEventListener('dragover', dragOver));
+    squares.forEach(square => square.addEventListener('drop', dragDrop));
+  }
+
+  let colorDragged, colorReplaced;
+  let squareIdDragged, squareIdReplaced;
+
+  function dragStart() {
+    colorDragged = this.classList[1];
+    squareIdDragged = parseInt(this.getAttribute('data-id'));
+  }
+  function dragOver(e) { e.preventDefault(); }
+  function dragDrop() {
+    colorReplaced = this.classList[1];
+    squareIdReplaced = parseInt(this.getAttribute('data-id'));
+    const tempClass = squares[squareIdDragged].classList[1];
+    const tempLetter = squares[squareIdDragged].dataset.letter;
+    const tempText = squares[squareIdDragged].textContent;
+
+    squares[squareIdDragged].classList.replace(tempClass, colorReplaced);
+    squares[squareIdDragged].dataset.letter = this.dataset.letter;
+    squares[squareIdDragged].textContent = this.textContent;
+
+    this.classList.replace(colorReplaced, tempClass);
+    this.dataset.letter = tempLetter;
+    this.textContent = tempText;
+  }
+  function dragEnd() {
+    const validMoves = [
+      squareIdDragged - 1,
+      squareIdDragged + 1,
+      squareIdDragged - width,
+      squareIdDragged + width
+    ];
+    const validMove = validMoves.includes(squareIdReplaced);
+
+    if (squareIdReplaced && validMove) {
+      if (!checkMatches()) {
+        // no match, swap back
+        const tempClass = squares[squareIdDragged].classList[1];
+        const tempLetter = squares[squareIdDragged].dataset.letter;
+        const tempText = squares[squareIdDragged].textContent;
+
+        squares[squareIdDragged].classList.replace(tempClass, squares[squareIdReplaced].classList[1]);
+        squares[squareIdDragged].dataset.letter = squares[squareIdReplaced].dataset.letter;
+        squares[squareIdDragged].textContent = squares[squareIdReplaced].textContent;
+
+        squares[squareIdReplaced].classList.replace(squares[squareIdReplaced].classList[1], tempClass);
+        squares[squareIdReplaced].dataset.letter = tempLetter;
+        squares[squareIdReplaced].textContent = tempText;
+      }
+    }
+    squareIdReplaced = null;
+  }
+
+  function checkMatches() {
+    let matched = false;
+
+    // row matches
+    for (let i = 0; i < 64; i++) {
+      if (i % width > width - 4) continue;
+      const row = [i, i+1, i+2];
+      const decided = squares[i].classList[1];
+      if (row.every(j => squares[j].classList[1] === decided) && decided) {
+        row.forEach(j => destroyCandy(j));
+        matched = true;
+        score += 30;
+      }
+    }
+
+    // column matches
+    for (let i = 0; i < 64 - 2 * width; i++) {
+      const col = [i, i+width, i+width*2];
+      const decided = squares[i].classList[1];
+      if (col.every(j => squares[j].classList[1] === decided) && decided) {
+        col.forEach(j => destroyCandy(j));
+        matched = true;
+        score += 30;
+      }
+    }
+
+    scoreDisplay.textContent = score;
+    return matched;
+  }
+
+  function destroyCandy(index) {
+    const letter = squares[index].dataset.letter;
+    if (letter && collectedLetters.hasOwnProperty(letter)) {
+      collectedLetters[letter]++;
+      updateWordProgress();
+    }
+    squares[index].className = 'cell';
+    squares[index].dataset.letter = '';
+    squares[index].textContent = '';
+  }
+
+  function moveDown() {
+    for (let i = 63; i >= 0; i--) {
+      if (squares[i].textContent === '' && squares[i].classList.length === 1) {
+        if (i - width >= 0) {
+          if (squares[i - width].textContent || squares[i - width].classList.length > 1) {
+            squares[i].classList.add(squares[i - width].classList[1]);
+            squares[i].dataset.letter = squares[i - width].dataset.letter;
+            squares[i].textContent = squares[i - width].textContent;
+
+            squares[i - width].className = 'cell';
+            squares[i - width].dataset.letter = '';
+            squares[i - width].textContent = '';
+          }
+        } else {
+          let randomCandy = candies[Math.floor(Math.random() * candies.length)];
+          squares[i].classList.add(randomCandy);
+          if (Math.random() < 0.1) {
+            const letter = letters[Math.floor(Math.random() * letters.length)];
+            squares[i].dataset.letter = letter;
+            squares[i].textContent = letter;
+          }
+        }
+      }
+    }
+  }
+
+  function gameLoop() {
+    moveDown();
+    checkMatches();
+  }
+
+  setInterval(gameLoop, 200);
+
+  restartBtn.addEventListener('click', createBoard);
+
+  createBoard();
 </script>
-
 </body>
 </html>
