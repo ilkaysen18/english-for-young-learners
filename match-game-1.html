@@ -203,19 +203,26 @@ maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     if(tile.classList.contains('selected')) return;
     tile.classList.add('selected');
     selected.push({r,c,emoji:board[r][c],tile});
-    if(selected.length>=3){
-      const dir=findMatchLine(selected);
-      if(dir){
-        successSound();
-        const pts=calculatePoints(selected.length);
-        score+=pts;
-        messageDisplay.textContent=`Matched ${selected.length} for +${pts} 🎉`;
-        selected.forEach(s=>{board[s.r][s.c]=null;s.tile.style.visibility='hidden';});
-        updateStatus();
-        selected=[];
-        setTimeout(fallDown,400);
-        return;
-      }
+    if (selected.length >= 3) {
+  const dir = findMatchLine(selected);
+  if (dir) {
+    // Wait a few seconds before confirming match — allow more selection
+    clearTimeout(window.matchTimeout);
+    window.matchTimeout = setTimeout(() => {
+      // After delay, finalize the match with however many were selected
+      const pts = calculatePoints(selected.length);
+      successSound();
+      score += pts;
+      messageDisplay.textContent = `Matched ${selected.length} for +${pts} 🎉`;
+      selected.forEach(s => {
+        board[s.r][s.c] = null;
+        s.tile.style.visibility = 'hidden';
+      });
+      updateStatus();
+      selected = [];
+      setTimeout(fallDown, 400);
+    }, 1500); // 1.5-second delay (adjust as desired)
+  }
     }
     if(selected.length>=7 && !findMatchLine(selected)){
       failSound();
