@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swipe Candy Crush Clone</title>
+    <title>Click Candy Crush Clone</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -69,7 +69,7 @@ const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦'];
 const gridSize = 6;
 const grid = document.getElementById('grid');
 let score = 0;
-let firstCell, secondCell;
+let selectedCandies = [];
 let gridArray = [];
 
 function createGrid() {
@@ -83,10 +83,7 @@ function createGrid() {
             const candy = candies[Math.floor(Math.random() * candies.length)];
             cell.textContent = candy;
             cell.dataset.index = `${i}-${j}`;
-            cell.addEventListener('mousedown', handleMouseDown);
-            cell.addEventListener('mouseup', handleMouseUp);
-            cell.addEventListener('touchstart', handleTouchStart);
-            cell.addEventListener('touchend', handleTouchEnd);
+            cell.addEventListener('click', handleCellClick);
             grid.appendChild(cell);
             row.push(candy);
         }
@@ -94,94 +91,41 @@ function createGrid() {
     }
 }
 
-let startCell;
-
-function handleMouseDown(event) {
-    startCell = event.target;
-    startCell.classList.add('selected');
-}
-
-function handleMouseUp(event) {
-    const endCell = event.target;
-    startCell.classList.remove('selected');
+function handleCellClick(event) {
+    const cell = event.target;
+    const [row, col] = cell.dataset.index.split('-').map(Number);
     
-    swapCells(startCell, endCell);
-}
-
-function handleTouchStart(event) {
-    startCell = event.target;
-    startCell.classList.add('selected');
-}
-
-function handleTouchEnd(event) {
-    const endCell = event.target;
-    startCell.classList.remove('selected');
-    
-    swapCells(startCell, endCell);
-}
-
-function swapCells(first, second) {
-    const [startRow, startCol] = first.dataset.index.split('-').map(Number);
-    const [endRow, endCol] = second.dataset.index.split('-').map(Number);
-    
-    // Allow swipe only if the cells are adjacent
-    if (Math.abs(startRow - endRow) + Math.abs(startCol - endCol) === 1) {
-        const firstCandy = first.textContent;
-        const secondCandy = second.textContent;
-
-        first.textContent = secondCandy;
-        second.textContent = firstCandy;
-
-        gridArray[startRow][startCol] = secondCandy;
-        gridArray[endRow][endCol] = firstCandy;
-
-        if (!checkMatches()) {
-            // Swap back if no match
-            first.textContent = firstCandy;
-            second.textContent = secondCandy;
-            gridArray[startRow][startCol] = firstCandy;
-            gridArray[endRow][endCol] = secondCandy;
-        }
+    // Toggle selection of the clicked candy
+    if (selectedCandies.includes(cell)) {
+        selectedCandies = selectedCandies.filter(c => c !== cell);
+        cell.classList.remove('selected');
     } else {
-        alert("You can only swap adjacent candies!");
+        selectedCandies.push(cell);
+        cell.classList.add('selected');
     }
-}
 
-function checkMatches() {
-    let matched = false;
-    for (let i = 0; i < gridSize; i++) {
-        for (let j = 0; j < gridSize; j++) {
-            if (checkMatch(i, j)) {
-                matched = true;
-                clearMatch(i, j);
-            }
+    // Check for matches if three or more candies are selected
+    if (selectedCandies.length >= 3) {
+        const selectedCandyType = selectedCandies[0].textContent;
+        if (selectedCandies.every(c => c.textContent === selectedCandyType)) {
+            clearMatches(selectedCandyType);
         }
     }
-    if (matched) {
-        score += 10;
-        document.getElementById('score').textContent = score;
-        refillGrid();
-        checkWinCondition();
-    }
-    return matched;
 }
 
-function checkMatch(row, col) {
-    const candy = gridArray[row][col];
-    if (candy) {
-        const horizontalMatch = (col <= gridSize - 3 && candy === gridArray[row][col + 1] && candy === gridArray[row][col + 2]);
-        const verticalMatch = (row <= gridSize - 3 && candy === gridArray[row + 1][col] && candy === gridArray[row + 2][col]);
-        return horizontalMatch || verticalMatch;
-    }
-    return false;
-}
+function clearMatches(candyType) {
+    selectedCandies.forEach(cell => {
+        const [row, col] = cell.dataset.index.split('-').map(Number);
+        gridArray[row][col] = null;
+        cell.textContent = '';
+        cell.classList.remove('selected');
+    });
 
-function clearMatch(row, col) {
-    const candy = gridArray[row][col];
-    for (let i = 0; i < gridSize; i++) {
-        if (gridArray[row][i] === candy) gridArray[row][i] = null;
-        if (gridArray[i][col] === candy) gridArray[i][col] = null;
-    }
+    score += 10;
+    document.getElementById('score').textContent = score;
+    selectedCandies = [];
+    refillGrid();
+    checkWinCondition();
 }
 
 function refillGrid() {
