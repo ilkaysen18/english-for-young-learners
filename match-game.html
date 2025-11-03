@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Click Candy Crush Clone</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap'); /* Bubble writing font */
+
         body {
             font-family: 'Arial', sans-serif;
             background: #b2e0e6;
@@ -13,25 +15,29 @@
             text-align: center;
         }
         .container {
-            max-width: 600px;
+            max-width: 100%;
             margin: auto;
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             padding: 20px;
+            overflow: hidden;
         }
         h1 {
             color: #ff1e56;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(6, 60px);
+            grid-template-columns: repeat(6, 1fr);
             gap: 5px;
             margin: 20px 0;
+            width: 100%;
+            max-width: 600px;
         }
         .cell {
-            width: 60px;
-            height: 60px;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
             border-radius: 5px;
             display: flex;
             align-items: center;
@@ -40,9 +46,25 @@
             cursor: pointer;
             user-select: none;
             transition: background 0.3s;
+            background: #f0f0f0;
         }
         .cell.selected {
             background: rgba(0, 0, 255, 0.2);
+        }
+        .letter {
+            font-family: 'Patrick Hand', cursive; /* Bubble writing font */
+            font-size: 32px;
+            color: transparent; /* Make text transparent initially */
+            -webkit-background-clip: text; /* Clip background to text */
+            background-clip: text; /* Clip background to text */
+            animation: colorChange 1s infinite; /* Animation for color change */
+        }
+        @keyframes colorChange {
+            0% { background-color: #ff5733; }
+            25% { background-color: #33c1ff; }
+            50% { background-color: #75ff33; }
+            75% { background-color: #ff33a1; }
+            100% { background-color: #ff5733; }
         }
         .score {
             font-size: 24px;
@@ -53,6 +75,11 @@
             margin: 20px 0;
             color: green;
         }
+        .goal {
+            font-size: 24px;
+            margin: 20px 0;
+            color: darkorange;
+        }
     </style>
 </head>
 <body>
@@ -60,17 +87,20 @@
 <div class="container">
     <h1>Candy Crush Clone</h1>
     <div class="score">Score: <span id="score">0</span></div>
+    <div class="goal">Goal: <span id="goalWord"></span></div>
     <div class="grid" id="grid"></div>
     <div class="message" id="message"></div>
 </div>
 
 <script>
-const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦'];
+const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦', 'A', 'B', 'C', 'D', 'E']; // Added letters as candies
 const gridSize = 6;
 const grid = document.getElementById('grid');
 let score = 0;
 let selectedCandies = [];
 let gridArray = [];
+const goalWord = "ABCDE"; // The goal word to spell
+let currentWord = ""; // The word formed by broken letters
 
 function createGrid() {
     gridArray = [];
@@ -82,6 +112,17 @@ function createGrid() {
             cell.className = 'cell';
             const candy = candies[Math.floor(Math.random() * candies.length)];
             cell.textContent = candy;
+
+            // If it's a letter, apply the bubble writing styling
+            if (/^[A-Z]$/.test(candy)) {
+                const letterSpan = document.createElement('span');
+                letterSpan.className = 'letter';
+                letterSpan.textContent = candy;
+                cell.appendChild(letterSpan);
+            } else {
+                cell.textContent = candy; // For regular candies
+            }
+
             cell.dataset.index = `${i}-${j}`;
             cell.addEventListener('click', handleCellClick);
             grid.appendChild(cell);
@@ -89,10 +130,12 @@ function createGrid() {
         }
         gridArray.push(row);
     }
+    ensureMatches();
+    document.getElementById('goalWord').textContent = goalWord; // Display the goal word
 }
 
 function handleCellClick(event) {
-    const cell = event.target;
+    const cell = event.target.closest('.cell'); // Ensure we get the cell
     const [row, col] = cell.dataset.index.split('-').map(Number);
     
     // Toggle selection of the clicked candy
@@ -117,14 +160,20 @@ function clearMatches(candyType) {
     selectedCandies.forEach(cell => {
         const [row, col] = cell.dataset.index.split('-').map(Number);
         gridArray[row][col] = null;
-        cell.textContent = '';
+        cell.innerHTML = ''; // Clear the cell content
         cell.classList.remove('selected');
+
+        // Add letters to the current word
+        if (candyType.length === 1 && /^[A-Z]$/.test(candyType)) {
+            currentWord += candyType;
+        }
     });
 
     score += 10;
     document.getElementById('score').textContent = score;
     selectedCandies = [];
     refillGrid();
+    ensureMatches();
     checkWinCondition();
 }
 
@@ -132,17 +181,77 @@ function refillGrid() {
     for (let i = gridSize - 1; i >= 0; i--) {
         for (let j = 0; j < gridSize; j++) {
             if (gridArray[i][j] === null) {
-                gridArray[i][j] = candies[Math.floor(Math.random() * candies.length)];
+                const randomCandy = candies[Math.floor(Math.random() * candies.length)];
+                gridArray[i][j] = randomCandy;
                 const cell = grid.children[i * gridSize + j];
-                cell.textContent = gridArray[i][j];
+                cell.innerHTML = ''; // Clear existing content
+                // If it's a letter, apply the bubble writing styling
+                if (/^[A-Z]$/.test(randomCandy)) {
+                    const letterSpan = document.createElement('span');
+                    letterSpan.className = 'letter';
+                    letterSpan.textContent = randomCandy;
+                    cell.appendChild(letterSpan);
+                } else {
+                    cell.textContent = randomCandy; // For regular candies
+                }
             }
         }
     }
 }
 
+function ensureMatches() {
+    let hasMatch = false;
+
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            if (checkMatch(i, j)) {
+                hasMatch = true;
+                break;
+            }
+        }
+        if (hasMatch) break;
+    }
+
+    // If no matches found, reshuffle the grid
+    if (!hasMatch) {
+        shuffleGrid();
+    }
+}
+
+function shuffleGrid() {
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            const randomCandy = candies[Math.floor(Math.random() * candies.length)];
+            gridArray[i][j] = randomCandy;
+            const cell = grid.children[i * gridSize + j];
+            // If it's a letter, apply the bubble writing styling
+            if (/^[A-Z]$/.test(randomCandy)) {
+                const letterSpan = document.createElement('span');
+                letterSpan.className = 'letter';
+                letterSpan.textContent = randomCandy;
+                cell.innerHTML = ''; // Clear existing content
+                cell.appendChild(letterSpan);
+            } else {
+                cell.textContent = randomCandy; // For regular candies
+            }
+        }
+    }
+}
+
+function checkMatch(row, col) {
+    const candy = gridArray[row][col];
+    if (candy) {
+        const horizontalMatch = (col <= gridSize - 3 && candy === gridArray[row][col + 1] && candy === gridArray[row][col + 2]);
+        const verticalMatch = (row <= gridSize - 3 && candy === gridArray[row + 1][col] && candy === gridArray[row + 2][col]);
+        return horizontalMatch || verticalMatch;
+    }
+    return false;
+}
+
 function checkWinCondition() {
-    if (score >= 50) { // Example win condition
-        document.getElementById('message').textContent = 'You Win!';
+    // Check if the current word matches the goal word
+    if (currentWord === goalWord) {
+        document.getElementById('message').textContent = 'You Win! You spelled: ' + currentWord;
         grid.innerHTML = '';
     }
 }
