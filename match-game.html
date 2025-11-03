@@ -2,81 +2,102 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animal Emoji Match‑3 Game (6×9)</title>
+<!-- Prevent zooming -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0,
+maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>Animal Emoji Match‑3+ Game (12×16)</title>
 <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    touch-action: none; /* blocks pinch / double tap zoom */
+    -ms-touch-action: none;
+  }
   body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background: linear-gradient(135deg, #fefcea, #f1da36);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    margin: 0;
-    min-height: 100vh;
+    justify-content: flex-start;
     text-align: center;
   }
-  h1 { color: #444; margin-bottom: 5px; }
+  h1 {
+    color: #444;
+    margin: 12px 0 8px;
+    font-size: clamp(28px, 5vw, 36px);
+  }
   #status {
-    font-size: 17px;
+    font-size: clamp(20px, 3.5vw, 28px);
     font-weight: bold;
-    margin: 6px 0;
+    margin: 5px 0;
+  }
+  #gameContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
   #gameBoard {
     display: grid;
-    grid-template-columns: repeat(6, 60px);
-    grid-gap: 6px;
-    margin-top: 15px;
-    position: relative;
+    grid-template-columns: repeat(12, 1fr);
+    aspect-ratio: 12 / 16;
+    width: 95vw;
+    max-height: 80vh;
+    grid-gap: 0.6vw;
   }
   .tile {
-    width: 60px;
-    height: 60px;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 0.5vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: clamp(20px, 3.8vw, 40px);
     cursor: pointer;
+    user-select: none;
     transition: transform 0.2s, background 0.25s;
   }
-  .tile.selected { background: #b8ffba; transform: scale(1.1); }
-  #message { font-size: 18px; font-weight: bold; margin-top: 12px; color: #3b7a00; min-height: 30px; }
+  .tile.selected { background: #b8ffba; transform: scale(1.12); }
+  #message {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: bold;
+    color: #3b7a00;
+    min-height: 3vh;
+    margin-top: 0.8vh;
+  }
   button {
-    margin-top: 15px;
     background: #4caf50;
     color: white;
     border: none;
-    padding: 10px 18px;
-    font-size: 16px;
-    border-radius: 5px;
+    padding: 1vw 3vw;
+    font-size: clamp(22px, 4vw, 30px);
+    border-radius: 1vw;
     cursor: pointer;
+    margin-top: 1.5vh;
   }
   button:hover { background: #45a049; }
 
   @keyframes fall {
-    from { transform: translateY(-80px); opacity: 0; }
+    from { transform: translateY(-2vh); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
-  }
-
-  @media (max-width: 480px) {
-    #gameBoard { grid-template-columns: repeat(6, 50px); }
-    .tile { width: 50px; height: 50px; font-size: 26px; }
   }
 </style>
 </head>
 <body>
-<h1>🐾 Match 3 Animal Emojis!</h1>
-<div id="status">Score: 0 | Level: 1 | Target: 100</div>
-<div id="gameBoard"></div>
+<h1>🐾 Match 3+ Animal Emojis!</h1>
+<div id="status">Score: 0 | Level: 1 | Target: 100</div>
+<div id="gameContainer"><div id="gameBoard"></div></div>
 <div id="message"></div>
 <button id="restart">Restart</button>
 
 <script>
-  const rows = 9;   // 9 rows
-  const cols = 6;   // 6 columns
-  const animals = ['🐶','🐱','🐰','🐻','🦊','🐼','🐸','🦁','🐷'];
+  // === CONFIGURATION ===
+  const rows = 16;
+  const cols = 12;
+  const animals = ['🐼','🐸','🐷','🦘','🐒'];
   let board = [];
   let selected = [];
   let score = 0;
@@ -89,216 +110,213 @@
 
   // === SOUND SYSTEM ===
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function playTone(freq, dur=0.15, type='sine', vol=0.2){
+  function playTone(f, d=0.15, type='sine', vol=0.2){
     const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+    const g = audioCtx.createGain();
     osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.value = vol;
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    osc.frequency.value = f;
+    g.gain.value = vol;
+    osc.connect(g);
+    g.connect(audioCtx.destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + dur);
+    osc.stop(audioCtx.currentTime + d);
   }
-  function successSound(){
-    [440, 660, 880].forEach((f,i)=>setTimeout(()=>playTone(f,0.15), i*150));
-  }
-  function failSound(){
-    [200,150].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'square'), i*250));
-  }
-  function victorySound(){
-    [523,659,784,1046].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'triangle',0.25), i*200));
-  }
-  function shuffleSound(){
-    [220,330,440].forEach((f,i)=>setTimeout(()=>playTone(f,0.1,'sine',0.15), i*120));
-  }
+  function successSound(){ [440,660,880].forEach((f,i)=>setTimeout(()=>playTone(f,0.15),i*150)); }
+  function failSound(){ [200,150].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'square'),i*250)); }
+  function victorySound(){ [523,659,784,1046].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'triangle',0.25),i*200)); }
+  function shuffleSound(){ [220,330,440].forEach((f,i)=>setTimeout(()=>playTone(f,0.1,'sine',0.15),i*120)); }
 
-  // === GAME INITIALIZATION ===
+  // === BOARD INIT ===
   function initBoard(){
-    do {
-      board = [];
-      for(let r=0;r<rows;r++){
-        const row = [];
-        for(let c=0;c<cols;c++){
-          const emoji = animals[Math.floor(Math.random()*animals.length)];
-          row.push(emoji);
-        }
-        board.push(row);
-      }
-    } while (!hasPossibleMoves()); // ensure at least one possible match exists
-
+    createRandomBoard();
+    ensurePlayableBoard();
     renderBoard();
     updateStatus();
     messageDisplay.textContent = '';
+  }
+
+  function createRandomBoard(){
+    board = [];
+    for(let r=0;r<rows;r++){
+      const row=[];
+      for(let c=0;c<cols;c++){
+        row.push(animals[Math.floor(Math.random()*animals.length)]);
+      }
+      board.push(row);
+    }
+  }
+
+  function ensurePlayableBoard(){
+    let safety = 0;
+    while(!hasPossibleMoves() && safety < 100){
+      shuffleBoard();
+      safety++;
+    }
   }
 
   function renderBoard(){
     gameBoard.innerHTML = '';
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
-        const tile = document.createElement('div');
-        tile.className = 'tile';
-        tile.textContent = board[r][c];
-        tile.dataset.row = r;
-        tile.dataset.col = c;
-        tile.addEventListener('click', tileClick);
+        const tile=document.createElement('div');
+        tile.className='tile';
+        tile.textContent=board[r][c];
+        tile.dataset.row=r;
+        tile.dataset.col=c;
+        tile.addEventListener('click',tileClick);
         gameBoard.appendChild(tile);
       }
     }
   }
 
-  function isThreeInLine(sel){
-    if(sel.length !== 3) return false;
-    const [a,b,c] = sel;
-
-    // Must have all same emoji
-    if(!(a.emoji === b.emoji && b.emoji === c.emoji)) return false;
-
-    // Check for same row or same column and adjacent sequence
-    const rowsSet = [a.r,b.r,c.r].sort((x,y)=>x-y);
-    const colsSet = [a.c,b.c,c.c].sort((x,y)=>x-y);
-
-    const horizontal = (rowsSet[0] === rowsSet[1] && rowsSet[1] === rowsSet[2]) &&
-                       (colsSet[2] - colsSet[0] === 2) &&
-                       (colsSet[1] - colsSet[0] === 1);
-    const vertical = (colsSet[0] === colsSet[1] && colsSet[1] === colsSet[2]) &&
-                     (rowsSet[2] - rowsSet[0] === 2) &&
-                     (rowsSet[1] - rowsSet[0] === 1);
-
-    return horizontal || vertical;
+  // === MATCH DETECTION ===
+  function findMatchLine(sel){
+    if(sel.length<3) return null;
+    const e=sel[0].emoji;
+    if(!sel.every(s=>s.emoji===e)) return null;
+    const rs=sel.map(s=>s.r).sort((a,b)=>a-b);
+    const cs=sel.map(s=>s.c).sort((a,b)=>a-b);
+    const sameRow=rs.every(r=>r===rs[0]);
+    const sameCol=cs.every(c=>c===cs[0]);
+    if(sameRow){
+      for(let i=1;i<cs.length;i++) if(cs[i]!==cs[i-1]+1) return null;
+      return 'horizontal';
+    }
+    if(sameCol){
+      for(let i=1;i<rs.length;i++) if(rs[i]!==rs[i-1]+1) return null;
+      return 'vertical';
+    }
+    return null;
   }
 
+  function calculatePoints(n){
+    if(n===3) return 10;
+    if(n===4) return 20;
+    if(n===5) return 35;
+    return 35+(n-5)*20;
+  }
+
+  // === TILE SELECTING ===
   function tileClick(e){
-    const tile = e.currentTarget;
-    const r = parseInt(tile.dataset.row);
-    const c = parseInt(tile.dataset.col);
+    const tile=e.currentTarget;
+    const r=+tile.dataset.row, c=+tile.dataset.col;
     if(tile.classList.contains('selected')) return;
-
     tile.classList.add('selected');
-    selected.push({r,c,emoji: board[r][c],tile});
-
-    if(selected.length===3){
-      if(isThreeInLine(selected)){
+    selected.push({r,c,emoji:board[r][c],tile});
+    if(selected.length>=3){
+      const dir=findMatchLine(selected);
+      if(dir){
         successSound();
-        score += 10;
-        selected.forEach(s=>{ s.tile.style.visibility='hidden'; board[s.r][s.c]=null; });
+        const pts=calculatePoints(selected.length);
+        score+=pts;
+        messageDisplay.textContent=`Matched ${selected.length} for +${pts} 🎉`;
+        selected.forEach(s=>{board[s.r][s.c]=null;s.tile.style.visibility='hidden';});
         updateStatus();
-        setTimeout(()=>{ fallDown(); }, 400);
-      } else {
-        failSound();
-        selected.forEach(s=>s.tile.classList.remove('selected'));
+        selected=[];
+        setTimeout(fallDown,400);
+        return;
       }
-      selected = [];
+    }
+    if(selected.length>=7 && !findMatchLine(selected)){
+      failSound();
+      selected.forEach(s=>s.tile.classList.remove('selected'));
+      selected=[];
     }
   }
 
-  // === CASCADE FALLING ===
+  // === GRAVITY / FALL ===
   function fallDown(){
     for(let c=0;c<cols;c++){
-      let emptyRow = rows-1;
+      let write=rows-1;
       for(let r=rows-1;r>=0;r--){
         if(board[r][c]!==null){
-          board[emptyRow][c]=board[r][c];
-          if(emptyRow!==r) board[r][c]=null;
-          emptyRow--;
+          board[write][c]=board[r][c];
+          if(write!==r) board[r][c]=null;
+          write--;
         }
       }
-      for(let r=emptyRow;r>=0;r--){
-        board[r][c] = animals[Math.floor(Math.random()*animals.length)];
-      }
+      for(let r=write;r>=0;r--) board[r][c]=animals[Math.floor(Math.random()*animals.length)];
     }
     renderFall();
-    checkNoMoves();
+    autoShuffleIfNoMoves();
     checkLevelComplete();
   }
 
   function renderFall(){
-    gameBoard.innerHTML = '';
+    gameBoard.innerHTML='';
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
-        const tile = document.createElement('div');
-        tile.className = 'tile';
-        tile.textContent = board[r][c];
-        tile.dataset.row = r;
-        tile.dataset.col = c;
-        tile.style.animation = 'fall 0.4s ease';
-        tile.addEventListener('click', tileClick);
+        const tile=document.createElement('div');
+        tile.className='tile';
+        tile.textContent=board[r][c];
+        tile.style.animation='fall 0.4s ease';
+        tile.dataset.row=r; tile.dataset.col=c;
+        tile.addEventListener('click',tileClick);
         gameBoard.appendChild(tile);
       }
     }
   }
 
-  // === CHECK LEVEL COMPLETE ===
-  function checkLevelComplete(){
-    const target = baseTarget * level;
-    if(score >= target){
-      victorySound();
-      messageDisplay.textContent = `🎉 You cleared Level ${level}! 🥳`;
-      const nextBtn = document.createElement('button');
-      nextBtn.textContent = `Next Level ▶️`;
-      nextBtn.onclick = ()=>{
-        level++;
-        messageDisplay.textContent = '';
-        initBoard();
-      };
-      messageDisplay.appendChild(nextBtn);
-    }
-  }
-
-  // === CHECK FOR POSSIBLE MOVES ===
+  // === MOVE VALIDATION ===
   function hasPossibleMoves(){
+    // Checks if any 3-in-a-row (horizontal or vertical) already exists on the board.
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
-        const emoji = board[r][c];
-
-        // check horizontal triplets containing this cell
-        if(c+2<cols && board[r][c+1]===emoji && board[r][c+2]===emoji) return true;
-        if(c>0 && c+1<cols && board[r][c-1]===emoji && board[r][c+1]===emoji) return true;
-        if(c-2>=0 && board[r][c-1]===emoji && board[r][c-2]===emoji) return true;
-
-        // check vertical triplets
-        if(r+2<rows && board[r+1][c]===emoji && board[r+2][c]===emoji) return true;
-        if(r>0 && r+1<rows && board[r-1][c]===emoji && board[r+1][c]===emoji) return true;
-        if(r-2>=0 && board[r-1][c]===emoji && board[r-2][c]===emoji) return true;
+        const e=board[r][c];
+        if(e == null) continue;
+        // Horizontal 3+
+        if(c+2<cols && board[r][c+1]===e && board[r][c+2]===e) return true;
+        // Vertical 3+
+        if(r+2<rows && board[r+1][c]===e && board[r+2][c]===e) return true;
       }
     }
     return false;
   }
 
-  // If there are no moves, shuffle until at least one possible match exists
-  function checkNoMoves(){
-    if(!hasPossibleMoves()){
-      shuffleSound();
-      messageDisplay.textContent = '🔄 Shuffling — no possible matches!';
-      shuffleBoard();
-      renderFall();
-    } else {
-      messageDisplay.textContent = '';
-    }
-  }
-
   function shuffleBoard(){
-    const flat = board.flat();
-    // shuffle in place
+    const flat=board.flat();
     for(let i=flat.length-1;i>0;i--){
       const j=Math.floor(Math.random()*(i+1));
       [flat[i],flat[j]]=[flat[j],flat[i]];
     }
-    // reshape into grid
     board=[];
-    for(let r=0;r<rows;r++){
-      board.push(flat.slice(r*cols,(r+1)*cols));
+    for(let r=0;r<rows;r++) board.push(flat.slice(r*cols,(r+1)*cols));
+  }
+
+  // === AUTO SHUFFLE ===
+  function autoShuffleIfNoMoves(){
+    if(!hasPossibleMoves()){
+      shuffleSound();
+      messageDisplay.textContent='🔄 No matches available — Shuffling...';
+      shuffleBoard();
+      ensurePlayableBoard();
+      setTimeout(()=>{ renderFall(); messageDisplay.textContent=''; },500);
     }
-    // ensure shuffled board has moves; repeat if not
-    if(!hasPossibleMoves()) shuffleBoard();
+  }
+
+  // === LEVEL SYSTEM ===
+  function checkLevelComplete(){
+    const target=baseTarget*level;
+    if(score>=target){
+      victorySound();
+      messageDisplay.textContent=`🎉 You cleared Level ${level}! 🥳`;
+      const btn=document.createElement('button');
+      btn.textContent='Next Level ▶️';
+      btn.onclick=()=>{
+        level++;
+        messageDisplay.textContent='';
+        initBoard();
+      };
+      messageDisplay.appendChild(btn);
+    }
   }
 
   function updateStatus(){
-    const target = baseTarget * level;
-    statusDisplay.textContent = `Score: ${score} | Level: ${level} | Target: ${target}`;
+    const target=baseTarget*level;
+    statusDisplay.textContent=`Score: ${score} | Level: ${level} | Target: ${target}`;
   }
 
-  document.getElementById('restart').addEventListener('click', ()=>{
+  document.getElementById('restart').addEventListener('click',()=>{
     score=0; level=1;
     initBoard();
   });
