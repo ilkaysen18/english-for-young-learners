@@ -44,8 +44,8 @@
 * new language + course added - German Speaking for A1-A2
 #### 8️⃣ Booking page 
 * added sales landing & booking page
-  
-
+#### 9️⃣ Emoji Crush 🎉 
+* new game added
 
 
 
