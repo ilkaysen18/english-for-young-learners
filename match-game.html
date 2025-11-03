@@ -28,7 +28,7 @@
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(14, 1fr); /* 14 columns */
+            grid-template-columns: repeat(14, 1fr); /* Updated for 14 columns */
             gap: 5px;
             margin: 20px 0;
             width: 100%;
@@ -86,6 +86,10 @@
     <div class="goal">Goal: <span id="goalWord"></span></div>
     <div class="grid" id="grid"></div>
     <div class="message" id="message"></div>
+    
+    <!-- Sound elements -->
+    <audio id="matchSound" src="match-sound.mp3" preload="auto"></audio>
+    <audio id="winSound" src="win-sound.mp3" preload="auto"></audio>
 </div>
 
 <script>
@@ -97,7 +101,11 @@ const grid = document.getElementById('grid');
 let score = 0;
 let selectedCandies = [];
 let gridArray = [];
-let currentWord = ""; // The word formed by collected letters
+let currentWord = ""; // The word formed by broken letters
+
+// Sound effects
+const matchSound = document.getElementById('matchSound');
+const winSound = document.getElementById('winSound');
 
 function createGrid() {
     gridArray = [];
@@ -155,47 +163,31 @@ function handleCellClick(event) {
     if (selectedCandies.length >= 3) {
         const selectedCandyType = selectedCandies[0].textContent;
         if (selectedCandies.every(c => c.textContent === selectedCandyType)) {
-            clearMatches(selectedCandyType, row, col);
+            clearMatches(selectedCandyType);
         }
     }
 }
 
-function clearMatches(candyType, matchedRow, matchedCol) {
+function clearMatches(candyType) {
     selectedCandies.forEach(cell => {
         const [row, col] = cell.dataset.index.split('-').map(Number);
         gridArray[row][col] = null;
         cell.innerHTML = ''; // Clear the cell content
         cell.classList.remove('selected');
+
+        // Add letters to the current word if the candy type is a letter
+        if (candyType.length === 1 && letters.includes(candyType)) {
+            currentWord += candyType;
+        }
     });
 
     score += 10;
     document.getElementById('score').textContent = score;
+    matchSound.play(); // Play match sound
     selectedCandies = [];
     refillGrid();
-    collectLetters(matchedRow, matchedCol);
+    ensureMatches();
     checkWinCondition();
-}
-
-function collectLetters(matchedRow, matchedCol) {
-    // Check adjacent cells for letters
-    const directions = [
-        [0, 1], [1, 0], [0, -1], [-1, 0], // Right, Down, Left, Up
-        [1, 1], [1, -1], [-1, 1], [-1, -1] // Diagonal directions
-    ];
-
-    directions.forEach(([dx, dy]) => {
-        const newRow = matchedRow + dx;
-        const newCol = matchedCol + dy;
-        if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
-            const letter = gridArray[newRow][newCol];
-            if (letters.includes(letter) && !currentWord.includes(letter)) {
-                currentWord += letter; // Add letter to the current word
-                gridArray[newRow][newCol] = null; // Clear the letter from the grid
-                const cell = grid.children[newRow * gridSize + newCol];
-                cell.innerHTML = ''; // Clear the cell content
-            }
-        }
-    });
 }
 
 function refillGrid() {
@@ -221,6 +213,25 @@ function refillGrid() {
     }
 }
 
+function ensureMatches() {
+    let hasMatch = false;
+
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            if (checkMatch(i, j)) {
+                hasMatch = true;
+                break;
+            }
+        }
+        if (hasMatch) break;
+    }
+
+    // If no matches found, reshuffle the grid
+    if (!hasMatch) {
+        shuffleGrid();
+    }
+}
+
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -228,10 +239,21 @@ function shuffleArray(array) {
     }
 }
 
+function checkMatch(row, col) {
+    const candy = gridArray[row][col];
+    if (candy) {
+        const horizontalMatch = (col <= gridSize - 3 && candy === gridArray[row][col + 1] && candy === gridArray[row][col + 2]);
+        const verticalMatch = (row <= gridSize - 3 && candy === gridArray[row + 1][col] && candy === gridArray[row + 2][col]);
+        return horizontalMatch || verticalMatch;
+    }
+    return false;
+}
+
 function checkWinCondition() {
     // Check if the current word matches the goal word
-    if (currentWord.length === letters.length) {
+    if (currentWord === goalWord) {
         document.getElementById('message').textContent = 'You Win! You spelled: ' + currentWord;
+        winSound.play(); // Play win sound
         grid.innerHTML = '';
     }
 }
