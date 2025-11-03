@@ -109,18 +109,24 @@
   function victorySound(){
     [523,659,784,1046].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'triangle',0.25), i*200));
   }
+  function shuffleSound(){
+    [220,330,440].forEach((f,i)=>setTimeout(()=>playTone(f,0.1,'sine',0.15), i*120));
+  }
 
   // === GAME INITIALIZATION ===
   function initBoard(){
-    board = [];
-    for(let r=0;r<rows;r++){
-      const row = [];
-      for(let c=0;c<cols;c++){
-        const emoji = animals[Math.floor(Math.random()*animals.length)];
-        row.push(emoji);
+    do {
+      board = [];
+      for(let r=0;r<rows;r++){
+        const row = [];
+        for(let c=0;c<cols;c++){
+          const emoji = animals[Math.floor(Math.random()*animals.length)];
+          row.push(emoji);
+        }
+        board.push(row);
       }
-      board.push(row);
-    }
+    } while (!hasPossibleMoves()); // ensure at least one possible match exists
+
     renderBoard();
     updateStatus();
     messageDisplay.textContent = '';
@@ -141,6 +147,27 @@
     }
   }
 
+  function isThreeInLine(sel){
+    if(sel.length !== 3) return false;
+    const [a,b,c] = sel;
+
+    // Must have all same emoji
+    if(!(a.emoji === b.emoji && b.emoji === c.emoji)) return false;
+
+    // Check for same row or same column and adjacent sequence
+    const rowsSet = [a.r,b.r,c.r].sort((x,y)=>x-y);
+    const colsSet = [a.c,b.c,c.c].sort((x,y)=>x-y);
+
+    const horizontal = (rowsSet[0] === rowsSet[1] && rowsSet[1] === rowsSet[2]) &&
+                       (colsSet[2] - colsSet[0] === 2) &&
+                       (colsSet[1] - colsSet[0] === 1);
+    const vertical = (colsSet[0] === colsSet[1] && colsSet[1] === colsSet[2]) &&
+                     (rowsSet[2] - rowsSet[0] === 2) &&
+                     (rowsSet[1] - rowsSet[0] === 1);
+
+    return horizontal || vertical;
+  }
+
   function tileClick(e){
     const tile = e.currentTarget;
     const r = parseInt(tile.dataset.row);
@@ -151,15 +178,13 @@
     selected.push({r,c,emoji: board[r][c],tile});
 
     if(selected.length===3){
-      const [a,b,c3] = selected;
-      if(a.emoji===b.emoji && b.emoji===c3.emoji){
+      if(isThreeInLine(selected)){
         successSound();
         score += 10;
-        a.tile.style.visibility = b.tile.style.visibility = c3.tile.style.visibility = 'hidden';
-        board[a.r][a.c] = board[b.r][b.c] = board[c3.r][c3.c] = null;
+        selected.forEach(s=>{ s.tile.style.visibility='hidden'; board[s.r][s.c]=null; });
         updateStatus();
         setTimeout(()=>{ fallDown(); }, 400);
-      }else{
+      } else {
         failSound();
         selected.forEach(s=>s.tile.classList.remove('selected'));
       }
@@ -178,12 +203,12 @@
           emptyRow--;
         }
       }
-      // Fill new emojis
       for(let r=emptyRow;r>=0;r--){
         board[r][c] = animals[Math.floor(Math.random()*animals.length)];
       }
     }
     renderFall();
+    checkNoMoves();
     checkLevelComplete();
   }
 
@@ -203,6 +228,7 @@
     }
   }
 
+  // === CHECK LEVEL COMPLETE ===
   function checkLevelComplete(){
     const target = baseTarget * level;
     if(score >= target){
@@ -217,6 +243,54 @@
       };
       messageDisplay.appendChild(nextBtn);
     }
+  }
+
+  // === CHECK FOR POSSIBLE MOVES ===
+  function hasPossibleMoves(){
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const emoji = board[r][c];
+
+        // check horizontal triplets containing this cell
+        if(c+2<cols && board[r][c+1]===emoji && board[r][c+2]===emoji) return true;
+        if(c>0 && c+1<cols && board[r][c-1]===emoji && board[r][c+1]===emoji) return true;
+        if(c-2>=0 && board[r][c-1]===emoji && board[r][c-2]===emoji) return true;
+
+        // check vertical triplets
+        if(r+2<rows && board[r+1][c]===emoji && board[r+2][c]===emoji) return true;
+        if(r>0 && r+1<rows && board[r-1][c]===emoji && board[r+1][c]===emoji) return true;
+        if(r-2>=0 && board[r-1][c]===emoji && board[r-2][c]===emoji) return true;
+      }
+    }
+    return false;
+  }
+
+  // If there are no moves, shuffle until at least one possible match exists
+  function checkNoMoves(){
+    if(!hasPossibleMoves()){
+      shuffleSound();
+      messageDisplay.textContent = '🔄 Shuffling — no possible matches!';
+      shuffleBoard();
+      renderFall();
+    } else {
+      messageDisplay.textContent = '';
+    }
+  }
+
+  function shuffleBoard(){
+    const flat = board.flat();
+    // shuffle in place
+    for(let i=flat.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [flat[i],flat[j]]=[flat[j],flat[i]];
+    }
+    // reshape into grid
+    board=[];
+    for(let r=0;r<rows;r++){
+      board.push(flat.slice(r*cols,(r+1)*cols));
+    }
+    // ensure shuffled board has moves; repeat if not
+    if(!hasPossibleMoves()) shuffleBoard();
   }
 
   function updateStatus(){
