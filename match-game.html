@@ -35,9 +35,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 48px; /* Bigger font for better visibility */
             cursor: pointer;
             background: #f0f0f0;
+            border-radius: 5px;
+            transition: background 0.3s; /* Smooth transition */
+        }
+        .cell:hover {
+            background: #d3d3d3; /* Change background on hover */
+        }
+        .cell.selected {
+            background: rgba(0, 0, 255, 0.3); /* Highlight selected cell */
         }
     </style>
 </head>
@@ -57,6 +65,7 @@ const grid = document.getElementById('grid');
 
 const matchSound = document.getElementById('matchSound');
 
+// Create the game grid
 function createGrid() {
     grid.innerHTML = '';
     const allItems = Array.from({ length: gridSize * gridSize }, () => 
@@ -72,11 +81,14 @@ function createGrid() {
     });
 }
 
+// Handle cell click events
 function handleCellClick(event) {
     const cell = event.target;
-    matchSound.play(); // Play sound on any cell click
+    cell.classList.toggle('selected'); // Toggle selected state
+    matchSound.play(); // Play sound on click
 }
 
+// Initialize the grid
 createGrid();
 </script>
 
