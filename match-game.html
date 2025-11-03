@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="viewport" content="width=device-scale=no, initial-scale=1.0">
     <title>Click Candy Crush Clone</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap'); /* Bubble writing font */
@@ -53,14 +53,14 @@
         }
         .letter {
             font-family: 'Patrick Hand', cursive; /* Bubble writing font */
-            font-size: 28px; /* Adjusted for better visibility */
+            font-size: 32px; /* Adjusted for better visibility */
             color: white; /* Default text color */
         }
         .color-a { color: #ff5733; } /* Red */
-        .color-b { color: #33c1ff; } /* Blue */
-        .color-c { color: #75ff33; } /* Green */
-        .color-d { color: #ff33a1; } /* Pink */
-        .color-e { color: #ffcc00; } /* Yellow */
+        .color-u { color: #33c1ff; } /* Blue */
+        .color-r { color: #75ff33; } /* Green */
+        .color-i { color: #ff33a1; } /* Pink */
+        .color-t { color: #ffcc00; } /* Yellow */
         .score {
             font-size: 24px;
             margin: 20px 0;
@@ -88,44 +88,47 @@
 </div>
 
 <script>
-const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦', 'A', 'B', 'C', 'D', 'E']; // Added letters as candies
+const goalWord = "FRUIT"; // The goal word to spell
+const letters = ['F', 'R', 'U', 'I', 'T']; // Letters needed for the goal word
+const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦']; // Regular candies
 const gridSize = 6;
 const grid = document.getElementById('grid');
 let score = 0;
 let selectedCandies = [];
 let gridArray = [];
-const goalWord = "FRUIT"; // Changed to a more meaningful word
 let currentWord = ""; // The word formed by broken letters
 
 function createGrid() {
     gridArray = [];
     grid.innerHTML = '';
+    // Shuffle the letters and candies
+    const allItems = [...letters, ...candies];
+    shuffleArray(allItems);
+    
     for (let i = 0; i < gridSize; i++) {
         const row = [];
         for (let j = 0; j < gridSize; j++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            const candy = candies[Math.floor(Math.random() * candies.length)];
-            cell.textContent = candy;
-
-            // If it's a letter, apply the bubble writing styling
-            if (/^[A-Z]$/.test(candy)) {
-                const letterSpan = document.createElement('span');
-                letterSpan.className = 'letter color-' + candy.toLowerCase(); // Assign a color class based on the letter
-                letterSpan.textContent = candy;
-                cell.appendChild(letterSpan);
-            } else {
-                cell.textContent = candy; // For regular candies
-            }
-
+            const item = allItems[i * gridSize + j];
             cell.dataset.index = `${i}-${j}`;
             cell.addEventListener('click', handleCellClick);
+
+            // If it's a letter, apply the bubble writing styling
+            if (letters.includes(item)) {
+                const letterSpan = document.createElement('span');
+                letterSpan.className = 'letter color-' + item.toLowerCase(); // Assign a color class based on the letter
+                letterSpan.textContent = item;
+                cell.appendChild(letterSpan);
+            } else {
+                cell.textContent = item; // For regular candies
+            }
+
             grid.appendChild(cell);
-            row.push(candy);
+            row.push(item);
         }
         gridArray.push(row);
     }
-    ensureMatches();
     document.getElementById('goalWord').textContent = goalWord; // Display the goal word
 }
 
@@ -158,8 +161,8 @@ function clearMatches(candyType) {
         cell.innerHTML = ''; // Clear the cell content
         cell.classList.remove('selected');
 
-        // Add letters to the current word
-        if (candyType.length === 1 && /^[A-Z]$/.test(candyType)) {
+        // Add letters to the current word if the candy type is a letter
+        if (candyType.length === 1 && letters.includes(candyType)) {
             currentWord += candyType;
         }
     });
@@ -176,18 +179,19 @@ function refillGrid() {
     for (let i = gridSize - 1; i >= 0; i--) {
         for (let j = 0; j < gridSize; j++) {
             if (gridArray[i][j] === null) {
-                const randomCandy = candies[Math.floor(Math.random() * candies.length)];
-                gridArray[i][j] = randomCandy;
+                // Only use candies or letters needed to spell the word
+                let randomItem = Math.random() < 0.5 ? candies[Math.floor(Math.random() * candies.length)] : letters[Math.floor(Math.random() * letters.length)];
+                gridArray[i][j] = randomItem;
                 const cell = grid.children[i * gridSize + j];
                 cell.innerHTML = ''; // Clear existing content
                 // If it's a letter, apply the bubble writing styling
-                if (/^[A-Z]$/.test(randomCandy)) {
+                if (letters.includes(randomItem)) {
                     const letterSpan = document.createElement('span');
-                    letterSpan.className = 'letter color-' + randomCandy.toLowerCase(); // Assign a color class based on the letter
-                    letterSpan.textContent = randomCandy;
+                    letterSpan.className = 'letter color-' + randomItem.toLowerCase(); // Assign a color class based on the letter
+                    letterSpan.textContent = randomItem;
                     cell.appendChild(letterSpan);
                 } else {
-                    cell.textContent = randomCandy; // For regular candies
+                    cell.textContent = randomItem; // For regular candies
                 }
             }
         }
@@ -213,22 +217,10 @@ function ensureMatches() {
     }
 }
 
-function shuffleGrid() {
-    for (let i = 0; i < gridSize; i++) {
-        for (let j = 0; j < gridSize; j++) {
-            const randomCandy = candies[Math.floor(Math.random() * candies.length)];
-            gridArray[i][j] = randomCandy;
-            const cell = grid.children[i * gridSize + j];
-            // If it's a letter, apply the bubble writing styling
-            if (/^[A-Z]$/.test(randomCandy)) {
-                const letterSpan = document.createElement('span');
-                letterSpan.className = 'letter color-' + randomCandy.toLowerCase(); // Assign a color class based on the letter
-                cell.innerHTML = ''; // Clear existing content
-                cell.appendChild(letterSpan);
-            } else {
-                cell.textContent = randomCandy; // For regular candies
-            }
-        }
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
 }
 
