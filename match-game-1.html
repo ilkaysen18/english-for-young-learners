@@ -87,8 +87,13 @@ maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 </style>
 </head>
 <body>
-<h1>Emoji Crush 🎉<h1>
-<h3>🐾 Match 3+ Animal Emojis!</h3>
+<p style="font-family: Arial; color: blue; font-weight: bold;">
+  <h3>English Training Hub</h3>
+</p>
+<p style="font-family: 'Courier New'; color: red; font-size: 20px;">
+  Emoji Crush 🎉
+</p>
+<h2>🐾 Match 3+ Animal Emojis!</h2>
 <div id="status">Score: 0 | Level: 1 | Target: 100</div>
 <div id="gameContainer"><div id="gameBoard"></div></div>
 <div id="message"></div>
@@ -176,34 +181,31 @@ function findMatchLine(sel) {
   const e = sel[0].emoji;
   if (!sel.every(s => s.emoji === e)) return null;
 
-  const rs = sel.map(s => s.r).sort((a,b)=>a-b);
-  const cs = sel.map(s => s.c).sort((a,b)=>a-b);
+  // Sort for consistency
+  const rs = sel.map(s => s.r);
+  const cs = sel.map(s => s.c);
 
-  const sameRow = rs.every(r => r === rs[0]);
-  const sameCol = cs.every(c => c === cs[0]);
-
-  // Check diagonal ↘ (r+, c+)
-  const diag1 = sel.every((s, i, arr) =>
-    i === 0 || (s.r - arr[i-1].r === 1 && s.c - arr[i-1].c === 1)
+  // Check straight line (horizontal, vertical, diagonal)
+  const dr = rs[1] - rs[0];
+  const dc = cs[1] - cs[0];
+  const straight = sel.every((s, i, arr) =>
+    i === 0 || (s.r - arr[i - 1].r === dr && s.c - arr[i - 1].c === dc)
   );
+  if (straight) return 'line';
 
-  // Check diagonal ↙ (r+, c−)
-  const diag2 = sel.every((s, i, arr) =>
-    i === 0 || (s.r - arr[i-1].r === 1 && s.c - arr[i-1].c === -1)
-  );
+  // Check 2×2 or clustered block
+  const minR = Math.min(...rs);
+  const maxR = Math.max(...rs);
+  const minC = Math.min(...cs);
+  const maxC = Math.max(...cs);
+  if ((maxR - minR <= 1) && (maxC - minC <= 1)) return 'block';
 
-  if (sameRow) {
-    for (let i=1; i<cs.length; i++) if (cs[i] !== cs[i-1]+1) return null;
-    return 'horizontal';
-  }
-  if (sameCol) {
-    for (let i=1; i<rs.length; i++) if (rs[i] !== rs[i-1]+1) return null;
-    return 'vertical';
-  }
-  if (diag1) return 'diagDownRight';
-  if (diag2) return 'diagDownLeft';
+  // Check loose diagonal (slant)
+  const sameSlope = Math.abs((rs[rs.length - 1] - rs[0]) / (cs[cs.length - 1] - cs[0])) === 1;
+  if (sameSlope) return 'diagonal';
+
   return null;
-  }
+}
 
   function calculatePoints(n){
     if(n===3) return 10;
