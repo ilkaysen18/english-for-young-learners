@@ -71,7 +71,6 @@ const grid = document.getElementById('grid');
 let score = 0;
 let firstCell, secondCell;
 let gridArray = [];
-let selectedCells = [];
 
 function createGrid() {
     gridArray = [];
@@ -86,6 +85,8 @@ function createGrid() {
             cell.dataset.index = `${i}-${j}`;
             cell.addEventListener('mousedown', handleMouseDown);
             cell.addEventListener('mouseup', handleMouseUp);
+            cell.addEventListener('touchstart', handleTouchStart);
+            cell.addEventListener('touchend', handleTouchEnd);
             grid.appendChild(cell);
             row.push(candy);
         }
@@ -104,35 +105,45 @@ function handleMouseUp(event) {
     const endCell = event.target;
     startCell.classList.remove('selected');
     
-    const [startRow, startCol] = startCell.dataset.index.split('-').map(Number);
-    const [endRow, endCol] = endCell.dataset.index.split('-').map(Number);
-    
-    if (Math.abs(startRow - endRow) + Math.abs(startCol - endCol) === 1) {
-        swapCandies(startCell, endCell);
-    } else {
-        alert("You can only swap adjacent candies!");
-    }
+    swapCells(startCell, endCell);
 }
 
-function swapCandies(first, second) {
-    const firstIndex = first.dataset.index.split('-');
-    const secondIndex = second.dataset.index.split('-');
+function handleTouchStart(event) {
+    startCell = event.target;
+    startCell.classList.add('selected');
+}
+
+function handleTouchEnd(event) {
+    const endCell = event.target;
+    startCell.classList.remove('selected');
     
-    const firstCandy = first.textContent;
-    const secondCandy = second.textContent;
+    swapCells(startCell, endCell);
+}
+
+function swapCells(first, second) {
+    const [startRow, startCol] = first.dataset.index.split('-').map(Number);
+    const [endRow, endCol] = second.dataset.index.split('-').map(Number);
     
-    first.textContent = secondCandy;
-    second.textContent = firstCandy;
-    
-    gridArray[firstIndex[0]][firstIndex[1]] = secondCandy;
-    gridArray[secondIndex[0]][secondIndex[1]] = firstCandy;
-    
-    if (!checkMatches()) {
-        // Swap back if no match
-        first.textContent = firstCandy;
-        second.textContent = secondCandy;
-        gridArray[firstIndex[0]][firstIndex[1]] = firstCandy;
-        gridArray[secondIndex[0]][secondIndex[1]] = secondCandy;
+    // Allow swipe only if the cells are adjacent
+    if (Math.abs(startRow - endRow) + Math.abs(startCol - endCol) === 1) {
+        const firstCandy = first.textContent;
+        const secondCandy = second.textContent;
+
+        first.textContent = secondCandy;
+        second.textContent = firstCandy;
+
+        gridArray[startRow][startCol] = secondCandy;
+        gridArray[endRow][endCol] = firstCandy;
+
+        if (!checkMatches()) {
+            // Swap back if no match
+            first.textContent = firstCandy;
+            second.textContent = secondCandy;
+            gridArray[startRow][startCol] = firstCandy;
+            gridArray[endRow][endCol] = secondCandy;
+        }
+    } else {
+        alert("You can only swap adjacent candies!");
     }
 }
 
