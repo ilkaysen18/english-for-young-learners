@@ -170,23 +170,38 @@ maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   }
 
   // === MATCH DETECTION ===
-  function findMatchLine(sel){
-    if(sel.length<3) return null;
-    const e=sel[0].emoji;
-    if(!sel.every(s=>s.emoji===e)) return null;
-    const rs=sel.map(s=>s.r).sort((a,b)=>a-b);
-    const cs=sel.map(s=>s.c).sort((a,b)=>a-b);
-    const sameRow=rs.every(r=>r===rs[0]);
-    const sameCol=cs.every(c=>c===cs[0]);
-    if(sameRow){
-      for(let i=1;i<cs.length;i++) if(cs[i]!==cs[i-1]+1) return null;
-      return 'horizontal';
-    }
-    if(sameCol){
-      for(let i=1;i<rs.length;i++) if(rs[i]!==rs[i-1]+1) return null;
-      return 'vertical';
-    }
-    return null;
+function findMatchLine(sel) {
+  if (sel.length < 3) return null;
+  const e = sel[0].emoji;
+  if (!sel.every(s => s.emoji === e)) return null;
+
+  const rs = sel.map(s => s.r).sort((a,b)=>a-b);
+  const cs = sel.map(s => s.c).sort((a,b)=>a-b);
+
+  const sameRow = rs.every(r => r === rs[0]);
+  const sameCol = cs.every(c => c === cs[0]);
+
+  // Check diagonal ↘ (r+, c+)
+  const diag1 = sel.every((s, i, arr) =>
+    i === 0 || (s.r - arr[i-1].r === 1 && s.c - arr[i-1].c === 1)
+  );
+
+  // Check diagonal ↙ (r+, c−)
+  const diag2 = sel.every((s, i, arr) =>
+    i === 0 || (s.r - arr[i-1].r === 1 && s.c - arr[i-1].c === -1)
+  );
+
+  if (sameRow) {
+    for (let i=1; i<cs.length; i++) if (cs[i] !== cs[i-1]+1) return null;
+    return 'horizontal';
+  }
+  if (sameCol) {
+    for (let i=1; i<rs.length; i++) if (rs[i] !== rs[i-1]+1) return null;
+    return 'vertical';
+  }
+  if (diag1) return 'diagDownRight';
+  if (diag2) return 'diagDownLeft';
+  return null;
   }
 
   function calculatePoints(n){
