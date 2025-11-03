@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candy Crush Clone</title>
+    <title>Swipe Candy Crush Clone</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -39,10 +39,19 @@
             font-size: 24px;
             cursor: pointer;
             user-select: none;
+            transition: background 0.3s;
+        }
+        .cell.selected {
+            background: rgba(0, 0, 255, 0.2);
         }
         .score {
             font-size: 24px;
             margin: 20px 0;
+        }
+        .message {
+            font-size: 24px;
+            margin: 20px 0;
+            color: green;
         }
     </style>
 </head>
@@ -52,6 +61,7 @@
     <h1>Candy Crush Clone</h1>
     <div class="score">Score: <span id="score">0</span></div>
     <div class="grid" id="grid"></div>
+    <div class="message" id="message"></div>
 </div>
 
 <script>
@@ -59,52 +69,127 @@ const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦'];
 const gridSize = 6;
 const grid = document.getElementById('grid');
 let score = 0;
+let firstCell, secondCell;
+let gridArray = [];
+let selectedCells = [];
 
 function createGrid() {
-    for (let i = 0; i < gridSize * gridSize; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.textContent = candies[Math.floor(Math.random() * candies.length)];
-        cell.dataset.index = i;
-        cell.addEventListener('click', handleCellClick);
-        grid.appendChild(cell);
+    gridArray = [];
+    grid.innerHTML = '';
+    for (let i = 0; i < gridSize; i++) {
+        const row = [];
+        for (let j = 0; j < gridSize; j++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            const candy = candies[Math.floor(Math.random() * candies.length)];
+            cell.textContent = candy;
+            cell.dataset.index = `${i}-${j}`;
+            cell.addEventListener('mousedown', handleMouseDown);
+            cell.addEventListener('mouseup', handleMouseUp);
+            grid.appendChild(cell);
+            row.push(candy);
+        }
+        gridArray.push(row);
     }
 }
 
-let firstCell, secondCell;
+let startCell;
 
-function handleCellClick(event) {
-    const cell = event.target;
-    if (!firstCell) {
-        firstCell = cell;
-        cell.style.border = '2px solid blue';
-    } else if (!secondCell && cell !== firstCell) {
-        secondCell = cell;
-        cell.style.border = '2px solid blue';
-        checkMatch();
+function handleMouseDown(event) {
+    startCell = event.target;
+    startCell.classList.add('selected');
+}
+
+function handleMouseUp(event) {
+    const endCell = event.target;
+    startCell.classList.remove('selected');
+    
+    const [startRow, startCol] = startCell.dataset.index.split('-').map(Number);
+    const [endRow, endCol] = endCell.dataset.index.split('-').map(Number);
+    
+    if (Math.abs(startRow - endRow) + Math.abs(startCol - endCol) === 1) {
+        swapCandies(startCell, endCell);
+    } else {
+        alert("You can only swap adjacent candies!");
     }
 }
 
-function checkMatch() {
-    const firstCandy = firstCell.textContent;
-    const secondCandy = secondCell.textContent;
+function swapCandies(first, second) {
+    const firstIndex = first.dataset.index.split('-');
+    const secondIndex = second.dataset.index.split('-');
+    
+    const firstCandy = first.textContent;
+    const secondCandy = second.textContent;
+    
+    first.textContent = secondCandy;
+    second.textContent = firstCandy;
+    
+    gridArray[firstIndex[0]][firstIndex[1]] = secondCandy;
+    gridArray[secondIndex[0]][secondIndex[1]] = firstCandy;
+    
+    if (!checkMatches()) {
+        // Swap back if no match
+        first.textContent = firstCandy;
+        second.textContent = secondCandy;
+        gridArray[firstIndex[0]][firstIndex[1]] = firstCandy;
+        gridArray[secondIndex[0]][secondIndex[1]] = secondCandy;
+    }
+}
 
-    if (firstCandy === secondCandy) {
+function checkMatches() {
+    let matched = false;
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            if (checkMatch(i, j)) {
+                matched = true;
+                clearMatch(i, j);
+            }
+        }
+    }
+    if (matched) {
         score += 10;
         document.getElementById('score').textContent = score;
-        resetCells();
-    } else {
-        setTimeout(() => {
-            firstCell.style.border = 'none';
-            secondCell.style.border = 'none';
-            resetCells();
-        }, 1000);
+        refillGrid();
+        checkWinCondition();
+    }
+    return matched;
+}
+
+function checkMatch(row, col) {
+    const candy = gridArray[row][col];
+    if (candy) {
+        const horizontalMatch = (col <= gridSize - 3 && candy === gridArray[row][col + 1] && candy === gridArray[row][col + 2]);
+        const verticalMatch = (row <= gridSize - 3 && candy === gridArray[row + 1][col] && candy === gridArray[row + 2][col]);
+        return horizontalMatch || verticalMatch;
+    }
+    return false;
+}
+
+function clearMatch(row, col) {
+    const candy = gridArray[row][col];
+    for (let i = 0; i < gridSize; i++) {
+        if (gridArray[row][i] === candy) gridArray[row][i] = null;
+        if (gridArray[i][col] === candy) gridArray[i][col] = null;
     }
 }
 
-function resetCells() {
-    firstCell = null;
-    secondCell = null;
+function refillGrid() {
+    for (let i = gridSize - 1; i >= 0; i--) {
+        for (let j = 0; j < gridSize; j++) {
+            if (gridArray[i][j] === null) {
+                gridArray[i][j] = candies[Math.floor(Math.random() * candies.length)];
+                const cell = grid.children[i * gridSize + j];
+                cell.textContent = gridArray[i][j];
+            }
+        }
+    }
+}
+
+function checkWinCondition() {
+    if (score >= 50) { // Example win condition
+        document.getElementById('message').textContent = 'You Win!';
+        grid.innerHTML = '';
+    }
 }
 
 createGrid();
