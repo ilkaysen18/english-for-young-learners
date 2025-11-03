@@ -41,7 +41,10 @@
 🚀
 #### 7️⃣ Courses section update 
 * new course added - "Speaking With Pictures"
-* new language + course added - German Speaking for A1-A2 
+* new language + course added - German Speaking for A1-A2
+#### 8️⃣ Booking page 
+* added sales landing & booking page
+  
 
 
 
