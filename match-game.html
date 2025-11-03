@@ -28,11 +28,11 @@
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(14, 1fr); /* Updated for 14 columns */
             gap: 5px;
             margin: 20px 0;
             width: 100%;
-            max-width: 600px;
+            max-width: 100%; /* Allow full width for grid */
         }
         .cell {
             width: 100%; 
@@ -55,10 +55,11 @@
             font-family: 'Patrick Hand', cursive; /* Bubble writing font */
             font-size: 32px; /* Adjusted for better visibility */
             color: white; /* Default text color */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Adding shadow for better contrast */
         }
-        .color-a { color: #ff5733; } /* Red */
-        .color-u { color: #33c1ff; } /* Blue */
-        .color-r { color: #75ff33; } /* Green */
+        .color-f { color: #ff5733; } /* Red */
+        .color-r { color: #33c1ff; } /* Blue */
+        .color-u { color: #75ff33; } /* Green */
         .color-i { color: #ff33a1; } /* Pink */
         .color-t { color: #ffcc00; } /* Yellow */
         .score {
@@ -91,7 +92,7 @@
 const goalWord = "FRUIT"; // The goal word to spell
 const letters = ['F', 'R', 'U', 'I', 'T']; // Letters needed for the goal word
 const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦']; // Regular candies
-const gridSize = 6;
+const gridSize = 14; // Updated grid size
 const grid = document.getElementById('grid');
 let score = 0;
 let selectedCandies = [];
@@ -101,8 +102,13 @@ let currentWord = ""; // The word formed by broken letters
 function createGrid() {
     gridArray = [];
     grid.innerHTML = '';
-    // Shuffle the letters and candies
-    const allItems = [...letters, ...candies];
+
+    // Create an array that combines the letters and random candies
+    const allItems = [
+        letters[0], letters[1], letters[2], letters[3], letters[4], 
+        ...Array(gridSize * gridSize - letters.length).fill().map(() => candies[Math.floor(Math.random() * candies.length)])
+    ];
+
     shuffleArray(allItems);
     
     for (let i = 0; i < gridSize; i++) {
@@ -179,7 +185,7 @@ function refillGrid() {
     for (let i = gridSize - 1; i >= 0; i--) {
         for (let j = 0; j < gridSize; j++) {
             if (gridArray[i][j] === null) {
-                // Only use candies or letters needed to spell the word
+                // Use either candies or letters needed to spell the word
                 let randomItem = Math.random() < 0.5 ? candies[Math.floor(Math.random() * candies.length)] : letters[Math.floor(Math.random() * letters.length)];
                 gridArray[i][j] = randomItem;
                 const cell = grid.children[i * gridSize + j];
