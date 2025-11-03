@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Training Hub | Tanıtım</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #002B5B, #0096C7, #00B4D8);
+      background-attachment: fixed;
+      color: #222;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 1.5rem 2.2rem;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+      border-bottom: 4px solid #FF6B6B;
+    }
+
+    header h1 {
+      color: #0A0A23;
+      font-size: 2.4rem;
+      margin-bottom: 0.4rem;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      font-size: 1.05rem;
+      color: #333;
+      max-width: 680px;
+      margin: auto;
+    }
+
+    section {
+      background: #fff;
+      margin: 2rem auto;
+      padding: 2.2rem;
+      max-width: 850px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    section h2 {
+      color: #004E89;
+      border-left: 6px solid #FF6B6B;
+      padding-left: 12px;
+      margin-bottom: 1.2rem;
+      font-size: 1.6rem;
+    }
+
+    h3 {
+      color: #0077B6;
+      margin-top: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    section p, ul {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .highlight {
+      color: #FF6B6B;
+      font-weight: 600;
+    }
+
+    .icon {
+      color: #00A8E8;
+      margin-right: 6px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.8rem;
+      font-size: 0.9rem;
+      color: #f9f9f9;
+      background: rgba(0, 0, 0, 0.35);
+      margin-top: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    footer span {
+      color: #FF6B6B;
+      font-weight: 600;
+    }
+
+    /* WhatsApp Floating Button + Label */
+    .whatsapp-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+      font-family: Poppins, sans-serif;
+    }
+
+    .whatsapp-label {
+      background-color: #25D366;
+      color: white;
+      font-weight: 500;
+      padding: 12px 16px;
+      border-radius: 30px;
+      margin-right: 12px;
+      font-size: 0.95rem;
+      opacity: 0;
+      transform: translateX(10px);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .whatsapp-button {
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 30px;
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .whatsapp-container:hover .whatsapp-label {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .whatsapp-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+      background-color: #20ba5a;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.8rem; }
+      section { padding: 1.4rem; margin: 1rem; }
+      section h2 { font-size: 1.4rem; }
+      .whatsapp-button {
+        width: 54px;
+        height: 54px;
+        font-size: 26px;
+      }
+      .whatsapp-label {
+        display: none; /* hide label on small screens for simplicity */
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>English Training Hub</h1>
+    <p>TEFL & TESOL Belgeli Anadili İngilizce öğretmenleri ile <strong>7 yıllık global tecrübe</strong> — İngilizce öğrenmeye hazırsanız, <em>let's begin!</em></p>
+  </header>
+
+  <section>
+    <h2>Hakkımızda</h2>
+    <p><strong>Hello students,</strong> welcome to <span class="highlight">English Training Hub!</span></p>
+    <p>Biz <strong>English for Aviation, Medicine, IT, Business, General, YDS, TOEFL, IELTS</strong> ve <strong>Cambridge (Yr-12) A/AS-levels</strong> alanlarında uzmanız.</p>
+    <p>Eğer hedefiniz İngilizcenizi <span class="highlight">hızla geliştirmek</span>se, aşağıdaki Methodological Lesson ile başlayabiliriz:</p>
+    <ul>
+      <li>➊ Seviyenizi, hedefinizi ve ilgi alanınızı analiz ederiz.</li>
+      <li>★ İlerlemeniz düzenli olarak takip edilir!</li>
+      <li>➋ 1–2 aylık ders planı hazırlanır.</li>
+      <li>★ Öğrenci tercihlerine göre esnektir.</li>
+    </ul>
+    <p>We look forward to meeting you soon! ✰彡</p>
+  </section>
+
+  <section>
+    <h2>Derslerimiz</h2>
+
+    <h3>📘 General English Group Lessons:</h3>
+    <ul>
+      <li><span class="icon">✎</span>[4] öğrenciden oluşan sınıflar</li>
+      <li><span class="icon">✎</span>Haftada [2] × 30 dk ders</li>
+      <li><span class="icon">✎</span>150 TL / saat</li>
+    </ul>
+
+    <h3>📗 General English Individual Lessons:</h3>
+    <ul>
+      <li><span class="icon">✎</span>[1] öğrenciye özel</li>
+      <li><span class="icon">✎</span>Haftada [2] × 30 dk ders</li>
+      <li><span class="icon">✎</span>300 TL / saat</li>
+    </ul>
+
+    <p>✻ Uzman eğitmenlerden ✯<strong>Tavsiye Belgenizi</strong>✯ 1–2 ayda alabilirsiniz.</p>
+  </section>
+
+  <section>
+    <h2>Metodolojimiz</h2>
+    <p><strong>Uluslararası araştırılmış pedagojik destekli:</strong></p>
+    <ul>
+      <li>✓ Haftada 2/3/4/5 gün, 20–60 dk. ders planlarıyla esnek seçenekler</li>
+      <li>✓ Pratik & eğlenceli derslerle 1 ayda fark edilir ilerleme</li>
+    </ul>
+    <p>Her kur sonunda TEFL & TESOL Belgeli eğitmenlerden ✯<strong>Tavsiye Mektubu</strong>✯ kazanabilirsiniz.</p>
+    <p><em>★彡 Small steps every day ≈ big results!</em></p>
+    <p class="highlight">Hazır mısınız? Size özel planlanmış bir kursla akıcı İngilizce adım adım mümkün!</p>
+  </section>
+
+  <footer>
+    <p>© 2025 <span>English Training Hub</span> — Professional English Tutoring</p>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <div class="whatsapp-container">
+    <div class="whatsapp-label">📲 Book a Lesson</div>
+    <a
+      href="https://wa.me/905357397248?text=Merhaba!%20Bir%20ders%20planlamak%20istiyorum.%20%F0%9F%8F%AB"
+      class="whatsapp-button"
+      target="_blank"
+      aria-label="WhatsApp Chat"
+    >
+      💬
+    </a>
+  </div>
+</body>
+</html>
