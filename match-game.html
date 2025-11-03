@@ -25,24 +25,19 @@
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(14, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 5px;
             margin: 20px 0;
         }
         .cell {
             width: 100%;
-            height: 0;
-            padding-bottom: 70%;
-            border-radius: 5px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
             background: #f0f0f0;
-        }
-        .cell.selected {
-            background: rgba(0, 0, 255, 0.2);
         }
     </style>
 </head>
@@ -56,10 +51,9 @@
 </div>
 
 <script>
-const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦']; 
-const gridSize = 14; 
+const candies = ['🍬', '🍭', '🍫', '🍪', '🍩']; 
+const gridSize = 5; 
 const grid = document.getElementById('grid');
-let selectedCandies = [];
 
 const matchSound = document.getElementById('matchSound');
 
@@ -69,46 +63,18 @@ function createGrid() {
         candies[Math.floor(Math.random() * candies.length)]
     );
 
-    for (let i = 0; i < gridSize; i++) {
-        for (let j = 0; j < gridSize; j++) {
-            const cell = document.createElement('div');
-            cell.className = 'cell';
-            const item = allItems[i * gridSize + j];
-            cell.textContent = item;
-            cell.dataset.index = `${i}-${j}`;
-            cell.addEventListener('click', handleCellClick);
-            grid.appendChild(cell);
-        }
-    }
+    allItems.forEach(item => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.textContent = item;
+        cell.addEventListener('click', handleCellClick);
+        grid.appendChild(cell);
+    });
 }
 
 function handleCellClick(event) {
-    const cell = event.target.closest('.cell');
-    
-    if (selectedCandies.includes(cell)) {
-        selectedCandies = selectedCandies.filter(c => c !== cell);
-        cell.classList.remove('selected');
-    } else {
-        selectedCandies.push(cell);
-        cell.classList.add('selected');
-    }
-
-    if (selectedCandies.length >= 3) {
-        const selectedCandyType = selectedCandies[0].textContent;
-        if (selectedCandies.every(c => c.textContent === selectedCandyType)) {
-            clearMatches();
-        }
-    }
-}
-
-function clearMatches() {
-    selectedCandies.forEach(cell => {
-        cell.innerHTML = ''; 
-        cell.classList.remove('selected');
-    });
-
-    matchSound.play();
-    selectedCandies = [];
+    const cell = event.target;
+    matchSound.play(); // Play sound on any cell click
 }
 
 createGrid();
