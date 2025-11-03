@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Crush Clone</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #b2e0e6;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #ff1e56;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(6, 60px);
+            gap: 5px;
+            margin: 20px 0;
+        }
+        .cell {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .score {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Candy Crush Clone</h1>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦'];
+const gridSize = 6;
+const grid = document.getElementById('grid');
+let score = 0;
+
+function createGrid() {
+    for (let i = 0; i < gridSize * gridSize; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.textContent = candies[Math.floor(Math.random() * candies.length)];
+        cell.dataset.index = i;
+        cell.addEventListener('click', handleCellClick);
+        grid.appendChild(cell);
+    }
+}
+
+let firstCell, secondCell;
+
+function handleCellClick(event) {
+    const cell = event.target;
+    if (!firstCell) {
+        firstCell = cell;
+        cell.style.border = '2px solid blue';
+    } else if (!secondCell && cell !== firstCell) {
+        secondCell = cell;
+        cell.style.border = '2px solid blue';
+        checkMatch();
+    }
+}
+
+function checkMatch() {
+    const firstCandy = firstCell.textContent;
+    const secondCandy = secondCell.textContent;
+
+    if (firstCandy === secondCandy) {
+        score += 10;
+        document.getElementById('score').textContent = score;
+        resetCells();
+    } else {
+        setTimeout(() => {
+            firstCell.style.border = 'none';
+            secondCell.style.border = 'none';
+            resetCells();
+        }, 1000);
+    }
+}
+
+function resetCells() {
+    firstCell = null;
+    secondCell = null;
+}
+
+createGrid();
+</script>
+
+</body>
+</html>
