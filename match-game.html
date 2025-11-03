@@ -17,7 +17,6 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    overflow-x: hidden;
   }
 
   h1 {
@@ -25,7 +24,7 @@
     text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
   }
 
-  #scoreboard, #word-display {
+  #word-display, #scoreboard {
     font-size: 1.3em;
     margin-bottom: 10px;
   }
@@ -35,29 +34,30 @@
     grid-template-columns: repeat(8, var(--cell-size));
     grid-template-rows: repeat(8, var(--cell-size));
     border: 5px solid #fff;
-    box-shadow: 0 0 20px rgba(255,255,255,0.5);
     border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.4);
   }
 
   .cell {
     width: var(--cell-size);
     height: var(--cell-size);
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     color: #fff;
     font-size: 1.2em;
-    border-radius: 50%;
-    transition: transform 0.2s ease;
-    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s ease, border 0.2s;
   }
 
-  .cell:hover {
-    transform: scale(1.1);
+  .cell.selected {
+    transform: scale(1.2);
+    border: 3px solid #fff;
   }
 
-  /* Candy colors */
+  /* Candy Colors */
   .red { background-color: #ff4d4d; }
   .orange { background-color: #ffa64d; }
   .yellow { background-color: #ffde59; color: #000; }
@@ -67,14 +67,13 @@
 
   button {
     margin-top: 15px;
-    background-color: #fff;
+    background: #fff;
     color: #ff1493;
-    font-weight: bold;
     border: none;
     border-radius: 8px;
     padding: 10px 20px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s;
   }
 
   button:hover {
@@ -82,10 +81,9 @@
   }
 
   #message {
-    margin-top: 15px;
-    font-size: 1.2em;
+    margin-top: 10px;
+    font-size: 1.1em;
   }
-
   @media (max-width: 500px) {
     :root {
       --cell-size: 42px;
@@ -98,7 +96,7 @@
   <div id="word-display">Word: <span id="word-progress">_ _ _ _ _</span></div>
   <div id="scoreboard">Score: <span id="score">0</span></div>
   <div id="board"></div>
-  <button id="restart">Restart Game</button>
+  <button id="restart">Restart</button>
   <div id="message"></div>
 
 <script>
@@ -106,194 +104,170 @@
   const scoreDisplay = document.getElementById('score');
   const wordProgressDisplay = document.getElementById('word-progress');
   const message = document.getElementById('message');
-  const restartBtn = document.getElementById('restart');
+  const restart = document.getElementById('restart');
 
   const width = 8;
-  const candies = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
-  const letters = ['C', 'A', 'N', 'D', 'Y']; // target word = "CANDY"
-  const neededLetters = { C: 1, A: 1, N: 1, D: 1, Y: 1 };
-  let collectedLetters = { C: 0, A: 0, N: 0, D: 0, Y: 0 };
-
+  const colors = ['red','orange','yellow','green','blue','purple'];
+  const letters = ['C','A','N','D','Y']; // target word
+  const targetWord = "CANDY";
+  let collected = { C:0, A:0, N:0, D:0, Y:0 };
   let squares = [];
+  let selected = null;
   let score = 0;
 
+  /* --- Setup --- */
   function updateWordProgress() {
-    let display = letters.map(l => (collectedLetters[l] >= neededLetters[l]) ? l : '_').join(' ');
+    const display = letters.map(l => (collected[l]>0 ? l : '_')).join(' ');
     wordProgressDisplay.textContent = display;
-    if (letters.every(l => collectedLetters[l] >= neededLetters[l])) {
-      message.innerHTML = "🎉 Congratulations! You spelled <strong>CANDY</strong>! 🍬";
+    if (letters.every(l => collected[l]>0)){
+      message.innerHTML = `🎉 You spelled <strong>${targetWord}</strong>! 🍬`;
     }
   }
 
-  function createBoard() {
-    board.innerHTML = '';
+  function createBoard(){
     squares = [];
+    board.innerHTML = '';
     score = 0;
-    scoreDisplay.textContent = score;
+    scoreDisplay.textContent = 0;
     message.textContent = '';
-    collectedLetters = { C: 0, A: 0, N: 0, D: 0, Y: 0 };
+    collected = { C:0, A:0, N:0, D:0, Y:0 };
     updateWordProgress();
 
-    for (let i = 0; i < width * width; i++) {
-      const cell = document.createElement('div');
-      cell.classList.add('cell');
-      let randomCandy = candies[Math.floor(Math.random() * candies.length)];
-      cell.classList.add(randomCandy);
-      cell.setAttribute('draggable', true);
-      cell.setAttribute('data-id', i);
-
-      if (Math.random() < 0.1) {
-        // 10% chance candy has a letter
-        const letter = letters[Math.floor(Math.random() * letters.length)];
-        cell.textContent = letter;
-        cell.dataset.letter = letter;
+    for(let i=0;i<width*width;i++){
+      const div = document.createElement('div');
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      div.className = `cell ${color}`;
+      div.dataset.id = i;
+      if (Math.random()<0.1){
+        const letter = letters[Math.floor(Math.random()*letters.length)];
+        div.textContent = letter;
+        div.dataset.letter = letter;
       } else {
-        cell.textContent = '';
-        cell.dataset.letter = '';
+        div.textContent = '';
+        div.dataset.letter = '';
       }
+      div.addEventListener('click', () => handleSelect(i));
+      board.appendChild(div);
+      squares.push(div);
+    }
+  }
 
-      board.appendChild(cell);
-      squares.push(cell);
+  function handleSelect(i){
+    if(!selected){
+      selected = i;
+      squares[i].classList.add('selected');
+      return;
+    }
+    if(selected === i){
+      squares[i].classList.remove('selected');
+      selected = null;
+      return;
     }
 
-    attachEvents();
-  }
-
-  function attachEvents() {
-    squares.forEach(square => square.addEventListener('dragstart', dragStart));
-    squares.forEach(square => square.addEventListener('dragend', dragEnd));
-    squares.forEach(square => square.addEventListener('dragover', dragOver));
-    squares.forEach(square => square.addEventListener('drop', dragDrop));
-  }
-
-  let colorDragged, colorReplaced;
-  let squareIdDragged, squareIdReplaced;
-
-  function dragStart() {
-    colorDragged = this.classList[1];
-    squareIdDragged = parseInt(this.getAttribute('data-id'));
-  }
-  function dragOver(e) { e.preventDefault(); }
-  function dragDrop() {
-    colorReplaced = this.classList[1];
-    squareIdReplaced = parseInt(this.getAttribute('data-id'));
-    const tempClass = squares[squareIdDragged].classList[1];
-    const tempLetter = squares[squareIdDragged].dataset.letter;
-    const tempText = squares[squareIdDragged].textContent;
-
-    squares[squareIdDragged].classList.replace(tempClass, colorReplaced);
-    squares[squareIdDragged].dataset.letter = this.dataset.letter;
-    squares[squareIdDragged].textContent = this.textContent;
-
-    this.classList.replace(colorReplaced, tempClass);
-    this.dataset.letter = tempLetter;
-    this.textContent = tempText;
-  }
-  function dragEnd() {
-    const validMoves = [
-      squareIdDragged - 1,
-      squareIdDragged + 1,
-      squareIdDragged - width,
-      squareIdDragged + width
-    ];
-    const validMove = validMoves.includes(squareIdReplaced);
-
-    if (squareIdReplaced && validMove) {
-      if (!checkMatches()) {
-        // no match, swap back
-        const tempClass = squares[squareIdDragged].classList[1];
-        const tempLetter = squares[squareIdDragged].dataset.letter;
-        const tempText = squares[squareIdDragged].textContent;
-
-        squares[squareIdDragged].classList.replace(tempClass, squares[squareIdReplaced].classList[1]);
-        squares[squareIdDragged].dataset.letter = squares[squareIdReplaced].dataset.letter;
-        squares[squareIdDragged].textContent = squares[squareIdReplaced].textContent;
-
-        squares[squareIdReplaced].classList.replace(squares[squareIdReplaced].classList[1], tempClass);
-        squares[squareIdReplaced].dataset.letter = tempLetter;
-        squares[squareIdReplaced].textContent = tempText;
+    const valid = [selected-1, selected+1, selected-width, selected+width];
+    const target = i;
+    if(valid.includes(target)){
+      swapCandies(selected, target);
+      if(!checkMatches()){
+        // no match -> revert
+        swapCandies(selected, target);
       }
     }
-    squareIdReplaced = null;
+    squares[selected].classList.remove('selected');
+    selected = null;
   }
 
-  function checkMatches() {
+  function swapCandies(a,b){
+    const tempColor = squares[a].classList[1];
+    const tempLetter = squares[a].dataset.letter;
+    const tempText = squares[a].textContent;
+
+    squares[a].classList.replace(tempColor, squares[b].classList[1]);
+    squares[a].dataset.letter = squares[b].dataset.letter;
+    squares[a].textContent = squares[b].textContent;
+
+    squares[b].classList.replace(squares[b].classList[1], tempColor);
+    squares[b].dataset.letter = tempLetter;
+    squares[b].textContent = tempText;
+  }
+
+  function destroyCell(i){
+    const letter = squares[i].dataset.letter;
+    if(letter && collected.hasOwnProperty(letter) && collected[letter]===0)
+      collected[letter]=1;
+    squares[i].className = 'cell';
+    squares[i].textContent='';
+    squares[i].dataset.letter='';
+  }
+
+  function checkMatches(){
     let matched = false;
-
-    // row matches
-    for (let i = 0; i < 64; i++) {
-      if (i % width > width - 4) continue;
-      const row = [i, i+1, i+2];
-      const decided = squares[i].classList[1];
-      if (row.every(j => squares[j].classList[1] === decided) && decided) {
-        row.forEach(j => destroyCandy(j));
-        matched = true;
-        score += 30;
+    // Row matches
+    for(let i=0;i<width*width;i++){
+      if(i%width > width-4) continue;
+      const row=[i,i+1,i+2];
+      const color = squares[i].classList[1];
+      if(color && row.every(idx=>squares[idx].classList[1]===color)){
+        row.forEach(idx => destroyCell(idx));
+        score+=30; matched=true;
       }
     }
-
-    // column matches
-    for (let i = 0; i < 64 - 2 * width; i++) {
-      const col = [i, i+width, i+width*2];
-      const decided = squares[i].classList[1];
-      if (col.every(j => squares[j].classList[1] === decided) && decided) {
-        col.forEach(j => destroyCandy(j));
-        matched = true;
-        score += 30;
+    // Col matches
+    for(let i=0;i<width*(width-2);i++){
+      const col=[i,i+width,i+2*width];
+      const color = squares[i].classList[1];
+      if(color && col.every(idx=>squares[idx].classList[1]===color)){
+        col.forEach(idx => destroyCell(idx));
+        score+=30; matched=true;
       }
     }
-
-    scoreDisplay.textContent = score;
+    scoreDisplay.textContent=score;
+    if(matched) updateWordProgress();
     return matched;
   }
 
-  function destroyCandy(index) {
-    const letter = squares[index].dataset.letter;
-    if (letter && collectedLetters.hasOwnProperty(letter)) {
-      collectedLetters[letter]++;
-      updateWordProgress();
+  function moveDown(){
+    for(let i=width*(width-1)-1;i>=0;i--){
+      if(squares[i+width] && squares[i+width].classList.length===1){
+        copyCell(i,i+width);
+        clearCell(i);
+      }
     }
-    squares[index].className = 'cell';
-    squares[index].dataset.letter = '';
-    squares[index].textContent = '';
-  }
-
-  function moveDown() {
-    for (let i = 63; i >= 0; i--) {
-      if (squares[i].textContent === '' && squares[i].classList.length === 1) {
-        if (i - width >= 0) {
-          if (squares[i - width].textContent || squares[i - width].classList.length > 1) {
-            squares[i].classList.add(squares[i - width].classList[1]);
-            squares[i].dataset.letter = squares[i - width].dataset.letter;
-            squares[i].textContent = squares[i - width].textContent;
-
-            squares[i - width].className = 'cell';
-            squares[i - width].dataset.letter = '';
-            squares[i - width].textContent = '';
-          }
-        } else {
-          let randomCandy = candies[Math.floor(Math.random() * candies.length)];
-          squares[i].classList.add(randomCandy);
-          if (Math.random() < 0.1) {
-            const letter = letters[Math.floor(Math.random() * letters.length)];
-            squares[i].dataset.letter = letter;
-            squares[i].textContent = letter;
-          }
+    // Fill top row
+    for(let i=0;i<width;i++){
+      if(squares[i].classList.length===1){
+        const color=colors[Math.floor(Math.random()*colors.length)];
+        squares[i].classList.add(color);
+        if(Math.random()<0.1){
+          const letter=letters[Math.floor(Math.random()*letters.length)];
+          squares[i].textContent=letter;
+          squares[i].dataset.letter=letter;
         }
       }
     }
   }
 
-  function gameLoop() {
+  function copyCell(from,to){
+    const color=squares[from].classList[1];
+    if(color){ squares[to].classList.add(color); }
+    squares[to].textContent=squares[from].textContent;
+    squares[to].dataset.letter=squares[from].dataset.letter;
+  }
+  function clearCell(i){
+    squares[i].className='cell';
+    squares[i].textContent='';
+    squares[i].dataset.letter='';
+  }
+
+  function gameLoop(){
     moveDown();
     checkMatches();
   }
 
-  setInterval(gameLoop, 200);
-
-  restartBtn.addEventListener('click', createBoard);
+  restart.addEventListener('click', createBoard);
 
   createBoard();
+  setInterval(gameLoop,200);
 </script>
 </body>
 </html>
