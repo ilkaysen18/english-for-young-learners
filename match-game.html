@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>Click Candy Crush Clone</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap'); /* Bubble writing font */
@@ -35,9 +35,9 @@
             max-width: 600px;
         }
         .cell {
-            width: 100%;
+            width: 100%; 
             height: 0;
-            padding-bottom: 100%;
+            padding-bottom: 70%; /* Adjusted for smaller candies */
             border-radius: 5px;
             display: flex;
             align-items: center;
@@ -45,27 +45,22 @@
             font-size: 24px;
             cursor: pointer;
             user-select: none;
-            transition: background 0.3s;
             background: #f0f0f0;
+            position: relative; /* For proper alignment */
         }
         .cell.selected {
             background: rgba(0, 0, 255, 0.2);
         }
         .letter {
             font-family: 'Patrick Hand', cursive; /* Bubble writing font */
-            font-size: 32px;
-            color: transparent; /* Make text transparent initially */
-            -webkit-background-clip: text; /* Clip background to text */
-            background-clip: text; /* Clip background to text */
-            animation: colorChange 1s infinite; /* Animation for color change */
+            font-size: 28px; /* Adjusted for better visibility */
+            color: white; /* Default text color */
         }
-        @keyframes colorChange {
-            0% { background-color: #ff5733; }
-            25% { background-color: #33c1ff; }
-            50% { background-color: #75ff33; }
-            75% { background-color: #ff33a1; }
-            100% { background-color: #ff5733; }
-        }
+        .color-a { color: #ff5733; } /* Red */
+        .color-b { color: #33c1ff; } /* Blue */
+        .color-c { color: #75ff33; } /* Green */
+        .color-d { color: #ff33a1; } /* Pink */
+        .color-e { color: #ffcc00; } /* Yellow */
         .score {
             font-size: 24px;
             margin: 20px 0;
@@ -99,7 +94,7 @@ const grid = document.getElementById('grid');
 let score = 0;
 let selectedCandies = [];
 let gridArray = [];
-const goalWord = "ABCDE"; // The goal word to spell
+const goalWord = "FRUIT"; // Changed to a more meaningful word
 let currentWord = ""; // The word formed by broken letters
 
 function createGrid() {
@@ -116,7 +111,7 @@ function createGrid() {
             // If it's a letter, apply the bubble writing styling
             if (/^[A-Z]$/.test(candy)) {
                 const letterSpan = document.createElement('span');
-                letterSpan.className = 'letter';
+                letterSpan.className = 'letter color-' + candy.toLowerCase(); // Assign a color class based on the letter
                 letterSpan.textContent = candy;
                 cell.appendChild(letterSpan);
             } else {
@@ -188,7 +183,7 @@ function refillGrid() {
                 // If it's a letter, apply the bubble writing styling
                 if (/^[A-Z]$/.test(randomCandy)) {
                     const letterSpan = document.createElement('span');
-                    letterSpan.className = 'letter';
+                    letterSpan.className = 'letter color-' + randomCandy.toLowerCase(); // Assign a color class based on the letter
                     letterSpan.textContent = randomCandy;
                     cell.appendChild(letterSpan);
                 } else {
@@ -227,8 +222,7 @@ function shuffleGrid() {
             // If it's a letter, apply the bubble writing styling
             if (/^[A-Z]$/.test(randomCandy)) {
                 const letterSpan = document.createElement('span');
-                letterSpan.className = 'letter';
-                letterSpan.textContent = randomCandy;
+                letterSpan.className = 'letter color-' + randomCandy.toLowerCase(); // Assign a color class based on the letter
                 cell.innerHTML = ''; // Clear existing content
                 cell.appendChild(letterSpan);
             } else {
