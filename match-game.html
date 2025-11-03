@@ -44,87 +44,46 @@
         .cell.selected {
             background: rgba(0, 0, 255, 0.2);
         }
-        .letter {
-            font-size: 32px;
-            color: white;
-        }
-        .score {
-            font-size: 24px;
-            margin: 20px 0;
-        }
-        .message {
-            font-size: 24px;
-            margin: 20px 0;
-            color: green;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Candy Crush Clone</h1>
-    <div class="score">Score: <span id="score">0</span></div>
-    <div class="goal">Goal: <span id="goalWord">FRUIT</span></div>
     <div class="grid" id="grid"></div>
-    <div class="message" id="message"></div>
     
     <audio id="matchSound" src="https://www.soundjay.com/button/sounds/button-3.mp3" preload="auto"></audio>
-    <audio id="winSound" src="https://www.soundjay.com/button/sounds/button-9.mp3" preload="auto"></audio>
 </div>
 
 <script>
-const goalWord = "FRUIT"; 
-const letters = ['F', 'R', 'U', 'I', 'T']; 
 const candies = ['🍬', '🍭', '🍫', '🍪', '🍩', '🍦']; 
 const gridSize = 14; 
 const grid = document.getElementById('grid');
-let score = 0;
 let selectedCandies = [];
-let gridArray = [];
-let currentWord = ""; 
 
 const matchSound = document.getElementById('matchSound');
-const winSound = document.getElementById('winSound');
 
 function createGrid() {
-    gridArray = [];
     grid.innerHTML = '';
+    const allItems = Array.from({ length: gridSize * gridSize }, () => 
+        candies[Math.floor(Math.random() * candies.length)]
+    );
 
-    const allItems = [
-        ...letters,
-        ...Array(gridSize * gridSize - letters.length).fill().map(() => candies[Math.floor(Math.random() * candies.length)])
-    ];
-
-    shuffleArray(allItems);
-    
     for (let i = 0; i < gridSize; i++) {
-        const row = [];
         for (let j = 0; j < gridSize; j++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
             const item = allItems[i * gridSize + j];
+            cell.textContent = item;
             cell.dataset.index = `${i}-${j}`;
             cell.addEventListener('click', handleCellClick);
-
-            if (letters.includes(item)) {
-                const letterSpan = document.createElement('span');
-                letterSpan.className = 'letter';
-                letterSpan.textContent = item;
-                cell.appendChild(letterSpan);
-            } else {
-                cell.textContent = item;
-            }
-
             grid.appendChild(cell);
-            row.push(item);
         }
-        gridArray.push(row);
     }
 }
 
 function handleCellClick(event) {
     const cell = event.target.closest('.cell');
-    const [row, col] = cell.dataset.index.split('-').map(Number);
     
     if (selectedCandies.includes(cell)) {
         selectedCandies = selectedCandies.filter(c => c !== cell);
@@ -137,89 +96,19 @@ function handleCellClick(event) {
     if (selectedCandies.length >= 3) {
         const selectedCandyType = selectedCandies[0].textContent;
         if (selectedCandies.every(c => c.textContent === selectedCandyType)) {
-            clearMatches(selectedCandyType);
+            clearMatches();
         }
     }
 }
 
-function clearMatches(candyType) {
+function clearMatches() {
     selectedCandies.forEach(cell => {
-        const [row, col] = cell.dataset.index.split('-').map(Number);
-        gridArray[row][col] = null; 
         cell.innerHTML = ''; 
         cell.classList.remove('selected');
     });
 
-    score += 10;
-    document.getElementById('score').textContent = score;
-    matchSound.play(); 
+    matchSound.play();
     selectedCandies = [];
-    refillGrid();
-    collectAdjacentLetters(); 
-    checkWinCondition();
-}
-
-function collectAdjacentLetters() {
-    selectedCandies.forEach(cell => {
-        const [row, col] = cell.dataset.index.split('-').map(Number);
-        
-        const directions = [
-            [0, 1], [1, 0], [0, -1], [-1, 0],
-            [1, 1], [1, -1], [-1, 1], [-1, -1]
-        ];
-
-        directions.forEach(([dx, dy]) => {
-            const newRow = row + dx;
-            const newCol = col + dy;
-            if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
-                const letter = gridArray[newRow][newCol];
-                if (letters.includes(letter) && !currentWord.includes(letter)) {
-                    currentWord += letter; 
-                    gridArray[newRow][newCol] = null; 
-                    const adjacentCell = grid.children[newRow * gridSize + newCol];
-                    adjacentCell.innerHTML = ''; 
-                }
-            }
-        });
-    });
-}
-
-function refillGrid() {
-    for (let i = gridSize - 1; i >= 0; i--) {
-        for (let j = 0; j < gridSize; j++) {
-            if (gridArray[i][j] === null) {
-                let randomItem = (Math.random() < 0.5)
-                    ? candies[Math.floor(Math.random() * candies.length)]
-                    : letters[Math.floor(Math.random() * letters.length)];
-                gridArray[i][j] = randomItem;
-                const cell = grid.children[i * gridSize + j];
-                cell.innerHTML = '';
-                if (letters.includes(randomItem)) {
-                    const letterSpan = document.createElement('span');
-                    letterSpan.className = 'letter';
-                    letterSpan.textContent = randomItem;
-                    cell.appendChild(letterSpan);
-                } else {
-                    cell.textContent = randomItem;
-                }
-            }
-        }
-    }
-}
-
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-function checkWinCondition() {
-    if (currentWord.length === letters.length) {
-        document.getElementById('message').textContent = 'You Win! You spelled: ' + currentWord;
-        winSound.play(); 
-        grid.innerHTML = '';
-    }
 }
 
 createGrid();
