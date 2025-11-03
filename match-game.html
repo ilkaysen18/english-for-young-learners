@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-scale=no, initial-scale=1.0">
     <title>Candy Crush Clone</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
-
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             background: #b2e0e6;
             margin: 0;
             padding: 20px;
@@ -21,7 +19,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             padding: 20px;
-            overflow: hidden;
         }
         h1 {
             color: #ff1e56;
@@ -31,10 +28,9 @@
             grid-template-columns: repeat(14, 1fr);
             gap: 5px;
             margin: 20px 0;
-            width: 100%;
         }
         .cell {
-            width: 100%; 
+            width: 100%;
             height: 0;
             padding-bottom: 70%;
             border-radius: 5px;
@@ -43,23 +39,15 @@
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
-            user-select: none;
             background: #f0f0f0;
         }
         .cell.selected {
             background: rgba(0, 0, 255, 0.2);
         }
         .letter {
-            font-family: 'Patrick Hand', cursive;
             font-size: 32px;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-        .color-f { color: #ff5733; }
-        .color-r { color: #33c1ff; }
-        .color-u { color: #75ff33; }
-        .color-i { color: #ff33a1; }
-        .color-t { color: #ffcc00; }
         .score {
             font-size: 24px;
             margin: 20px 0;
@@ -69,11 +57,6 @@
             margin: 20px 0;
             color: green;
         }
-        .goal {
-            font-size: 24px;
-            margin: 20px 0;
-            color: darkorange;
-        }
     </style>
 </head>
 <body>
@@ -81,11 +64,10 @@
 <div class="container">
     <h1>Candy Crush Clone</h1>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="goal">Goal: <span id="goalWord"></span></div>
+    <div class="goal">Goal: <span id="goalWord">FRUIT</span></div>
     <div class="grid" id="grid"></div>
     <div class="message" id="message"></div>
     
-    <!-- Sound elements with Open Source Links -->
     <audio id="matchSound" src="https://www.soundjay.com/button/sounds/button-3.mp3" preload="auto"></audio>
     <audio id="winSound" src="https://www.soundjay.com/button/sounds/button-9.mp3" preload="auto"></audio>
 </div>
@@ -126,7 +108,7 @@ function createGrid() {
 
             if (letters.includes(item)) {
                 const letterSpan = document.createElement('span');
-                letterSpan.className = 'letter color-' + item.toLowerCase();
+                letterSpan.className = 'letter';
                 letterSpan.textContent = item;
                 cell.appendChild(letterSpan);
             } else {
@@ -138,7 +120,6 @@ function createGrid() {
         }
         gridArray.push(row);
     }
-    document.getElementById('goalWord').textContent = goalWord;
 }
 
 function handleCellClick(event) {
@@ -215,7 +196,7 @@ function refillGrid() {
                 cell.innerHTML = '';
                 if (letters.includes(randomItem)) {
                     const letterSpan = document.createElement('span');
-                    letterSpan.className = 'letter color-' + randomItem.toLowerCase();
+                    letterSpan.className = 'letter';
                     letterSpan.textContent = randomItem;
                     cell.appendChild(letterSpan);
                 } else {
