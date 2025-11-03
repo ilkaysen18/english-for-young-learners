@@ -171,7 +171,7 @@ function handleCellClick(event) {
 function clearMatches(candyType) {
     selectedCandies.forEach(cell => {
         const [row, col] = cell.dataset.index.split('-').map(Number);
-        gridArray[row][col] = null;
+        gridArray[row][col] = null; // Clear the candy from the grid
         cell.innerHTML = ''; // Clear the cell content
         cell.classList.remove('selected');
     });
