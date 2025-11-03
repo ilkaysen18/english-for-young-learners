@@ -1,267 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Letter Candy Match 🍬</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animal Emoji Match‑3 Game</title>
 <style>
-  :root {
-    --cell-size: 50px;
-  }
-
   body {
-    margin: 0;
-    background: linear-gradient(45deg, #ffb6c1, #ff69b4, #ff1493);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #fefcea, #f1da36);
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
+    margin: 0;
     min-height: 100vh;
-    color: #fff;
+    text-align: center;
   }
-
-  h1 {
-    margin: 20px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  }
-
-  #word-display, #scoreboard {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-
-  #board {
-    display: grid;
-    grid-template-columns: repeat(8, var(--cell-size));
-    grid-template-rows: repeat(8, var(--cell-size));
-    border: 5px solid #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(255,255,255,0.5);
-  }
-
-  .cell {
-    width: var(--cell-size);
-    height: var(--cell-size);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  h1 { color: #444; margin-bottom: 5px; }
+  #status {
+    font-size: 17px;
     font-weight: bold;
-    font-size: 1.1em;
-    user-select: none;
-    transition: transform 0.2s ease, border 0.2s ease;
+    margin: 6px 0;
   }
-
-  .selected {
-    outline: 3px solid #fff;
-    transform: scale(1.15);
+  #gameBoard {
+    display: grid;
+    grid-template-columns: repeat(6, 60px);
+    grid-gap: 6px;
+    margin-top: 15px;
+    position: relative;
   }
-
-  .red { background: #ff4d4d; color: #fff; }
-  .orange { background: #ff9933; color: #fff; }
-  .yellow { background: #ffde59; color: #000; }
-  .green { background: #66cc66; color: #fff; }
-  .blue { background: #4da6ff; color: #fff; }
-  .purple { background: #c266ff; color: #fff; }
-
+  .tile {
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.25s;
+  }
+  .tile.selected { background: #b8ffba; transform: scale(1.1); }
+  #message { font-size: 18px; font-weight: bold; margin-top: 12px; color: #3b7a00; min-height: 30px; }
   button {
     margin-top: 15px;
-    background: #fff;
-    color: #ff1493;
+    background: #4caf50;
+    color: white;
     border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    padding: 10px 20px;
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 5px;
     cursor: pointer;
   }
+  button:hover { background: #45a049; }
 
-  button:hover { background: #ffe6f0; }
-
-  #message {
-    margin-top: 10px;
-    font-size: 1.2em;
-    min-height: 1.2em;
+  @keyframes fall {
+    from { transform: translateY(-80px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
 
-  @media (max-width: 500px){
-    :root { --cell-size: 42px; }
+  @media (max-width: 480px) {
+    #gameBoard { grid-template-columns: repeat(5, 50px); }
+    .tile { width: 50px; height: 50px; font-size: 26px; }
   }
 </style>
 </head>
 <body>
-  <h1>Letter Candy Match 🍭</h1>
-  <div id="word-display">Word: <span id="word-progress">_ _ _ _ _</span></div>
-  <div id="scoreboard">Score: <span id="score">0</span></div>
-  <div id="board"></div>
-  <button id="restart">Restart</button>
-  <div id="message"></div>
+<h1>🐾 Match 3 Animal Emojis!</h1>
+<div id="status">Score: 0 | Level: 1 | Target: 100</div>
+<div id="gameBoard"></div>
+<div id="message"></div>
+<button id="submitMatch">Submit Match</button>
+<button id="restart">Restart</button>
 
 <script>
-  const width = 8;
-  const colors = ['red','orange','yellow','green','blue','purple'];
-  const letters = ['C','A','N','D','Y'];
-  const targetWord = "CANDY";
-  
-  const board = document.getElementById('board');
-  const scoreDisplay = document.getElementById('score');
-  const wordProgressDisplay = document.getElementById('word-progress');
-  const msg = document.getElementById('message');
-  const restart = document.getElementById('restart');
-
-  let squares = [];
+  const boardSize = 6;
+  const animals = ['🐶','🐱','🐰','🐻','🦊','🐼','🐸','🦁','🐷'];
+  let board = [];
+  let selected = [];
   let score = 0;
-  let selectedIndex = null;
-  let collected = { C:0, A:0, N:0, D:0, Y:0 };
+  let level = 1;
+  const baseTarget = 100;
 
-  /** UTILITIES **/
-  function updateWordProgress() {
-    wordProgressDisplay.textContent = letters.map(l => collected[l] ? l : '_').join(' ');
-    if (letters.every(l => collected[l])) {
-      msg.innerHTML = `🎉 You spelled <strong>${targetWord}</strong>! 🍬`;
-    }
+  const gameBoard = document.getElementById('gameBoard');
+  const statusDisplay = document.getElementById('status');
+  const messageDisplay = document.getElementById('message');
+
+  // === SOUND SYSTEM ===
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playTone(freq, dur=0.15, type='sine', vol=0.2){
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.value = vol;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
+  }
+  function successSound(){
+    [440, 660, 880].forEach((f,i)=>setTimeout(()=>playTone(f,0.15), i*150));
+  }
+  function failSound(){
+    [200,150].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'square'), i*250));
+  }
+  function victorySound(){
+    [523,659,784,1046].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'triangle',0.25), i*200));
   }
 
-  function getColor(i) {
-    return squares[i].dataset.color || '';
-  }
-
-  function setCandy(i, color, letter='') {
-    const c = squares[i];
-    c.dataset.color = color;
-    c.dataset.letter = letter;
-    c.textContent = letter;
-    c.className = `cell ${color}`;
-  }
-
-  function clearCandy(i){
-    setCandy(i,'','');
-  }
-
-  /** BOARD SETUP **/
-  function createBoard() {
-    board.innerHTML='';
-    squares=[];
-    score=0;
-    collected={ C:0,A:0,N:0,D:0,Y:0 };
-    updateWordProgress();
-    msg.textContent='';
-    scoreDisplay.textContent=score;
-
-    for (let i=0;i<width*width;i++){
-      const div = document.createElement('div');
-      const color = colors[Math.floor(Math.random()*colors.length)];
-      const letterChance = Math.random()<0.1 ? letters[Math.floor(Math.random()*letters.length)] : '';
-      setCandyItem(div,color,letterChance,i);
-      board.appendChild(div);
-      squares.push(div);
-    }
-  }
-
-  function setCandyItem(div,color,letter,id){
-    div.className=`cell ${color}`;
-    div.textContent = letter;
-    div.dataset.color=color;
-    div.dataset.letter=letter;
-    div.dataset.id=id;
-    div.onclick = () => handleTap(id);
-  }
-
-  /** SWAP **/
-  function handleTap(i){
-    if(selectedIndex===null){
-      selectedIndex = i;
-      squares[i].classList.add('selected');
-      return;
-    }
-    if(selectedIndex===i){
-      squares[i].classList.remove('selected');
-      selectedIndex=null;
-      return;
-    }
-    const valid = [selectedIndex-1, selectedIndex+1, selectedIndex-width, selectedIndex+width];
-    if(valid.includes(i)){
-      swap(selectedIndex,i);
-      if(!checkMatches()) {
-        swap(selectedIndex,i); // revert if no match
+  // === GAME INITIALIZATION ===
+  function initBoard(){
+    board = [];
+    for(let r=0;r<boardSize;r++){
+      const row = [];
+      for(let c=0;c<boardSize;c++){
+        const emoji = animals[Math.floor(Math.random()*animals.length)];
+        row.push(emoji);
       }
+      board.push(row);
     }
-    squares[selectedIndex].classList.remove('selected');
-    selectedIndex=null;
+    renderBoard();
+    updateStatus();
+    messageDisplay.textContent = '';
   }
 
-  function swap(a,b){
-    const colorA = getColor(a);
-    const colorB = getColor(b);
-    const letterA = squares[a].dataset.letter;
-    const letterB = squares[b].dataset.letter;
-    setCandy(a,colorB,letterB);
-    setCandy(b,colorA,letterA);
-  }
-
-  /** MATCH CHECK **/
-  function checkMatches(){
-    let matched=false;
-    // Row matches
-    for(let i=0;i<width*width;i++){
-      if(i%width>width-4) continue;
-      const row=[i,i+1,i+2];
-      const color = getColor(i);
-      if(color && row.every(j=>getColor(j)===color)){
-        matched=true;
-        for(let j of row) destroyCandy(j);
-      }
-    }
-    // Col matches
-    for(let i=0;i<width*(width-2);i++){
-      const col=[i,i+width,i+2*width];
-      const color = getColor(i);
-      if(color && col.every(j=>getColor(j)===color)){
-        matched=true;
-        for(let j of col) destroyCandy(j);
-      }
-    }
-    if(matched){
-      score+=30;
-      scoreDisplay.textContent=score;
-    }
-    return matched;
-  }
-
-  function destroyCandy(i){
-    const letter = squares[i].dataset.letter;
-    if(letter && collected.hasOwnProperty(letter)) collected[letter]=1;
-    updateWordProgress();
-    clearCandy(i);
-  }
-
-  /** CASCADE **/
-  function moveDown(){
-    for(let i=width*(width-2);i>=0;i--){
-      if(!getColor(i+width)){
-        setCandy(i+width,getColor(i),squares[i].dataset.letter);
-        clearCandy(i);
-      }
-    }
-    // Fill top row
-    for(let i=0;i<width;i++){
-      if(!getColor(i)){
-        let color = colors[Math.floor(Math.random()*colors.length)];
-        let letter = Math.random()<0.08 ? letters[Math.floor(Math.random()*letters.length)] : '';
-        setCandy(i,color,letter);
+  function renderBoard(){
+    gameBoard.innerHTML = '';
+    for(let r=0;r<boardSize;r++){
+      for(let c=0;c<boardSize;c++){
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.textContent = board[r][c];
+        tile.dataset.row = r;
+        tile.dataset.col = c;
+        tile.addEventListener('click', tileClick);
+        gameBoard.appendChild(tile);
       }
     }
   }
 
-  /** GAME LOOP **/
-  function loop(){
-    moveDown();
-    checkMatches();
+  function tileClick(e){
+    const tile = e.currentTarget;
+    const r = parseInt(tile.dataset.row);
+    const c = parseInt(tile.dataset.col);
+    if(tile.classList.contains('selected')) return;
+
+    tile.classList.add('selected');
+    selected.push({r,c,emoji: board[r][c],tile});
   }
 
-  restart.onclick=createBoard;
+  document.getElementById('submitMatch').addEventListener('click', () => {
+    if (selected.length === 3) {
+      const [a, b, c] = selected;
+      if (a.emoji === b.emoji && b.emoji === c.emoji) {
+        // Check adjacency
+        if (areAdjacent(a, b) && areAdjacent(b, c)) {
+          successSound();
+          score += 10;
+          a.tile.style.visibility = b.tile.style.visibility = c.tile.style.visibility = 'hidden';
+          board[a.r][a.c] = board[b.r][b.c] = board[c.r][c.c] = null;
+          updateStatus();
+          setTimeout(() => { fallDown(); }, 400);
+        } else {
+          failSound();
+          selected.forEach(s => s.tile.classList.remove('selected'));
+        }
+      } else {
+        failSound();
+        selected.forEach(s => s.tile.classList.remove('selected'));
+      }
+      selected = [];
+    } else {
+      alert("Please select three animals!");
+    }
+  });
 
-  createBoard();
-  setInterval(loop,250);
+  function areAdjacent(a, b) {
+    return (Math.abs(a.r - b.r) + Math.abs(a.c - b.c) === 1);
+  }
+
+  // === CASCADE FALLING ===
+  function fallDown(){
+    for(let c=0;c<boardSize;c++){
+      let emptyRow = boardSize-1;
+      for(let r=boardSize-1;r>=0;r--){
+        if(board[r][c]!==null){
+          board[emptyRow][c] = board[r][c];
+          if(emptyRow !== r) board[r][c] = null;
+          emptyRow--;
+        }
+      }
+      // Fill new emojis
+      for(let r=emptyRow;r>=0;r--){
+        board[r][c] = animals[Math.floor(Math.random()*animals.length)];
+      }
+    }
+    renderFall();
+    checkLevelComplete();
+  }
+
+  function renderFall(){
+    gameBoard.innerHTML = '';
+    for(let r=0;r<boardSize;r++){
+      for(let c=0;c<boardSize;c++){
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.textContent = board[r][c];
+        tile.dataset.row = r;
+        tile.dataset.col = c;
+        tile.style.animation = 'fall 0.4s ease';
+        tile.addEventListener('click', tileClick);
+        gameBoard.appendChild(tile);
+      }
+    }
+  }
+
+  function checkLevelComplete(){
+    const target = baseTarget * level;
+    if(score >= target){
+      victorySound();
+      messageDisplay.textContent = `🎉 You cleared Level ${level}! 🥳`;
+      const nextBtn = document.createElement('button');
+      nextBtn.textContent = `Next Level ▶️`;
+      nextBtn.onclick = ()=>{
+        level++;
+        messageDisplay.textContent = '';
+        initBoard();
+      };
+      messageDisplay.appendChild(nextBtn);
+    }
+  }
+
+  function updateStatus(){
+    const target = baseTarget * level;
+    statusDisplay.textContent = `Score: ${score} | Level: ${level} | Target: ${target}`;
+  }
+
+  document.getElementById('restart').addEventListener('click', ()=>{
+    score = 0; level = 1;
+    initBoard();
+  });
+
+  initBoard();
 </script>
 </body>
 </html>
