@@ -45,7 +45,7 @@
 #### 8️⃣ Booking page 
 * added sales landing & booking page
 #### 9️⃣ Emoji Crush 🎉 
-* new game added
+* [new game](https://ilkaysen18.github.io/englishtraininghub/match-game-1.html) added
 
 
 
