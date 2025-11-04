@@ -20,71 +20,12 @@
     align-items: center;
     gap: 20px;
   }
-  .visible { display: flex; }
-  h1 { margin-top: 0; }
-  .map-area {
-    position: relative;
-    width: 400px;
-    height: 500px;
-  }
-  .level-tile {
-    font-size: 36px;
-    cursor: pointer;
-    background: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    line-height: 60px;
-    transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    position: absolute;
-  }
-  .locked { opacity: 0.3; cursor: not-allowed; }
-  .unlocked {
-    animation: bounce 1s infinite alternate;
-    box-shadow: 0 0 15px #ffd700;
-  }
-  @keyframes bounce {
-    from { transform: translateY(0); }
-    to { transform: translateY(-5px); }
-  }
-  svg {
-    position: absolute;
-    top: 0; left: 0;
-    width: 400px; height: 500px;
-    pointer-events: none;
-  }
-  path {
-    stroke: url(#gold);
-    stroke-width: 6;
-    fill: none;
-    opacity: 0.7;
-    stroke-linecap: round;
-    stroke-dasharray: 10;
-    animation: dash 1.5s linear infinite;
-  }
-  @keyframes dash { to { stroke-dashoffset: -20; } }
-  #gameBoard {
-    display: grid;
-    grid-template-columns: repeat(8, 60px);
-    grid-template-rows: repeat(8, 60px);
-    gap: 5px;
-  }
-  .tile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    border-radius: 10px;
-    background: white;
-    cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
-    user-select: none;
-  }
-  .tile.selected {
-    background: #a3f7a3;
-    border: 2px solid #2ecc71;
+  h1,h2{margin:0;}
+  input {
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    font-size: 16px;
   }
   button {
     padding: 10px 20px;
@@ -96,21 +37,24 @@
     font-size: 16px;
   }
   button:hover { background: #45a049; }
+  .msg { font-size:14px;color:red; }
 </style>
 </head>
 <body>
 
 <!-- 🔐 LOGIN -->
-<div id="loginScreen" class="visible">
+<div id="loginScreen" style="display:flex;">
   <h2>🔐 Sign In to Play</h2>
   <input id="email" type="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
   <button id="loginBtn">Login / Register</button>
+  <div id="loginMsg" class="msg"></div>
 </div>
 
 <!-- 🌍 MAP -->
 <div id="map">
   <h1>🌍 Emoji Adventure Map</h1>
+  <button id="logoutBtn">🚪 Logout</button>
   <div class="map-area">
     <svg id="mapPaths">
       <defs>
@@ -131,192 +75,180 @@
   <button id="backToMap">🏠 Back to Map</button>
 </div>
 
-<!-- ✅ NON-MODULE FIREBASE -->
+<!-- ✅ Firebase (compat mode) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
-    authDomain: "english-training-hub.firebaseapp.com",
-    projectId: "english-training-hub",
-    storageBucket: "english-training-hub.firebasestorage.app",
-    messagingSenderId: "927072446139",
-    appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
-    measurementId: "G-34BBV99KXB"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
+  authDomain: "english-training-hub.firebaseapp.com",
+  projectId: "english-training-hub",
+  storageBucket: "english-training-hub.firebasestorage.app",
+  messagingSenderId: "927072446139",
+  appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
+  measurementId: "G-34BBV99KXB"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+const loginScreen = document.getElementById("loginScreen");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
+const loginMsg = document.getElementById("loginMsg");
+const logoutBtn = document.getElementById("logoutBtn");
+const mapDiv = document.getElementById("map");
+const gameDiv = document.getElementById("game");
+const mapGrid = document.getElementById("mapGrid");
+const mapPaths = document.getElementById("mapPaths");
+const gameBoard = document.getElementById("gameBoard");
+const levelTitle = document.getElementById("levelTitle");
+const backToMap = document.getElementById("backToMap");
 
-  const loginScreen = document.getElementById("loginScreen");
-  const mapDiv = document.getElementById("map");
-  const gameDiv = document.getElementById("game");
-  const mapGrid = document.getElementById("mapGrid");
-  const mapPaths = document.getElementById("mapPaths");
-  const gameBoard = document.getElementById("gameBoard");
-  const levelTitle = document.getElementById("levelTitle");
-  const backToMap = document.getElementById("backToMap");
-  const loginBtn = document.getElementById("loginBtn");
+const levels = ["🐣","🌳","🏠","🏖️","🏔️","🌋","🏰","🚀","🌕"];
+const animals = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼"];
+const positions = [[170,420],[80,340],[230,300],[140,220],[250,160],[120,100],[220,60],[160,30],[80,10]];
+const rows=8, cols=8;
+let unlockedLevel=0, currentLevel=0, user=null, board=[], selected=[];
 
-  const levels = ["🐣","🌳","🏠","🏖️","🏔️","🌋","🏰","🚀","🌕"];
-  const animals = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼"];
-  const positions = [
-    [170, 420],[80, 340],[230, 300],
-    [140, 220],[250, 160],[120, 100],
-    [220, 60],[160, 30],[80, 10]
-  ];
-  const rows = 8, cols = 8;
-
-  let unlockedLevel = 0, currentLevel = 0, user = null;
-  let board = [], selected = [];
-
-  loginBtn.onclick = async () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-    } catch {
-      await auth.createUserWithEmailAndPassword(email, password);
+loginBtn.onclick = async () => {
+  const mail=email.value.trim(), pass=password.value.trim();
+  if(!mail || !pass){loginMsg.textContent="Enter email & password";return;}
+  loginMsg.textContent="⏳ Signing in...";
+  try{
+    await auth.signInWithEmailAndPassword(mail,pass);
+  }catch(e){
+    try{
+      await auth.createUserWithEmailAndPassword(mail,pass);
+      loginMsg.textContent="✅ Account created!";
+    }catch(err){
+      loginMsg.textContent="❌ "+err.message;
     }
-  };
+  }
+};
 
-  auth.onAuthStateChanged(async (u) => {
-    if (u) {
-      user = u;
-      const ref = db.collection("progress").doc(user.uid);
-      const snap = await ref.get();
-      unlockedLevel = snap.exists ? snap.data().unlockedLevel : 0;
-      loginScreen.style.display = "none";
-      mapDiv.style.display = "flex";
-      gameDiv.style.display = "none";
-      showMap();
-    } else {
-      loginScreen.style.display = "flex";
-      mapDiv.style.display = "none";
-      gameDiv.style.display = "none";
+logoutBtn.onclick = ()=>auth.signOut();
+
+auth.onAuthStateChanged(async (u)=>{
+  if(u){
+    user=u;
+    loginScreen.style.display="none";
+    mapDiv.style.display="flex";
+    const ref=db.collection("progress").doc(user.uid);
+    const snap=await ref.get();
+    unlockedLevel=snap.exists?snap.data().unlockedLevel:0;
+    showMap();
+  }else{
+    user=null;
+    mapDiv.style.display="none";
+    gameDiv.style.display="none";
+    loginScreen.style.display="flex";
+  }
+});
+
+function showMap(){
+  gameDiv.style.display="none";
+  mapGrid.innerHTML="";
+  mapPaths.innerHTML=`<defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffa500"/></linearGradient></defs>`;
+  levels.forEach((emoji,i)=>{
+    const tile=document.createElement("div");
+    tile.className="level-tile";
+    tile.textContent=emoji;
+    tile.style.left=positions[i][0]+"px";
+    tile.style.top=positions[i][1]+"px";
+    tile.style.position="absolute";
+    if(i>unlockedLevel)tile.classList.add("locked");
+    else{tile.classList.add("unlocked");tile.onclick=()=>startLevel(i);}
+    mapGrid.appendChild(tile);
+    if(i>0){
+      const[x1,y1]=positions[i-1],[x2,y2]=positions[i];
+      const midX=(x1+x2)/2+(Math.random()*40-20);
+      const midY=(y1+y2)/2+(Math.random()*40-20);
+      const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+      path.setAttribute("d",`M${x1+30},${y1+30} Q${midX+30},${midY+30} ${x2+30},${y2+30}`);
+      mapPaths.appendChild(path);
     }
   });
+}
 
-  function showMap() {
-    gameDiv.style.display = "none";
-    mapDiv.style.display = "flex";
-    mapGrid.innerHTML = '';
-    mapPaths.innerHTML = `
-      <defs>
-        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#ffd700"/>
-          <stop offset="100%" stop-color="#ffa500"/>
-        </linearGradient>
-      </defs>`;
-    levels.forEach((emoji, i) => {
-      const tile = document.createElement("div");
-      tile.className = "level-tile";
-      tile.textContent = emoji;
-      tile.style.left = positions[i][0] + "px";
-      tile.style.top = positions[i][1] + "px";
-      if (i > unlockedLevel) {
-        tile.classList.add("locked");
-      } else {
-        tile.classList.add("unlocked");
-        tile.onclick = () => startLevel(i);
-      }
-      mapGrid.appendChild(tile);
-      if (i > 0) {
-        const [x1, y1] = positions[i-1];
-        const [x2, y2] = positions[i];
-        const midX = (x1+x2)/2 + (Math.random()*40-20);
-        const midY = (y1+y2)/2 + (Math.random()*40-20);
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", `M${x1+30},${y1+30} Q${midX+30},${midY+30} ${x2+30},${y2+30}`);
-        mapPaths.appendChild(path);
-      }
+function startLevel(i){
+  currentLevel=i;
+  mapDiv.style.display="none";
+  gameDiv.style.display="flex";
+  levelTitle.textContent=`Level ${i+1} ${levels[i]}`;
+  initBoard();
+}
+backToMap.onclick=showMap;
+
+function initBoard(){
+  gameBoard.innerHTML="";
+  board=[];
+  for(let r=0;r<rows;r++){
+    board[r]=[];
+    for(let c=0;c<cols;c++){
+      const emoji=animals[Math.floor(Math.random()*animals.length)];
+      board[r][c]=emoji;
+      renderTile(r,c,emoji);
+    }
+  }
+}
+
+function renderTile(r,c,emoji){
+  const t=document.createElement("div");
+  t.className="tile";
+  t.textContent=emoji;
+  t.dataset.row=r;t.dataset.col=c;
+  t.onclick=()=>handleClick(r,c);
+  gameBoard.appendChild(t);
+}
+
+function handleClick(r,c){
+  const t=document.querySelector(`.tile[data-row="${r}"][data-col="${c}"]`);
+  if(!t)return;
+  if(t.classList.contains("selected")){
+    t.classList.remove("selected");
+    selected=selected.filter(s=>!(s.r===r&&s.c===c));
+    return;
+  }
+  t.classList.add("selected");
+  selected.push({r,c});
+  if(selected.length===2){
+    swapTiles(selected[0],selected[1]);
+    selected.forEach(s=>{
+      const tt=document.querySelector(`.tile[data-row="${s.r}"][data-col="${s.c}"]`);
+      if(tt)tt.classList.remove("selected");
     });
+    selected=[];
   }
+}
 
-  function startLevel(i) {
-    currentLevel = i;
-    mapDiv.style.display = "none";
-    gameDiv.style.display = "flex";
-    levelTitle.textContent = `Level ${i + 1} ${levels[i]}`;
-    initBoard();
-  }
+function swapTiles(a,b){
+  const tmp=board[a.r][a.c];
+  board[a.r][a.c]=board[b.r][b.c];
+  board[b.r][b.c]=tmp;
+  updateBoard();
+  setTimeout(checkLevelComplete,1000);
+}
 
-  backToMap.onclick = showMap;
+function updateBoard(){
+  document.querySelectorAll(".tile").forEach(t=>{
+    const r=+t.dataset.row,c=+t.dataset.col;
+    t.textContent=board[r][c];
+  });
+}
 
-  function initBoard() {
-    gameBoard.innerHTML = '';
-    board = [];
-    for (let r=0; r<rows; r++) {
-      board[r] = [];
-      for (let c=0; c<cols; c++) {
-        const emoji = animals[Math.floor(Math.random()*animals.length)];
-        board[r][c] = emoji;
-        renderTile(r, c, emoji);
-      }
+async function checkLevelComplete(){
+  if(Math.random()<0.3){
+    alert(`🎉 Level ${currentLevel+1} Complete!`);
+    if(currentLevel===unlockedLevel&&unlockedLevel<levels.length-1){
+      unlockedLevel++;
+      if(user)await db.collection("progress").doc(user.uid).set({unlockedLevel});
     }
+    showMap();
   }
-
-  function renderTile(r, c, emoji) {
-    const tile = document.createElement("div");
-    tile.className = "tile";
-    tile.textContent = emoji;
-    tile.dataset.row = r;
-    tile.dataset.col = c;
-    tile.onclick = () => handleClick(r, c);
-    gameBoard.appendChild(tile);
-  }
-
-  function handleClick(r, c) {
-    const tile = document.querySelector(`.tile[data-row="${r}"][data-col="${c}"]`);
-    if (!tile) return;
-    if (tile.classList.contains("selected")) {
-      tile.classList.remove("selected");
-      selected = selected.filter(s => !(s.r===r && s.c===c));
-      return;
-    }
-    tile.classList.add("selected");
-    selected.push({r, c});
-    if (selected.length === 2) {
-      swapTiles(selected[0], selected[1]);
-      selected.forEach(s => {
-        const t = document.querySelector(`.tile[data-row="${s.r}"][data-col="${s.c}"]`);
-        if (t) t.classList.remove("selected");
-      });
-      selected = [];
-    }
-  }
-
-  function swapTiles(a, b) {
-    const temp = board[a.r][a.c];
-    board[a.r][a.c] = board[b.r][b.c];
-    board[b.r][b.c] = temp;
-    updateBoard();
-    setTimeout(checkLevelComplete, 1000);
-  }
-
-  function updateBoard() {
-    const tiles = document.querySelectorAll(".tile");
-    tiles.forEach(tile => {
-      const r = +tile.dataset.row;
-      const c = +tile.dataset.col;
-      tile.textContent = board[r][c];
-    });
-  }
-
-  async function checkLevelComplete() {
-    if (Math.random() < 0.3) {
-      alert(`🎉 Level ${currentLevel + 1} Complete!`);
-      if (currentLevel === unlockedLevel && unlockedLevel < levels.length - 1) {
-        unlockedLevel++;
-        if (user) {
-          await db.collection("progress").doc(user.uid).set({ unlockedLevel });
-        }
-      }
-      showMap();
-    }
-  }
+}
 </script>
 </body>
 </html>
