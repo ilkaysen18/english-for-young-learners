@@ -1,281 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emoji Crush Adventure</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Emoji Crush Adventure — Full Match-3 + Firebase</title>
 <style>
+  :root { --board-size: 8; --tile: 60px; --gap: 5px; }
   body {
-    font-family: "Segoe UI Emoji", sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, #f0f8ff, #cce7ff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
+    font-family: "Segoe UI Emoji", system-ui, -apple-system, "Helvetica Neue", Arial;
+    margin: 0; padding: 18px;
+    background: linear-gradient(180deg,#f0f8ff,#cce7ff);
+    display:flex; justify-content:center; align-items:flex-start; min-height:100vh;
+    gap:18px;
   }
-  #map, #game, #login {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-  h1, h2 { margin: 0; }
-  #gameBoard {
-    display: grid;
-    grid-template-columns: repeat(8, 60px);
-    grid-template-rows: repeat(8, 60px);
-    gap: 5px;
-  }
+  .panel { width: 520px; max-width: calc(100% - 36px); background: rgba(255,255,255,0.95); border-radius:12px; padding:14px; box-shadow:0 8px 20px rgba(0,0,0,0.12); }
+  h1,h2 { margin:6px 0; text-align:center; }
+  /* Login */
+  #login { display:flex; flex-direction:column; gap:8px; align-items:center; }
+  input[type="email"], input[type="password"] { width:88%; padding:10px; border-radius:8px; border:1px solid #d0d7de; font-size:15px; }
+  button { padding:10px 16px; border-radius:8px; border:0; background:#1f8a3d; color:white; cursor:pointer; font-weight:600; }
+  button.secondary{ background:#2b6fa4; }
+  /* Map */
+  .map-area { position:relative; width:400px; height:500px; margin:12px auto; }
+  .level-tile { position:absolute; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:white; font-size:30px; box-shadow:0 6px 18px rgba(0,0,0,0.12); cursor:pointer; transition:transform .18s, box-shadow .18s, opacity .18s; }
+  .level-tile.locked { opacity:.35; cursor:default; filter:grayscale(40%); }
+  .level-tile.unlocked { animation: bounce 1s infinite alternate; box-shadow:0 0 18px #ffd76a; }
+  @keyframes bounce { from{ transform:translateY(0);} to{ transform:translateY(-6px);} }
+  /* Board */
+  #gameHeader { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 4px; }
+  #status { font-weight:700; }
+  #gameBoard { display:grid; justify-content:center; margin:12px auto; grid-template-columns: repeat(var(--board-size), var(--tile)); gap: var(--gap); }
   .tile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    border-radius: 10px;
-    background: white;
-    cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
-    user-select: none;
+    width: var(--tile); height: var(--tile);
+    display:flex; align-items:center; justify-content:center; font-size:28px;
+    background:#fff; border-radius:10px; cursor:pointer; user-select:none; transition: transform .22s, background .22s, opacity .25s;
+    box-shadow:0 4px 10px rgba(0,0,0,0.06);
+    position:relative; overflow:visible;
   }
-  .tile.selected { background: #a3f7a3; border: 2px solid #2ecc71; }
-  .level-tile {
-    font-size: 36px;
-    cursor: pointer;
-    background: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    line-height: 60px;
-    position: absolute;
-    transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  .tile.selected { background:#dfffe1; transform:scale(1.06); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
+  .tile.hidden { visibility:hidden; opacity:0; transform:scale(.98); }
+  #message { text-align:center; font-weight:700; color:#166534; min-height:26px; margin-top:6px; }
+  .controls { display:flex; gap:8px; justify-content:center; margin-top:8px; }
+  /* Responsive */
+  @media (max-width:540px){
+    .map-area{ width:320px; height:420px; }
+    :root{ --tile:48px; }
   }
-  .locked { opacity: 0.3; cursor: not-allowed; }
-  .unlocked { animation: bounce 1s infinite alternate; box-shadow: 0 0 15px #ffd700; }
-  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
-  button {
-    padding: 10px 20px;
-    border: none;
-    background: #4caf50;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  button:hover { background: #45a049; }
-  #message { font-weight: bold; color: #3b7a00; }
 </style>
 </head>
 <body>
 
-<!-- 🔑 Login -->
-<div id="login">
-  <h1>Login to Play</h1>
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <button id="loginBtn">Login / Signup</button>
-  <div id="loginMessage"></div>
+<div class="panel" id="leftPanel">
+  <!-- Login -->
+  <div id="login">
+    <h1>Emoji Crush Adventure</h1>
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
+    <div class="controls">
+      <button id="loginBtn">Log in</button>
+      <button id="signupBtn" class="secondary">Sign up</button>
+    </div>
+    <div id="loginMsg" style="color:#a33; margin-top:6px;"></div>
+  </div>
+
+  <!-- Map -->
+  <div id="map" style="display:none;">
+    <h2>🌍 Adventure Map</h2>
+    <div class="map-area" id="mapArea"></div>
+  </div>
 </div>
 
-<!-- 🌍 Map -->
-<div id="map">
-  <h1>🌍 Emoji Adventure Map</h1>
-  <div style="position: relative; width: 400px; height: 500px;" id="mapGrid"></div>
+<div class="panel" id="rightPanel" style="display:none;">
+  <!-- Game -->
+  <div id="game" style="display:flex; flex-direction:column; align-items:center;">
+    <div id="gameHeader" style="width:100%;">
+      <div id="levelTitle">Level 1</div>
+      <div id="status">Score: 0 | Target: 100</div>
+    </div>
+    <div id="gameBoard" style="--board-size:8;"></div>
+    <div id="message"></div>
+    <div class="controls">
+      <button id="backBtn">🏠 Map</button>
+      <button id="restartBtn" class="secondary">Restart Level</button>
+    </div>
+  </div>
 </div>
 
-<!-- 🎮 Game -->
-<div id="game">
-  <h2 id="levelTitle">Level</h2>
-  <div id="gameBoard"></div>
-  <div id="message"></div>
-  <button id="backToMap">🏠 Back to Map</button>
-</div>
-
-<!-- Firebase -->
+<!-- Firebase compat CDN -->
 <script src="https://www.gstatic.com/firebasejs/10.2.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.2.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.2.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // === Firebase Setup ===
-  const firebaseConfig = {
-    apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
-    authDomain: "english-training-hub.firebaseapp.com",
-    projectId: "english-training-hub",
-    storageBucket: "english-training-hub.appspot.com",
-    messagingSenderId: "927072446139",
-    appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
-    measurementId: "G-34BBV99KXB"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+/* ================= FIREBASE CONFIG (your provided config) ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
+  authDomain: "english-training-hub.firebaseapp.com",
+  projectId: "english-training-hub",
+  storageBucket: "english-training-hub.appspot.com",
+  messagingSenderId: "927072446139",
+  appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
+  measurementId: "G-34BBV99KXB"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-  // === DOM Elements ===
-  const loginDiv = document.getElementById('login');
-  const loginBtn = document.getElementById('loginBtn');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const loginMessage = document.getElementById('loginMessage');
+/* =================== UI / GAME STATE =================== */
+const loginDiv = document.getElementById('login');
+const mapDiv = document.getElementById('map');
+const mapArea = document.getElementById('mapArea');
+const gamePanel = document.getElementById('game');
+const rightPanel = document.getElementById('rightPanel');
+const leftPanel = document.getElementById('leftPanel');
+const loginMsg = document.getElementById('loginMsg');
+const emailEl = document.getElementById('email');
+const passEl = document.getElementById('password');
+const loginBtn = document.getElementById('loginBtn');
+const signupBtn = document.getElementById('signupBtn');
 
-  const map = document.getElementById('map');
-  const game = document.getElementById('game');
-  const mapGrid = document.getElementById('mapGrid');
-  const gameBoard = document.getElementById('gameBoard');
-  const levelTitle = document.getElementById('levelTitle');
-  const backToMap = document.getElementById('backToMap');
-  const messageDisplay = document.getElementById('message');
+const levelTitle = document.getElementById('levelTitle');
+const statusEl = document.getElementById('status');
+const gameBoardEl = document.getElementById('gameBoard');
+const messageEl = document.getElementById('message');
+const backBtn = document.getElementById('backBtn');
+const restartBtn = document.getElementById('restartBtn');
 
-  // === Game Variables ===
-  const levels = ["🐣","🌳","🏠","🏖️","🏔️","🌋","🏰","🚀","🌕"];
-  let unlockedLevel = 0;
-  let currentLevel = 0;
-  const rows = 8, cols = 8;
-  const animals = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼"];
-  let board = [];
-  let selected = [];
+const levels = ["🐣","🌳","🏠","🏖️","🏔️","🌋","🏰","🚀","🌕"];
+const positions = [[170,420],[80,340],[230,300],[140,220],[250,160],[120,100],[220,60],[160,30],[80,10]];
 
-  const positions = [
-    [170, 420],[80, 340],[230, 300],[140, 220],[250, 160],
-    [120, 100],[220, 60],[160, 30],[80, 10]
-  ];
+let currentUser = null;
+let unlockedLevel = 0;
+let currentLevel = 0;         // index
+const rows = 8, cols = 8;
+const animals = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼"];
+let board = [];               // 2D array of emojis or null
+let tileElements = [];        // flattened DOM tiles
+let selected = [];            // selected tiles for manual selection (the game supports selecting multiple in same-color chain)
+let score = 0;
+const baseTarget = 100;
 
-  // === Firebase Auth ===
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      loadProgress(user.uid);
-    } else {
-      loginDiv.style.display = 'flex';
-      map.style.display = 'none';
-      game.style.display = 'none';
+/* =================== AUTH =================== */
+loginBtn.onclick = async () => {
+  loginMsg.textContent = '';
+  const email = emailEl.value.trim(), pass = passEl.value;
+  if(!email || !pass){ loginMsg.textContent = 'enter email & password'; return; }
+  try {
+    await auth.signInWithEmailAndPassword(email, pass);
+  } catch (err) {
+    loginMsg.textContent = err.message;
+  }
+};
+signupBtn.onclick = async () => {
+  loginMsg.textContent = '';
+  const email = emailEl.value.trim(), pass = passEl.value;
+  if(!email || !pass){ loginMsg.textContent = 'enter email & password'; return; }
+  try {
+    await auth.createUserWithEmailAndPassword(email, pass);
+    // create initial progress doc
+    const user = auth.currentUser;
+    if(user) await db.collection('users').doc(user.uid).set({ unlockedLevel: 0 }, { merge: true });
+  } catch (err) {
+    loginMsg.textContent = err.message;
+  }
+};
+
+auth.onAuthStateChanged(async user => {
+  if(user){
+    currentUser = user;
+    leftPanel.style.display = 'block';
+    rightPanel.style.display = 'block';
+    loginDiv.style.display = 'none';
+    // load progress
+    try {
+      const doc = await db.collection('users').doc(user.uid).get();
+      unlockedLevel = doc.exists && doc.data().unlockedLevel !== undefined ? doc.data().unlockedLevel : 0;
+    } catch(e){ unlockedLevel = 0; }
+    showMap();
+  } else {
+    currentUser = null;
+    loginDiv.style.display = 'flex';
+    mapDiv.style.display = 'none';
+    rightPanel.style.display = 'none';
+  }
+});
+
+/* =================== MAP UI =================== */
+function showMap(){
+  gamePanel.style.display = 'none';
+  mapDiv.style.display = 'block';
+  mapArea.innerHTML = ''; // will contain level tiles and path SVG (simple)
+  // draw simple paths as thin divs (not precise), and place level tiles
+  levels.forEach((emoji, i) => {
+    const el = document.createElement('div');
+    el.className = 'level-tile';
+    el.textContent = emoji;
+    el.style.left = positions[i][0] + 'px';
+    el.style.top = positions[i][1] + 'px';
+    if(i > unlockedLevel) el.classList.add('locked');
+    else {
+      el.classList.add('unlocked');
+      el.onclick = () => startLevel(i);
     }
+    mapArea.appendChild(el);
   });
+}
 
-  loginBtn.onclick = () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    auth.signInWithEmailAndPassword(email, password)
-      .then(({user}) => { loginDiv.style.display='none'; loadProgress(user.uid); })
-      .catch(() => {
-        // If user not found, create account
-        auth.createUserWithEmailAndPassword(email, password)
-          .then(({user}) => { loginDiv.style.display='none'; loadProgress(user.uid); })
-          .catch(err => loginMessage.textContent = err.message);
-      });
-  };
+/* =================== GAME RENDER =================== */
+function startLevel(i){
+  currentLevel = i;
+  score = 0;
+  selected = [];
+  buildEmptyBoard();
+  mapDiv.style.display = 'none';
+  gamePanel.style.display = 'flex';
+  levelTitle.textContent = `Level ${i+1} ${levels[i]}`;
+  updateStatus();
+  fillBoardRandomly();
+  renderBoard();
+}
 
-  function saveProgress(uid) {
-    db.collection('progress').doc(uid).set({ unlockedLevel });
-  }
+function buildEmptyBoard(){
+  board = Array.from({length:rows},()=>Array(cols).fill(null));
+}
 
-  function loadProgress(uid) {
-    db.collection('progress').doc(uid).get().then(doc => {
-      if (doc.exists) unlockedLevel = doc.data().unlockedLevel || 0;
-      showMap();
-    });
-  }
-
-  // === Map ===
-  function showMap() {
-    game.style.display = 'none';
-    map.style.display = 'flex';
-    mapGrid.innerHTML = '';
-    levels.forEach((emoji,i)=>{
-      const tile = document.createElement('div');
-      tile.className='level-tile';
-      tile.textContent=emoji;
-      tile.style.left = positions[i][0] + 'px';
-      tile.style.top = positions[i][1] + 'px';
-      if(i>unlockedLevel) tile.classList.add('locked');
-      else { tile.classList.add('unlocked'); tile.onclick=()=>startLevel(i); }
-      mapGrid.appendChild(tile);
-    });
-  }
-
-  // === Game ===
-  function startLevel(i) {
-    currentLevel = i;
-    map.style.display='none';
-    game.style.display='flex';
-    levelTitle.textContent = `Level ${i+1} ${levels[i]}`;
-    initBoard();
-  }
-
-  backToMap.onclick = () => { showMap(); saveProgress(auth.currentUser.uid); };
-
-  function initBoard() {
-    gameBoard.innerHTML='';
-    board=[];
-    for(let r=0;r<rows;r++){
-      board[r]=[];
-      for(let c=0;c<cols;c++){
-        const emoji = animals[Math.floor(Math.random()*animals.length)];
-        board[r][c]=emoji;
-        renderTile(r,c,emoji);
-      }
+/* Fill board making sure no immediate matches (simple retry) */
+function fillBoardRandomly(){
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      let tries = 0;
+      do {
+        board[r][c] = animals[Math.floor(Math.random()*animals.length)];
+        tries++;
+        // avoid creating immediate 3-in-a-row horizontally or vertically
+      } while (createsMatchAt(r,c) && tries < 10);
     }
   }
+}
 
-  function renderTile(r,c,emoji){
-    const tile=document.createElement('div');
-    tile.className='tile';
-    tile.textContent=emoji;
-    tile.dataset.row=r;
-    tile.dataset.col=c;
-    tile.onclick=()=>handleClick(r,c);
-    gameBoard.appendChild(tile);
+/* Check if placing board[r][c] creates a 3-match including that cell */
+function createsMatchAt(r,c){
+  const v = board[r][c];
+  // horiz
+  if(c>=2 && board[r][c-1]===v && board[r][c-2]===v) return true;
+  // vert
+  if(r>=2 && board[r-1][c]===v && board[r-2][c]===v) return true;
+  return false;
+}
+
+function renderBoard(){
+  gameBoardEl.innerHTML = '';
+  tileElements = [];
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const t = document.createElement('div');
+      t.className = 'tile';
+      t.dataset.row = r;
+      t.dataset.col = c;
+      t.textContent = board[r][c] || '';
+      t.addEventListener('click', ()=>onTileClick(r,c,t));
+      gameBoardEl.appendChild(t);
+      tileElements.push(t);
+    }
   }
+}
 
-  function handleClick(r,c){
-    const tile=document.querySelector(`.tile[data-row="${r}"][data-col="${c}"]`);
-    if(!tile) return;
-    if(tile.classList.contains('selected')){
-      tile.classList.remove('selected');
-      selected = selected.filter(s=>!(s.r===r && s.c===c));
+/* ---------------- Tile selection and matching by chain ----------------
+ - User can click to select tiles. Re-click unselects.
+ - If they form a valid contiguous line (straight) of >=3 same emoji, it will clear.
+ - To keep UX simple we also check immediate matches via algorithm after selection.
+-----------------------------------------------------------------------*/
+function onTileClick(r,c,el){
+  // if tile is hidden (clearing) ignore
+  if(el.classList.contains('hidden')) return;
+
+  // toggle selection
+  if(el.classList.contains('selected')){
+    el.classList.remove('selected');
+    selected = selected.filter(s=>!(s.r===r && s.c===c));
+    return;
+  }
+  el.classList.add('selected');
+  selected.push({r,c,emoji: board[r][c], el});
+
+  // When selection length >=3, test if it's valid match (same emoji and straight)
+  if(selected.length >= 3){
+    // all same emoji?
+    const e = selected[0].emoji;
+    if(!selected.every(s=>s.emoji===e)){
+      // do nothing yet; if selection gets too big, reset
+      if(selected.length >= 7){
+        selected.forEach(s=>s.el.classList.remove('selected'));
+        selected=[];
+      }
       return;
     }
-    tile.classList.add('selected');
-    selected.push({r,c});
-    if(selected.length===2){
-      swapTiles(selected[0],selected[1]);
+    // sort by r then c to check straightness
+    const sorted = selected.slice().sort((a,b)=> (a.r - b.r) || (a.c - b.c));
+    // check whether they are straight (same r and consecutive cs) or (same c and consecutive rs)
+    const sameRow = sorted.every(s=> s.r === sorted[0].r);
+    const sameCol = sorted.every(s=> s.c === sorted[0].c);
+    let valid = false;
+    if(sameRow){
+      const colsArr = sorted.map(s=>s.c).sort((a,b)=>a-b);
+      valid = isConsecutive(colsArr);
+    } else if(sameCol){
+      const rowsArr = sorted.map(s=>s.r).sort((a,b)=>a-b);
+      valid = isConsecutive(rowsArr);
+    }
+    if(valid){
+      // Clear selected
+      const n = selected.length;
+      const pts = calculatePoints(n);
+      score += pts;
+      messageEl.textContent = `Matched ${n} for +${pts} 🎉`;
       selected.forEach(s=>{
-        const t=document.querySelector(`.tile[data-row="${s.r}"][data-col="${s.c}"]`);
-        if(t) t.classList.remove('selected');
+        // visually hide
+        const tile = s.el;
+        tile.classList.add('hidden');
+        board[s.r][s.c] = null;
+        tile.textContent = '';
+        tile.classList.remove('selected');
       });
-      selected=[];
-    }
-  }
-
-  function swapTiles(a,b){
-    const temp=board[a.r][a.c];
-    board[a.r][a.c]=board[b.r][b.c];
-    board[b.r][b.c]=temp;
-    updateBoard();
-    setTimeout(checkLevelComplete,1000);
-  }
-
-  function updateBoard(){
-    document.querySelectorAll('.tile').forEach(tile=>{
-      const r=+tile.dataset.row;
-      const c=+tile.dataset.col;
-      tile.textContent=board[r][c];
-    });
-  }
-
-  function checkLevelComplete(){
-    if(Math.random()<0.3){ // Demo win
-      alert(`🎉 Level ${currentLevel+1} Complete!`);
-      if(currentLevel===unlockedLevel && unlockedLevel<levels.length-1){
-        unlockedLevel++;
-        saveProgress(auth.currentUser.uid);
+      selected = [];
+      updateStatus();
+      setTimeout(()=>{ collapseAndRefill(); }, 220);
+    } else {
+      // If not valid straight, allow more selection — but cap total
+      if(selected.length >= 7){
+        selected.forEach(s=>s.el.classList.remove('selected'));
+        selected = [];
       }
-      showMap();
     }
   }
+}
+
+/* helper: are numbers consecutive (allowing gaps? we require strict adjacent) */
+function isConsecutive(arr){
+  for(let i=1;i<arr.length;i++) if(arr[i] !== arr[i-1]+1) return false;
+  return true;
+}
+
+function calculatePoints(n){
+  if(n===3) return 10;
+  if(n===4) return 20;
+  if(n===5) return 35;
+  return 35 + (n-5)*20;
+}
+
+/* --------- Collapse (gravity) and refill --------- */
+function collapseAndRefill(){
+  // For each column, move non-null down
+  const falling = []; // for animation metadata (not heavily used)
+  for(let c=0;c<cols;c++){
+    let write = rows - 1;
+    for(let r=rows-1;r>=0;r--){
+      if(board[r][c] !== null){
+        board[write][c] = board[r][c];
+        if(write !== r) board[r][c] = null;
+        write--;
+      }
+    }
+    // fill top with new emojis
+    for(let r=write; r>=0; r--){
+      board[r][c] = animals[Math.floor(Math.random()*animals.length)];
+    }
+  }
+  // Re-render board simply; small animation can be added
+  renderBoard();
+  // After refill, automatically look for any automatic matches (cascade)
+  setTimeout(()=> {
+    const matches = findAllMatches();
+    if(matches.length>0){
+      // clear matches automatically and repeat collapse
+      clearMatches(matches);
+    } else {
+      // no matches; check win condition
+      checkWinCondition();
+    }
+  }, 120);
+}
+
+/* Finds all horizontal & vertical matches of length >= 3,
+   returns array of positions {r,c} to clear */
+function findAllMatches(){
+  const toClear = new Set();
+  // horizontal
+  for(let r=0;r<rows;r++){
+    let runChar = null;
+    let runStart = 0;
+    for(let c=0;c<=cols;c++){
+      const ch = (c<cols) ? board[r][c] : null;
+      if(ch === runChar){
+        // continue
+      } else {
+        const runLen = c - runStart;
+        if(runChar !== null && runLen >= 3){
+          for(let k=runStart; k<c; k++) toClear.add(`${r},${k}`);
+        }
+        runChar = ch;
+        runStart = c;
+      }
+    }
+  }
+  // vertical
+  for(let c=0;c<cols;c++){
+    let runChar = null;
+    let runStart = 0;
+    for(let r=0;r<=rows;r++){
+      const ch = (r<rows) ? board[r][c] : null;
+      if(ch === runChar){
+      } else {
+        const runLen = r - runStart;
+        if(runChar !== null && runLen >= 3){
+          for(let k=runStart; k<r; k++) toClear.add(`${k},${c}`);
+        }
+        runChar = ch;
+        runStart = r;
+      }
+    }
+  }
+  // convert to array
+  return Array.from(toClear).map(s => {
+    const [r,c] = s.split(',').map(Number);
+    return {r,c};
+  });
+}
+
+/* clearMatches array of positions */
+function clearMatches(matches){
+  if(matches.length===0){
+    checkWinCondition();
+    return;
+  }
+  let n = matches.length;
+  let points = 0;
+  // remove duplicates already handled
+  matches.forEach(pos=>{
+    const el = document.querySelector(`.tile[data-row="${pos.r}"][data-col="${pos.c}"]`);
+    if(el && board[pos.r][pos.c] !== null){
+      el.classList.add('hidden');
+      el.textContent = '';
+      board[pos.r][pos.c] = null;
+    }
+  });
+  // Basic scoring: 10 per tile (you can refine)
+  points += n * 10;
+  score += points;
+  messageEl.textContent = `Cleared ${n} tiles (+${points})`;
+  updateStatus();
+  // After short delay, collapse & refill (cascade)
+  setTimeout(collapseAndRefill, 250);
+}
+
+/* ---------------- check win condition ----------------
+ For demo, we use target = baseTarget * (currentLevel+1)
+ When score >= target, level cleared: unlock next level, save progress to Firestore and return to map.
+-----------------------------------------------------*/
+async function checkWinCondition(){
+  const target = baseTarget * (1 + currentLevel); // scaling
+  if(score >= target){
+    messageEl.textContent = `🏆 Level complete!`;
+    // unlock
+    if(currentLevel === unlockedLevel && unlockedLevel < levels.length - 1){
+      unlockedLevel++;
+      if(currentUser){
+        try { await db.collection('users').doc(currentUser.uid).set({ unlockedLevel }, { merge:true }); }
+        catch(e){ console.warn('save error', e); }
+      }
+    }
+    // short delay then show map
+    setTimeout(()=> showMap(), 800);
+  } else {
+    // no immediate win; continue play
+    messageEl.textContent = '';
+  }
+}
+
+/* ---------------- utilities ---------------- */
+function updateStatus(){
+  const target = baseTarget * (1 + currentLevel);
+  statusEl.textContent = `Score: ${score} | Target: ${target}`;
+  statusEl = document.getElementById('status'); // defensive
+}
+
+/* ---------- event wiring ---------- */
+backBtn.onclick = () => {
+  showMap();
+  if(currentUser) db.collection('users').doc(currentUser.uid).set({ unlockedLevel }, { merge:true });
+};
+restartBtn.onclick = () => {
+  score = 0;
+  selected = [];
+  buildEmptyBoard();
+  fillBoardRandomly();
+  renderBoard();
+  messageEl.textContent = '';
+  updateStatus();
+};
+
+/* Keep global refs consistent */
+const statusEl = document.getElementById('status');
+
+/* set currentUser variable on auth change for saving */
+auth.onAuthStateChanged(user => {
+  currentUser = user;
+  // if logged in and map is visible, ensure unlockedLevel loaded
+  if(user && mapDiv.style.display !== 'none'){
+    db.collection('users').doc(user.uid).get().then(doc=>{
+      unlockedLevel = (doc.exists && doc.data().unlockedLevel!==undefined) ? doc.data().unlockedLevel : 0;
+      showMap();
+    }).catch(()=> showMap());
+  }
+});
 </script>
 </body>
 </html>
