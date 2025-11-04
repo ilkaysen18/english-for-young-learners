@@ -1,255 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Emoji Crush</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emoji Crush Adventure</title>
+<style>
+  body {
+    font-family: "Segoe UI Emoji", sans-serif;
+    background: linear-gradient(to bottom, #f0f8ff, #cce7ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
 
-  <!-- ✅ Firebase CDN imports -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged,
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  .hidden { display: none; }
+  h1, h2 { margin: 10px 0; }
 
-    // ✅ Your Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
-      authDomain: "english-training-hub.firebaseapp.com",
-      projectId: "english-training-hub",
-      storageBucket: "english-training-hub.firebasestorage.app",
-      messagingSenderId: "927072446139",
-      appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
-      measurementId: "G-34BBV99KXB"
-    };
+  /* 🔐 Login Screen */
+  #loginScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
 
-    // ✅ Init Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
 
-    // ✅ Screen references
-    const loginScreen = document.getElementById("loginScreen");
-    const mapScreen = document.getElementById("mapScreen");
-    const gameScreen = document.getElementById("gameScreen");
-    const message = document.getElementById("message");
+  button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const loginBtn = document.getElementById("loginBtn");
-    const signupBtn = document.getElementById("signupBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
+  button:hover { background: #45a049; }
 
-    // ✅ Auth actions
-    loginBtn.onclick = async () => {
-      try {
-        await signInWithEmailAndPassword(auth, email.value, password.value);
-        message.textContent = "✅ Logged in!";
-      } catch (error) {
-        message.textContent = "❌ " + error.message;
-      }
-    };
+  /* 🌍 Map */
+  #map {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
 
-    signupBtn.onclick = async () => {
-      try {
-        await createUserWithEmailAndPassword(auth, email.value, password.value);
-        message.textContent = "🎉 Account created!";
-      } catch (error) {
-        message.textContent = "❌ " + error.message;
-      }
-    };
+  .map-area {
+    position: relative;
+    width: 400px;
+    height: 500px;
+  }
 
-    logoutBtn.onclick = async () => {
-      await signOut(auth);
-    };
+  .level-tile {
+    font-size: 36px;
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: absolute;
+  }
 
-    // ✅ Auth state listener
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        loginScreen.style.display = "none";
-        mapScreen.style.display = "flex";
-      } else {
-        loginScreen.style.display = "flex";
-        mapScreen.style.display = "none";
-        gameScreen.style.display = "none";
-      }
-    });
+  .locked { opacity: 0.3; cursor: not-allowed; }
+  .unlocked { box-shadow: 0 0 15px #ffd700; }
 
-    // ✅ Map logic
-    const levels = document.querySelectorAll(".level");
-    levels.forEach((lvl) => lvl.addEventListener("click", () => startGame(lvl.dataset.level)));
+  #gameBoard {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    gap: 5px;
+  }
 
-    function startGame(level) {
-      mapScreen.style.display = "none";
-      gameScreen.style.display = "flex";
-      initGame(level);
-    }
+  .tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s, background 0.3s;
+  }
 
-    // ✅ Game logic
-    function initGame(level) {
-      const board = document.getElementById("board");
-      board.innerHTML = "";
-      const emojis = ["🍎","🍋","🍇","🍒","🍉","🍊"];
-      const gridSize = 5;
-      let grid = [];
-
-      for (let i = 0; i < gridSize; i++) {
-        let row = [];
-        for (let j = 0; j < gridSize; j++) {
-          const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-          const cell = document.createElement("div");
-          cell.textContent = emoji;
-          cell.className = "cell";
-          cell.dataset.row = i;
-          cell.dataset.col = j;
-          cell.addEventListener("click", selectEmoji);
-          board.appendChild(cell);
-          row.push(emoji);
-        }
-        grid.push(row);
-      }
-
-      let selected = null;
-      function selectEmoji(e) {
-        const cell = e.target;
-        if (!selected) {
-          selected = cell;
-          cell.classList.add("selected");
-        } else {
-          const temp = cell.textContent;
-          cell.textContent = selected.textContent;
-          selected.textContent = temp;
-          selected.classList.remove("selected");
-          selected = null;
-          setTimeout(() => {
-            alert("🎉 Level " + level + " Complete!");
-            gameScreen.style.display = "none";
-            mapScreen.style.display = "flex";
-          }, 600);
-        }
-      }
-    }
-  </script>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #fdfbfb, #ebedee);
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      width: 100%;
-    }
-
-    #loginScreen {
-      display: flex;
-    }
-
-    input {
-      width: 80%;
-      padding: 10px;
-      margin: 5px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      border: none;
-      border-radius: 8px;
-      background: #4caf50;
-      color: white;
-      cursor: pointer;
-    }
-
-    #mapScreen {
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .level {
-      font-size: 2rem;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .level:hover {
-      transform: scale(1.2);
-    }
-
-    #board {
-      display: grid;
-      grid-template-columns: repeat(5, 60px);
-      grid-gap: 8px;
-      margin-top: 20px;
-    }
-
-    .cell {
-      width: 60px;
-      height: 60px;
-      background: white;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
-
-    .selected {
-      background: #d1ffd6;
-      border: 2px solid #4caf50;
-    }
-
-    #logoutBtn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-  </style>
+  .tile.selected {
+    background: #a3f7a3;
+    border: 2px solid #2ecc71;
+  }
+</style>
 </head>
 <body>
 
-  <!-- 🔐 LOGIN SCREEN -->
-  <div class="screen" id="loginScreen">
-    <h2>🎮 Emoji Crush Login</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button id="loginBtn">Login</button>
-    <button id="signupBtn">Sign Up</button>
-    <p id="message"></p>
-  </div>
+<!-- 🔐 LOGIN -->
+<div id="loginScreen">
+  <h2>🎮 Emoji Crush Login</h2>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+  <button id="loginBtn">Login</button>
+  <button id="signupBtn">Sign Up</button>
+  <p id="message"></p>
+</div>
 
-  <!-- 🗺️ MAP SCREEN -->
-  <div class="screen" id="mapScreen">
-    <h2>🗺️ Emoji Map</h2>
-    <div class="level" data-level="1">🍎</div>
-    <div class="level" data-level="2">🍋</div>
-    <div class="level" data-level="3">🍇</div>
-    <div class="level" data-level="4">🍒</div>
-    <div class="level" data-level="5">🍉</div>
-    <button id="logoutBtn">Logout</button>
-  </div>
+<!-- 🌍 MAP -->
+<div id="map" class="hidden">
+  <h1>🌍 Emoji Adventure Map</h1>
+  <div class="map-area" id="mapGrid"></div>
+  <button id="logoutBtn">🚪 Logout</button>
+</div>
 
-  <!-- 🎮 GAME SCREEN -->
-  <div class="screen" id="gameScreen">
-    <h2>🎯 Emoji Crush</h2>
-    <div id="board"></div>
-  </div>
+<!-- 🎮 GAME -->
+<div id="game" class="hidden">
+  <h2 id="levelTitle">Level</h2>
+  <div id="gameBoard"></div>
+  <button id="backToMap">🏠 Back to Map</button>
+</div>
+
+<script type="module">
+/* ------------------ FIREBASE SETUP ------------------ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
+  authDomain: "english-training-hub.firebaseapp.com",
+  projectId: "english-training-hub",
+  storageBucket: "english-training-hub.firebasestorage.app",
+  messagingSenderId: "927072446139",
+  appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
+  measurementId: "G-34BBV99KXB"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ------------------ DOM ELEMENTS ------------------ */
+const loginScreen = document.getElementById('loginScreen');
+const mapDiv = document.getElementById('map');
+const gameDiv = document.getElementById('game');
+const mapGrid = document.getElementById('mapGrid');
+const gameBoard = document.getElementById('gameBoard');
+const levelTitle = document.getElementById('levelTitle');
+const message = document.getElementById('message');
+
+const loginBtn = document.getElementById('loginBtn');
+const signupBtn = document.getElementById('signupBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const backToMap = document.getElementById('backToMap');
+
+let user = null;
+let unlockedLevel = 0;
+let currentLevel = 0;
+let board = [];
+let selected = [];
+
+const animals = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼"];
+const levels = ["🐣","🌳","🏠","🏖️","🏔️","🌋","🏰","🚀","🌕"];
+const rows = 8, cols = 8;
+const positions = [
+  [170, 420],[80, 340],[230, 300],
+  [140, 220],[250, 160],[120, 100],
+  [220, 60],[160, 30],[80, 10]
+];
+
+/* ------------------ AUTH ------------------ */
+loginBtn.onclick = async () => {
+  try {
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+    await signInWithEmailAndPassword(auth, email, pass);
+    message.textContent = "✅ Logged in!";
+  } catch (e) {
+    message.textContent = e.message;
+  }
+};
+
+signupBtn.onclick = async () => {
+  try {
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+    const res = await createUserWithEmailAndPassword(auth, email, pass);
+    await setDoc(doc(db, "progress", res.user.uid), { unlockedLevel: 0 });
+    message.textContent = "🎉 Account created!";
+  } catch (e) {
+    message.textContent = e.message;
+  }
+};
+
+logoutBtn.onclick = () => signOut(auth);
+backToMap.onclick = showMap;
+
+onAuthStateChanged(auth, async (u) => {
+  if (u) {
+    user = u;
+    const ref = doc(db, "progress", user.uid);
+    const snap = await getDoc(ref);
+    unlockedLevel = snap.exists() ? snap.data().unlockedLevel : 0;
+    loginScreen.classList.add('hidden');
+    showMap();
+  } else {
+    user = null;
+    mapDiv.classList.add('hidden');
+    gameDiv.classList.add('hidden');
+    loginScreen.classList.remove('hidden');
+  }
+});
+
+/* ------------------ MAP ------------------ */
+function showMap() {
+  mapDiv.classList.remove('hidden');
+  gameDiv.classList.add('hidden');
+  mapGrid.innerHTML = '';
+  levels.forEach((emoji, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'level-tile';
+    tile.textContent = emoji;
+    tile.style.left = positions[i][0] + 'px';
+    tile.style.top = positions[i][1] + 'px';
+    if (i > unlockedLevel) tile.classList.add('locked');
+    else {
+      tile.classList.add('unlocked');
+      tile.onclick = () => startLevel(i);
+    }
+    mapGrid.appendChild(tile);
+  });
+}
+
+/* ------------------ GAME ------------------ */
+function startLevel(i) {
+  currentLevel = i;
+  mapDiv.classList.add('hidden');
+  gameDiv.classList.remove('hidden');
+  levelTitle.textContent = `Level ${i + 1} ${levels[i]}`;
+  initBoard();
+}
+
+function initBoard() {
+  gameBoard.innerHTML = '';
+  board = [];
+  for (let r = 0; r < rows; r++) {
+    board[r] = [];
+    for (let c = 0; c < cols; c++) {
+      const emoji = animals[Math.floor(Math.random() * animals.length)];
+      board[r][c] = emoji;
+      renderTile(r, c, emoji);
+    }
+  }
+}
+
+function renderTile(r, c, emoji) {
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  tile.textContent = emoji;
+  tile.dataset.row = r;
+  tile.dataset.col = c;
+  tile.onclick = () => handleClick(r, c);
+  gameBoard.appendChild(tile);
+}
+
+function handleClick(r, c) {
+  const tile = document.querySelector(`.tile[data-row="${r}"][data-col="${c}"]`);
+  if (!tile) return;
+
+  if (tile.classList.contains('selected')) {
+    tile.classList.remove('selected');
+    selected = selected.filter(s => !(s.r === r && s.c === c));
+    return;
+  }
+
+  tile.classList.add('selected');
+  selected.push({ r, c });
+
+  if (selected.length === 2) {
+    swapTiles(selected[0], selected[1]);
+    selected.forEach(s => {
+      const t = document.querySelector(`.tile[data-row="${s.r}"][data-col="${s.c}"]`);
+      if (t) t.classList.remove('selected');
+    });
+    selected = [];
+  }
+}
+
+function swapTiles(a, b) {
+  const temp = board[a.r][a.c];
+  board[a.r][a.c] = board[b.r][b.c];
+  board[b.r][b.c] = temp;
+  updateBoard();
+  setTimeout(levelComplete, 1000);
+}
+
+function updateBoard() {
+  const tiles = document.querySelectorAll('.tile');
+  tiles.forEach(tile => {
+    const r = +tile.dataset.row, c = +tile.dataset.col;
+    tile.textContent = board[r][c];
+  });
+}
+
+/* ------------------ LEVEL COMPLETE ------------------ */
+async function levelComplete() {
+  alert(`🎉 Level ${currentLevel + 1} Complete!`);
+  if (currentLevel === unlockedLevel && unlockedLevel < levels.length - 1) {
+    unlockedLevel++;
+    if (user) {
+      await setDoc(doc(db, "progress", user.uid), { unlockedLevel });
+    }
+  }
+  showMap();
+}
+</script>
 </body>
 </html>
