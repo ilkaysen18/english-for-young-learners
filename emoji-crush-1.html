@@ -61,7 +61,8 @@ maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     transition: transform 0.2s, background 0.25s; opacity 0.4s ease;
   }
   }
-  .tile.selected { background: #b8ffba; transform: scale(1.12); }
+  .tile.selected { background: #b8ffba; transform: scale(1.12); box-shadow: 0 0 10px #6f6;
+  }
   #message {
     font-size: clamp(22px, 4vw, 32px);
     font-weight: bold;
@@ -179,6 +180,15 @@ maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
       }
     }
   }
+
+  function renderTile(r, c, emoji) {
+  const index = r * cols + c;
+  const tile = gameBoard.children[index];
+  tile.textContent = emoji;
+  tile.style.visibility = 'visible';
+  tile.classList.remove('selected');
+  tile.addEventListener('click', tileClick); // ensure click works
+}
 
   // === MATCH DETECTION ===
 function findMatchLine(sel) {
@@ -338,7 +348,11 @@ function renderTile(r, c, emoji) {
   tile.textContent = emoji;
   tile.style.visibility = 'visible';
   tile.classList.remove('selected');
-  }
+  tile.dataset.row = r;
+  tile.dataset.col = c;
+  tile.removeEventListener('click', tileClick);
+  tile.addEventListener('click', tileClick);
+}
 
   // === MOVE VALIDATION ===
   function hasPossibleMoves(){
