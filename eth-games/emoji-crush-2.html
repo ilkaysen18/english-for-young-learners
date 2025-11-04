@@ -1,1 +1,282 @@
-.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Emoji Crush! 🎉 by English Training Hub</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    touch-action: none;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+  }
+  body {
+    background: linear-gradient(135deg, #fefcea, #f1da36);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #login-screen, #map-screen, #game-screen {
+    display: none;
+    text-align: center;
+    width: 100%;
+  }
+  h1 {
+    color: #444;
+    margin: 12px 0 8px;
+    font-size: clamp(28px, 5vw, 36px);
+  }
+  input, button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    margin: 5px;
+  }
+  button {
+    background: #4caf50;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover { background: #45a049; }
+  #map {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+  }
+  .level {
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .level:hover { transform: scale(1.3); }
+  #status {
+    font-size: clamp(20px, 3.5vw, 28px);
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  #gameContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  #gameBoard {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    aspect-ratio: 12 / 16;
+    width: 95vw;
+    max-height: 80vh;
+    grid-gap: 0.6vw;
+  }
+  .tile {
+    background: #fff;
+    border-radius: 0.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(20px, 3.8vw, 40px);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, background 0.25s, opacity 0.4s ease;
+  }
+  .tile.selected {
+    background: #b8ffba;
+    transform: scale(1.12);
+    box-shadow: 0 0 10px #6f6;
+  }
+  #message {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: bold;
+    color: #3b7a00;
+    min-height: 3vh;
+    margin-top: 0.8vh;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <h1>🔐 Login to Play</h1>
+  <input id="email" type="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button id="loginBtn">Login</button>
+  <button id="signupBtn">Sign Up</button>
+</div>
+
+<!-- MAP -->
+<div id="map-screen">
+  <h1>🌍 Emoji Map</h1>
+  <div id="map">
+    <div class="level" data-level="1">🐣</div>
+    <div class="level" data-level="2">🌳</div>
+    <div class="level" data-level="3">🏔️</div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="game-screen">
+  <header>
+    <h3 style="font-family:'Poppins',sans-serif; color:#0066cc;">English Training Hub</h3>
+    <h1 style="font-family:'Fredoka One',cursive; color:#ff6600;">Emoji Crush 🎉</h1>
+  </header>
+  <div id="status">Score: 0 | Level: 1 | Target: 100</div>
+  <div id="gameContainer"><div id="gameBoard"></div></div>
+  <div id="message"></div>
+  <button id="backToMap">🏡 Back to Map</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
+  authDomain: "english-training-hub.firebaseapp.com",
+  projectId: "english-training-hub",
+  storageBucket: "english-training-hub.firebasestorage.app",
+  messagingSenderId: "927072446139",
+  appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
+  measurementId: "G-34BBV99KXB"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Screens
+const loginScreen = document.getElementById("login-screen");
+const mapScreen = document.getElementById("map-screen");
+const gameScreen = document.getElementById("game-screen");
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginScreen.style.display = "none";
+    mapScreen.style.display = "block";
+  } else {
+    loginScreen.style.display = "block";
+    mapScreen.style.display = "none";
+    gameScreen.style.display = "none";
+  }
+});
+
+// Auth buttons
+loginBtn.onclick = async () => {
+  try { await signInWithEmailAndPassword(auth, email.value, password.value); }
+  catch { alert("Login failed. Try signing up."); }
+};
+signupBtn.onclick = async () => {
+  try { await createUserWithEmailAndPassword(auth, email.value, password.value); alert("Signed up! Now login."); }
+  catch { alert("Signup error."); }
+};
+
+// Map
+document.querySelectorAll(".level").forEach(lvl => {
+  lvl.addEventListener("click", () => startGame(lvl.dataset.level));
+});
+backToMap.onclick = () => {
+  gameScreen.style.display = "none";
+  mapScreen.style.display = "block";
+};
+
+// Game
+let rows=16, cols=12, animals=['🐼','🐸','🐷','🦘','🐒'];
+let board=[], selected=[], score=0, level=1, baseTarget=100;
+
+function startGame(lvl){
+  level=parseInt(lvl);
+  mapScreen.style.display="none";
+  gameScreen.style.display="block";
+  initBoard();
+}
+
+const gameBoard=document.getElementById("gameBoard");
+const statusDisplay=document.getElementById("status");
+const messageDisplay=document.getElementById("message");
+
+function initBoard(){
+  board=[];
+  for(let r=0;r<rows;r++){
+    const row=[];
+    for(let c=0;c<cols;c++){
+      row.push(animals[Math.floor(Math.random()*animals.length)]);
+    }
+    board.push(row);
+  }
+  renderBoard();
+  updateStatus();
+  messageDisplay.textContent="";
+}
+
+function renderBoard(){
+  gameBoard.innerHTML="";
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const t=document.createElement("div");
+      t.className="tile";
+      t.textContent=board[r][c];
+      t.dataset.row=r;
+      t.dataset.col=c;
+      t.onclick=tileClick;
+      gameBoard.appendChild(t);
+    }
+  }
+}
+
+function tileClick(e){
+  const t=e.currentTarget;
+  const r=+t.dataset.row, c=+t.dataset.col;
+  if(t.classList.contains("selected")){
+    t.classList.remove("selected");
+    selected=selected.filter(s=>!(s.r===r&&s.c===c));
+    return;
+  }
+  t.classList.add("selected");
+  selected.push({r,c,emoji:board[r][c],tile:t});
+  if(selected.length>=3){
+    selected.forEach(s=>{
+      s.tile.classList.remove("selected");
+      board[s.r][s.c]=null;
+      s.tile.style.visibility="hidden";
+    });
+    score+=10;
+    updateStatus();
+    setTimeout(()=>{ fallDown(); },400);
+  }
+}
+
+function fallDown(){
+  for(let c=0;c<cols;c++){
+    let empty=0;
+    for(let r=rows-1;r>=0;r--){
+      if(board[r][c]==null) empty++;
+      else if(empty>0){ board[r+empty][c]=board[r][c]; board[r][c]=null; }
+    }
+    for(let r=0;r<empty;r++){
+      board[r][c]=animals[Math.floor(Math.random()*animals.length)];
+    }
+  }
+  renderBoard();
+}
+
+function updateStatus(){
+  const target=baseTarget*level;
+  statusDisplay.textContent=`Score: ${score} | Level: ${level} | Target: ${target}`;
+  if(score>=target){
+    messageDisplay.textContent=`🎉 Level ${level} Complete!`;
+    setTimeout(()=>{
+      gameScreen.style.display="none";
+      mapScreen.style.display="block";
+    },1000);
+  }
+}
+</script>
+</body>
+  </html>
