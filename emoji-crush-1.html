@@ -265,47 +265,79 @@ function findMatchLine(sel) {
 }
 
   // === GRAVITY / FALL ===
-  function fallDown(){
-    for(let c=0;c<cols;c++){
-      let write=rows-1;
-      for(let r=rows-1;r>=0;r--){
-        if(board[r][c]!==null){
-          board[write][c]=board[r][c];
-          if(write!==r) board[r][c]=null;
-          write--;
-        }
+  function fallDown() {
+  const fallingTiles = [];
+
+  for (let c = 0; c < cols; c++) {
+    let empty = 0;
+    for (let r = rows - 1; r >= 0; r--) {
+      if (board[r][c] === null) {
+        empty++;
+      } else if (empty > 0) {
+        // Move emoji down logically
+        board[r + empty][c] = board[r][c];
+        board[r][c] = null;
+        fallingTiles.push({ from: r, to: r + empty, c });
       }
-      for(let r=write;r>=0;r--) board[r][c]=animals[Math.floor(Math.random()*animals.length)];
     }
-    renderFall();
-    autoShuffleIfNoMoves();
-    checkLevelComplete();
+
+    // Fill new top cells
+    for (let r = 0; r < empty; r++) {
+      board[r][c] = animals[Math.floor(Math.random() * animals.length)];
+      fallingTiles.push({ from: -1, to: r, c, newTile: true });
+    }
   }
 
-  function renderFall() {
-  gameBoard.innerHTML = '';
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const tile = document.createElement('div');
-      tile.className = 'tile';
-      tile.textContent = board[r][c];
-      tile.dataset.row = r;
-      tile.dataset.col = c;
-      tile.addEventListener('click', tileClick);
+  // Animate only changed tiles
+  animateFall(fallingTiles);
+  }
 
-      // 🎢 Make it fall from above
-      tile.style.transform = `translateY(-${rows * 5}px)`;
+  function animateFall(fallingTiles) {
+  const tiles = Array.from(document.querySelectorAll('.tile'));
+
+  fallingTiles.forEach(f => {
+    // find the tile currently at destination
+    const tile = tiles.find(t =>
+      +t.dataset.row === f.to && +t.dataset.col === f.c
+    );
+
+    if (!tile) return;
+
+    if (f.newTile) {
+      // New emoji appears from top
+      tile.textContent = board[f.to][f.c];
+      tile.style.transform = 'translateY(-150%)';
       tile.style.opacity = 0;
-      gameBoard.appendChild(tile);
-
-      // Animate each tile down with stagger
       setTimeout(() => {
         tile.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
         tile.style.transform = 'translateY(0)';
         tile.style.opacity = 1;
-      }, (rows - r) * 30); // delay slightly per row
+      }, 50);
+    } else {
+      // Slide tile down from its old position
+      const distance = (f.to - f.from) * tile.offsetHeight;
+      tile.style.transition = 'transform 0.4s ease';
+      tile.style.transform = `translateY(${distance}px)`;
+      setTimeout(() => {
+        tile.style.transition = '';
+        tile.style.transform = '';
+        renderTile(f.to, f.c, board[f.to][f.c]);
+      }, 400);
     }
-  }
+  });
+
+  setTimeout(() => {
+    autoShuffleIfNoMoves();
+    checkLevelComplete();
+  }, 500);
+}
+
+function renderTile(r, c, emoji) {
+  const index = r * cols + c;
+  const tile = gameBoard.children[index];
+  tile.textContent = emoji;
+  tile.style.visibility = 'visible';
+  tile.classList.remove('selected');
   }
 
   // === MOVE VALIDATION ===
