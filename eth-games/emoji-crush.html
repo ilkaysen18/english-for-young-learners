@@ -13,7 +13,6 @@
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden;
   }
   #map, #game, #loginScreen {
     display: none;
@@ -41,7 +40,6 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     position: absolute;
   }
-  .level-tile:hover:not(.locked) { transform: scale(1.15); }
   .locked { opacity: 0.3; cursor: not-allowed; }
   .unlocked {
     animation: bounce 1s infinite alternate;
@@ -98,7 +96,6 @@
     font-size: 16px;
   }
   button:hover { background: #45a049; }
-  #levelTitle { margin: 0; }
 </style>
 </head>
 <body>
@@ -134,12 +131,11 @@
   <button id="backToMap">🏠 Back to Map</button>
 </div>
 
-<!-- Firebase + Game Logic -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+<!-- ✅ NON-MODULE FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
     authDomain: "english-training-hub.firebaseapp.com",
@@ -150,11 +146,10 @@
     measurementId: "G-34BBV99KXB"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-  // DOM elements
   const loginScreen = document.getElementById("loginScreen");
   const mapDiv = document.getElementById("map");
   const gameDiv = document.getElementById("game");
@@ -177,43 +172,36 @@
   let unlockedLevel = 0, currentLevel = 0, user = null;
   let board = [], selected = [];
 
-  // Login or register
   loginBtn.onclick = async () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await auth.signInWithEmailAndPassword(email, password);
     } catch {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await auth.createUserWithEmailAndPassword(email, password);
     }
   };
 
-  // Auth listener
-  onAuthStateChanged(auth, async (u) => {
+  auth.onAuthStateChanged(async (u) => {
     if (u) {
       user = u;
-      try {
-        const ref = doc(db, "progress", user.uid);
-        const snap = await getDoc(ref);
-        unlockedLevel = snap.exists() ? snap.data().unlockedLevel : 0;
-      } catch { unlockedLevel = 0; }
-      loginScreen.classList.remove("visible");
+      const ref = db.collection("progress").doc(user.uid);
+      const snap = await ref.get();
+      unlockedLevel = snap.exists ? snap.data().unlockedLevel : 0;
       loginScreen.style.display = "none";
-      mapDiv.classList.add("visible");
-      gameDiv.classList.remove("visible");
+      mapDiv.style.display = "flex";
+      gameDiv.style.display = "none";
       showMap();
     } else {
-      user = null;
-      loginScreen.classList.add("visible");
-      mapDiv.classList.remove("visible");
-      gameDiv.classList.remove("visible");
+      loginScreen.style.display = "flex";
+      mapDiv.style.display = "none";
+      gameDiv.style.display = "none";
     }
   });
 
-  // Map
   function showMap() {
-    gameDiv.classList.remove("visible");
-    mapDiv.classList.add("visible");
+    gameDiv.style.display = "none";
+    mapDiv.style.display = "flex";
     mapGrid.innerHTML = '';
     mapPaths.innerHTML = `
       <defs>
@@ -249,8 +237,8 @@
 
   function startLevel(i) {
     currentLevel = i;
-    mapDiv.classList.remove("visible");
-    gameDiv.classList.add("visible");
+    mapDiv.style.display = "none";
+    gameDiv.style.display = "flex";
     levelTitle.textContent = `Level ${i + 1} ${levels[i]}`;
     initBoard();
   }
@@ -323,7 +311,7 @@
       if (currentLevel === unlockedLevel && unlockedLevel < levels.length - 1) {
         unlockedLevel++;
         if (user) {
-          await setDoc(doc(db, "progress", user.uid), { unlockedLevel });
+          await db.collection("progress").doc(user.uid).set({ unlockedLevel });
         }
       }
       showMap();
