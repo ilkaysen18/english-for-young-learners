@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,
+maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 <title>Emoji Crush! 🎉 by English Training Hub</title>
 <style>
   html, body {
@@ -118,14 +119,18 @@ const gameBoard = document.getElementById('gameBoard');
 const statusDisplay = document.getElementById('status');
 const messageDisplay = document.getElementById('message');
 
-// === SOUND SYSTEM ===
+// === SOUND ===
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playTone(f, d=0.15, type='sine', vol=0.2){
   const osc = audioCtx.createOscillator();
   const g = audioCtx.createGain();
-  osc.type = type; osc.frequency.value = f;
-  g.gain.value = vol; osc.connect(g); g.connect(audioCtx.destination);
-  osc.start(); osc.stop(audioCtx.currentTime + d);
+  osc.type = type;
+  osc.frequency.value = f;
+  g.gain.value = vol;
+  osc.connect(g);
+  g.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + d);
 }
 function successSound(){ [440,660,880].forEach((f,i)=>setTimeout(()=>playTone(f,0.15),i*150)); }
 function failSound(){ [200,150].forEach((f,i)=>setTimeout(()=>playTone(f,0.2,'square'),i*250)); }
@@ -153,12 +158,15 @@ function createRandomBoard(){
 }
 
 function ensurePlayableBoard(){
-  let safety=0;
-  while(!hasPossibleMoves() && safety<100){ shuffleBoard(); safety++; }
+  let safety = 0;
+  while(!hasPossibleMoves() && safety < 100){
+    shuffleBoard();
+    safety++;
+  }
 }
 
 function renderBoard(){
-  gameBoard.innerHTML='';
+  gameBoard.innerHTML = '';
   for(let r=0;r<rows;r++){
     for(let c=0;c<cols;c++){
       const tile=document.createElement('div');
@@ -175,9 +183,9 @@ function renderBoard(){
 function renderTile(r, c, emoji) {
   const index = r * cols + c;
   const tile = gameBoard.children[index];
-  if (!tile) return;
   tile.textContent = emoji;
   tile.style.visibility = 'visible';
+  tile.classList.remove('selected');
   tile.dataset.row = r;
   tile.dataset.col = c;
   tile.removeEventListener('click', tileClick);
@@ -189,19 +197,26 @@ function findMatchLine(sel) {
   if (sel.length < 3) return null;
   const e = sel[0].emoji;
   if (!sel.every(s => s.emoji === e)) return null;
+
   const rs = sel.map(s => s.r);
   const cs = sel.map(s => s.c);
+
   const dr = rs[1] - rs[0];
   const dc = cs[1] - cs[0];
   const straight = sel.every((s, i, arr) =>
     i === 0 || (s.r - arr[i - 1].r === dr && s.c - arr[i - 1].c === dc)
   );
   if (straight) return 'line';
-  const minR = Math.min(...rs), maxR = Math.max(...rs);
-  const minC = Math.min(...cs), maxC = Math.max(...cs);
+
+  const minR = Math.min(...rs);
+  const maxR = Math.max(...rs);
+  const minC = Math.min(...cs);
+  const maxC = Math.max(...cs);
   if ((maxR - minR <= 1) && (maxC - minC <= 1)) return 'block';
+
   const sameSlope = Math.abs((rs[rs.length - 1] - rs[0]) / (cs[cs.length - 1] - cs[0])) === 1;
   if (sameSlope) return 'diagonal';
+
   return null;
 }
 
@@ -236,6 +251,7 @@ function tileClick(e) {
         score += pts;
         messageDisplay.textContent = `Matched ${selected.length} for +${pts} 🎉`;
         selected.forEach(s => {
+          s.tile.classList.remove('selected'); // ✅ FIX — remove highlight
           board[s.r][s.c] = null;
           s.tile.style.visibility = 'hidden';
         });
@@ -256,29 +272,37 @@ function tileClick(e) {
 // === GRAVITY ===
 function fallDown() {
   const fallingTiles = [];
+
   for (let c = 0; c < cols; c++) {
     let empty = 0;
     for (let r = rows - 1; r >= 0; r--) {
-      if (board[r][c] === null) empty++;
-      else if (empty > 0) {
+      if (board[r][c] === null) {
+        empty++;
+      } else if (empty > 0) {
         board[r + empty][c] = board[r][c];
         board[r][c] = null;
         fallingTiles.push({ from: r, to: r + empty, c });
       }
     }
+
     for (let r = 0; r < empty; r++) {
       board[r][c] = animals[Math.floor(Math.random() * animals.length)];
       fallingTiles.push({ from: -1, to: r, c, newTile: true });
     }
   }
+
   animateFall(fallingTiles);
 }
 
 function animateFall(fallingTiles) {
   const tiles = Array.from(document.querySelectorAll('.tile'));
+
   fallingTiles.forEach(f => {
-    const tile = tiles.find(t => +t.dataset.row === f.to && +t.dataset.col === f.c);
+    const tile = tiles.find(t =>
+      +t.dataset.row === f.to && +t.dataset.col === f.c
+    );
     if (!tile) return;
+
     if (f.newTile) {
       tile.textContent = board[f.to][f.c];
       tile.style.transform = 'translateY(-150%)';
@@ -299,13 +323,14 @@ function animateFall(fallingTiles) {
       }, 400);
     }
   });
+
   setTimeout(() => {
     autoShuffleIfNoMoves();
     checkLevelComplete();
   }, 500);
 }
 
-// === SHUFFLE & LEVELS ===
+// === MOVES & LEVELS ===
 function hasPossibleMoves(){
   for(let r=0;r<rows;r++){
     for(let c=0;c<cols;c++){
@@ -332,7 +357,8 @@ function autoShuffleIfNoMoves(){
   if(!hasPossibleMoves()){
     shuffleSound();
     messageDisplay.textContent='🔄 No matches available — Shuffling...';
-    shuffleBoard(); ensurePlayableBoard();
+    shuffleBoard();
+    ensurePlayableBoard();
     setTimeout(()=>{ renderBoard(); messageDisplay.textContent=''; },500);
   }
 }
@@ -345,7 +371,9 @@ function checkLevelComplete(){
     const btn=document.createElement('button');
     btn.textContent='Next Level ▶️';
     btn.onclick=()=>{
-      level++; messageDisplay.textContent=''; initBoard();
+      level++;
+      messageDisplay.textContent='';
+      initBoard();
     };
     messageDisplay.appendChild(btn);
   }
@@ -357,7 +385,8 @@ function updateStatus(){
 }
 
 document.getElementById('restart').addEventListener('click',()=>{
-  score=0; level=1; initBoard();
+  score=0; level=1;
+  initBoard();
 });
 
 initBoard();
