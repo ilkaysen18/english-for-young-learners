@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Emoji Match Adventure 🌍</title>
+<style>
+  body {
+    font-family: "Segoe UI Emoji", sans-serif;
+    background: linear-gradient(to bottom, #f0f8ff, #cce7ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+  #map, #game {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  h1 { margin-top: 0; }
+  .map-area {
+    position: relative;
+    width: 400px;
+    height: 500px;
+  }
+  .level-tile {
+    font-size: 36px;
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: absolute;
+  }
+  .level-tile:hover:not(.locked) { transform: scale(1.15); }
+  .locked { opacity: 0.3; cursor: not-allowed; }
+  .unlocked {
+    animation: bounce 1s infinite alternate;
+    box-shadow: 0 0 15px #ffd700;
+  }
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+  }
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 500px;
+    pointer-events: none;
+  }
+  path {
+    stroke: url(#gold);
+    stroke-width: 6;
+    fill: none;
+    opacity: 0.7;
+    stroke-linecap: round;
+    stroke-dasharray: 10;
+    animation: dash 1.5s linear infinite;
+  }
+  @keyframes dash {
+    to { stroke-dashoffset: -20; }
+  }
+  #gameBoard {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    gap: 5px;
+  }
+  .tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: transform 0.3s, background 0.3s;
+    user-select: none;
+  }
+  .tile.selected {
+    background: #a3f7a3;
+    border: 2px solid #2ecc71;
+  }
+  button {
+    padding: 10px 20px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover { background: #45a049; }
+  #levelTitle { margin: 0; }
+</style>
+</head>
+<body>
+
+<!-- 🌍 Map -->
+<div id="map">
+  <h1>🌍 Emoji Adventure Map</h1>
+  <div class="map-area">
+    <svg id="mapPaths">
+      <defs>
+        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffd700"/>
+          <stop offset="100%" stop-color="#ffa500"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div id="mapGrid"></div>
+  </div>
+</div>
+
+<!-- 🎮 Game -->
+<div id="game">
+  <h2 id="levelTitle">Level</h2>
+  <div id="gameBoard"></div>
+  <button id="backToMap">🏠 Back to Map</button>
+</div>
+
+<script type="module">
+// ====================== 🔥 FIREBASE SETUP ======================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBx4To2-DIglfgq_eHve3bYXYKdsZ0sgEo",
+  authDomain: "english-training-hub.firebaseapp.com",
+  projectId: "english-training-hub",
+  storageBucket: "english-training-hub.firebasestorage.app",
+  messagingSenderId: "927072446139",
+  appId: "1:927072446139:web:721de952b0e0b7aa19ab9e",
+  measurementId: "G-34BBV99KXB"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ====================== 🎮 GAME VARIABLES ======================
+const levels = ["🐣","🌳","🏠","🏖️","🏔️","🌋","🏰","🚀","🌕"];
+const map = document.getElementById('map');
+const game = document.getElementById('game');
+const mapGrid = document.getElementById('mapGrid');
+const gameBoard = document.getElementById('gameBoard');
+const mapPaths = document.getElementById('mapPaths');
+const levelTitle = document.getElementById('levelTitle');
+const backToMap = document.getElementById('backToMap');
+
+let unlockedLevel = 0;
+let currentLevel = 0;
+let board = [];
+const rows = 8;
+const cols = 8;
+const animals = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼"];
+let selected = [];
+
+const positions = [
+  [170, 420],[80, 340],[230, 300],
+  [140, 220],[250, 160],[120, 100],
+  [220, 60],[160, 30],[80, 10]
+];
+
+// ====================== 🧠 AUTH + PROGRESS ======================
+async function login(email, pass) {
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch {
+    await createUserWithEmailAndPassword(auth, email, pass);
+  }
+}
+
+async function saveProgress(level) {
+  const user = auth.currentUser;
+  if (!user) return;
+  await setDoc(doc(db, "progress", user.uid), { unlockedLevel: level }, { merge: true });
+}
+
+async function loadProgress() {
+  const user = auth.currentUser;
+  if (!user) return 0;
+  const snap = await getDoc(doc(db, "progress", user.uid));
+  return snap.exists() ? snap.data().unlockedLevel || 0 : 0;
+}
+
+// Auto-login demo account
+await login("demo@player.com", "123456");
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    unlockedLevel = await loadProgress();
+    showMap();
+  }
+});
+
+// ====================== 🌍 MAP ======================
+function showMap() {
+  game.style.display = 'none';
+  map.style.display = 'flex';
+  mapGrid.innerHTML = '';
+  mapPaths.innerHTML = `
+    <defs>
+      <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffd700"/>
+        <stop offset="100%" stop-color="#ffa500"/>
+      </linearGradient>
+    </defs>`;
+
+  levels.forEach((emoji, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'level-tile';
+    tile.textContent = emoji;
+    tile.style.left = positions[i][0] + 'px';
+    tile.style.top = positions[i][1] + 'px';
+
+    if (i > unlockedLevel) {
+      tile.classList.add('locked');
+    } else {
+      tile.classList.add('unlocked');
+      tile.onclick = () => startLevel(i);
+    }
+
+    mapGrid.appendChild(tile);
+
+    if (i > 0) {
+      const [x1, y1] = positions[i-1];
+      const [x2, y2] = positions[i];
+      const midX = (x1 + x2)/2 + (Math.random()*40-20);
+      const midY = (y1 + y2)/2 + (Math.random()*40-20);
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", `M${x1+30},${y1+30} Q${midX+30},${midY+30} ${x2+30},${y2+30}`);
+      mapPaths.appendChild(path);
+    }
+  });
+}
+
+// ====================== 🎮 GAME ======================
+function startLevel(i) {
+  currentLevel = i;
+  map.style.display = 'none';
+  game.style.display = 'flex';
+  levelTitle.textContent = `Level ${i + 1} ${levels[i]}`;
+  initBoard();
+}
+
+backToMap.onclick = showMap;
+
+function initBoard() {
+  gameBoard.innerHTML = '';
+  board = [];
+  for (let r = 0; r < rows; r++) {
+    board[r] = [];
+    for (let c = 0; c < cols; c++) {
+      const emoji = animals[Math.floor(Math.random() * animals.length)];
+      board[r][c] = emoji;
+      renderTile(r, c, emoji);
+    }
+  }
+}
+
+function renderTile(r, c, emoji) {
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  tile.textContent = emoji;
+  tile.dataset.row = r;
+  tile.dataset.col = c;
+  tile.onclick = () => handleClick(r, c);
+  gameBoard.appendChild(tile);
+}
+
+function handleClick(r, c) {
+  const tile = document.querySelector(`.tile[data-row="${r}"][data-col="${c}"]`);
+  if (!tile) return;
+
+  if (tile.classList.contains('selected')) {
+    tile.classList.remove('selected');
+    selected = selected.filter(s => !(s.r === r && s.c === c));
+    return;
+  }
+
+  tile.classList.add('selected');
+  selected.push({ r, c });
+
+  if (selected.length === 2) {
+    swapTiles(selected[0], selected[1]);
+    selected.forEach(s => {
+      const t = document.querySelector(`.tile[data-row="${s.r}"][data-col="${s.c}"]`);
+      if (t) t.classList.remove('selected');
+    });
+    selected = [];
+  }
+}
+
+function swapTiles(a, b) {
+  const temp = board[a.r][a.c];
+  board[a.r][a.c] = board[b.r][b.c];
+  board[b.r][b.c] = temp;
+  updateBoard();
+  setTimeout(checkLevelComplete, 1000);
+}
+
+function updateBoard() {
+  const tiles = document.querySelectorAll('.tile');
+  tiles.forEach(tile => {
+    const r = +tile.dataset.row;
+    const c = +tile.dataset.col;
+    tile.textContent = board[r][c];
+  });
+}
+
+// ✅ Save progress when level complete
+async function checkLevelComplete() {
+  if (Math.random() < 0.3) {
+    alert(`🎉 Level ${currentLevel + 1} Complete!`);
+    if (currentLevel === unlockedLevel && unlockedLevel < levels.length - 1) {
+      unlockedLevel++;
+      await saveProgress(unlockedLevel);
+    }
+    showMap();
+  }
+}
+
+</script>
+</body>
+</html>
