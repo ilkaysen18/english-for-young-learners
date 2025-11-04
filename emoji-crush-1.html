@@ -347,7 +347,6 @@ function renderTile(r, c, emoji) {
   const tile = gameBoard.children[index];
   tile.textContent = emoji;
   tile.style.visibility = 'visible';
-  tile.classList.remove('selected');
   tile.dataset.row = r;
   tile.dataset.col = c;
   tile.removeEventListener('click', tileClick);
