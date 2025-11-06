@@ -1,172 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Emoji Crush 🎉 | English Training Hub</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+<title>Emoji Crush — Full (Login + Map + Game + Save)</title>
 <style>
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    font-family: 'Poppins', sans-serif; text-align: center;
-    background: linear-gradient(135deg, #fefcea, #f1da36);
-    overflow: hidden;
-  }
-  #loginScreen, #mapScreen, #gameScreen { display: none; }
-  button {
-    background: #4caf50; color: #fff; border: none;
-    padding: 12px 24px; border-radius: 10px; cursor: pointer;
-    font-size: 18px; margin: 8px;
-  }
-  input {
-    padding: 10px; margin: 6px; border-radius: 8px; border: 1px solid #ccc;
-  }
-  .map-level {
-    width: 80px; height: 80px; background: #fff; border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    margin: 15px; cursor: pointer; font-weight: bold;
-    box-shadow: 0 0 6px #999; transition: transform 0.2s;
-  }
-  .map-level:hover { transform: scale(1.1); background: #d4ffd4; }
+  :root { --panel-w: 980px; }
+  html,body{height:100%;margin:0;font-family: "Segoe UI", Tahoma, sans-serif;background: linear-gradient(135deg,#fefcea,#f1da36);}
+  .wrap{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px;box-sizing:border-box;}
+  .panel{width:var(--panel-w);max-width:calc(100% - 48px);background:#fff;border-radius:12px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,0.12);}
+  header{text-align:center;margin-bottom:8px}
+  header h1{margin:6px 0 4px;color:#ff6600;font-family:'Fredoka One',cursive;}
+  header h3{margin:0;color:#0066cc}
+  .row{display:flex;gap:12px;align-items:center}
+  .center{justify-content:center}
+  input{padding:10px;border-radius:8px;border:1px solid #d0d7de;font-size:15px;width:320px;max-width:90%}
+  button{padding:10px 14px;border-radius:9px;border:0;background:#1f8a3d;color:#fff;font-weight:700;cursor:pointer}
+  button.secondary{background:#2b6fa4}
+  button.ghost{background:transparent;color:#1f8a3d;border:1px solid #1f8a3d}
+  .muted{color:#666;font-size:13px}
+  /* Map */
+  #mapScreen{display:none;flex-direction:column;gap:12px}
+  .map-area{position:relative;width:100%;height:420px;border-radius:10px;overflow:hidden;background:#eef}
+  #levelGrid{position:absolute;inset:0;pointer-events:auto}
+  .level-tile{position:absolute;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;font-size:28px;box-shadow:0 8px 20px rgba(0,0,0,0.12);cursor:pointer;transition:transform .18s,opacity .18s}
+  .level-tile.locked{opacity:.35;filter:grayscale(.4);cursor:default}
+  .level-tile.unlocked{box-shadow:0 0 18px #ffd76a}
+  #miniMap{position:absolute;right:8px;top:8px;width:220px;height:140px;border-radius:8px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.12);border:3px solid rgba(255,255,255,.6)}
+  /* Game */
+  #gameScreen{display:none;flex-direction:column;gap:10px;align-items:center}
+  #status{font-size:16px;font-weight:700;color:#333}
+  #gameContainer{width:100%;display:flex;justify-content:center;align-items:center}
+  #gameBoard{display:grid;grid-template-columns:repeat(12,1fr);aspect-ratio:12/16;width:95%;max-width:920px;grid-gap:0.6vw}
+  .tile{background:#fff;border-radius:.5vw;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,3.8vw,40px);cursor:pointer;user-select:none;transition:transform .18s,background .18s,opacity .25s}
+  .tile.selected{background:#b8ffba;transform:scale(1.12);box-shadow:0 0 10px #6f6}
+  #message{min-height:28px;font-weight:700;color:#166534}
+  .controls{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:8px}
+  footer{margin-top:8px;font-size:13px;color:#666}
+  @media(max-width:720px){:root{--panel-w:96vw}.level-tile{width:54px;height:54px;font-size:24px}#miniMap{display:none}}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="panel">
 
-<!-- LOGIN & SIGNUP -->
-<div id="loginScreen">
-  <h1>Login or Sign Up 🎮</h1>
-  <input id="email" type="email" placeholder="Email" /><br />
-  <input id="password" type="password" placeholder="Password" /><br />
-  <button id="loginBtn">Login</button>
-  <button id="signupBtn" style="background:#2196F3;">Sign Up</button>
-  <p id="loginMsg"></p>
+    <header>
+      <h3>English Training Hub</h3>
+      <h1>Emoji Crush 🎉</h1>
+      <div style="color:#333;font-weight:600;">🐾 Match 3+ Animal Emojis!</div>
+    </header>
+
+    <!-- LOGIN -->
+    <div id="loginScreen">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px;">
+        <input id="email" type="email" placeholder="Email (leave empty to use Google sign-in)"/>
+        <input id="password" type="password" placeholder="Password (for email sign-up/login)"/>
+        <div style="display:flex;gap:8px">
+          <button id="emailSignBtn">Login / Sign Up (email)</button>
+          <button id="googleSignBtn" class="secondary">Sign in with Google</button>
+        </div>
+        <div id="loginMsg" class="muted">You can sign up with email or use Google sign-in.</div>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div id="mapScreen">
+      <div class="row" style="justify-content:space-between;">
+        <div id="welcome" style="font-weight:700;color:#0b5">Welcome</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button id="logoutBtn" class="ghost">Logout</button>
+        </div>
+      </div>
+
+      <div class="map-area" id="mapArea">
+        <svg id="mapPaths" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
+          <defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffa500"/></linearGradient></defs>
+        </svg>
+        <div id="levelGrid"></div>
+        <div id="miniMap"></div>
+      </div>
+      <div class="controls"><div id="mapMsg" class="muted"></div></div>
+    </div>
+
+    <!-- GAME -->
+    <div id="gameScreen">
+      <div id="status">Score: 0 | Level: 1 | Target: 100</div>
+      <div id="gameContainer"><div id="gameBoard"></div></div>
+      <div id="message"></div>
+      <div class="controls">
+        <button id="restartBtn">Restart Level</button>
+        <button id="backToMapBtn">🏠 Back to Map</button>
+      </div>
+    </div>
+
+    <footer style="text-align:center">Make sure you pasted your Firebase config below and enabled Email/Password sign-in in Firebase Console.</footer>
+  </div>
 </div>
 
-<!-- MAP -->
-<div id="mapScreen">
-  <h2>Choose Level 🌍</h2>
-  <div id="mapLevels"></div>
-  <button id="logoutBtn">Logout</button>
-</div>
+<!-- Firebase compat scripts (works on GitHub Pages) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- Leaflet for mini-map (optional) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<!-- GAME -->
-<div id="gameScreen">
-  <header>
-    <h3>English Training Hub</h3>
-    <h1>Emoji Crush 🎉</h1>
-    <h2>🐾 Match 3+ Animal Emojis!</h2>
-  </header>
-  <div id="status">Score: 0 | Level: 1 | Target: 100</div>
-  <div id="gameContainer"><div id="gameBoard"></div></div>
-  <div id="message"></div>
-  <button id="restart">Restart</button>
-  <button id="backToMap">Back to Map</button>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
+<script>
+/* ============================
+   PASTE YOUR FIREBASE CONFIG
+   Replace the object below with the config from your Firebase Web App
+   (Firebase Console → Project settings → Your apps → SDK config)
+   Example keys: apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId
+   ============================ */
 const firebaseConfig = {
-  apiKey: "AIzaSyDwT8qfj5Lq2ev6QyHbEkKSmfhfRxyiPpY",
-  authDomain: "emoji-crush-uth.firebaseapp.com",
-  projectId: "emoji-crush-uth",
-  storageBucket: "emoji-crush-uth.appspot.com",
-  messagingSenderId: "527168444771",
-  appId: "1:527168444771:web:7beabcb2be1e55ac3b5678"
+  /* TODO: PASTE FIREBASE CONFIG OBJECT HERE */
+  // Example:
+  // apiKey: "AIza...yourKey...",
+  // authDomain: "your-project.firebaseapp.com",
+  // projectId: "your-project",
+  // storageBucket: "your-project.appspot.com",
+  // messagingSenderId: "123456789",
+  // appId: "1:123456:web:abcd",
 };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-const loginScreen = document.getElementById("loginScreen");
-const mapScreen = document.getElementById("mapScreen");
-const gameScreen = document.getElementById("gameScreen");
-
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
-const loginMsg = document.getElementById("loginMsg");
-const logoutBtn = document.getElementById("logoutBtn");
-
-loginScreen.style.display = "block";
-
-// LOGIN
-loginBtn.addEventListener("click", () => {
-  signInWithEmailAndPassword(auth, email.value, password.value)
-    .then(() => {
-      showMap();
-    })
-    .catch(err => loginMsg.textContent = "❌ " + err.message);
-});
-
-// SIGNUP
-signupBtn.addEventListener("click", () => {
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then(() => {
-      showMap();
-    })
-    .catch(err => loginMsg.textContent = "❌ " + err.message);
-});
-
-// LOGOUT
-logoutBtn.addEventListener("click", () => {
-  signOut(auth).then(() => {
-    mapScreen.style.display = "none";
-    loginScreen.style.display = "block";
-  });
-});
-
-// MAP
-function showMap() {
-  loginScreen.style.display = "none";
-  mapScreen.style.display = "block";
-  renderMap();
+/* ===== end config ===== */
+if(!firebaseConfig || !firebaseConfig.apiKey){
+  document.getElementById('loginMsg').textContent = '⚠️ Paste your Firebase config in the HTML (see comments).';
+  // Show login screen but block sign-ins until config is provided
 }
 
-function renderMap() {
-  const map = document.getElementById("mapLevels");
-  map.innerHTML = "";
-  for (let i = 1; i <= 5; i++) {
-    const level = document.createElement("div");
-    level.className = "map-level";
-    level.textContent = "Level " + i;
-    level.addEventListener("click", () => startGame(i));
-    map.appendChild(level);
-  }
+try{
+  firebase.initializeApp(firebaseConfig);
+}catch(e){
+  console.error('Firebase init error',e);
+  document.getElementById('loginMsg').textContent = 'Firebase init failed: '+(e && e.message);
 }
 
-// GAME
-let score = 0, level = 1;
-const baseTarget = 100;
+// Firebase references
+const auth = firebase.auth ? firebase.auth() : null;
+const db = firebase.firestore ? firebase.firestore() : null;
+
+/* UI refs */
+const loginScreen = document.getElementById('loginScreen');
+const mapScreen = document.getElementById('mapScreen');
+const gameScreen = document.getElementById('gameScreen');
+const loginMsg = document.getElementById('loginMsg');
+const welcomeEl = document.getElementById('welcome');
+const levelGrid = document.getElementById('levelGrid');
+const mapPaths = document.getElementById('mapPaths');
+const miniMapEl = document.getElementById('miniMap');
+
+const emailSignBtn = document.getElementById('emailSignBtn');
+const googleSignBtn = document.getElementById('googleSignBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const backToMapBtn = document.getElementById('backToMapBtn');
+const restartBtn = document.getElementById('restartBtn');
+const statusDisplay = document.getElementById('status');
+const gameBoard = document.getElementById('gameBoard');
+const messageDisplay = document.getElementById('message');
+const mapMsg = document.getElementById('mapMsg');
+
+/* Game + map data */
+const levels = ["🐣","🌳","🏠","🏖️","🏔️","🌋","🏰","🚀","🌕"];
+const positions = [[170,420],[80,340],[230,300],[140,220],[250,160],[120,100],[220,60],[160,30],[80,10]];
 const rows = 16, cols = 12;
 const animals = ['🐼','🐸','🐷','🦘','🐒'];
+const baseTarget = 100;
+
+/* State */
+let user = null;
+let unlockedLevel = 0;
+let currentLevel = 0;
 let board = [];
 let selected = [];
-const gameBoard = document.getElementById("gameBoard");
-const statusDisplay = document.getElementById("status");
-const messageDisplay = document.getElementById("message");
+let score = 0;
+let levelNumber = 1;
 
-function startGame(selectedLevel) {
-  mapScreen.style.display = "none";
-  gameScreen.style.display = "block";
-  level = selectedLevel;
+/* Mini map with Leaflet */
+let miniMap;
+function initMiniMap(){
+  if(miniMap) return;
+  try{
+    miniMap = L.map(miniMapEl, { attributionControl:false, zoomControl:false }).setView([41.01,28.97],6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(miniMap);
+  }catch(e){ console.warn('Mini map init failed', e); }
+}
+
+/* ---------- Auth actions ---------- */
+async function ensureAuthReady(){
+  if(!auth){
+    loginMsg.textContent = 'Firebase not initialized — paste your config and enable Authentication in Firebase console.';
+    return false;
+  }
+  return true;
+}
+
+emailSignBtn.onclick = async () => {
+  if(!(await ensureAuthReady())) return;
+  const mail = document.getElementById('email') ? document.getElementById('email').value.trim() : '';
+  const pass = document.getElementById('password') ? document.getElementById('password').value : '';
+  if(!mail || !pass){ loginMsg.textContent = 'Enter email & password'; return; }
+  loginMsg.textContent = 'Signing in...';
+  try{
+    await auth.signInWithEmailAndPassword(mail, pass);
+    loginMsg.textContent = '';
+  }catch(e){
+    // try sign up
+    try{
+      await auth.createUserWithEmailAndPassword(mail, pass);
+      loginMsg.textContent = 'Account created. Signed in.';
+    }catch(err){
+      loginMsg.textContent = 'Auth error: ' + (err && err.message);
+      console.error('signup error', err);
+    }
+  }
+};
+
+googleSignBtn.onclick = async () => {
+  if(!(await ensureAuthReady())) return;
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try{
+    await auth.signInWithPopup(provider);
+    loginMsg.textContent = '';
+  }catch(e){
+    loginMsg.textContent = 'Google sign-in failed: ' + (e && e.message);
+  }
+};
+
+logoutBtn.onclick = async () => {
+  if(!auth) return;
+  await auth.signOut();
+};
+
+/* ---------- Auth state listener ---------- */
+if(auth){
+  auth.onAuthStateChanged(async u => {
+    user = u;
+    if(user){
+      // load saved progress
+      unlockedLevel = 0;
+      if(db){
+        try{
+          const ref = db.collection('progress').doc(user.uid);
+          const snap = await ref.get();
+          if(snap && snap.exists) unlockedLevel = snap.data().unlockedLevel || 0;
+        }catch(e){ console.warn('load progress failed', e); unlockedLevel = 0; }
+      }
+      welcomeEl.textContent = `Welcome, ${user.displayName || user.email || 'Player'}`;
+      showMapScreen();
+    } else {
+      showLogin();
+    }
+  });
+} else {
+  showLogin(); // firebase not available
+}
+
+/* ---------- UI helpers ---------- */
+function showLogin(){
+  loginScreen.style.display = 'block';
+  mapScreen.style.display = 'none';
+  gameScreen.style.display = 'none';
+  loginMsg.style.display = 'block';
+  loginMsg.textContent = loginMsg.textContent || 'Sign in or sign up to begin.';
+}
+
+function showMapScreen(){
+  loginScreen.style.display = 'none';
+  mapScreen.style.display = 'flex';
+  gameScreen.style.display = 'none';
+  renderMap();
+  initMiniMap();
+}
+
+/* ---------- Map render ---------- */
+function renderMap(){
+  levelGrid.innerHTML = '';
+  mapPaths.innerHTML = `<defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffa500"/></linearGradient></defs>`;
+  for(let i=0;i<levels.length;i++){
+    const tile = document.createElement('div');
+    tile.className = 'level-tile';
+    tile.textContent = levels[i];
+    tile.style.left = positions[i][0] + 'px';
+    tile.style.top = positions[i][1] + 'px';
+    tile.style.position = 'absolute';
+    if(i > unlockedLevel) tile.classList.add('locked');
+    else {
+      tile.classList.add('unlocked');
+      tile.onclick = () => startLevel(i);
+    }
+    levelGrid.appendChild(tile);
+
+    if(i > 0){
+      const [x1,y1] = positions[i-1];
+      const [x2,y2] = positions[i];
+      const midX = (x1+x2)/2 + (Math.random()*40-20);
+      const midY = (y1+y2)/2 + (Math.random()*40-20);
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d', `M${x1+30},${y1+30} Q${midX+30},${midY+30} ${x2+30},${y2+30}`);
+      mapPaths.appendChild(path);
+    }
+  }
+  mapMsg.textContent = `Unlocked: ${unlockedLevel+1}/${levels.length}`;
+}
+
+/* ---------- Start level / show game ---------- */
+function startLevel(index){
+  currentLevel = index;
+  levelNumber = index + 1;
   score = 0;
+  selected = [];
+  showGame();
   initBoard();
 }
 
-document.getElementById("backToMap").addEventListener("click", () => {
-  gameScreen.style.display = "none";
-  mapScreen.style.display = "block";
-});
-
-// === Game Logic ===
-function initBoard(){
-  createRandomBoard();
-  renderBoard();
-  updateStatus();
+function showGame(){
+  loginScreen.style.display = 'none';
+  mapScreen.style.display = 'none';
+  gameScreen.style.display = 'flex';
+  messageDisplay.textContent = '';
 }
-function createRandomBoard(){
-  board=[];
+
+/* ---------- Game core (your full 16x12 game with selection/unselect, falling) ---------- */
+/* sounds */
+const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
+function playTone(f, d=0.12){ if(!audioCtx) return; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.value=0.12; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d); }
+function successSound(){ [440,660,880].forEach((f,i)=>setTimeout(()=>playTone(f),i*120)); }
+function victorySound(){ [523,659,784].forEach((f,i)=>setTimeout(()=>playTone(f,0.18),i*160)); }
+function failSound(){ [200,160].forEach((f,i)=>setTimeout(()=>playTone(f,0.18),i*200)); }
+
+function initBoard(){
+  board = [];
   for(let r=0;r<rows;r++){
     const row=[];
     for(let c=0;c<cols;c++){
@@ -174,70 +337,182 @@ function createRandomBoard(){
     }
     board.push(row);
   }
+  ensurePlayableBoard();
+  renderBoard();
+  updateStatus();
 }
+
 function renderBoard(){
-  gameBoard.innerHTML='';
+  gameBoard.innerHTML = '';
   for(let r=0;r<rows;r++){
     for(let c=0;c<cols;c++){
-      const tile=document.createElement('div');
-      tile.className='tile';
-      tile.textContent=board[r][c];
-      tile.dataset.row=r;
-      tile.dataset.col=c;
-      tile.addEventListener('click',tileClick);
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = board[r][c];
+      tile.dataset.row = r; tile.dataset.col = c;
+      tile.addEventListener('click', tileClick);
       gameBoard.appendChild(tile);
     }
   }
 }
-function tileClick(e){
-  const tile=e.currentTarget;
-  const r=+tile.dataset.row, c=+tile.dataset.col;
-  tile.classList.add('selected');
-  selected.push({r,c,emoji:board[r][c],tile});
-  if(selected.length>=3){
-    const emoji=selected[0].emoji;
-    if(selected.every(s=>s.emoji===emoji)){
-      score+=selected.length*10;
-      selected.forEach(s=>{
-        board[s.r][s.c]=null;
-        s.tile.style.visibility='hidden';
-      });
-      selected=[];
-      updateStatus();
-      fallDown();
-    } else {
-      selected.forEach(s=>s.tile.classList.remove('selected'));
-      selected=[];
-    }
-  }
-}
-function fallDown(){
-  for(let c=0;c<cols;c++){
-    for(let r=rows-1;r>=0;r--){
-      if(board[r][c]===null){
-        for(let k=r-1;k>=0;k--){
-          if(board[k][c]!=null){
-            board[r][c]=board[k][c];
-            board[k][c]=null;
-            break;
-          }
-        }
-      }
-    }
-    for(let r=0;r<rows;r++){
-      if(board[r][c]===null){
-        board[r][c]=animals[Math.floor(Math.random()*animals.length)];
-      }
-    }
-  }
-  renderBoard();
-}
-function updateStatus(){
-  const target=baseTarget*level;
-  statusDisplay.textContent=`Score: ${score} | Level: ${level} | Target: ${target}`;
+
+function renderTile(r,c,emoji){
+  const index = r*cols + c;
+  const tile = gameBoard.children[index];
+  if(!tile) return;
+  tile.textContent = emoji;
+  tile.style.visibility = 'visible';
+  tile.classList.remove('selected');
+  tile.dataset.row = r; tile.dataset.col = c;
+  tile.removeEventListener('click', tileClick);
+  tile.addEventListener('click', tileClick);
 }
 
-document.getElementById('restart').addEventListener('click',()=>initBoard());
+function findMatchLine(sel){
+  if(sel.length < 3) return null;
+  const e = sel[0].emoji;
+  if(!sel.every(s=>s.emoji===e)) return null;
+  const rs = sel.map(s=>s.r), cs = sel.map(s=>s.c);
+  const dr = rs[1]-rs[0], dc = cs[1]-cs[0];
+  const straight = sel.every((s,i,arr) => i===0 || (s.r - arr[i-1].r === dr && s.c - arr[i-1].c === dc));
+  if(straight) return 'line';
+  const minR=Math.min(...rs), maxR=Math.max(...rs), minC=Math.min(...cs), maxC=Math.max(...cs);
+  if((maxR-minR<=1)&&(maxC-minC<=1)) return 'block';
+  const denom = (cs[cs.length-1]-cs[0]) || 1;
+  const sameSlope = Math.abs((rs[rs.length-1]-rs[0]) / denom) === 1;
+  if(sameSlope) return 'diagonal';
+  return null;
+}
+
+function calculatePoints(n){
+  if(n===3) return 10; if(n===4) return 20; if(n===5) return 35; return 35 + (n-5)*20;
+}
+
+function tileClick(e){
+  const tile = e.currentTarget;
+  const r = +tile.dataset.row, c = +tile.dataset.col;
+  if(tile.classList.contains('selected')){
+    tile.classList.remove('selected');
+    selected = selected.filter(s => !(s.r===r && s.c===c));
+    return;
+  }
+  tile.classList.add('selected');
+  selected.push({ r, c, emoji: board[r][c], tile });
+  if(selected.length >= 3){
+    const dir = findMatchLine(selected);
+    if(dir){
+      clearTimeout(window.matchTimeout);
+      window.matchTimeout = setTimeout(() => {
+        const pts = calculatePoints(selected.length);
+        successSound();
+        score += pts;
+        messageDisplay.textContent = `Matched ${selected.length} for +${pts} 🎉`;
+        selected.forEach(s => { s.tile.classList.remove('selected'); board[s.r][s.c] = null; s.tile.style.visibility = 'hidden'; });
+        selected = [];
+        updateStatus();
+        setTimeout(fallDown, 360);
+      }, 250);
+    }
+  }
+  if(selected.length >= 7 && !findMatchLine(selected)){
+    failSound();
+    selected.forEach(s=>s.tile.classList.remove('selected'));
+    selected = [];
+  }
+}
+
+function fallDown(){
+  const fallingTiles = [];
+  for(let c=0;c<cols;c++){
+    let empty = 0;
+    for(let r=rows-1;r>=0;r--){
+      if(board[r][c] === null) empty++;
+      else if(empty>0){ board[r+empty][c] = board[r][c]; board[r][c] = null; fallingTiles.push({from:r,to:r+empty,c}); }
+    }
+    for(let r=0;r<empty;r++){
+      board[r][c] = animals[Math.floor(Math.random()*animals.length)];
+      fallingTiles.push({from:-1,to:r,c,newTile:true});
+    }
+  }
+  animateFall(fallingTiles);
+}
+
+function animateFall(fallingTiles){
+  const tiles = Array.from(gameBoard.querySelectorAll('.tile'));
+  fallingTiles.forEach(f=>{
+    const tile = tiles.find(t => +t.dataset.row === f.to && +t.dataset.col === f.c);
+    if(!tile) return;
+    if(f.newTile){
+      tile.textContent = board[f.to][f.c];
+      tile.style.transform = 'translateY(-150%)';
+      tile.style.opacity = 0;
+      setTimeout(()=>{ tile.style.transition='transform .36s ease, opacity .36s ease'; tile.style.transform='translateY(0)'; tile.style.opacity=1; }, 50);
+    } else {
+      const distance = (f.to - f.from) * tile.offsetHeight;
+      tile.style.transition = 'transform .36s ease';
+      tile.style.transform = `translateY(${distance}px)`;
+      setTimeout(()=>{ tile.style.transition=''; tile.style.transform=''; renderTile(f.to, f.c, board[f.to][f.c]); }, 380);
+    }
+  });
+  setTimeout(()=>{ autoShuffleIfNoMoves(); checkLevelComplete(); }, 500);
+}
+
+function hasPossibleMoves(){
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+    const e = board[r][c]; if(e==null) continue;
+    if(c+2<cols && board[r][c+1]===e && board[r][c+2]===e) return true;
+    if(r+2<rows && board[r+1][c]===e && board[r+2][c]===e) return true;
+  }
+  return false;
+}
+
+function shuffleBoard(){
+  const flat = board.flat();
+  for(let i=flat.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [flat[i],flat[j]]=[flat[j],flat[i]]; }
+  board = [];
+  for(let r=0;r<rows;r++) board.push(flat.slice(r*cols,(r+1)*cols));
+}
+
+function ensurePlayableBoard(){
+  let safety = 0; while(!hasPossibleMoves() && safety < 200){ shuffleBoard(); safety++; }
+}
+
+function autoShuffleIfNoMoves(){
+  if(!hasPossibleMoves()){
+    messageDisplay.textContent = '🔄 No matches — shuffling...';
+    shuffleBoard(); ensurePlayableBoard();
+    setTimeout(()=>{ renderBoard(); messageDisplay.textContent=''; }, 380);
+  }
+}
+
+async function checkLevelComplete(){
+  const target = baseTarget * levelNumber;
+  if(score >= target){
+    victorySound();
+    messageDisplay.textContent = `🎉 You cleared Level ${levelNumber}! 🥳`;
+    // persist unlock
+    if(currentLevel === unlockedLevel && unlockedLevel < levels.length - 1 && db && user){
+      unlockedLevel++;
+      try{ await db.collection('progress').doc(user.uid).set({ unlockedLevel }); }
+      catch(e){ console.warn('save unlock failed', e); }
+    }
+    setTimeout(()=>{ showMapScreen(); }, 900);
+  }
+}
+
+function updateStatus(){ statusDisplay.textContent = `Score: ${score} | Level: ${levelNumber} | Target: ${baseTarget * levelNumber}`; }
+
+/* restart/back handlers */
+backToMapBtn.onclick = showMapScreen;
+restartBtn.onclick = ()=>{ score=0; selected=[]; initBoard(); messageDisplay.textContent=''; };
+
+/* initial UI */
+if(!auth) document.getElementById('loginMsg').textContent = 'Firebase not initialized — paste your config in the HTML and enable Authentication.';
+else showLogin();
+
+function showLogin(){ loginScreen.style.display='block'; mapScreen.style.display='none'; gameScreen.style.display='none'; }
+
+/* Init done */
 </script>
 </body>
-</html>
+                                                                                                                </html>
