@@ -6,14 +6,10 @@
 <title>Emoji Crush 🎉 | English Training Hub</title>
 <style>
   html, body {
-    margin: 0; padding: 0;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    overflow: hidden;
-  }
-  body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Poppins', sans-serif; text-align: center;
     background: linear-gradient(135deg, #fefcea, #f1da36);
+    overflow: hidden;
   }
   #loginScreen, #mapScreen, #gameScreen { display: none; }
   button {
@@ -25,24 +21,23 @@
     padding: 10px; margin: 6px; border-radius: 8px; border: 1px solid #ccc;
   }
   .map-level {
-    width: 80px; height: 80px;
-    background: #fff; border-radius: 50%;
+    width: 80px; height: 80px; background: #fff; border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
-    margin: 15px; cursor: pointer;
-    font-weight: bold; box-shadow: 0 0 6px #999;
-    transition: transform 0.2s;
+    margin: 15px; cursor: pointer; font-weight: bold;
+    box-shadow: 0 0 6px #999; transition: transform 0.2s;
   }
   .map-level:hover { transform: scale(1.1); background: #d4ffd4; }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN & SIGNUP -->
 <div id="loginScreen">
-  <h1>Login to Play 🎮</h1>
+  <h1>Login or Sign Up 🎮</h1>
   <input id="email" type="email" placeholder="Email" /><br />
   <input id="password" type="password" placeholder="Password" /><br />
   <button id="loginBtn">Login</button>
+  <button id="signupBtn" style="background:#2196F3;">Sign Up</button>
   <p id="loginMsg"></p>
 </div>
 
@@ -69,7 +64,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDwT8qfj5Lq2ev6QyHbEkKSmfhfRxyiPpY",
@@ -89,6 +84,7 @@ const gameScreen = document.getElementById("gameScreen");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
 const loginMsg = document.getElementById("loginMsg");
 const logoutBtn = document.getElementById("logoutBtn");
 
@@ -98,13 +94,18 @@ loginScreen.style.display = "block";
 loginBtn.addEventListener("click", () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then(() => {
-      loginScreen.style.display = "none";
-      mapScreen.style.display = "block";
-      renderMap();
+      showMap();
     })
-    .catch(err => {
-      loginMsg.textContent = "❌ " + err.message;
-    });
+    .catch(err => loginMsg.textContent = "❌ " + err.message);
+});
+
+// SIGNUP
+signupBtn.addEventListener("click", () => {
+  createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then(() => {
+      showMap();
+    })
+    .catch(err => loginMsg.textContent = "❌ " + err.message);
 });
 
 // LOGOUT
@@ -116,6 +117,12 @@ logoutBtn.addEventListener("click", () => {
 });
 
 // MAP
+function showMap() {
+  loginScreen.style.display = "none";
+  mapScreen.style.display = "block";
+  renderMap();
+}
+
 function renderMap() {
   const map = document.getElementById("mapLevels");
   map.innerHTML = "";
