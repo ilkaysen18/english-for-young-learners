@@ -55,7 +55,7 @@
 #### 1️⃣1️⃣ NEXT:
 * update / recover CMS - under the "Tutors" button
 #### 1️⃣2️⃣ ...
-* ...
+* Add a login-to-access further lessons button for each course
 
 
 
