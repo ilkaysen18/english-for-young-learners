@@ -1,86 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson Creator</title>
-    <link rel="stylesheet" href="styles.css">
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f9f9f9;
-}
-
-.container {
-    max-width: 800px;
-    margin: auto;
-}
-
-h1, h2, h3 {
-    color: #333;
-}
-
-.vocabulary, .conversation-questions, .agree-disagree {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-}
-
-ul, ol {
-    padding-left: 20px;
-}
-<body>
-
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Lessons CMS</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; background: #f7f7f7; }
+  h1 { text-align: center; }
+  form { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 5px #ccc; margin-bottom: 20px; }
+  input, select, textarea, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
+  button { cursor: pointer; background: #007bff; color: #fff; border: none; }
+  .lesson { background: #fff; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 5px #ccc; }
+  .lesson h2 { margin: 0; }
+  .filter { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .lesson button { margin-right: 10px; background: #dc3545; }
+  .lesson button.edit { background: #28a745; }
+</style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Speaking With Pictures - Lesson 1 (A1–A2)</h1>
-    <h2>At the Beach</h2>
+<h1>English Lessons CMS</h1>
 
-    <div class="vocabulary">
-        <h3>Vocabulary</h3>
-        <ul>
-            <li>sand</li>
-            <li>sea</li>
-            <li>towel</li>
-            <li>swim</li>
-            <li>hat</li>
-            <li>sun</li>
-            <li>ball</li>
-            <li>umbrella</li>
-            <li>waves</li>
-            <li>sunglasses</li>
-        </ul>
-    </div>
-
-    <div class="conversation-questions">
-        <h3>Conversation Questions</h3>
-        <ol>
-            <li>Do you like going to the beach?</li>
-            <li>What do you do there?</li>
-            <li>Who do you go with?</li>
-            <li>What do you wear at the beach?</li>
-            <li>Can you swim well?</li>
-        </ol>
-    </div>
-
-    <div class="agree-disagree">
-        <h3>Agree or Disagree</h3>
-        <ul>
-            <li>The beach is the best place to relax.</li>
-            <li>I don’t like swimming in the sea.</li>
-            <li>It’s fun to play ball on the sand.</li>
-            <li>The sun is too hot in summer.</li>
-            <li>I like watching the waves.</li>
-        </ul>
-    </div>
+<!-- Filters -->
+<div class="filter">
+  <select id="filterLevel">
+    <option value="">All Levels</option>
+    <option value="A1">A1</option>
+    <option value="A2">A2</option>
+    <option value="B1">B1</option>
+    <option value="B2">B2</option>
+  </select>
+  <input type="text" id="searchInput" placeholder="Search by Title or Topic" />
 </div>
 
+<!-- Add/Edit Lesson Form -->
+<form id="lessonForm">
+  <input type="hidden" id="lessonId" />
+  <input type="text" id="title" placeholder="Lesson Title" required />
+  <select id="level" required>
+    <option value="">Select Level</option>
+    <option value="A1">A1</option>
+    <option value="A2">A2</option>
+    <option value="B1">B1</option>
+    <option value="B2">B2</option>
+  </select>
+  <input type="text" id="topic" placeholder="Lesson Topic" required />
+  <textarea id="content" placeholder="Lesson Content (HTML allowed)" rows="5" required></textarea>
+  <button type="submit">Save Lesson</button>
+</form>
+
+<!-- Lessons List -->
+<div id="lessonsList"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // 🔹 Firebase Config (replace with your own)
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const lessonsRef = db.collection('lessons');
+
+  const form = document.getElementById('lessonForm');
+  const lessonsList = document.getElementById('lessonsList');
+  const filterLevel = document.getElementById('filterLevel');
+  const searchInput = document.getElementById('searchInput');
+
+  // Render single lesson card
+  function renderLesson(doc) {
+    const div = document.createElement('div');
+    div.className = 'lesson';
+    div.setAttribute('data-id', doc.id);
+    div.innerHTML = `
+      <h2>${doc.data().title} (${doc.data().level})</h2>
+      <h4>Topic: ${doc.data().topic}</h4>
+      <div>${doc.data().content}</div>
+      <button class="edit" onclick="editLesson('${doc.id}')">Edit</button>
+      <button onclick="deleteLesson('${doc.id}')">Delete</button>
+    `;
+    lessonsList.appendChild(div);
+  }
+
+  // Add or Update Lesson
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('lessonId').value;
+    const lesson = {
+      title: form.title.value,
+      level: form.level.value,
+      topic: form.topic.value,
+      content: form.content.value,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    if(id) {
+      // Update
+      await lessonsRef.doc(id).update(lesson);
+    } else {
+      // Add new
+      lesson.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await lessonsRef.add(lesson);
+    }
+    form.reset();
+    document.getElementById('lessonId').value = '';
+  });
+
+  // Delete Lesson
+  async function deleteLesson(id) {
+    await lessonsRef.doc(id).delete();
+  }
+
+  // Edit Lesson
+  async function editLesson(id) {
+    const doc = await lessonsRef.doc(id).get();
+    if(doc.exists) {
+      const data = doc.data();
+      document.getElementById('lessonId').value = id;
+      form.title.value = data.title;
+      form.level.value = data.level;
+      form.topic.value = data.topic;
+      form.content.value = data.content;
+    }
+  }
+
+  // Search & Filter
+  function applyFilters(snapshot) {
+    lessonsList.innerHTML = '';
+    const level = filterLevel.value.toLowerCase();
+    const searchText = searchInput.value.toLowerCase();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const matchLevel = !level || data.level.toLowerCase() === level;
+      const matchSearch = !searchText || data.title.toLowerCase().includes(searchText) || data.topic.toLowerCase().includes(searchText);
+      if(matchLevel && matchSearch) renderLesson(doc);
+    });
+  }
+
+  filterLevel.addEventListener('change', () => lessonsRef.orderBy('createdAt', 'desc').get().then(applyFilters));
+  searchInput.addEventListener('input', () => lessonsRef.orderBy('createdAt', 'desc').get().then(applyFilters));
+
+  // Real-time listener
+  lessonsRef.orderBy('createdAt', 'desc').onSnapshot(snapshot => applyFilters(snapshot));
+</script>
 </body>
 </html>
