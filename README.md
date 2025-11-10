@@ -39,6 +39,7 @@
 * lesson content storage / backup
 
 🚀
+
 #### 7️⃣ Courses section update 
 * new course added - "Speaking With Pictures"
 * new language + course added - German Speaking for A1-A2
@@ -46,6 +47,21 @@
 * added sales landing & booking page
 #### 9️⃣ Emoji Crush 🎉 
 * [new game](https://ilkaysen18.github.io/englishtraininghub/emoji-crush-2.html) added
+
+🚀
+
+#### 🔟 Course lesson content
+* new lessons added to the English course "Speaking with Pictures"
+#### 1️⃣1️⃣ NEXT:
+* update / recover CMS - under the "Tutors" button
+#### 1️⃣2️⃣ ...
+* ...
+
+
+
+
+
+
 
 
 
