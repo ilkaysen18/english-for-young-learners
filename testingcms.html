@@ -23,16 +23,18 @@
 <!-- Lesson Template -->
 <h2>Lesson Template / Instructions</h2>
 
-<!-- Google Doc iframe (auto-height) -->
-<iframe 
-    id="templateIframe"
-    src="https://docs.google.com/document/d/16AKdrfft0gphJEhYlt1jkmWFi8s61tJmvgTBcBDyzV0/preview" 
-    width="100%" 
-    style="border:1px solid #ccc; border-radius:10px;">
-</iframe>
+<!-- ℹ️ Google Doc iframe - using auto-height for adjusting UI based on the document's length) -->
+<div style="position: relative; width: 100%; padding-bottom: 56.25%; /* 16:9 ratio */ overflow: hidden; border: 1px solid #ccc; border-radius: 8px;">
+  <iframe 
+    src="URL_OF_YOUR_LESSON_HTML" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+    allowfullscreen
+    loading="lazy"
+  ></iframe>
+</div>
 
 <!-- Optional copy button -->
-<button onclick="alert('Select and copy the content directly from the Google Doc above.')">
+<button onclick="alert('Select and copy the content directly from the snippet above.')">
   Copy Template to Lesson Content
 </button>
 
