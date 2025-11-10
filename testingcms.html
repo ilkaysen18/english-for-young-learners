@@ -25,8 +25,19 @@
 
 <!-- Lesson Template -->
 <h2>Lesson Template / Instructions</h2>
-<iframe src="template.html"></iframe>
-<button onclick="pasteTemplate()">Copy Template to Lesson Content</button>
+
+<!-- ℹ️ Google Doc iframe -->
+<iframe 
+    src="https://docs.google.com/document/d/FILE_ID/preview" 
+    width="100%" 
+    height="500px" 
+    style="border:1px solid #ccc; border-radius:10px;">
+</iframe>
+
+<!-- Optional copy button -->
+<button onclick="alert('Select and copy the content directly from the Google Doc above.')">
+  Copy Template to Lesson Content
+</button>
 
 <!-- Filters -->
 <div class="filter">
