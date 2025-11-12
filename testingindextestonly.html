@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>English Training Hub - Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Poppins:wght@400;600&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #a7dfff, #f6faff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .container {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 900px;
+    padding: 40px 30px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  h1, h2 {
+    margin: 0 0 20px;
+    color: #333;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: #555;
+    max-width: 600px;
+    margin: 10px auto 30px;
+    font-size: 1rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .btn-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px 15px;
+    border: 2px solid #eaf3ff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    border-color: #ffd34e;
+  }
+
+  .btn-card h3 {
+    font-size: 1.2rem;
+    color: #222;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .footer {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Mobile optimization */
+  @media (max-width: 600px) {
+    .container {
+      padding: 25px 15px;
+    }
+
+    h2 {
+      font-size: 1.7rem;
+    }
+
+    .btn-card h3 {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>🌏💡 English Training Hub</h2>
+    <p>Welcome to the English Training Hub — your gateway to learning and teaching languages! Choose your destination below to get started.</p>
+    
+    <div class="grid">
+      <div class="btn-card" onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/bookings.html'">
+        <h3>🚀 Lesson Bookings</h3>
+      </div>
+
+      <div class="btn-card" onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/cms.html'">
+        <h3>💻 Tutors</h3>
+      </div>
+
+      <div class="btn-card" onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/courses.html'">
+        <h3>🇬🇧 English Courses</h3>
+      </div>
+
+      <div class="btn-card" onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/languages/german/spk.html'">
+        <h3>🇩🇪 German Courses</h3>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2025 English Training Hub | Designed with ❤️ for learners worldwide.
+    </div>
+  </div>
+
+</body>
+</html>
