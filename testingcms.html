@@ -24,12 +24,25 @@
 <h2>Lesson Template / Instructions</h2>
 
 <!-- ℹ️ Google Doc iframe - using auto-height for adjusting UI based on the document's length) -->
-<div style="width:100%; max-width:1000px; margin:0 auto; overflow:hidden; height:80vh;">
+<div style="
+  position: relative;
+  width: 100%;
+  max-width: 1000px;  /* optional limit so it doesn't get too wide */
+  margin: 0 auto;
+  aspect-ratio: 8.5 / 11; /* keeps doc proportions roughly like A4 paper */
+">
   <iframe
     src="https://docs.google.com/document/d/e/2PACX-1vSRmU2b0GXtsxaO1qp54cBzqChbZxEMogj57jbkYkb4r3ZCQAr9M7o-FA4oXepjmNOA1-9Avn7Jiq0Z/pub?embedded=true"
-    style="width:100%; height:120vh; border:none; transform:scale(1.05); transform-origin: top center;"
-    loading="lazy">
-  </iframe>
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    "
+    loading="lazy"
+  ></iframe>
 </div>
 
 <!-- Optional copy button -->
