@@ -59,7 +59,10 @@
   - further lessons requiring login to be made available through iFrame
 * ...
 #### 1️⃣2️⃣ Student Dashboard
-* Add a Student Dashboard page 
+* Add a Student Dashboard page using HTML, CSS
+  - the main thing will be the further lessons available through iFrame
+  - the next point will be tutors being able to add student lesson notes to Google Drive - which will also be hosted on student lesson notes page through iFrame
+* ...
 
 🚀
 
