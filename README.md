@@ -52,16 +52,25 @@
 
 #### 🔟 Course lesson content
 * new lessons added to the English course "Speaking with Pictures"
-#### 1️⃣1️⃣ NEXT:
+#### 1️⃣1️⃣ Full CMS config with Google Cloud (using iFrame with Drive Docs)(rather than Firestore API)
 * update / recover CMS - under the "Tutors" button
-#### 1️⃣2️⃣ ...
 * Add a login-to-access further lessons button for each course
+  - lessons available on HTML stay publicly accessible on page
+  - further lessons requiring login to be made available through iFrame
+* ...
+#### 1️⃣2️⃣ Student Dashboard
+* Add a Student Dashboard page 
 
+🚀
 
+#### 1️⃣3️⃣ ...
+* ...
+#### 1️⃣4️⃣ ...
+* ...
+#### 1️⃣5️⃣ ...
+* ...
 
-
-
-
+🚀
 
 
 
