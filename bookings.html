@@ -4,124 +4,193 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>English Training Hub | Tanıtım</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
     :root {
-      --primary-color: #007BFF;
-      --accent-color: #43C6AC;
-      --text-color: #222;
-      --bg-light: #f9f9fb;
+      --primary: #007BFF;
+      --secondary: #43C6AC;
+      --bg: #f7f9fc;
+      --text-dark: #222;
+      --text-light: #555;
       --card-bg: #fff;
-      --shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      --radius: 14px;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* --- Base --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       font-family: "Montserrat", Arial, sans-serif;
-      background: var(--bg-light);
-      color: var(--text-color);
-      line-height: 1.7;
+      color: var(--text-dark);
+      background-color: var(--bg);
       scroll-behavior: smooth;
+      line-height: 1.7;
     }
 
+    h1, h2, h3 {
+      font-weight: 700;
+    }
+
+    /* --- Header --- */
     header {
+      position: relative;
       text-align: center;
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: #fff;
-      padding: 3rem 1.5rem 2.4rem;
-      box-shadow: var(--shadow);
+      padding: 4rem 1.5rem 5rem;
+      overflow: hidden;
     }
 
     header h1 {
-      font-size: 2.4rem;
-      font-weight: 700;
+      font-size: 2.6rem;
       margin-bottom: 0.8rem;
+      letter-spacing: 0.5px;
     }
 
     header p {
-      font-size: 1.05rem;
-      opacity: 0.95;
-      max-width: 700px;
+      max-width: 750px;
       margin: 0 auto;
+      font-size: 1.1rem;
+      opacity: 0.95;
     }
 
+    /* Decorative shapes */
+    header::after, header::before {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+    }
+
+    header::before {
+      width: 300px; height: 300px;
+      bottom: -120px; left: -80px;
+    }
+    header::after {
+      width: 250px; height: 250px;
+      top: -100px; right: -60px;
+    }
+
+    /* --- Navbar --- */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #ffffffd9;
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 0.9rem 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+
+    nav a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--secondary);
+    }
+
+    /* --- Sections --- */
     section {
       background: var(--card-bg);
-      margin: 2rem auto;
-      padding: 2.2rem;
+      margin: 3rem auto;
+      padding: 2.5rem 2rem;
       max-width: 900px;
-      border-radius: 14px;
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.1);
     }
 
     section h2 {
-      color: var(--primary-color);
-      border-left: 5px solid var(--primary-color);
+      color: var(--primary);
+      border-left: 6px solid var(--primary);
       padding-left: 10px;
       margin-bottom: 1rem;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
     }
 
-    h3 {
-      color: var(--accent-color);
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
+    section h3 {
+      color: var(--secondary);
+      font-size: 1.15rem;
+      margin-top: 1.6rem;
     }
 
     section p {
+      color: var(--text-light);
       font-size: 1rem;
-      color: #333;
-      margin-bottom: 1rem;
+      margin: 0.8rem 0 1rem;
     }
 
     ul {
       list-style: none;
       padding-left: 0;
+      margin-top: 0.7rem;
     }
 
     ul li {
       padding: 0.4rem 0;
       border-bottom: 1px solid #eee;
+      color: #444;
     }
 
     .highlight {
-      color: var(--primary-color);
+      color: var(--primary);
       font-weight: 600;
     }
 
+    /* --- Footer --- */
     footer {
       text-align: center;
-      padding: 1.8rem;
-      font-size: 0.9rem;
+      padding: 2rem 1rem;
       color: #fff;
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-      margin-top: 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       letter-spacing: 0.4px;
+      font-size: 0.95rem;
+      margin-top: 3rem;
     }
 
     footer span {
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    /* WhatsApp Floating Button + Label */
+    /* --- WhatsApp Floating Button --- */
     .whatsapp-container {
       position: fixed;
       bottom: 20px;
       right: 20px;
       display: flex;
       align-items: center;
-      z-index: 1000;
-      font-family: inherit;
+      z-index: 999;
     }
 
     .whatsapp-label {
       background-color: #25D366;
       color: white;
       font-weight: 600;
-      padding: 12px 16px;
+      padding: 12px 18px;
       border-radius: 30px;
-      margin-right: 12px;
+      margin-right: 10px;
       font-size: 0.95rem;
       opacity: 0;
       transform: translateX(10px);
@@ -158,22 +227,33 @@
       background-color: #20ba5a;
     }
 
+    /* --- Responsiveness --- */
     @media (max-width: 640px) {
       header h1 { font-size: 2rem; }
-      section { padding: 1.5rem; margin: 1rem; }
-      section h2 { font-size: 1.3rem; }
+      header p { font-size: 1rem; }
+      section { padding: 1.6rem; margin: 1.2rem; }
+      nav { flex-wrap: wrap; gap: 1rem; }
+      nav a { font-size: 0.95rem; }
       .whatsapp-label { display: none; }
     }
   </style>
 </head>
 
 <body>
+
   <header>
     <h1>English Training Hub</h1>
     <p>TEFL & TESOL Belgeli Anadili İngilizce öğretmenleri ile <strong>7 yıllık global tecrübe</strong> – İngilizce öğrenmeye hazırsanız, <em>let's begin!</em></p>
   </header>
 
-  <section>
+  <nav>
+    <a href="#about">Hakkımızda</a>
+    <a href="#courses">Derslerimiz</a>
+    <a href="#method">Metodolojimiz</a>
+    <a href="#contact">İletişim</a>
+  </nav>
+
+  <section id="about">
     <h2>Hakkımızda</h2>
     <p><strong>Hello students,</strong> welcome to <span class="highlight">English Training Hub!</span></p>
     <p>Biz <strong>English for Aviation, Medicine, IT, Business, General, YDS, TOEFL, IELTS</strong> ve <strong>Cambridge (Yr-12) A/AS-levels</strong> alanlarında uzmanız.</p>
@@ -187,26 +267,25 @@
     <p>We look forward to meeting you soon! ✰彡</p>
   </section>
 
-  <section>
+  <section id="courses">
     <h2>Derslerimiz</h2>
-    <h3>📘 General English Group Lessons:</h3>
+    <h3>📘 General English Group Lessons</h3>
     <ul>
       <li>✎ [4] öğrenciden oluşan sınıflar</li>
       <li>✎ Haftada [2] × 30 dk ders</li>
       <li>✎ 150 TL / saat</li>
     </ul>
 
-    <h3>📗 General English Individual Lessons:</h3>
+    <h3>📗 General English Individual Lessons</h3>
     <ul>
       <li>✎ [1] öğrenciye özel</li>
       <li>✎ Haftada [2] × 30 dk ders</li>
       <li>✎ 300 TL / saat</li>
     </ul>
-
     <p>✻ Uzman eğitmenlerden ✯<strong>Tavsiye Belgenizi</strong>✯ 1–2 ayda alabilirsiniz.</p>
   </section>
 
-  <section>
+  <section id="method">
     <h2>Metodolojimiz</h2>
     <p><strong>Uluslararası araştırılmış pedagojik destekli:</strong></p>
     <ul>
@@ -218,7 +297,7 @@
     <p class="highlight">Hazır mısınız? Size özel planlanmış bir kursla akıcı İngilizce adım adım mümkün!</p>
   </section>
 
-  <footer>
+  <footer id="contact">
     <p>© 2025 <span>English Training Hub</span> — Professional English Tutoring</p>
   </footer>
 
