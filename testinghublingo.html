@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Training Hub | GameHub</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+    :root {
+      --primary: #007BFF;
+      --secondary: #43C6AC;
+      --locked: #bbb;
+      --unlocked: #46C889;
+      --bg: #f7f9fc;
+      --radius: 14px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Montserrat',sans-serif;
+      background:var(--bg);
+      padding:1rem;
+      color:#222;
+      text-align:center;
+    }
+    header{
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:#fff;
+      padding:2rem 1rem 1.5rem;
+      border-radius:var(--radius);
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    header h1{font-size:2rem;margin-bottom:0.4rem;}
+    header p{font-size:1rem;opacity:.9}
+
+    #lesson-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(80px,1fr));
+      gap:1rem;
+      max-width:700px;
+      margin:2rem auto;
+    }
+
+    .lesson{
+      border-radius:50%;
+      height:80px;
+      width:80px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      font-weight:700;
+      color:#fff;
+      cursor:pointer;
+      transition:transform .25s ease,box-shadow .25s ease;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .lesson.locked{background:var(--locked);cursor:not-allowed;}
+    .lesson.unlocked{background:var(--unlocked);}
+    .lesson.completed{background:var(--primary);}
+    .lesson:hover:not(.locked){
+      transform:translateY(-5px);
+      box-shadow:0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    /* Game Modal */
+    #game-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:1000;
+    }
+    .modal-content{
+      background:#fff;
+      border-radius:var(--radius);
+      width:90%;
+      max-width:400px;
+      padding:2rem;
+      text-align:center;
+      box-shadow:0 6px 16px rgba(0,0,0,0.2);
+    }
+    .modal-content h2{color:var(--primary);margin-bottom:1rem;}
+    .modal-content button{
+      margin:0.4rem;
+      padding:0.8rem 1.3rem;
+      border:none;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background-color .3s;
+    }
+    .option-btn{
+      display:block;
+      width:100%;
+      margin-bottom:0.6rem;
+      background-color:#f1f5f9;
+    }
+    .option-btn:hover{background-color:#e2e8f0;}
+    #next-btn{
+      background:var(--unlocked);
+      color:#fff;
+      margin-top:1rem;
+      display:none;
+    }
+    #close-btn{
+      background:#ddd;
+      color:#333;
+      float:right;
+      font-size:0.9rem;
+      padding:0.4rem 0.8rem;
+      border-radius:4px;
+    }
+    @media(max-width:480px){
+      .lesson{height:70px;width:70px;font-size:0.9rem;}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🎮 GameHub: English Practice</h1>
+    <p>Practice vocab, collocations & short sentences through 20 bite‑size lessons!</p>
+  </header>
+
+  <div id="lesson-grid"></div>
+
+  <!-- Game Modal -->
+  <div id="game-modal">
+    <div class="modal-content">
+      <button id="close-btn">✖</button>
+      <h2 id="lesson-title">Lesson</h2>
+      <p id="question"></p>
+      <div id="options"></div>
+      <button id="next-btn">Next Lesson →</button>
+    </div>
+  </div>
+
+  <script>
+    const lessonsCount = 20;
+    const lessonGrid = document.getElementById('lesson-grid');
+    const modal = document.getElementById('game-modal');
+    const lessonTitle = document.getElementById('lesson-title');
+    const questionEl = document.getElementById('question');
+    const optionsContainer = document.getElementById('options');
+    const nextBtn = document.getElementById('next-btn');
+    const closeBtn = document.getElementById('close-btn');
+
+    // Simple placeholder questions for demo
+    const questionsPool = [
+      {q:"Choose the correct word: 'I ___ coffee every morning.'", opts:["drink","drinks","drinking","drank"], ans:"drink"},
+      {q:"Common collocation: 'make a ___'", opts:["decision","party","car","table"], ans:"decision"},
+      {q:"Short sentence: 'He is good ___ tennis.'", opts:["at","in","on","to"], ans:"at"},
+      {q:"Select the synonym of 'quickly'", opts:["slowly","rapidly","always","rarely"], ans:"rapidly"},
+      {q:"Collocation: 'take a ___'", opts:["rest","cookie","pen","bag"], ans:"rest"},
+    ];
+
+    // Progress load or set
+    let progress = JSON.parse(localStorage.getItem('eth-progress')) || {completed:0};
+    
+    function renderLessons(){
+      lessonGrid.innerHTML='';
+      for(let i=1;i<=lessonsCount;i++){
+        const div=document.createElement('div');
+        div.classList.add('lesson');
+        div.textContent=i;
+        if(i<=progress.completed){div.classList.add('completed')}
+        else if(i===progress.completed+1){div.classList.add('unlocked')}
+        else{div.classList.add('locked')}
+        div.addEventListener('click',()=>openLesson(i,div));
+        lessonGrid.appendChild(div);
+      }
+    }
+
+    let currentLesson=null;
+    function openLesson(number,element){
+      if(element.classList.contains('locked'))return;
+      currentLesson=number;
+      const randomQ=questionsPool[Math.floor(Math.random()*questionsPool.length)];
+      lessonTitle.textContent=`Lesson ${number}`;
+      questionEl.textContent=randomQ.q;
+      optionsContainer.innerHTML='';
+      nextBtn.style.display='none';
+      randomQ.opts.forEach(option=>{
+        const btn=document.createElement('button');
+        btn.className='option-btn';
+        btn.textContent=option;
+        btn.addEventListener('click',()=>{
+          if(option===randomQ.ans){
+            btn.style.backgroundColor='#9AE6B4';
+            nextBtn.style.display='inline-block';
+          }else{
+            btn.style.backgroundColor='#FEB2B2';
+            btn.disabled=true;
+          }
+        });
+        optionsContainer.appendChild(btn);
+      });
+      modal.style.display='flex';
+    }
+
+    nextBtn.addEventListener('click',()=>{
+      modal.style.display='none';
+      if(currentLesson>progress.completed){
+        progress.completed=currentLesson;
+        localStorage.setItem('eth-progress',JSON.stringify(progress));
+      }
+      renderLessons();
+      if(currentLesson<lessonsCount){
+        const next=document.querySelectorAll('.lesson')[currentLesson];
+        next.scrollIntoView({behavior:'smooth',block:'center'});
+      }else{
+        alert('Congratulations! You finished all 20 lessons! 🎉');
+      }
+    });
+
+    closeBtn.addEventListener('click',()=>modal.style.display='none');
+
+    window.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none';});
+
+    renderLessons();
+  </script>
+</body>
+</html>
