@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 – Is it Sunny?</title>
+<style>
+body { font-family:'Comic Sans MS',sans-serif;margin:0;text-align:center;background:linear-gradient(#FFF59D,#FFFDE7);}
+header{background:#FFB74D;color:white;padding:1rem;}
+.container{background:white;margin:20px auto;padding:20px;border-radius:12px;max-width:420px;}
+button{background:#FFB74D;color:white;padding:10px 20px;border:none;border-radius:8px;margin-top:10px;cursor:pointer;}
+button:hover{background:#FFD54F;}
+.result{margin-top:10px;font-size:1.1rem;}
+</style>
+</head>
+<body>
+
+<header>Lesson 2: Is it Sunny? ☀️</header>
+<div class="container" id="content">
+ <h2>Ask and Answer</h2>
+ <p>It’s sunny. Is it sunny?</p>
+ <p>✅ Yes, it is.</p>
+ <p>It’s rainy. Is it sunny?</p>
+ <p>❌ No, it’s not.</p>
+ <button onclick="start()">Start Practice ➡️</button>
+</div>
+
+<div class="container hidden" id="practice">
+ <h2 id="q"></h2>
+ <div id="choices"></div>
+ <div class="result" id="r"></div>
+</div>
+
+<script>
+const set=[
+  {desc:"It’s sunny. Is it sunny?", correct:"Yes, it is."},
+  {desc:"It’s rainy. Is it sunny?", correct:"No, it’s not."},
+  {desc:"It’s snowy. Is it sunny?", correct:"No, it’s not."}
+];
+let i=0;
+function start(){
+ document.getElementById("content").classList.add("hidden");
+ document.getElementById("practice").classList.remove("hidden");
+ i=0; show();
+}
+function show(){
+ document.getElementById("r").textContent="";
+ document.getElementById("q").textContent=set[i].desc;
+ const c=document.getElementById("choices");
+ c.innerHTML="";
+ ["Yes, it is.","No, it’s not."].forEach(opt=>{
+   const b=document.createElement("button");
+   b.textContent=opt;
+   b.onclick=()=>check(opt===set[i].correct);
+   c.appendChild(b);
+ });
+}
+function check(ok){
+ const res=document.getElementById("r");
+ if(ok){
+   res.textContent="✅ Good!";
+   setTimeout(()=>{
+     i++;
+     if(i>=set.length){done();}
+     else show();
+   },1000);
+ } else res.textContent="❌ Try again!";
+}
+function done(){
+ let p=JSON.parse(localStorage.getItem("minilingoProgress")||"{}");
+ p[1]=true; localStorage.setItem("minilingoProgress",JSON.stringify(p));
+ window.location.href="index.html";
+}
+</script>
+</body>
+</html>
