@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniLingo Kids – Lesson 1: Weather</title>
+<style>
+  :root {
+    --green: #4CAF50;
+    --light-green: #A5D6A7;
+    --yellow: #FFEB3B;
+    --sky: #8ECDF1;
+    --white: #fff;
+    --dark: #333;
+  }
+  body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin: 0;
+    background: linear-gradient(#8ECDF1, #E1F5FE);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  header {
+    background-color: var(--green);
+    width: 100%;
+    text-align: center;
+    color: var(--white);
+    padding: 1rem;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  .lesson-container {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    padding: 20px;
+    margin-top: 20px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+  }
+  .vocab img {
+    width: 100px;
+    height: 100px;
+  }
+  .btn {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .btn:hover { background-color: var(--light-green); }
+  .choices button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid var(--green);
+    background: var(--white);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .choices button:hover {
+    background: var(--light-green);
+    color: var(--white);
+  }
+  .hidden {
+    display: none;
+  }
+  .result {
+    font-size: 1.3rem;
+    margin-top: 20px;
+  }
+  @media (max-width: 480px) {
+    .lesson-container { width: 95%; padding: 15px; }
+    .btn, .choices button { font-size: 0.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  🌦️ MiniLingo Kids – Lesson 1: Weather
+</header>
+
+<div class="lesson-container" id="step1">
+  <h2>Let’s learn some Weather Words! 🌤️</h2>
+  <div class="vocab">
+    <p><strong>☀️ Sunny</strong></p>
+    <p><strong>🌧️ Rainy</strong></p>
+    <p><strong>❄️ Snowy</strong></p>
+    <p><strong>🌬️ Windy</strong></p>
+  </div>
+  <button class="btn" onclick="nextStep(2)">Start Practice ➡️</button>
+</div>
+
+<div class="lesson-container hidden" id="step2">
+  <h2>Choose the right picture:</h2>
+  <p>Which one is *Rainy*? 🌧️</p>
+  <div class="choices">
+    <button onclick="wrong()">☀️ Sunny</button>
+    <button onclick="correct()">🌧️ Rainy</button>
+    <button onclick="wrong()">❄️ Snowy</button>
+    <button onclick="wrong()">🌬️ Windy</button>
+  </div>
+  <p class="result" id="result1"></p>
+</div>
+
+<div class="lesson-container hidden" id="step3">
+  <h2>Translate the picture</h2>
+  <p>☀️ What do we say when it’s like this?</p>
+  <div class="choices">
+    <button onclick="wrong()">Rainy</button>
+    <button onclick="wrong()">Windy</button>
+    <button onclick="correct2()">Sunny</button>
+    <button onclick="wrong()">Snowy</button>
+  </div>
+  <p class="result" id="result2"></p>
+</div>
+
+<div class="lesson-container hidden" id="step4">
+  <h2>Short Sentences 🌦️</h2>
+  <p>Choose the right sentence:</p>
+  <div class="choices">
+    <button onclick="wrong()">It is windy day.</button>
+    <button onclick="wrong()">I see snow.</button>
+    <button onclick="correct3()">It is sunny today.</button>
+    <button onclick="wrong()">The rain is cold.</button>
+  </div>
+  <p class="result" id="result3"></p>
+</div>
+
+<div class="lesson-container hidden" id="step5">
+  <h2>🎉 Great Job!</h2>
+  <p>You finished <strong>Lesson 1: Weather</strong>.</p>
+  <p>Now you can say: “It’s sunny! ☀️”</p>
+  <button class="btn" onclick="restart()">Play Again 🔁</button>
+</div>
+
+<script>
+function nextStep(step) {
+  document.querySelectorAll('.lesson-container').forEach(el => el.classList.add('hidden'));
+  document.getElementById('step' + step).classList.remove('hidden');
+}
+
+function wrong() {
+  const msg = document.querySelector('.lesson-container:not(.hidden) .result');
+  msg.textContent = "❌ Try again!";
+  msg.style.color = "red";
+}
+
+function correct() {
+  const msg = document.getElementById('result1');
+  msg.textContent = "✅ Great job! It’s rainy!";
+  msg.style.color = "green";
+  setTimeout(() => nextStep(3), 1000);
+}
+
+function correct2() {
+  const msg = document.getElementById('result2');
+  msg.textContent = "🌞 Yes, that’s SUNNY!";
+  msg.style.color = "green";
+  setTimeout(() => nextStep(4), 1000);
+}
+
+function correct3() {
+  const msg = document.getElementById('result3');
+  msg.textContent = "🎉 Perfect!";
+  msg.style.color = "green";
+  setTimeout(() => nextStep(5), 1000);
+}
+
+function restart() {
+  nextStep(1);
+  document.querySelectorAll('.result').forEach(r => r.textContent = '');
+}
+</script>
+
+</body>
+</html>
