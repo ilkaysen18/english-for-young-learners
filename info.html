@@ -3,131 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English Training Hub | Tri-Fold Flyer</title>
+<title>English Training Hub | Full Tri-Fold Flyer Mock-Up</title>
 <style>
   body {
-    font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
-    background: #f7f7f7;
-    color: #222;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eaeaea;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  h1 {
+    text-transform: uppercase;
+    color: #002147;
+    margin: 10px 0;
+    text-align: center;
+  }
+  .flyer-set {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
   }
   .flyer {
     display: flex;
-    flex-wrap: wrap;
     max-width: 1050px;
-    margin: auto;
+    width: 100%;
+    border: 4px solid #002147;
     background: white;
-    border: 3px solid #002147;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   .panel {
     flex: 1 1 33.33%;
     box-sizing: border-box;
-    padding: 30px 20px;
-    border-right: 1px solid #ddd;
-    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    min-height: 480px;
+    border-right: 2px dashed #bbb;
   }
-  .panel:last-child {
-    border-right: none;
-  }
+  .panel:last-child { border-right: none; }
 
   /* Color palette */
-  .yellow { background-color: #FFD43B; }
+  .yellow { background-color: #FFD43B; color: #002147; }
   .blue { background-color: #002147; color: white; }
-  
-  h1, h2 {
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-    font-weight: bold;
-  }
+  .white { background-color: #ffffff; color: #222; }
+
   h2 {
-    font-size: 1.4rem;
-    color: #002147;
-    margin-top: 1rem;
-  }
-  p, li {
+    margin-top: 10px;
+    text-align: center;
     font-size: 1rem;
+    text-transform: uppercase;
+  }
+  p, ul {
+    font-size: 0.9rem;
     line-height: 1.5;
   }
-  ul {
-    padding-left: 20px;
-  }
-  .course-box {
-    background: #FFD43B;
-    color: #002147;
-    border-radius: 50%;
-    width: 140px;
-    height: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  ul { padding-left: 20px; }
+  .label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(0,0,0,0.1);
+    color: #000;
+    font-size: 0.7rem;
+    padding: 3px 7px;
     font-weight: bold;
-    margin: 20px auto;
-  }
-  .contact {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    line-height: 1.7;
-  }
-  .contact span {
-    display: block;
-  }
-  .logo {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  .logo h1 {
-    font-size: 1.4rem;
-  }
-  .title-bar {
-    text-align: center;
-    background: #002147;
-    color: white;
-    padding: 12px;
-    font-weight: bold;
-    margin-bottom: 1rem;
+    border-radius: 4px;
   }
   .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: 20px;
     background: #002147;
     color: white;
+    padding: 6px 12px;
     border-radius: 5px;
     text-decoration: none;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-top: 10px;
   }
-  
-  /* Responsive for small screens */
-  @media (max-width: 768px) {
+  .testimonial {
+    background: rgba(255,255,255,0.7);
+    padding: 8px;
+    border-radius: 6px;
+    margin: 8px 0;
+  }
+
+  /* QR box placeholder */
+  .qr {
+    width: 100px;
+    height: 100px;
+    margin: 20px auto;
+    background: white;
+    color: #002147;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    border: 2px solid #fff;
+  }
+
+  @media(max-width: 768px) {
     .panel {
       flex: 1 1 100%;
-      min-height: auto;
       border-right: none;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 2px dashed #bbb;
     }
+    .panel:last-child { border-bottom: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="flyer">
+<h1>Tri‑Fold Flyer Mock‑Up – Front Side (Outside)</h1>
 
-  <!-- FRONT COVER -->
-  <div class="panel yellow">
-    <div class="title-bar">Speak Fluently with English Training Hub</div>
-    <h2>Your Path to Fluent English</h2>
-    <p>Our English courses help you build confidence and fluency through fun, interactive lessons with certified tutors from around the world.</p>
-    <div class="course-box">General English</div>
-    <a href="#" class="btn">Enroll Now</a>
+<div class="flyer">
+  <!-- Left: Inside Right Panel when printed -->
+  <div class="panel blue">
+    <div class="label">Inside Right (Left Fold when opened)</div>
+    <h2>Contact Us</h2>
+    <p>Join thousands mastering English every day!</p>
+    <ul style="list-style:none; padding:0;">
+      <li>📞 535 739 72 48</li>
+      <li>📧 inquiries@englishtraininghub.com</li>
+      <li>🌐 englishtraininghub.org</li>
+      <li>📷 @english.training.hub</li>
+    </ul>
+    <h2>Locations</h2>
+    <p>Online lessons + selected global centers.</p>
   </div>
 
-  <!-- INSIDE LEFT PANEL -->
-  <div class="panel">
+  <!-- Middle Panel -->
+  <div class="panel white">
+    <div class="label">Inside Left (Middle Panel)</div>
     <h2>Courses We Offer</h2>
     <ul>
       <li>Speaking & Conversation Practice</li>
@@ -137,27 +145,60 @@
     </ul>
     <h2>Why Choose Us?</h2>
     <ul>
-      <li>TEFL & TESOL Certified Native Tutors</li>
-      <li>Internationally Recognized Methodologies</li>
-      <li>Interactive Lessons, eBooks & Games</li>
+      <li>TEFL & TESOL Certified Tutors</li>
+      <li>Interactive eBooks, Games & Activities</li>
       <li>Certificates of Completion</li>
     </ul>
   </div>
 
-  <!-- INSIDE RIGHT PANEL -->
+  <!-- Right Panel -->
+  <div class="panel yellow">
+    <div class="label">Front Cover (Rightmost Panel)</div>
+    <h2>Speak Fluently with English Training Hub</h2>
+    <p>Build confidence with our fun and effective English programs for all ages.</p>
+    <p style="text-align:center; margin-top:30px;"><b>🟡 General English</b></p>
+    <p style="text-align:center;"><a href="#" class="btn">Enroll Now</a></p>
+  </div>
+</div>
+
+<h1>Tri‑Fold Flyer Mock‑Up – Back Side (Inside Fold)</h1>
+
+<div class="flyer">
+  <!-- Left Panel -->
   <div class="panel blue">
-    <h2 style="color:white;">Contact Us</h2>
-    <p>Join thousands of learners improving their English every day!</p>
-    <div class="contact">
-      <span>📞 535 739 72 48</span>
-      <span>📧 inquiries@englishtraininghub.com</span>
-      <span>🌐 englishtraininghub.org</span>
-      <span>📷 @english.training.hub</span>
-    </div>
-    <h2 style="margin-top:2rem;">Locations</h2>
-    <p>Available online and in selected cities worldwide.</p>
+    <div class="label">Back Cover (Leftmost Panel)</div>
+    <h2>Stay Connected</h2>
+    <p>Follow us for English tips and class updates:</p>
+    <ul style="list-style:none; padding:0;">
+      <li>📷 Instagram: @english.training.hub</li>
+      <li>🌐 englishtraininghub.org</li>
+      <li>📧 inquiries@englishtraininghub.com</li>
+    </ul>
+    <p>Scan the QR code to join our free trial!</p>
+    <div class="qr">QR Code</div>
+    <p style="font-size:0.8rem;text-align:center;">© English Training Hub</p>
   </div>
 
+  <!-- Middle Panel -->
+  <div class="panel yellow">
+    <div class="label">Middle Back Panel</div>
+    <h2>About English Training Hub</h2>
+    <p>We help you speak confidently with certified tutors and proven methods.</p>
+    <ul>
+      <li>✔ Flexible online classes</li>
+      <li>✔ Interactive lessons & real examples</li>
+      <li>✔ Suitable for all levels</li>
+    </ul>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="panel white">
+    <div class="label">Back Inside Flap (folds inward)</div>
+    <h2>Student Testimonials</h2>
+    <div class="testimonial">“Super engaging lessons! My confidence skyrocketed.”</div>
+    <div class="testimonial">“Friendly tutors who make English learning enjoyable.”</div>
+    <p style="margin-top:20px;">⭐ 4.9 / 5 average rating from 500+ learners.</p>
+  </div>
 </div>
 
 </body>
