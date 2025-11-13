@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>German Adults Course — Home</title>
+<meta name="theme-color" content="#4CAF50"/>
+<style>
+:root{
+  --accent:#4CAF50;
+  --good:#4CAF50;
+  --bad:#FF6B6B;
+  --card:#fff;
+  --shadow:0 10px 28px rgba(10,20,30,.08);
+  --r:14px;
+}
+*{box-sizing:border-box}
+body{font-family:Arial,system-ui,sans-serif;margin:0;background:linear-gradient(180deg,#E1F5FE,#D0F0FF);color:#212121;display:flex;flex-direction:column;align-items:center;}
+header{width:100%;background:var(--accent);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+header .brand{font-weight:800;font-size:1.2rem}
+header .stats{display:flex;gap:1rem;font-weight:700}
+.badge{background:rgba(255,255,255,.2);padding:.25rem .5rem;border-radius:999px;font-size:.85rem}
+main{width:100%;max-width:800px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.lesson-list{display:flex;flex-direction:column;gap:12px}
+.lesson-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lesson-left{display:flex;align-items:center;gap:12px}
+.lesson-icon{width:50px;height:50px;display:grid;place-items:center;font-size:1.5rem;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff8, #0000)}
+.lesson-title{font-weight:800;font-size:1rem}
+.lesson-subtitle{font-size:.85rem;color:#555}
+.start-btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:800;transition:transform .05s ease, filter .15s ease}
+.start-btn:active{transform:translateY(1px)}
+.start-btn:hover{filter:brightness(1.05)}
+.card{background:#fff;border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,.08);margin-bottom:12px}
+.characters{display:flex;gap:10px;flex-wrap:wrap}
+.char{flex:1 0 48%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:linear-gradient(180deg,#fff,#e6f7ff);cursor:pointer}
+.char .emoji{font-size:2rem}
+.sentence{margin-top:10px;padding:10px;border-radius:10px;background:linear-gradient(90deg,rgba(76,175,80,.06),rgba(129,199,132,.03));font-weight:800;display:flex;gap:10px;align-items:center}
+.hidden{display:none}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.btn{padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
+.btn-primary{background:var(--accent);color:#fff}
+.choice{background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px;cursor:pointer}
+.feedback{height:36px;margin-top:10px;font-weight:800}
+.progress{height:8px;background:#e6f7ff;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));transition:width .4s}
+.small{font-size:.85rem;color:#555}
+.level-title{font-weight:800;margin-top:16px;margin-bottom:4px;font-size:1.05rem;color:#333}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🌟 German Adults</div>
+  <div class="stats">
+    <div class="badge" id="streak">🔥 0</div>
+    <div class="badge" id="xp">⭐ 0 XP</div>
+  </div>
+</header>
+<main>
+  <h2>Choose your lesson</h2>
+  <div id="lessonContainer"></div>
+
+  <div class="card hidden" id="practice">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-weight:800" id="practiceSentence"></div>
+      <div style="margin-left:auto" class="small" id="score"></div>
+    </div>
+    <div class="progress"><div id="bar"></div></div>
+    <div class="choices" id="options"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <button class="btn" onclick="skip()">Skip</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="review">
+    <h3>Review</h3>
+    <div id="reviewArea"></div>
+  </div>
+</main>
+
+<script>
+// Levels and lessons
+const LEVELS = [
+  {name:"Level A: Basics", lessons:[
+    {id:1,name:"Hallo",emoji:"👋",sentence:"Hallo! Wie geht's?"},
+    {id:2,name:"Name",emoji:"📝",sentence:"Ich heiße Anna."},
+    {id:3,name:"Zahlen",emoji:"🔢",sentence:"Ich habe drei Äpfel."},
+    {id:4,name:"Uhrzeit",emoji:"⏰",sentence:"Es ist neun Uhr."},
+    {id:5,name:"Wochentage",emoji:"📅",sentence:"Heute ist Montag."}
+  ]},
+  {name:"Level B: Food & Drink", lessons:[
+    {id:6,name:"Essen",emoji:"🍽️",sentence:"Ich mag Pizza."},
+    {id:7,name:"Getränke",emoji:"☕",sentence:"Ich trinke Wasser."},
+    {id:8,name:"Familie",emoji:"👨‍👩‍👧",sentence:"Mein Bruder heißt Max."},
+    {id:9,name:"Beruf",emoji:"💼",sentence:"Ich bin Lehrer."},
+    {id:10,name:"Hobbys",emoji:"🎨",sentence:"Mein Hobby ist Malen."}
+  ]},
+  {name:"Level C: Travel & Home", lessons:[
+    {id:11,name:"Einkaufen",emoji:"🛍️",sentence:"Ich gehe einkaufen."},
+    {id:12,name:"Reisen",emoji:"✈️",sentence:"Ich reise nach Berlin."},
+    {id:13,name:"Haus",emoji:"🏠",sentence:"Mein Haus ist klein."},
+    {id:14,name:"Stadt",emoji:"🏙️",sentence:"Ich wohne in der Stadt."},
+    {id:15,name:"Wetter",emoji:"🌤️",sentence:"Heute ist das Wetter schön."}
+  ]},
+  {name:"Level D: Daily Life", lessons:[
+    {id:16,name:"Kleidung",emoji:"👕",sentence:"Ich trage ein blaues Hemd."},
+    {id:17,name:"Gesundheit",emoji:"💊",sentence:"Mir geht es nicht gut."},
+    {id:18,name:"Transport",emoji:"🚆",sentence:"Ich fahre mit dem Zug."},
+    {id:19,name:"Telefon",emoji:"📞",sentence:"Ich rufe meinen Freund an."},
+    {id:20,name:"Freizeit",emoji:"🏞️",sentence:"Am Wochenende gehe ich wandern."}
+  ]}
+];
+
+let state={index:0,corrects:0,xp:0,streak:0,order:[],wrongQueue:[]};
+
+// Progress persistence
+function save(){localStorage.setItem('germanState',JSON.stringify({xp:state.xp,streak:state.streak}));}
+function loadProgress(){const s=JSON.parse(localStorage.getItem('germanState')||'{}');state.xp=s.xp||0;state.streak=s.streak||0;}
+function renderHeader(){document.getElementById('xp').textContent=`⭐ ${state.xp} XP`;document.getElementById('streak').textContent=`🔥 ${state.streak}`;}
+function speak(txt){if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(txt);u.lang='de-DE';window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}}
+
+function loadLessonList(){
+  const container=document.getElementById('lessonContainer');container.innerHTML='';
+  LEVELS.forEach(lvl=>{
+    const title=document.createElement('div');title.className='level-title';title.textContent=lvl.name;container.appendChild(title);
+    lvl.lessons.forEach(lesson=>{
+      const div=document.createElement('div');div.className='lesson-card';
+      div.innerHTML=`<div class="lesson-left"><div class="lesson-icon">${lesson.emoji}</div><div><div class="lesson-title">${lesson.name}</div><div class="lesson-subtitle">${lesson.sentence}</div></div></div><button class="start-btn" onclick="startLesson(${lesson.id})">Start</button>`;
+      container.appendChild(div);
+    });
+  });
+}
+
+function startLesson(id){
+  // Find lesson by id
+  let lesson=null;
+  for(const lvl of LEVELS){lesson=lvl.lessons.find(l=>l.id===id);if(lesson)break;}
+  if(!lesson)return;
+  state.order=[lesson];state.index=0;state.corrects=0;state.wrongQueue=[];
+  document.getElementById('practice').classList.remove('hidden');document.getElementById('review').classList.add('hidden');
+  loadQ();
+}
+
+function loadQ(){
+  if(state.index>=state.order.length && state.wrongQueue.length===0){finish();return;}
+  if(state.index>=state.order.length){state.order=state.wrongQueue;state.index=0;state.wrongQueue=[];}
+  const cur=state.order[state.index];
+  document.getElementById('practiceSentence').textContent=cur.sentence;
+  speak(cur.sentence);
+  document.getElementById('score').textContent=`${state.corrects} / ${state.order.length}`;
+  document.getElementById('bar').style.width=`${(state.index/state.order.length)*100}%`;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').disabled=true;
+
+  let opts=shuffle([...LEVELS.flatMap(l=>l.lessons)].slice(0,4));
+  if(!opts.some(o=>o.id===cur.id))opts[0]=cur;
+  opts=shuffle(opts);
+  const container=document.getElementById('options'); container.innerHTML='';
+  opts.forEach(opt=>{
+    const d=document.createElement('div'); d.className='choice';
+    d.innerHTML=`<div style="font-size:1.5rem">${opt.emoji}</div><div style="font-weight:700">${opt.name}</div>`;
+    d.onclick=()=>choose(opt.id,cur.id,d);
+    container.appendChild(d);
+  });
+}
+
+function choose(selId,correctId,node){
+  const cur=state.order[state.index];
+  if(selId===correctId){
+    state.corrects++;state.xp+=5;state.streak++;save();renderHeader();
+    document.getElementById('feedback').innerHTML=`<span style="color:var(--good)">✅ Richtig!</span>`;
+    node.style.boxShadow='0 10px 24px rgba(72,187,120,.14)';
+    document.getElementById('nextBtn').disabled=false;
+  }else{
+    state.xp+=1;state.streak=0;save();renderHeader();
+    document.getElementById('feedback').innerHTML=`<span style="color:var(--bad)">❌ Falsch!</span>`;
+    node.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240});
+    state.wrongQueue.push(cur);
+  }
+}
+
+function nextQ(){state.index++;loadQ();}
+function skip(){state.index++;loadQ();}
+function finish(){document.getElementById('practice').classList.add('hidden');alert('Glückwunsch! Du hast die Lektion abgeschlossen.');}
+
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+
+loadProgress();renderHeader();loadLessonList();
+</script>
+</body>
+</html>
