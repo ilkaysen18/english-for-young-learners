@@ -1,143 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>MiniLingo Kids – Home</title>
+<meta name="theme-color" content="#4CAF50"/>
 <style>
-:root {
-  --green: #4CAF50;
-  --light-green: #A5D6A7;
-  --yellow: #FFEB3B;
-  --blue: #8ECDF1;
-  --white: #fff;
-  --gray: #ccc;
-  --dark: #333;
+:root{
+  --green:#4CAF50;--green-2:#81C784;--light-green:#A5D6A7;
+  --yellow:#FFEB3B;--blue:#8ECDF1;--blue-2:#E1F5FE;
+  --white:#fff;--gray:#ccc;--dark:#2f3437;
+  --card:#ffffff;--shadow:0 6px 18px rgba(0,0,0,0.12);
 }
-body {
-  font-family: 'Comic Sans MS', 'Poppins', sans-serif;
-  margin: 0;
-  background: linear-gradient(#8ECDF1, #E1F5FE);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Comic Sans MS", "Poppins", Arial, sans-serif;
+  margin:0;background:linear-gradient(180deg,var(--blue) 0%,var(--blue-2) 70%);
+  display:flex;flex-direction:column;align-items:center;color:var(--dark);
 }
-header {
-  background-color: var(--green);
-  width: 100%;
-  text-align: center;
-  color: var(--white);
-  padding: 1rem;
-  font-size: 1.6rem;
+header{
+  position:sticky;top:0;z-index:10;background:var(--green);color:#fff;width:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.9rem 1rem;
 }
-.lesson-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 40px;
-  width: 90%;
-  max-width: 420px;
+header .brand{font-weight:800;font-size:1.1rem;letter-spacing:.3px}
+header .stats{display:flex;gap:.75rem;font-weight:700}
+.badge{background:rgba(255,255,255,.2);padding:.25rem .5rem;border-radius:999px;font-size:.85rem}
+main{width:100%;max-width:760px;padding:12px 14px 28px;display:flex;flex-direction:column;align-items:center}
+.hi{width:100%;max-width:520px;background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;display:flex;gap:12px;align-items:center;margin-top:14px}
+.hi .owl{font-size:2rem}
+.progressbar{height:10px;background:#e9f6ff;border-radius:999px;overflow:hidden}
+.progressbar > div{height:100%;background:linear-gradient(90deg,var(--green),var(--green-2));width:0%}
+.lesson-list{display:flex;flex-direction:column;gap:16px;margin-top:22px;width:100%;max-width:520px}
+.lesson-card{
+  background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px
 }
-.lesson-card {
-  background: var(--white);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.lesson-left{display:flex;align-items:center;gap:12px}
+.lesson-icon{
+  width:60px;height:60px;display:grid;place-items:center;font-size:1.9rem;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #fff8, #0000), var(--yellow);
+  box-shadow:inset 0 3px 6px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.07);
 }
-.lesson-icon {
-  width: 55px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  background-color: var(--yellow);
-  border-radius: 50%;
+.lesson-title{font-size:1.05rem;font-weight:800}
+.lesson-subtitle{font-size:.92rem;color:#667}
+.start-btn{
+  background:var(--green);color:#fff;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:800;
+  transition:transform .05s ease, filter .15s ease; box-shadow:0 6px 12px rgba(76,175,80,.25)
 }
-.lesson-text {
-  margin-left: 10px;
+.start-btn:active{transform:translateY(1px)}
+.start-btn:hover{filter:brightness(1.05)}
+.locked{color:#9aa3a7;font-size:1.4rem}
+footer{margin-top:auto;padding:18px;color:#2f3437aa;font-size:.9rem}
+
+nav.navbar{
+  position:sticky;bottom:0;background:#ffffffd9;backdrop-filter:blur(6px);width:100%;
+  display:flex;justify-content:space-around;padding:10px 8px;border-top:1px solid #e8eef3
 }
-.lesson-title {
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-.lesson-subtitle {
-  font-size: 0.9rem;
-  color: #666;
-}
-.start-btn {
-  background-color: var(--green);
-  color: var(--white);
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: 0.25s;
-}
-.start-btn:hover { background-color: var(--light-green); }
-.locked {
-  color: var(--gray);
-  font-size: 1.5rem;
-}
-footer {
-  margin-top: auto;
-  padding: 20px;
-  color: var(--dark);
-  font-size: 0.9rem;
+.tab{display:flex;flex-direction:column;align-items:center;color:#2f3437;text-decoration:none;font-weight:700;font-size:.85rem}
+.tab .i{font-size:1.2rem}
+.small{font-size:.9rem;color:#3b4449}
+@media (min-width:700px){
+  header{border-radius:0 0 12px 12px}
 }
 </style>
 </head>
 <body>
 
-<header>🌈 MiniLingo Kids</header>
+<header>
+  <div class="brand">🌈 MiniLingo Kids</div>
+  <div class="stats">
+    <div class="badge" id="streak">🔥 0</div>
+    <div class="badge" id="xp">⭐ 0 XP</div>
+  </div>
+</header>
 
-<h2>Choose your lesson!</h2>
-<div class="lesson-list" id="lessons"></div>
+<main>
+  <section class="hi">
+    <div class="owl">🦉</div>
+    <div style="flex:1">
+      <div style="font-weight:800">Welcome back!</div>
+      <div class="small">Learn a little every day. Keep your streak alive! 🔥</div>
+      <div class="progressbar" style="margin-top:10px"><div id="dailyProgress"></div></div>
+    </div>
+  </section>
+
+  <h2 style="align-self:flex-start;margin:18px 0 6px 6px">Choose your lesson</h2>
+
+  <div class="lesson-list" id="lessons"></div>
+</main>
+
+<nav class="navbar" aria-label="Bottom navigation">
+  <a class="tab" href="index.html"><span class="i">🏠</span><span>Home</span></a>
+  <a class="tab" href="#" onclick="alert('Shop coming soon!');return false;"><span class="i">🛒</span><span>Shop</span></a>
+  <a class="tab" href="#" onclick="resetProgress();return false;"><span class="i">🔄</span><span>Reset</span></a>
+</nav>
+
 <footer>Complete lessons to unlock the next! 🌟</footer>
 
 <script>
 const lessons = [
-  {id: 1, title: "Lesson 1: Weather", icon: "🌦️", subtitle: "Learn sunny, rainy, snowy, windy", file: "lsn1.html"},
-  {id: 2, title: "Lesson 2: Is it Sunny?", icon: "☀️", subtitle: "Ask and answer simple questions", file: "lsn2.html"},
-  {id: 3, title: "Lesson 3: It's Cold Today", icon: "❄️", subtitle: "Describe the weather", file: "lsn3.html"},
+  {id:1,title:"Lesson 1: Weather",icon:"🌦️",subtitle:"Learn sunny, rainy, snowy, windy",file:"lsn1.html"},
+  {id:2,title:"Lesson 2: Is it sunny?",icon:"☀️",subtitle:"Ask and answer simple questions",file:"lsn2.html"},
+  {id:3,title:"Lesson 3: It’s Cold Today",icon:"❄️",subtitle:"Build weather sentences",file:"lsn3.html"},
 ];
 
-function loadLessons() {
-  const progress = JSON.parse(localStorage.getItem("minilingoProgress") || "{}");
-  const container = document.getElementById("lessons");
-  container.innerHTML = "";
+function getState(){
+  const s = JSON.parse(localStorage.getItem("minilingoState")||"{}");
+  return Object.assign({progress:{},xp:0,streak:0,lastDay:null,daily:0}, s);
+}
+function setState(s){ localStorage.setItem("minilingoState", JSON.stringify(s)); }
 
-  lessons.forEach(l => {
-    const div = document.createElement("div");
-    div.className = "lesson-card";
+function todayKey(){ const d=new Date(); return d.toISOString().slice(0,10); }
 
-    div.innerHTML = `
-      <div class="lesson-left" style="display:flex;align-items:center;">
+function touchStreak(addDaily=0){
+  const s=getState(); const t=todayKey();
+  if(s.lastDay!==t){
+    // New day
+    if(s.lastDay){
+      const prev = new Date(s.lastDay); const cur = new Date(t);
+      const diff = (cur - prev)/86400000;
+      if(diff===1) s.streak = (s.streak||0)+1;
+      else s.streak = 1;
+    } else { s.streak = 1; }
+    s.daily = 0;
+    s.lastDay = t;
+  }
+  s.daily = Math.min(10, (s.daily||0)+addDaily);
+  setState(s);
+  renderHeader();
+}
+
+function addXP(n=10){
+  const s=getState(); s.xp = (s.xp||0)+n; setState(s); renderHeader();
+  // also push daily progress a bit
+  touchStreak(2);
+}
+
+function markComplete(lessonId){
+  const s=getState();
+  s.progress[lessonId]=true;
+  setState(s);
+}
+
+function resetProgress(){
+  localStorage.removeItem("minilingoState");
+  loadLessons();
+  renderHeader();
+  alert("Progress reset!");
+}
+
+function renderHeader(){
+  const s=getState();
+  document.getElementById("xp").textContent = `⭐ ${s.xp||0} XP`;
+  document.getElementById("streak").textContent = `🔥 ${s.streak||0}`;
+  document.getElementById("dailyProgress").style.width = `${(s.daily||0)*10}%`;
+}
+
+function loadLessons(){
+  const s=getState();
+  const container=document.getElementById("lessons");
+  container.innerHTML="";
+  lessons.forEach(l=>{
+    const unlocked = l.id===1 || s.progress[l.id-1];
+    const completed = !!s.progress[l.id];
+    const div=document.createElement("div");
+    div.className="lesson-card";
+    div.innerHTML=`
+      <div class="lesson-left">
         <div class="lesson-icon">${l.icon}</div>
-        <div class="lesson-text">
-          <div class="lesson-title">${l.title}</div>
+        <div>
+          <div class="lesson-title">${l.title} ${completed? "✅": ""}</div>
           <div class="lesson-subtitle">${l.subtitle}</div>
         </div>
       </div>
-      ${progress[l.id - 1] ? 
-        `<button class="start-btn" onclick="go('${l.file}')">Review</button>` : 
-        (progress[l.id - 2] || l.id === 1) ?
-          `<button class="start-btn" onclick="go('${l.file}')">Start</button>` :
-          `<div class="locked">🔒</div>`}
+      ${unlocked? `<button class="start-btn" onclick="go('${l.file}')">${completed? "Review":"Start"}</button>` : `<div class="locked">🔒</div>`}
     `;
     container.appendChild(div);
   });
 }
 
-function go(file) {
-  window.location.href = file;
-}
+function go(file){ window.location.href=file; }
+
+renderHeader();
+touchStreak(0);
 loadLessons();
 </script>
-
 </body>
 </html>
