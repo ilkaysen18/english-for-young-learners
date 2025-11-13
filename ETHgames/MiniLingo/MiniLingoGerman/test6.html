@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Deutsch Lernen – Erwachsene</title>
+<meta name="theme-color" content="#4CAF50"/>
+<style>
+:root{--accent:#4CAF50;--good:#4CAF50;--bad:#FF6B6B;--card:#fff;--shadow:0 10px 28px rgba(10,20,30,.08);--r:14px}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Arial;margin:0;background:linear-gradient(180deg,#E1F5FE,#D0F0FF);color:#072A3A;display:flex;flex-direction:column;align-items:center;padding:0}
+header{background:var(--accent);color:#fff;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;position:sticky;top:0;z-index:10}
+header .title{font-weight:800;font-size:1.2rem}
+header .stats{display:flex;gap:12px;font-weight:700}
+.wrapper{width:100%;max-width:720px;background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;margin:16px}
+.lesson-list{display:flex;flex-direction:column;gap:12px;padding:12px}
+.lesson-card{display:flex;justify-content:space-between;align-items:center;background:#f7f7f7;padding:12px 14px;border-radius:12px;cursor:pointer;transition:0.15s}
+.lesson-card:hover{background:rgba(76,175,80,0.08)}
+.lesson-card.locked{opacity:0.5;cursor:not-allowed}
+.lesson-info{display:flex;gap:12px;align-items:center}
+.lesson-icon{font-size:1.8rem}
+.lesson-text{display:flex;flex-direction:column}
+.lesson-title{font-weight:700}
+.lesson-subtitle{font-size:.85rem;color:#555}
+.btn{padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+.btn-primary{background:var(--accent);color:#fff}
+.card{background:#fff;border-radius:12px;padding:12px;margin:12px 0;box-shadow:var(--shadow)}
+.sentence{margin-top:10px;padding:10px;border-radius:10px;background:linear-gradient(90deg,rgba(76,175,80,.06),rgba(129,199,132,.03));font-weight:800;display:flex;gap:10px;align-items:center}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.choice{background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(6,8,10,.06);display:flex;align-items:center;gap:8px;cursor:pointer;transition:0.2s}
+.choice.correct{animation: glowGreen 0.5s forwards;}
+.choice.wrong{animation: shake 0.3s;}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}100%{transform:translateX(0)}}
+@keyframes glowGreen{0%{box-shadow:0 0 0 rgba(72,187,120,0)}50%{box-shadow:0 0 12px rgba(72,187,120,0.5)}100%{box-shadow:0 0 0 rgba(72,187,120,0)}}
+.progress{height:8px;background:#e6f7ff;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));transition:width .4s}
+.feedback{height:36px;margin-top:10px;font-weight:800}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+<div class="title">Deutsch Lernen – Erwachsene</div>
+<div class="stats">XP: <span id="xp">0</span> • Streak: <span id="streak">0</span></div>
+</header>
+<div class="wrapper" id="home">
+<div class="lesson-list" id="lessons"></div>
+</div>
+<div class="wrapper hidden" id="lessonView">
+<div class="card">
+<div class="sentence" id="practiceSentence">Beispiel Satz</div>
+<div class="progress" aria-hidden><div id="bar"></div></div>
+<div class="choices" id="options"></div>
+<div class="feedback" id="feedback"></div>
+<div style="margin-top:12px;display:flex;justify-content:space-between">
+<button class="btn" onclick="skip()">Skip</button>
+<button class="btn btn-primary" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+</div>
+</div>
+</div>
+<script>
+const LESSONS=[
+{id:1,title:'Lesson 1: Begrüßungen',phrases:['Hallo','Guten Morgen','Guten Abend','Tschüss'],activities:['Match emoji to greeting: 👋=Hallo, 🌅=Guten Morgen','Answer: Wie sagt man „Good evening“ auf Deutsch?'])},
+{id:2,title:'Lesson 2: Zahlen 1-10',phrases:['eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn'],activities:['Type the number for „drei“','Match emoji to number: 3️⃣=drei'])},
+{id:3,title:'Lesson 3: Familie',phrases:['Mutter','Vater','Bruder','Schwester'],activities:['Which is female? Mutter or Vater?','Match family emoji: 👩=Mutter, 👨=Vater, 👦=Bruder, 👧=Schwester'])},
+{id:4,title:'Lesson 4: Tageszeiten',phrases:['Morgen','Mittag','Abend','Nacht'],activities:['When do you say Guten Abend?','Match sun/moon emoji 🌞=Morgen, 🌙=Nacht'])},
+{id:5,title:'Lesson 5: Farben',phrases:['rot','blau','grün','gelb'],activities:['Type color for apple: Apfel=rot','Match color blocks to word'])},
+// ...continue for all 20 lessons with similar activities
+];
+
+let state={xp:0,streak:0,index:0,order:[],wrongQueue:[],currentLesson:null};
+
+function save(){localStorage.setItem('germanState',JSON.stringify(state));}
+function load(){const s=JSON.parse(localStorage.getItem('germanState')||'{}');state=Object.assign(state,s);updateHeader();}
+function updateHeader(){document.getElementById('xp').textContent=state.xp;document.getElementById('streak').textContent=state.streak;}
+
+function loadLessons(){const container=document.getElementById('lessons');container.innerHTML='';LESSONS.forEach((l,i)=>{const div=document.createElement('div');div.className='lesson-card';div.innerHTML=`<div class="lesson-info"><div class="lesson-icon">📘</div><div class="lesson-text"><div class="lesson-title">${l.title}</div></div></div>`;div.onclick=()=>startLesson(i);container.appendChild(div);});}
+
+function startLesson(idx){state.index=0;state.currentLesson=LESSONS[idx];state.order=shuffle(LESSONS[idx].phrases.slice());state.wrongQueue=[];document.getElementById('home').classList.add('hidden');document.getElementById('lessonView').classList.remove('hidden');loadQ();}
+
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+
+function loadQ(){const cur=state.order[state.index];document.getElementById('practiceSentence').textContent=cur;
+document.getElementById('bar').style.width=((state.index/state.order.length)*100)+'%';document.getElementById('feedback').textContent='';document.getElementById('nextBtn').disabled=true;
+const opts=shuffle(state.order.slice());const container=document.getElementById('options');container.innerHTML='';opts.forEach(opt=>{const d=document.createElement('div');d.className='choice';d.textContent=opt;d.onclick=()=>choose(opt,cur,d);container.appendChild(d);});}
+
+function choose(sel,correct,node){if(sel===correct){state.xp+=5;state.streak++;save();updateHeader();document.getElementById('feedback').innerHTML=`<span style="color:var(--good)">✅ Richtig!</span>`;node.classList.add('correct');document.getElementById('nextBtn').disabled=false;}else{state.xp+=1;state.streak=0;save();updateHeader();document.getElementById('feedback').innerHTML=`<span style="color:var(--bad)">❌ Falsch!</span>`;node.classList.add('wrong');state.wrongQueue.push(state.order[state.index]);}}
+
+function nextQ(){state.index++;if(state.index>=state.order.length){if(state.wrongQueue.length>0){state.order=state.wrongQueue.slice();state.wrongQueue=[];state.index=0;loadQ();}else{completeLesson();}}else{loadQ();}}
+
+function skip(){nextQ();}
+
+function completeLesson(){state.xp+=10;save();updateHeader();alert('🎉 Lesson Complete! +10 XP');document.getElementById('lessonView').classList.add('hidden');document.getElementById('home').classList.remove('hidden');}
+
+load();loadLessons();
+</script>
+</body>
+</html>
