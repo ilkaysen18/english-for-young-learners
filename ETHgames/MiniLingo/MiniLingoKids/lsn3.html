@@ -1,73 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 3 – It's Cold Today</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lesson 3 – It’s Cold Today</title>
+<meta name="theme-color" content="#4CAF50"/>
 <style>
-body{font-family:'Comic Sans MS',sans-serif;margin:0;text-align:center;background:linear-gradient(#BBDEFB,#E3F2FD);}
-header{background:#42A5F5;color:white;padding:1rem;}
-.container{background:white;margin:20px auto;padding:20px;border-radius:12px;max-width:420px;}
-button{background:#42A5F5;color:white;border:none;padding:10px 20px;border-radius:8px;margin-top:10px;cursor:pointer;}
-button:hover{background:#64B5F6;}
-.result{margin-top:10px;font-size:1.1rem;}
+:root{--green:#4CAF50;--green-2:#81C784;--card:#fff;--shadow:0 6px 18px rgba(0,0,0,.12)}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,"Comic Sans MS","Poppins",Arial,sans-serif;background:linear-gradient(#8ECDF1,#E1F5FE);color:#2f3437}
+header{background:#4CAF50;color:#fff;padding:1rem;position:sticky;top:0;text-align:center}
+.container{background:var(--card);margin:16px auto;padding:18px;border-radius:14px;width:90%;max-width:520px;box-shadow:var(--shadow)}
+.subtitle{color:#4b5563}
+.btn{background:#4CAF50;color:#fff;border:none;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}
+.btn:hover{filter:brightness(1.05)}
+.hidden{display:none}
+.result{min-height:1.4rem;margin-top:8px}
+.progress{height:8px;background:#eaf5ff;border-radius:999px;overflow:hidden;margin:10px 0}
+.progress>div{height:100%;background:linear-gradient(90deg,#4CAF50,#81C784);width:0%}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{background:#f3f8fc;border:1px solid #e8eef3;border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}
+.zone{min-height:56px;border:2px dashed #cfe3f7;border-radius:12px;padding:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.small{font-size:.9rem;color:#4b5563}
 </style>
 </head>
 <body>
+<header>Lesson 3: It’s Cold Today ❄️</header>
 
-<header>Lesson 3: It's Cold Today ❄️</header>
 <div class="container" id="intro">
- <h2>Today's Weather</h2>
- <p>It’s cold today. Wear a coat!</p>
- <p>It’s warm today. Let’s play outside!</p>
- <button onclick="start()">Start Practice ➡️</button>
+  <h2>Make sentences</h2>
+  <p class="subtitle">Pattern: “It’s [sunny/rainy/snowy/windy] today.”</p>
+  <div class="chips" aria-label="Examples">
+    <span class="chip" aria-hidden="true">It’s</span>
+    <span class="chip" aria-hidden="true">snowy</span>
+    <span class="chip" aria-hidden="true">today.</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:10px">
+    <a href="index.html">⬅️ Home</a>
+    <button class="btn" onclick="start()">Start Practice ➡️</button>
+  </div>
 </div>
 
 <div class="container hidden" id="practice">
- <h2 id="question"></h2>
- <div id="choices"></div>
- <div class="result" id="res"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2>Build the sentence</h2>
+    <div><span id="score">0</span>/4</div>
+  </div>
+  <div class="progress"><div id="bar"></div></div>
+  <div class="small" id="hint">Hint: It’s … today.</div>
+  <div class="zone" id="drop" aria-label="Answer area"></div>
+  <div class="chips" id="pool"></div>
+  <div class="result" id="res"></div>
 </div>
 
 <script>
-const qs=[
- {q:"It’s cold today. What should we do?", a:"Wear a coat."},
- {q:"It’s warm today. What should we do?", a:"Play outside."}
-];
-let idx=0;
+const LESSON_ID = 3;
+const weathers = ["sunny","rainy","snowy","windy"];
+let rounds = [], idx=0, score=0, answer=[];
+
 function start(){
- document.getElementById("intro").classList.add("hidden");
- document.getElementById("practice").classList.remove("hidden");
- idx=0; ask();
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("practice").classList.remove("hidden");
+  rounds = shuffle([...weathers]).slice(0,4);
+  idx=0;score=0;
+  next();
 }
-function ask(){
- document.getElementById("res").textContent="";
- document.getElementById("question").textContent=qs[idx].q;
- const choices=["Wear a coat.","Play outside."];
- const c=document.getElementById("choices");
- c.innerHTML="";
- choices.forEach(o=>{
-  const b=document.createElement("button");
-  b.textContent=o;
-  b.onclick=()=>check(o===qs[idx].a);
-  c.appendChild(b);
- });
+
+function next(){
+  answer = [];
+  const w = rounds[idx];
+  document.getElementById("hint").textContent = `Build: "It’s ${w} today."`;
+  document.getElementById("bar").style.width = `${(idx/rounds.length)*100}%`;
+  document.getElementById("score").textContent = score;
+  const pool = ["It’s", w, "today."];
+  renderPool(shuffle(pool));
+  renderDrop();
+  document.getElementById("res").textContent = "";
 }
-function check(ok){
- const r=document.getElementById("res");
- if(ok){
-   r.textContent="✅ Great!";
-   setTimeout(()=>{
-     idx++;
-     if(idx>=qs.length){done();}
-     else ask();
-   },1000);
- } else r.textContent="❌ Try again!";
+
+function renderPool(words){
+  const poolEl=document.getElementById("pool");
+  poolEl.innerHTML="";
+  words.forEach((word,i)=>{
+    const b=document.createElement("button");
+    b.className="chip";
+    b.textContent=word;
+    b.onclick=()=>pick(word, b);
+    poolEl.appendChild(b);
+  });
 }
+function renderDrop(){
+  const drop=document.getElementById("drop");
+  drop.innerHTML="";
+  answer.forEach(w=>{
+    const span=document.createElement("span");
+    span.className="chip"; span.textContent=w;
+    drop.appendChild(span);
+  });
+}
+
+function pick(word, btn){
+  if(btn.disabled) return;
+  btn.disabled=true; btn.style.opacity=.6;
+  answer.push(word);
+  renderDrop();
+  if(answer.length===3){
+    check();
+  }
+}
+
+function check(){
+  const correct = answer.join(" ") === `It’s ${rounds[idx]} today.`;
+  const res=document.getElementById("res");
+  if(correct){ score++; res.textContent="✅ Nice sentence!"; }
+  else{ res.textContent="❌ Oops! Try again."; }
+  setTimeout(()=>{
+    idx++;
+    if(idx>=rounds.length){ done(); } else { next(); }
+  },700);
+}
+
+function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
+
+function addXP(n=20){
+  const s=JSON.parse(localStorage.getItem("minilingoState")||"{}");
+  s.xp=(s.xp||0)+n;
+  localStorage.setItem("minilingoState", JSON.stringify(s));
+}
+function markComplete(){
+  const s=JSON.parse(localStorage.getItem("minilingoState")||"{}");
+  s.progress=s.progress||{}; s.progress[LESSON_ID]=true;
+  localStorage.setItem("minilingoState", JSON.stringify(s));
+}
+function bumpDaily(){
+  const s=JSON.parse(localStorage.getItem("minilingoState")||"{}");
+  const t=(new Date()).toISOString().slice(0,10);
+  if(s.lastDay!==t){ s.lastDay=t; s.streak=(s.streak? (s.streak+1):1); s.daily=0; }
+  s.daily=Math.min(10,(s.daily||0)+4);
+  localStorage.setItem("minilingoState", JSON.stringify(s));
+}
+
 function done(){
- let p=JSON.parse(localStorage.getItem("minilingoProgress")||"{}");
- p[2]=true; localStorage.setItem("minilingoProgress",JSON.stringify(p));
- window.location.href="index.html";
+  document.getElementById("bar").style.width="100%";
+  addXP(20); bumpDaily(); markComplete();
+  setTimeout(()=>window.location.href="index.html",700);
 }
 </script>
 </body>
