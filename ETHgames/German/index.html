@@ -1,101 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deutsch A2 Kurs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2980b9;
+      --primary-dark: #1f5f8b;
+      --secondary: #f9f9f9;
+      --card-bg: #fff;
+      --highlight: #fffa90;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background: var(--secondary);
+      color: #333;
+    }
+    header {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .lesson-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .lesson-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      flex: 1 1 calc(25% - 1rem);
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .lesson-card:hover { transform: translateY(-5px); }
+    .lesson-card h2 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--primary-dark);}
+    .lesson-card button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .lesson-card button:hover { background: var(--primary-dark); }
+    .lesson-content {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .lesson-content h3 { color: var(--primary); margin-top: 0; }
+    section.vocab, section.collocations, section.article, section.conversation, section.agree-disagree, section.activities { margin-top: 1.5rem; }
+    ul { padding-left: 1.2rem; }
+    .vocab-word { background-color: var(--highlight); padding: 2px 4px; border-radius: 3px; }
+    .activities .exercise { background: #ecf0f1; padding: 1rem; margin-top: 1rem; border-radius: 6px; }
+    .activities .exercise input[type="text"], .activities .exercise textarea { width: 100%; padding: 0.5rem; margin: 0.5rem 0; border-radius: 4px; border: 1px solid #ccc; }
+    .check-btn { background: #27ae60; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; margin-top: 0.5rem; }
+    .check-btn:hover { background: #1e8449; }
+    .feedback { margin-top: 0.5rem; font-weight: bold; }
+    @media(max-width:900px){ .lesson-card { flex:1 1 calc(50% - 1rem); } }
+    @media(max-width:600px){ .lesson-card { flex:1 1 100%; } }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Deutsch A2 Kurs</h1>
+  <p>20 Lektionen – für Erwachsene – Alltagsthemen & Übungen</p>
+</header>
+<main>
+  <section class="lesson-list" id="lessonList"></section>
+  <section class="lesson-content" id="lessonContent">
+    <h3>Bitte eine Lektion auswählen</h3>
+    <p>Die Inhalte erscheinen hier: Vokabeln, Kollokationen, kurzer Artikel, Gesprächsfragen, Zustimmung/Ablehnung & Aktivitäten.</p>
+  </section>
+</main>
+<script>
 const lessons = {
-1: {
-title:"Freiwilliger Dienst",
-vocab:["die Regierung","der Bürger","unterstützen","die Änderung","freiwillig","der Dienst","die Reform","erhöhen","die Streitfrage","der Vorschlag"],
-collocations:["freiwilliger Dienst","eine Änderung vorschlagen","ein Modell entwickeln","zur Pflicht machen","im Rahmen einer Diskussion","das Ziel erhöhen"],
-article:"2025 plant die deutsche Regierung, mehr junge Menschen für den freiwilligen Dienst zu gewinnen. Zwei Modelle werden diskutiert: Modell A mit Anreizen, Modell B als Pflichtdienst. Bürger haben mehr Wahlmöglichkeiten und Verantwortung.",
-conversation:["Kannst du dir vorstellen, freiwillig zu dienen?","Warum ist Freiwilligkeit wichtiger als Pflicht?","Glaubst du, dass die Änderung gut ist für Deutschland?","Was sind Vorteile eines freiwilligen Dienstes?"],
-agreeDisagree:["Ich stimme zu, dass Freiwilligkeit motivierender ist.","Ich bin nicht sicher, ob das Ziel erreicht wird.","Ich glaube, eine Pflicht bringt Stabilität.","Ich finde: Ein freiwilliger Dienst gibt mehr Freiheit.","Ich lehne ab, dass junge Menschen gezwungen werden."],
-activities:[
-{type:"matching",label:"Ordne die Wörter:",pairs:[["die Diskussion","discussion"],["das Ziel","goal"],["freiwillig","voluntary"],["verpflichtend","mandatory"],["erhöhen","to increase"]]},
-{type:"completion",label:"Satzergänzung:",sentences:["Die Regierung möchte das ___ der Soldaten erhöhen.","Der Dienst soll nicht ___ sein, sondern ___ und attraktiv.","Es gibt eine große ___ über das neue Modell."],answers:["Ziel","pflichtig","freiwillig","Diskussion"]},
-{type:"shortAnswer",label:"Kurze Antwort:",prompt:"Kannst du dir vorstellen, freiwillig zu dienen? Warum (nicht)?"},
-{type:"makeQuestion",label:"Formuliere eine Frage zum Artikel:"}
-]
-},
-2: {
-title:"Regierung & Politik",
-vocab:["der Minister","die Wahl","die Partei","das Gesetz","die Pflicht","die Abstimmung","die Mehrheit","die Opposition","die Änderung","die Reform"],
-collocations:["eine Reform durchführen","zur Pflicht machen","die Diskussion führen","eine Mehrheit erreichen","eine Partei gründen","eine Abstimmung abhalten"],
-article:"2025 organisiert die Regierung Reformen, um Bürgerbeteiligung zu fördern. Einige Parteien unterstützen die Änderungen, andere sind skeptisch. Politik betrifft alle – Mitmachen ist wichtig.",
-conversation:["Welche Partei würdest du wählen?","Was hältst du von neuen Gesetzen?","Sollte jeder Bürger mehr Mitbestimmung haben?","Wie wichtig ist dir die Pflicht, abzustimmen?"],
-agreeDisagree:["Ich stimme zu, dass Bürgerbeteiligung wichtig ist.","Ich bin nicht sicher, ob alle Änderungen gut sind.","Ich glaube, neue Gesetze bringen Fortschritt.","Ich finde: Manche Pflichtaufgaben sind belastend.","Ich lehne ab, dass man zur Wahl gezwungen wird."],
-activities:[
-{type:"matching",label:"Ordne die Wörter:",pairs:[["der Minister","minister"],["die Partei","party"],["das Gesetz","law"],["die Pflicht","duty"],["die Reform","reform"]]},
-{type:"completion",label:"Satzergänzung:",sentences:["Die neue ___ soll mehr Bürgerbeteiligung ermöglichen.","Eine Partei braucht eine starke ___, um zu gewinnen.","Viele Bürger fühlen eine ___ zur Mitbestimmung."],answers:["Reform","Mehrheit","Pflicht"]},
-{type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was denkst du über neue Gesetze in deiner Heimat?"},
-{type:"makeQuestion",label:"Formuliere eine Frage zum Thema Politik:"}
-]
-},
-3: {
-title:"Umwelt & Energie",
-vocab:["die Energie","der Klimawandel","recyceln","die Solarenergie","umweltfreundlich","die Emission","der Umweltschutz","die Ressource","nachhaltig","die Erderwärmung"],
-collocations:["Solarenergie nutzen","umweltfreundlich leben","die CO2-Emissionen reduzieren","nachhaltige Ressource","Umweltschutz betreiben"],
-article:"Deutschland setzt 2025 verstärkt auf Solarenergie und umweltfreundliche Projekte. Unternehmen recyceln und reduzieren Emissionen. Bürger übernehmen Verantwortung. Ziel: nachhaltige Zukunft für alle.",
-conversation:["Wie kannst du die Umwelt schützen?","Welche Energiequellen sind die besten?","Recycelst du regelmäßig?","Ist Nachhaltigkeit wichtig in deinem Alltag?"],
-agreeDisagree:["Ich stimme zu: Nachhaltigkeit ist wichtig.","Ich bin nicht sicher, ob wir schnell genug handeln.","Ich glaube, Solarenergie ist eine gute Lösung.","Ich finde: Jeder kann etwas beitragen.","Ich lehne ab: Umwelt nur Aufgabe der Regierung."],
-activities:[
-{type:"matching",label:"Zuordnung:",pairs:[["die Energie","energy"],["der Klimawandel","climate change"],["recyceln","to recycle"],["die Solarenergie","solar energy"],["nachhaltig","sustainable"]]},
-{type:"completion",label:"Satzergänzung:",sentences:["Viele Unternehmen ___ ihre CO2-Emissionen.","Wir sollten ____ leben und umweltfreundlich handeln.","Solarenergie ist eine wichtige ___."],answers:["reduzieren","nachhaltig","Ressource"]},
-{type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was tust du für den Umweltschutz?"},
-{type:"makeQuestion",label:"Erstelle eine Frage zum Thema Energie:"}
-]
-},
-4: {
-title:"Alltag & Arbeit",
-vocab:["der Arbeitsplatz","der Chef","das Gehalt","der Kollege","die Pause","die Arbeitszeit","die Motivation","die Karriere","die Herausforderung","die Beschäftigung"],
-collocations:["eine Pause machen","mit Kollegen sprechen","das Gehalt erhöhen","Arbeitszeit reduzieren","eine neue Herausforderung suchen"],
-article:"2025 arbeiten viele Menschen im Homeoffice und achten auf Work-Life-Balance. Arbeitgeber bieten flexible Arbeitszeiten. Kollegen bleiben digital in Kontakt. Motivation entsteht durch neue Aufgaben. Der Arbeitsplatz verändert sich.",
-conversation:["Wie oft machst du Pause?","Was ist dir bei Kollegen wichtig?","Würdest du gern im Homeoffice arbeiten?","Was motiviert dich bei der Arbeit?"],
-agreeDisagree:["Ich stimme zu: Work-Life-Balance ist wichtig.","Ich bin nicht sicher, ob Homeoffice für jeden passt.","Ich glaube: Gute Kollegen machen den Unterschied.","Ich finde: Flexible Arbeitszeiten sind ein Vorteil.","Ich lehne ab: Arbeit ist nur Mittel zum Zweck."],
-activities:[
-{type:"matching",label:"Zuordnung:",pairs:[["der Arbeitsplatz","workplace"],["der Chef","boss"],["das Gehalt","salary"],["die Pause","break"],["die Motivation","motivation"]]},
-{type:"completion",label:"Satzergänzung:",sentences:["Ich mache jeden Tag eine ___ von 15 Minuten.","Mein ___ achtet auf gute Arbeitszeiten.","Ich suche eine neue ___."],answers:["Pause","Chef","Herausforderung"]},
-{type:"shortAnswer",label:"Kurze Antwort:",prompt:"Wie sieht dein typischer Arbeitstag aus?"},
-{type:"makeQuestion",label:"Stelle eine Frage zum Thema Arbeit:"}
-]
-},
-5: {
-title:"Freizeit & Hobbys",
-vocab:["das Hobby","die Freizeit","spazieren gehen","lesen","die Musik","das Spiel","das Tanzen","der Verein","aktiv sein","entspannen"],
-collocations:["Freizeit genießen","ein neues Hobby anfangen","ins Kino gehen","Sport treiben","aktiv sein im Verein"],
-article:"2025 verbringen viele Menschen ihre Freizeit aktiv. Beliebte Hobbys sind Sport, Musik, Lesen oder Tanzen. Vereine bieten Möglichkeiten, Freunde zu treffen und sich zu engagieren.",
-conversation:["Welches Hobby hast du?","Wie verbringst du deine Freizeit?","Gehst du gerne in einen Verein?","Welche Aktivitäten machen dir Spaß?"],
-agreeDisagree:["Ich stimme zu: Hobbys machen glücklich.","Ich finde, dass Sport wichtig ist.","Ich lehne ab: Freizeit ist Zeitverschwendung.","Ich glaube, Musik entspannt mich.","Ich stimme zu, dass Tanzen Spaß macht."],
-activities:[
-{type:"matching",label:"Ordne die Wörter:",pairs:[["das Hobby","hobby"],["die Freizeit","free time"],["lesen","to read"],["tanzen","to dance"],["der Verein","club"]]},
-{type:"completion",label:"Satzergänzung:",sentences:["Ich habe ein neues ___ angefangen.","Am Wochenende gehe ich gerne ___.","Sport macht mich ___."],answers:["Hobby","spazieren","aktiv"]},
-{type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was machst du in deiner Freizeit?"},
-{type:"makeQuestion",label:"Formuliere eine Frage zu Freizeit oder Hobbys:"}
-]
-},
-6: {
-title:"Gesundheit & Ernährung",
-vocab:["die Gesundheit","gesund","krank","die Ernährung","das Obst","das Gemüse","bewegen","der Arzt","die Vorsorge","das Wasser"],
-collocations:["gesund essen","sich bewegen","zum Arzt gehen","Vorsorge treffen","viel Wasser trinken"],
-article:"2025 achten viele Menschen auf ihre Gesundheit. Gesunde Ernährung, Bewegung und Vorsorgeuntersuchungen sind wichtig. Obst, Gemüse und ausreichend Wasser helfen, fit zu bleiben.",
-conversation:["Was isst du gern?","Wie oft machst du Sport?","Gehst du regelmäßig zum Arzt?","Was machst du für deine Gesundheit?"],
-agreeDisagree:["Ich stimme zu: Ernährung ist wichtig.","Ich glaube, Bewegung hält gesund.","Ich finde, Vorsorge ist sinnvoll.","Ich lehne ab: Fastfood ist gut für die Gesundheit.","Ich stimme zu, dass Wasser trinken wichtig ist."],
-activities:[
-{type:"matching",label:"Ordne die Wörter:",pairs:[["die Gesundheit","health"],["gesund","healthy"],["krank","sick"],["die Ernährung","nutrition"],["das Gemüse","vegetables"]]},
-{type:"completion",label:"Satzergänzung:",sentences:["Ich esse jeden Tag ___ und Gemüse.","Ich trinke viel ___.","Ich gehe regelmäßig zum ___."],answers:["Obst","Wasser","Arzt"]},
-{type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was machst du für deine Gesundheit?"},
-{type:"makeQuestion",label:"Formuliere eine Frage zum Thema Gesundheit:"}
-]
-},
-7: {
-title:"Verkehr & Reisen",
-vocab:["das Auto","der Zug","das Flugzeug","reisen","die Bahn","der Bus","die Straßenbahn","die Haltestelle","die Fahrkarte","die Strecke"],
-collocations:["mit dem Zug fahren","eine Fahrkarte kaufen","die Strecke planen","mit dem Auto fahren","das Flugzeug nehmen"],
-article:"2025 planen viele Menschen ihre Reisen sorgfältig. Öffentliche Verkehrsmittel wie Zug, Bus oder Straßenbahn werden bevorzugt. Das Auto wird für kurze Strecken genutzt. Reisen erfordert Planung und Tickets.",
-conversation:["Wie reist du gern?","Nutzt du öffentliche Verkehrsmittel?","Hast du ein Auto?","Wohin würdest du 2025 reisen?"],
-agreeDisagree:["Ich stimme zu: Öffentliche Verkehrsmittel sind wichtig.","Ich finde, Auto fahren ist praktisch.","Ich lehne ab: Flugzeuge sind schlecht für die Umwelt.","Ich stimme zu, dass Planung wichtig ist.","Ich finde, Reisen macht Spaß."],
-activities:[
-{type:"matching",label:"Ordne die Wörter:",pairs:[["der Zug","train"],["das Flugzeug","plane"],["der Bus","bus"],["die Fahrkarte","ticket"],["die Strecke","route"]]},
-{type:"completion",label:"Satzergänzung:",sentences:["Ich kaufe eine ___ für den Zug.","Wir fahren mit dem ___ nach Berlin.","Die ___ dauert drei Stunden."],answers:["Fahrkarte","Bus","Strecke"]},
-{type:"shortAnswer",label:"Kurze Antwort:",prompt:"Wie reist du am liebsten?"},
-{type:"makeQuestion",label:"Formuliere eine Frage zum Thema Reisen:"}
-]
-},
-// Lessons 8–20 would continue similarly with full vocab, collocations, articles, conversations, agree/disagree, and activities
+1: {title:"Freiwilliger Dienst", vocab:["die Regierung","der Bürger","unterstützen","die Änderung","freiwillig","der Dienst","die Reform","erhöhen","die Streitfrage","der Vorschlag"], collocations:["freiwilliger Dienst","eine Änderung vorschlagen","ein Modell entwickeln","zur Pflicht machen","im Rahmen einer Diskussion","das Ziel erhöhen"], article:"2025 plant die deutsche Regierung, mehr junge Menschen für den freiwilligen Dienst zu gewinnen. Zwei Modelle werden diskutiert: Modell A mit Anreizen, Modell B als Pflichtdienst. Bürger haben mehr Wahlmöglichkeiten und Verantwortung.", conversation:["Kannst du dir vorstellen, freiwillig zu dienen?","Warum ist Freiwilligkeit wichtiger als Pflicht?","Glaubst du, dass die Änderung gut ist für Deutschland?","Was sind Vorteile eines freiwilligen Dienstes?"], agreeDisagree:["Ich stimme zu, dass Freiwilligkeit motivierender ist.","Ich bin nicht sicher, ob das Ziel erreicht wird.","Ich glaube, eine Pflicht bringt Stabilität.","Ich finde: Ein freiwilliger Dienst gibt mehr Freiheit.","Ich lehne ab, dass junge Menschen gezwungen werden."], activities:[{type:"matching",label:"Ordne die Wörter:",pairs:[["die Diskussion","discussion"],["das Ziel","goal"],["freiwillig","voluntary"],["verpflichtend","mandatory"],["erhöhen","to increase"]]}, {type:"completion",label:"Satzergänzung:",sentences:["Die Regierung möchte das ___ der Soldaten erhöhen.","Der Dienst soll nicht ___ sein, sondern ___ und attraktiv.","Es gibt eine große ___ über das neue Modell."],answers:["Ziel","pflichtig","freiwillig","Diskussion"]}, {type:"shortAnswer",label:"Kurze Antwort:",prompt:"Kannst du dir vorstellen, freiwillig zu dienen? Warum (nicht)?"}, {type:"makeQuestion",label:"Formuliere eine Frage zum Artikel:"}]},
+2: {title:"Regierung & Politik", vocab:["der Minister","die Wahl","die Partei","das Gesetz","die Pflicht","die Abstimmung","die Mehrheit","die Opposition","die Änderung","die Reform"], collocations:["eine Reform durchführen","zur Pflicht machen","die Diskussion führen","eine Mehrheit erreichen","eine Partei gründen","eine Abstimmung abhalten"], article:"2025 organisiert die Regierung Reformen, um Bürgerbeteiligung zu fördern. Einige Parteien unterstützen die Änderungen, andere sind skeptisch. Politik betrifft alle – Mitmachen ist wichtig.", conversation:["Welche Partei würdest du wählen?","Was hältst du von neuen Gesetzen?","Sollte jeder Bürger mehr Mitbestimmung haben?","Wie wichtig ist dir die Pflicht, abzustimmen?"], agreeDisagree:["Ich stimme zu, dass Bürgerbeteiligung wichtig ist.","Ich bin nicht sicher, ob alle Änderungen gut sind.","Ich glaube, neue Gesetze bringen Fortschritt.","Ich finde: Manche Pflichtaufgaben sind belastend.","Ich lehne ab, dass man zur Wahl gezwungen wird."], activities:[{type:"matching",label:"Ordne die Wörter:",pairs:[["der Minister","minister"],["die Partei","party"],["das Gesetz","law"],["die Pflicht","duty"],["die Reform","reform"]]}, {type:"completion",label:"Satzergänzung:",sentences:["Die neue ___ soll mehr Bürgerbeteiligung ermöglichen.","Eine Partei braucht eine starke ___, um zu gewinnen.","Viele Bürger fühlen eine ___ zur Mitbestimmung."],answers:["Reform","Mehrheit","Pflicht"]}, {type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was denkst du über neue Gesetze in deiner Heimat?"}, {type:"makeQuestion",label:"Formuliere eine Frage zum Thema Politik:"}]},
+3: {title:"Umwelt & Energie", vocab:["die Energie","der Klimawandel","recyceln","die Solarenergie","umweltfreundlich","die Emission","der Umweltschutz","die Ressource","nachhaltig","die Erderwärmung"], collocations:["Solarenergie nutzen","umweltfreundlich leben","die CO2-Emissionen reduzieren","nachhaltige Ressource","Umweltschutz betreiben"], article:"Deutschland setzt 2025 verstärkt auf Solarenergie und umweltfreundliche Projekte. Unternehmen recyceln und reduzieren Emissionen. Bürger übernehmen Verantwortung. Ziel: nachhaltige Zukunft für alle.", conversation:["Wie kannst du die Umwelt schützen?","Welche Energiequellen sind die besten?","Recycelst du regelmäßig?","Ist Nachhaltigkeit wichtig in deinem Alltag?"], agreeDisagree:["Ich stimme zu: Nachhaltigkeit ist wichtig.","Ich bin nicht sicher, ob wir schnell genug handeln.","Ich glaube, Solarenergie ist eine gute Lösung.","Ich finde: Jeder kann etwas beitragen.","Ich lehne ab: Umwelt nur Aufgabe der Regierung."], activities:[{type:"matching",label:"Zuordnung:",pairs:[["die Energie","energy"],["der Klimawandel","climate change"],["recyceln","to recycle"],["die Solarenergie","solar energy"],["nachhaltig","sustainable"]]}, {type:"completion",label:"Satzergänzung:",sentences:["Viele Unternehmen ___ ihre CO2-Emissionen.","Wir sollten ____ leben und umweltfreundlich handeln.","Solarenergie ist eine wichtige ___."],answers:["reduzieren","nachhaltig","Ressource"]}, {type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was tust du für den Umweltschutz?"}, {type:"makeQuestion",label:"Erstelle eine Frage zum Thema Energie:"}]},
+4: {title:"Alltag & Arbeit", vocab:["der Arbeitsplatz","der Chef","das Gehalt","der Kollege","die Pause","die Arbeitszeit","die Motivation","die Karriere","die Herausforderung","die Beschäftigung"], collocations:["eine Pause machen","mit Kollegen sprechen","das Gehalt erhöhen","Arbeitszeit reduzieren","eine neue Herausforderung suchen"], article:"2025 arbeiten viele Menschen im Homeoffice und achten auf Work-Life-Balance. Arbeitgeber bieten flexible Arbeitszeiten. Kollegen bleiben digital in Kontakt. Motivation entsteht durch neue Aufgaben. Der Arbeitsplatz verändert sich.", conversation:["Wie oft machst du Pause?","Was ist dir bei Kollegen wichtig?","Würdest du gern im Homeoffice arbeiten?","Was motiviert dich bei der Arbeit?"], agreeDisagree:["Ich stimme zu: Work-Life-Balance ist wichtig.","Ich bin nicht sicher, ob Homeoffice für jeden passt.","Ich glaube: Gute Kollegen machen den Unterschied.","Ich finde: Flexible Arbeitszeiten sind ein Vorteil.","Ich lehne ab: Arbeit ist nur Mittel zum Zweck."], activities:[{type:"matching",label:"Zuordnung:",pairs:[["der Arbeitsplatz","workplace"],["der Chef","boss"],["das Gehalt","salary"],["die Pause","break"],["die Motivation","motivation"]]}, {type:"completion",label:"Satzergänzung:",sentences:["Ich mache jeden Tag eine ___ von 15 Minuten.","Mein ___ achtet auf gute Arbeitszeiten.","Ich suche eine neue ___."],answers:["Pause","Chef","Herausforderung"]}, {type:"shortAnswer",label:"Kurze Antwort:",prompt:"Wie sieht dein typischer Arbeitstag aus?"}, {type:"makeQuestion",label:"Stelle eine Frage zum Thema Arbeit:"}]},
+5: {title:"Freizeit & Hobbys", vocab:["das Hobby","die Freizeit","spazieren gehen","lesen","die Musik","das Spiel","das Tanzen","der Verein","aktiv sein","entspannen"], collocations:["Freizeit genießen","ein neues Hobby anfangen","ins Kino gehen","Sport treiben","aktiv sein im Verein"], article:"2025 verbringen viele Menschen ihre Freizeit aktiv. Beliebte Hobbys sind Sport, Musik, Lesen oder Tanzen. Vereine bieten Möglichkeiten, Freunde zu treffen und sich zu engagieren.", conversation:["Welches Hobby hast du?","Wie verbringst du deine Freizeit?","Gehst du gerne in einen Verein?","Welche Aktivitäten machen dir Spaß?"], agreeDisagree:["Ich stimme zu: Hobbys machen glücklich.","Ich finde, dass Sport wichtig ist.","Ich lehne ab: Freizeit ist Zeitverschwendung.","Ich glaube, Musik entspannt mich.","Ich stimme zu, dass Tanzen Spaß macht."], activities:[{type:"matching",label:"Ordne die Wörter:",pairs:[["das Hobby","hobby"],["die Freizeit","free time"],["lesen","to read"],["tanzen","to dance"],["der Verein","club"]]}, {type:"completion",label:"Satzergänzung:",sentences:["Ich habe ein neues ___ angefangen.","Am Wochenende gehe ich gerne ___.","Sport macht mich ___."],answers:["Hobby","spazieren","aktiv"]}, {type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was machst du in deiner Freizeit?"}, {type:"makeQuestion",label:"Formuliere eine Frage zu Freizeit oder Hobbys:"}]},
+6: {title:"Gesundheit & Ernährung", vocab:["die Gesundheit","gesund","krank","die Ernährung","das Obst","das Gemüse","bewegen","der Arzt","die Vorsorge","das Wasser"], collocations:["gesund essen","sich bewegen","zum Arzt gehen","Vorsorge treffen","viel Wasser trinken"], article:"2025 achten viele Menschen auf ihre Gesundheit. Gesunde Ernährung, Bewegung und Vorsorgeuntersuchungen sind wichtig. Obst, Gemüse und ausreichend Wasser helfen, fit zu bleiben.", conversation:["Was isst du gern?","Wie oft machst du Sport?","Gehst du regelmäßig zum Arzt?","Was machst du für deine Gesundheit?"], agreeDisagree:["Ich stimme zu: Ernährung ist wichtig.","Ich glaube, Bewegung hält gesund.","Ich finde, Vorsorge ist sinnvoll.","Ich lehne ab: Fastfood ist gut für die Gesundheit.","Ich stimme zu, dass Wasser trinken wichtig ist."], activities:[{type:"matching",label:"Ordne die Wörter:",pairs:[["die Gesundheit","health"],["gesund","healthy"],["krank","sick"],["die Ernährung","nutrition"],["das Gemüse","vegetables"]]}, {type:"completion",label:"Satzergänzung:",sentences:["Ich esse jeden Tag ___ und Gemüse.","Ich trinke viel ___.","Ich gehe regelmäßig zum ___."],answers:["Obst","Wasser","Arzt"]}, {type:"shortAnswer",label:"Kurze Antwort:",prompt:"Was machst du für deine Gesundheit?"}, {type:"makeQuestion",label:"Formuliere eine Frage zum Thema Gesundheit:"}]},
+7: {title:"Verkehr & Reisen", vocab:["das Auto","der Zug","das Flugzeug","reisen","die Bahn","der Bus","die Straßenbahn","die Haltestelle","die Fahrkarte","die Strecke"], collocations:["mit dem Zug fahren","eine Fahrkarte kaufen","die Strecke planen","mit dem Auto fahren","das Flugzeug nehmen"], article:"2025 planen viele Menschen ihre Reisen sorgfältig. Öffentliche Verkehrsmittel wie Zug, Bus oder Straßenbahn werden bevorzugt. Das Auto wird für kurze Strecken genutzt. Reisen erfordert Planung und Tickets.", conversation:["Wie reist du gern?","Nutzt du öffentliche Verkehrsmittel?","Hast du ein Auto?","Wohin würdest du 2025 reisen?"], agreeDisagree:["Ich stimme zu: Öffentliche Verkehrsmittel sind wichtig.","Ich finde, Auto fahren ist praktisch.","Ich lehne ab: Flugzeuge sind schlecht für die Umwelt.","Ich stimme zu, dass Planung wichtig ist.","Ich finde, Reisen macht Spaß."], activities:[{type:"matching",label:"Ordne die Wörter:",pairs:[["der Zug","train"],["das Flugzeug","plane"],["der Bus","bus"],["die Fahrkarte","ticket"],["die Strecke","route"]]}, {type:"completion",label:"Satzergänzung:",sentences:["Ich kaufe eine ___ für den Zug.","Wir fahren mit dem ___ nach Berlin.","Die ___ dauert drei Stunden."],answers:["Fahrkarte","Bus","Strecke"]}, {type:"shortAnswer",label:"Kurze Antwort:",prompt:"Wie reist du am liebsten?"}, {type:"makeQuestion",label:"Formuliere eine Frage zum Thema Reisen:"}]},
+// Lessons 8–20 placeholders
+8:{title:"Kultur & Kunst", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+9:{title:"Medien & Technologie", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+10:{title:"Wirtschaft & Finanzen", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+11:{title:"Bildung & Lernen", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+12:{title:"Familie & Freunde", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+13:{title:"Wohnung & Stadt", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+14:{title:"Natur & Tiere", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+15:{title:"Sport & Fitness", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+16:{title:"Recht & Gesetze", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+17:{title:"Technologie & Internet", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+18:{title:"Einkaufen & Dienstleistungen", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+19:{title:"Feste & Traditionen", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]},
+20:{title:"Zukunft & Innovation", vocab:[], collocations:[], article:"", conversation:[], agreeDisagree:[], activities:[]}
 };
+
+const lessonListDiv = document.getElementById("lessonList");
+const lessonContentDiv = document.getElementById("lessonContent");
+
+function loadLesson(id){
+  const lesson = lessons[id];
+  lessonContentDiv.innerHTML = `<h3>${lesson.title}</h3>
+  <section class="vocab"><h4>Vokabeln</h4><ul>${lesson.vocab.map(w=>`<li class="vocab-word">${w}</li>`).join("")}</ul></section>
+  <section class="collocations"><h4>Kollokationen</h4><ul>${lesson.collocations.map(c=>`<li>${c}</li>`).join("")}</ul></section>
+  <section class="article"><h4>Artikel</h4><p>${lesson.article}</p></section>
+  <section class="conversation"><h4>Gesprächsfragen</h4><ul>${lesson.conversation.map(q=>`<li>${q}</li>`).join("")}</ul></section>
+  <section class="agree-disagree"><h4>Zustimmen/Ablehnen</h4><ul>${lesson.agreeDisagree.map(s=>`<li>${s}</li>`).join("")}</ul></section>
+  <section class="activities"><h4>Übungen</h4>${lesson.activities.map((a,idx)=>{
+    if(a.type==="matching"){
+      return `<div class="exercise"><strong>${a.label}</strong><ul>${a.pairs.map(p=>`<li>${p[0]} → <input type="text" data-answer="${p[1]}"></li>`).join("")}</ul><button class="check-btn" onclick="checkExercise(this)">Check</button><div class="feedback"></div></div>`;
+    } else if(a.type==="completion"){
+      return `<div class="exercise"><strong>${a.label}</strong>${a.sentences.map((s,i)=>`<p>${s.replace("___",`<input type="text" data-answer="${a.answers[i]}">`)}</p>`).join("")}<button class="check-btn" onclick="checkExercise(this)">Check</button><div class="feedback"></div></div>`;
+    } else if(a.type==="shortAnswer"){
+      return `<div class="exercise"><strong>${a.label}</strong><textarea placeholder="${a.prompt}"></textarea></div>`;
+    } else if(a.type==="makeQuestion"){
+      return `<div class="exercise"><strong>${a.label}</strong><textarea placeholder="Formuliere deine Frage hier"></textarea></div>`;
+    }
+  }).join("")}</section>`;
+}
+
+function checkExercise(button){
+  const exercise = button.parentElement;
+  const inputs = exercise.querySelectorAll("input[type=text]");
+  let correct = 0;
+  inputs.forEach(input=>{
+    if(input.value.trim().toLowerCase() === input.dataset.answer.toLowerCase()){correct++;}
+  });
+  const feedback = exercise.querySelector(".feedback");
+  feedback.textContent = `Richtige Antworten: ${correct} von ${inputs.length}`;
+}
+
+Object.keys(lessons).forEach(id=>{
+  const btn = document.createElement("button");
+  btn.textContent = lessons[id].title;
+  btn.onclick = ()=>loadLesson(id);
+  const card = document.createElement("div");
+  card.className = "lesson-card";
+  const h2 = document.createElement("h2");
+  h2.textContent = lessons[id].title;
+  card.appendChild(h2);
+  card.appendChild(btn);
+  lessonListDiv.appendChild(card);
+});
+</script>
+</body>
+</html>
