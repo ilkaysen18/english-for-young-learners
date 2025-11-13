@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 – Weather</title>
+<style>
+body { font-family: 'Comic Sans MS', sans-serif; margin:0; background:linear-gradient(#8ECDF1,#E1F5FE); text-align:center; }
+header { background:#4CAF50; color:white; padding:1rem; }
+.container { background:white; margin:20px auto; padding:20px; border-radius:12px; width:90%; max-width:420px; }
+button { background:#4CAF50; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; margin-top:10px;}
+button:hover{ background:#81C784;}
+.vocab p { font-size:1.2rem;}
+.result { font-size:1.1rem; margin-top:10px;}
+</style>
+</head>
+<body>
+
+<header>Lesson 1: Weather 🌦️</header>
+
+<div class="container" id="content">
+  <h2>Weather Words</h2>
+  <div class="vocab">
+    <p>☀️ Sunny</p>
+    <p>🌧️ Rainy</p>
+    <p>❄️ Snowy</p>
+    <p>🌬️ Windy</p>
+  </div>
+  <button onclick="startPractice()">Start Practice ➡️</button>
+</div>
+
+<div class="container hidden" id="practice">
+  <h2 id="question">Question here</h2>
+  <div id="choices"></div>
+  <div class="result" id="res"></div>
+</div>
+
+<script>
+const vocab = [
+  {emoji:"☀️", name:"Sunny"},
+  {emoji:"🌧️", name:"Rainy"},
+  {emoji:"❄️", name:"Snowy"},
+  {emoji:"🌬️", name:"Windy"}
+];
+let idx = 0;
+function startPractice(){
+ document.getElementById("content").classList.add("hidden");
+ document.getElementById("practice").classList.remove("hidden");
+ idx=0;
+ ask();
+}
+function ask(){
+ const q=document.getElementById("question");
+ const c=document.getElementById("choices");
+ const v=vocab[idx];
+ q.textContent=`Which picture is ${v.name}?`;
+ c.innerHTML="";
+ vocab.forEach(opt=>{
+   const b=document.createElement("button");
+   b.textContent=opt.emoji;
+   b.onclick=()=>check(opt.emoji===v.emoji);
+   c.appendChild(b);
+ });
+}
+function check(correct){
+ const res=document.getElementById("res");
+ if(correct){
+   res.textContent="✅ Great!";
+   setTimeout(()=>{
+     idx++;
+     if(idx>=vocab.length){ done(); }
+     else{ ask(); res.textContent=""; }
+   },1000);
+ } else {
+   res.textContent="❌ Try again!";
+ }
+}
+function done(){
+  localStorage.setItem("minilingoProgress", JSON.stringify({0:true}));
+  window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>
