@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniLingo Kids – Home</title>
+<style>
+:root {
+  --green: #4CAF50;
+  --light-green: #A5D6A7;
+  --yellow: #FFEB3B;
+  --blue: #8ECDF1;
+  --white: #fff;
+  --gray: #ccc;
+  --dark: #333;
+}
+body {
+  font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+  margin: 0;
+  background: linear-gradient(#8ECDF1, #E1F5FE);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+header {
+  background-color: var(--green);
+  width: 100%;
+  text-align: center;
+  color: var(--white);
+  padding: 1rem;
+  font-size: 1.6rem;
+}
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+  width: 90%;
+  max-width: 420px;
+}
+.lesson-card {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lesson-icon {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background-color: var(--yellow);
+  border-radius: 50%;
+}
+.lesson-text {
+  margin-left: 10px;
+}
+.lesson-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.lesson-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+}
+.start-btn {
+  background-color: var(--green);
+  color: var(--white);
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.25s;
+}
+.start-btn:hover { background-color: var(--light-green); }
+.locked {
+  color: var(--gray);
+  font-size: 1.5rem;
+}
+footer {
+  margin-top: auto;
+  padding: 20px;
+  color: var(--dark);
+  font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+
+<header>🌈 MiniLingo Kids</header>
+
+<h2>Choose your lesson!</h2>
+<div class="lesson-list" id="lessons"></div>
+<footer>Complete lessons to unlock the next! 🌟</footer>
+
+<script>
+const lessons = [
+  {id: 1, title: "Lesson 1: Weather", icon: "🌦️", subtitle: "Learn sunny, rainy, snowy, windy", file: "lesson1-weather.html"},
+  {id: 2, title: "Lesson 2: Is it Sunny?", icon: "☀️", subtitle: "Ask and answer simple questions", file: "lesson2-sunny.html"},
+  {id: 3, title: "Lesson 3: It's Cold Today", icon: "❄️", subtitle: "Describe the weather", file: "lesson3-cold.html"},
+];
+
+function loadLessons() {
+  const progress = JSON.parse(localStorage.getItem("minilingoProgress") || "{}");
+  const container = document.getElementById("lessons");
+  container.innerHTML = "";
+
+  lessons.forEach(l => {
+    const div = document.createElement("div");
+    div.className = "lesson-card";
+
+    div.innerHTML = `
+      <div class="lesson-left" style="display:flex;align-items:center;">
+        <div class="lesson-icon">${l.icon}</div>
+        <div class="lesson-text">
+          <div class="lesson-title">${l.title}</div>
+          <div class="lesson-subtitle">${l.subtitle}</div>
+        </div>
+      </div>
+      ${progress[l.id - 1] ? 
+        `<button class="start-btn" onclick="go('${l.file}')">Review</button>` : 
+        (progress[l.id - 2] || l.id === 1) ?
+          `<button class="start-btn" onclick="go('${l.file}')">Start</button>` :
+          `<div class="locked">🔒</div>`}
+    `;
+    container.appendChild(div);
+  });
+}
+
+function go(file) {
+  window.location.href = file;
+}
+loadLessons();
+</script>
+
+</body>
+</html>
