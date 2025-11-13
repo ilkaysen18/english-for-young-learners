@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lesson 6 — She has yellow sunglasses</title>
+<meta name="theme-color" content="#FFD700"/>
+<style>
+:root{--accent:#FFD700;--good:#4CAF50;--bad:#FF6B6B;--card:#fff;--shadow:0 10px 28px rgba(10,20,30,.08);--r:14px}
+*{box-sizing:border-box}body{font-family:Inter,system-ui,Arial;margin:0;background:linear-gradient(180deg,#FFF8E1,#FFFDF5);color:#072A3A;display:flex;align-items:flex-start;justify-content:center;padding:20px}
+.wrapper{width:100%;max-width:720px;background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.header{background:linear-gradient(90deg,var(--accent),#FFEC7A);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.title{font-weight:800}
+.container{display:flex;gap:18px;padding:18px}
+.main{flex:1}
+.sidebar{width:300px}
+.card{background:#fff;border-radius:12px;padding:12px;border:1px solid rgba(6,8,10,0.04);margin-bottom:12px}
+.characters{display:flex;gap:10px;flex-wrap:wrap}
+.char{flex:1 0 48%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:linear-gradient(180deg,#fff,#fffbee);cursor:pointer}
+.char .emoji{font-size:2rem}
+.sentence{margin-top:10px;padding:10px;border-radius:10px;background:linear-gradient(90deg,rgba(255,215,0,.06),rgba(255,223,70,.03));font-weight:800;display:flex;gap:10px;align-items:center}
+.hidden{display:none}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.btn{padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
+.btn-primary{background:var(--accent);color:#fff}
+.choice{background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(6,8,10,.06);display:flex;align-items:center;gap:8px;cursor:pointer}
+.feedback{height:36px;margin-top:10px;font-weight:800}
+.progress{height:8px;background:#fff8d6;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));transition:width .4s}
+.small{font-size:.9rem;color:#6b7280}
+</style>
+</head>
+<body>
+<div class="wrapper" role="main" aria-labelledby="lessonTitle">
+  <div class="header">
+    <div class="title" id="lessonTitle">Lesson 6 — She has yellow sunglasses 😎</div>
+    <div class="small" id="status">XP: <span id="xp">0</span> • Streak: <span id="streak">0</span></div>
+  </div>
+
+  <div class="container">
+    <div class="main">
+      <!-- Learn -->
+      <div class="card" id="learn">
+        <h3 style="margin:0">Learn — Who has what?</h3>
+        <p class="small" style="margin:6px 0 8px">Tap a character to hear the sentence.</p>
+        <div class="characters" id="chars"></div>
+        <div class="sentence" id="example">👧 <span style="opacity:.85">She has yellow sunglasses.</span></div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn btn-primary" onclick="startPractice()">Start Practice ➜</button>
+          <button class="btn" onclick="speak('She has yellow sunglasses. He has a red hat. She has blue shoes. He has a green coat.')">🔊 Hear</button>
+        </div>
+      </div>
+
+      <!-- Practice -->
+      <div class="card hidden" id="practice">
+        <h3 style="margin:0">Practice — Match sentence to picture</h3>
+        <p class="small" style="margin:6px 0 8px">Read the sentence and pick the correct character + object.</p>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-weight:800" id="practiceSentence">She has yellow sunglasses.</div>
+          <div style="margin-left:auto" class="small" id="score">0 / 4</div>
+        </div>
+        <div class="progress" aria-hidden><div id="bar" style="width:0%"></div></div>
+        <div class="choices" id="options"></div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px">
+          <button class="btn" onclick="skip()">Skip</button>
+          <button class="btn btn-primary" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+        </div>
+      </div>
+
+      <!-- Review -->
+      <div class="card hidden" id="review">
+        <h3 style="margin:0">Review — Quick check</h3>
+        <p class="small" style="margin:6px 0 8px">Match three sentences quickly.</p>
+        <div id="reviewArea"></div>
+        <div style="margin-top:10px" id="reviewResult"></div>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <div class="card">
+        <div style="font-weight:800">Lesson summary</div>
+        <div class="small" style="margin-top:8px">
+          Grammar: <strong>He/She has + color + clothing</strong><br>
+          Vocab: 😎 sunglasses, 🧢 hat, 👟 shoes, 🧥 coat<br>
+          Colors: 🟡 yellow, 🔴 red, 🔵 blue, 🟢 green
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:800">Teacher tips</div>
+        <ul class="small" style="margin:8px 0 0;padding-left:18px">
+          <li>Gesture pointing to item and color.</li>
+          <li>Keep pronouns consistent: 👧 = she, 👦 = he.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+/* Data */
+const ITEMS = [
+  {id:1, person:'She', item:'yellow sunglasses', emoji:'👧 😎'},
+  {id:2, person:'He', item:'red hat', emoji:'👦 🧢'},
+  {id:3, person:'She', item:'blue shoes', emoji:'👧 👟'},
+  {id:4, person:'He', item:'green coat', emoji:'👦 🧥'}
+];
+
+let state = { index:0, corrects:0, xp:(JSON.parse(localStorage.getItem('minilingoState')||'{}').xp||0), streak:(JSON.parse(localStorage.getItem('minilingoState')||'{}').streak||0), order:[] };
+
+/* Helpers */
+function save(){ const s=JSON.parse(localStorage.getItem('minilingoState')||'{}'); s.xp=state.xp; s.streak=state.streak; localStorage.setItem('minilingoState',JSON.stringify(s)); }
+function speak(txt){ if(window.speechSynthesis){ const u=new SpeechSynthesisUtterance(txt); u.lang='en-US'; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); } }
+
+/* Render learn */
+function renderChars(){
+  const el=document.getElementById('chars'); el.innerHTML='';
+  ITEMS.forEach(it=>{
+    const b=document.createElement('button'); b.className='char';
+    b.onclick=()=>{ document.getElementById('example').textContent = `${it.emoji} ${it.person} has ${it.item}.`; speak(`${it.person} has ${it.item}`); };
+    b.innerHTML=`<div class="emoji">${it.emoji}</div><div><div style="font-weight:700">${it.person} has</div><div class="small">${it.item}</div></div>`;
+    el.appendChild(b);
+  });
+}
+renderChars();
+
+/* Practice flow */
+function startPractice(){
+  document.getElementById('learn').classList.add('hidden');
+  document.getElementById('practice').classList.remove('hidden');
+  state.index=0; state.corrects=0; state.order = shuffle(ITEMS.slice());
+  loadQ();
+}
+function loadQ(){
+  const cur = state.order[state.index];
+  document.getElementById('practiceSentence').textContent = `${cur.person} has ${cur.item}.`;
+  speak(`${cur.person} has ${cur.item}`);
+  document.getElementById('score').textContent = `${state.corrects} / ${ITEMS.length}`;
+  document.getElementById('bar').style.width = `${(state.index/ITEMS.length)*100}%`;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('nextBtn').disabled = true;
+
+  const opts = shuffle(ITEMS.slice()).slice(0,4);
+  if(!opts.some(o=>o.id===cur.id)) opts[0]=cur;
+  const disp = shuffle(opts);
+  const container = document.getElementById('options'); container.innerHTML='';
+  disp.forEach(opt=>{
+    const d=document.createElement('div'); d.className='choice';
+    d.innerHTML = `<div style="font-size:1.6rem">${opt.emoji}</div><div style="font-weight:700">${opt.person}</div>`;
+    d.onclick = ()=>choose(opt.id, cur.id, d);
+    container.appendChild(d);
+  });
+}
+function choose(selId, correctId, node){
+  if(selId===correctId){
+    state.corrects++; state.xp+=5; state.streak++; save();
+    document.getElementById('feedback').innerHTML = `<span style="color:var(--good)">✅ Correct!</span>`;
+    node.style.boxShadow = '0 10px 24px rgba(72,187,120,.14)';
+    document.getElementById('nextBtn').disabled = false;
+    document.getElementById('bar').style.width = `${((state.index+1)/ITEMS.length)*100}%`;
+  } else {
+    state.xp+=1; state.streak=0; save();
+    document.getElementById('feedback').innerHTML = `<span style="color:var(--bad)">❌ Try again!</span>`;
+    node.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240});
+  }
+  updateStatus();
+}
+function updateStatus(){ document.getElementById('xp').textContent = state.xp; document.getElementById('streak').textContent = state.streak; }
+function nextQ(){ state.index++; if(state.index>=ITEMS.length) finish(); else loadQ(); }
+function skip(){ state.index++; if(state.index>=ITEMS.length) finish(); else loadQ(); }
+function finish(){
+  state.xp+=10; save(); updateStatus();
+  document.getElementById('feedback').innerHTML = `<span style="color:var(--good)">🎉 Well done! +10 XP</span>`;
+  setTimeout(()=>{ document.getElementById('practice').classList.add('hidden'); document.getElementById('review').classList.remove('hidden'); renderReview(); },800);
+}
+
+/* Review */
+function renderReview(){
+  const area=document.getElementById('reviewArea'); area.innerHTML='';
+  shuffle(ITEMS).slice(0,3).forEach(it=>{
+    const div=document.createElement('div'); div.className='card'; div.style.marginBottom='8px';
+    div.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:1.6rem">${it.emoji}</div><div><div style="font-weight:800">${it.person} has ${it.item}</div><div class="small">Tap to mark correct</div></div><div style="margin-left:auto"><button class="btn" onclick="mark(this)">✔</button></div></div>`;
+    area.appendChild(div);
+  });
+}
+function mark(btn){ btn.parentElement.parentElement.style.background='var(--good)'; btn.disabled=true; }
+function shuffle(a){ return a.sort(()=>Math.random()-0.5); }
+</script>
+</body>
+</html>
