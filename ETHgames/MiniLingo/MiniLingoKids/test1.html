@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lesson 2: Is it sunny/rainy? 🌞🌧️</title>
+  <meta name="theme-color" content="#4CAF50"/>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Comic Sans MS",Arial,sans-serif;margin:0;padding:0;background:#E1F5FE;color:#2f3437}
+    header{background:#4CAF50;color:#fff;padding:1rem;text-align:center;font-weight:800;font-size:1.2rem}
+    main{max-width:600px;margin:16px auto;padding:12px;background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+    h2{margin-top:0}
+    .practice{margin-top:18px}
+    button{background:#4CAF50;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:12px}
+    button:hover{filter:brightness(1.05)}
+    .correct{color:green;font-weight:700}
+    .wrong{color:red;font-weight:700}
+  </style>
+</head>
+<body>
+
+<header>Lesson 2: Is it sunny/rainy? 🌞🌧️</header>
+
+<main>
+  <h2>Learn new question phrases</h2>
+  <p>Ask: <strong>Is it sunny?</strong> <br>Answer: <strong>Yes, it is.</strong> or <strong>No, it isn't.</strong></p>
+
+  <h2>Practice</h2>
+  <div class="practice">
+    <p>Is it sunny today?</p>
+    <button onclick="checkAnswer('Yes')">Yes, it is</button>
+    <button onclick="checkAnswer('No')">No, it isn't</button>
+    <p id="feedback"></p>
+  </div>
+
+  <button onclick="nextLesson()">Next Lesson ➡️</button>
+</main>
+
+<script>
+  function checkAnswer(answer){
+    const feedback = document.getElementById('feedback');
+    if(answer === 'Yes'){
+      feedback.textContent = "✅ Correct!";
+      feedback.className = "correct";
+    } else {
+      feedback.textContent = "❌ Try again!";
+      feedback.className = "wrong";
+    }
+  }
+
+  function nextLesson(){
+    const state = JSON.parse(localStorage.getItem("minilingoState") || "{}");
+    state.progress = state.progress || {};
+    state.progress[2] = true;
+    localStorage.setItem("minilingoState", JSON.stringify(state));
+    window.location.href="lsn3.html";
+  }
+</script>
+
+</body>
+</html>
