@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Korean Adults Course — Lessons 1-20</title>
+<meta name="theme-color" content="#FF5722"/>
+<style>
+:root{
+  --accent:#FF5722;
+  --good:#4CAF50;
+  --bad:#F44336;
+  --card:#fff;
+  --shadow:0 10px 28px rgba(10,20,30,.08);
+  --r:14px;
+}
+*{box-sizing:border-box}
+body{font-family:Arial,system-ui,sans-serif;margin:0;background:linear-gradient(180deg,#FFEDE6,#FFD7C2);color:#212121;display:flex;align-items:flex-start;justify-content:center;padding:20px}
+.wrapper{width:100%;max-width:800px;background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.header{background:linear-gradient(90deg,var(--accent),#FF8A50);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.title{font-weight:800;font-size:1.1rem}
+.container{display:flex;gap:18px;padding:18px}
+.main{flex:1}
+.card{background:#fff;border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,0.08);margin-bottom:12px}
+.characters{display:flex;gap:10px;flex-wrap:wrap}
+.char{flex:1 0 48%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:linear-gradient(180deg,#fff,#FFE5DB);cursor:pointer}
+.char .emoji{font-size:2rem}
+.sentence{margin-top:10px;padding:10px;border-radius:10px;background:linear-gradient(90deg,rgba(255,87,34,.06),rgba(255,138,80,.03));font-weight:800;display:flex;gap:10px;align-items:center}
+.hidden{display:none}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.btn{padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
+.btn-primary{background:var(--accent);color:#fff}
+.choice{background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px;cursor:pointer}
+.feedback{height:36px;margin-top:10px;font-weight:800}
+.progress{height:8px;background:#FFD7C2;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));transition:width .4s}
+.small{font-size:.9rem;color:#555}
+</style>
+</head>
+<body>
+<div class="wrapper" role="main" aria-labelledby="lessonTitle">
+  <div class="header">
+    <div class="title" id="lessonTitle">Korean Adults Course — Lessons 1-20</div>
+    <div class="small" id="status">XP: <span id="xp">0</span> • Streak: <span id="streak">0</span></div>
+  </div>
+  <div class="container">
+    <div class="main">
+      <div class="sentence" id="example">📘 <span style="opacity:.85">성인 한국어 과정에 오신 것을 환영합니다!</span></div>
+      <div class="card" id="learn">
+        <div class="characters" id="chars"></div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn btn-primary" onclick="startPractice()">Start Lessons ➜</button>
+          <button class="btn" onclick="speak('성인 한국어 과정에 오신 것을 환영합니다!')">🔊 Hear</button>
+        </div>
+      </div>
+      <div class="card hidden" id="practice">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-weight:800" id="practiceSentence">...</div>
+          <div style="margin-left:auto" class="small" id="score">0 / 20</div>
+        </div>
+        <div class="progress" aria-hidden><div id="bar" style="width:0%"></div></div>
+        <div class="choices" id="options"></div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px">
+          <button class="btn" onclick="skip()">Skip</button>
+          <button class="btn btn-primary" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+        </div>
+      </div>
+      <div class="card hidden" id="review">
+        <h3 style="margin:0">Final Review</h3>
+        <div id="reviewArea"></div>
+        <div style="margin-top:10px" id="reviewResult"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// 20 Korean adult lessons (beginner topics)
+const KOREAN = [
+  {id:1,name:'안녕하세요',emoji:'👋',sentence:'안녕하세요! 만나서 반갑습니다.'},
+  {id:2,name:'이름',emoji:'📝',sentence:'제 이름은 수진입니다.'},
+  {id:3,name:'숫자',emoji:'🔢',sentence:'저는 사과 세 개를 가지고 있어요.'},
+  {id:4,name:'시간',emoji:'⏰',sentence:'지금은 아홉 시입니다.'},
+  {id:5,name:'요일',emoji:'📅',sentence:'오늘은 월요일입니다.'},
+  {id:6,name:'음식',emoji:'🍽️',sentence:'저는 피자를 좋아합니다.'},
+  {id:7,name:'음료',emoji:'☕',sentence:'저는 물을 마셔요.'},
+  {id:8,name:'가족',emoji:'👨‍👩‍👧',sentence:'제 동생 이름은 지민입니다.'},
+  {id:9,name:'직업',emoji:'💼',sentence:'저는 선생님입니다.'},
+  {id:10,name:'취미',emoji:'🎨',sentence:'제 취미는 그림 그리기입니다.'},
+  {id:11,name:'쇼핑',emoji:'🛍️',sentence:'저는 쇼핑하러 갑니다.'},
+  {id:12,name:'여행',emoji:'✈️',sentence:'저는 서울로 여행 갑니다.'},
+  {id:13,name:'집',emoji:'🏠',sentence:'제 집은 작습니다.'},
+  {id:14,name:'도시',emoji:'🏙️',sentence:'저는 도시에 살아요.'},
+  {id:15,name:'날씨',emoji:'🌤️',sentence:'오늘 날씨가 맑아요.'},
+  {id:16,name:'옷',emoji:'👕',sentence:'저는 파란 셔츠를 입고 있어요.'},
+  {id:17,name:'건강',emoji:'💊',sentence:'저는 아파요.'},
+  {id:18,name:'교통',emoji:'🚆',sentence:'저는 기차를 타고 가요.'},
+  {id:19,name:'전화',emoji:'📞',sentence:'저는 친구에게 전화해요.'},
+  {id:20,name:'여가',emoji:'🏞️',sentence:'주말에는 등산을 가요.'}
+];
+
+let state={index:0,corrects:0,xp:(JSON.parse(localStorage.getItem('koreanState')||'{}').xp||0),streak:(JSON.parse(localStorage.getItem('koreanState')||'{}').streak||0),order:[]};
+
+function save(){const s=JSON.parse(localStorage.getItem('koreanState')||'{}');s.xp=state.xp;s.streak=state.streak;localStorage.setItem('koreanState',JSON.stringify(s));}
+function speak(txt){if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(txt);u.lang='ko-KR';window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}}
+function renderChars(){const el=document.getElementById('chars');el.innerHTML='';KOREAN.forEach(w=>{const b=document.createElement('button');b.className='char';b.onclick=()=>{document.getElementById('example').textContent=`${w.emoji} ${w.sentence}`;speak(w.sentence);};b.innerHTML=`<div class="emoji">${w.emoji}</div><div style="font-weight:700">${w.name}</div>`;el.appendChild(b);});}
+renderChars();
+
+function startPractice(){document.getElementById('learn').classList.add('hidden');document.getElementById('practice').classList.remove('hidden');state.index=0;state.corrects=0;state.order=shuffle(KOREAN.slice());loadQ();}
+function loadQ(){const cur=state.order[state.index];document.getElementById('practiceSentence').textContent=cur.sentence;speak(cur.sentence);document.getElementById('score').textContent=`${state.corrects} / ${KOREAN.length}`;document.getElementById('bar').style.width=`${(state.index/KOREAN.length)*100}%`;document.getElementById('feedback').textContent='';document.getElementById('nextBtn').disabled=true;let opts=shuffle(KOREAN.slice());if(!opts.some(o=>o.id===cur.id))opts[0]=cur;opts=shuffle(opts);const container=document.getElementById('options');container.innerHTML='';opts.forEach(opt=>{const d=document.createElement('div');d.className='choice';d.innerHTML=`<div style="font-size:1.8rem">${opt.emoji}</div><div style="font-weight:700">${opt.name}</div>`;d.onclick=()=>choose(opt.id,cur.id,d);container.appendChild(d);});}
+function choose(selId,correctId,node){if(selId===correctId){state.corrects++;state.xp+=5;state.streak++;save();document.getElementById('feedback').innerHTML=`<span style="color:var(--good)">✅ 맞아요!</span>`;node.style.boxShadow='0 10px 24px rgba(72,187,120,.14)';document.getElementById('nextBtn').disabled=false;document.getElementById('bar').style.width=`${((state.index+1)/KOREAN.length)*100}%`;}else{state.xp+=1;state.streak=0;save();document.getElementById('feedback').innerHTML=`<span style="color:var(--bad)">❌ 다시 시도!</span>`;node.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240});}updateStatus();}
+function updateStatus(){document.getElementById('xp').textContent=state.xp;document.getElementById('streak').textContent=state.streak;}
+function nextQ(){state.index++;if(state.index>=KOREAN.length)finish();else loadQ();}
+function skip(){state.index++;if(state.index>=KOREAN.length)finish();else loadQ();}
+function finish(){state.xp+=20;save();updateStatus();document.getElementById('feedback').innerHTML=`<span style="color:var(--good)">🎉 잘했어요! +20 XP</span>`;setTimeout(()=>{document.getElementById('practice').classList.add('hidden');document.getElementById('review').classList.remove('hidden');renderReview();},800);}
+function renderReview(){const area=document.getElementById('reviewArea');area.innerHTML='';shuffle(KOREAN).slice(0,5).forEach(it=>{const div=document.createElement('div');div.className='card';div.style.marginBottom='8px';div.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:1.6rem">${it.emoji}</div><div><div style="font-weight:800">${it.sentence}</div><div class="small">정답이면 ✔ 누르세요</div></div><div style="margin-left:auto"><button class="btn" onclick="mark(this)">✔</button></div></div>`;area.appendChild(div);});}
+function mark(btn){btn.parentElement.parentElement.style.background='var(--good)';btn.disabled=true;}
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+</script>
+</body>
+</html>
