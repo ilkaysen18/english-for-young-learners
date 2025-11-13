@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>German Adults — Final Review Game</title>
+<meta name="theme-color" content="#4CAF50"/>
+<style>
+:root{
+  --accent:#4CAF50;
+  --good:#4CAF50;
+  --bad:#FF6B6B;
+  --card:#fff;
+  --shadow:0 10px 28px rgba(10,20,30,.08);
+  --r:14px;
+}
+*{box-sizing:border-box}
+body{font-family:Arial,system-ui,sans-serif;margin:0;background:linear-gradient(180deg,#E1F5FE,#D0F0FF);color:#212121;display:flex;flex-direction:column;align-items:center;}
+header{width:100%;background:var(--accent);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+header .brand{font-weight:800;font-size:1.2rem}
+header .stats{display:flex;gap:1rem;font-weight:700}
+.badge{background:rgba(255,255,255,.2);padding:.25rem .5rem;border-radius:999px;font-size:.85rem}
+main{width:100%;max-width:800px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.card{background:#fff;border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,.08);margin-bottom:12px}
+.sentence{margin-top:10px;padding:10px;border-radius:10px;background:linear-gradient(90deg,rgba(76,175,80,.06),rgba(129,199,132,.03));font-weight:800;display:flex;gap:10px;align-items:center}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.choice{background:#fff;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px;cursor:pointer}
+.feedback{height:36px;margin-top:10px;font-weight:800}
+.progress{height:8px;background:#e6f7ff;border-radius:999px;overflow:hidden;margin-top:10px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));transition:width .4s}
+.btn{padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
+.btn-primary{background:var(--accent);color:#fff}
+.small{font-size:.85rem;color:#555}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🌟 German Adults — Final Review</div>
+  <div class="stats">
+    <div class="badge" id="streak">🔥 0</div>
+    <div class="badge" id="xp">⭐ 0 XP</div>
+  </div>
+</header>
+<main>
+  <div class="card">
+    <div style="font-weight:800" id="practiceSentence"></div>
+    <div class="progress"><div id="bar"></div></div>
+    <div class="choices" id="options"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <button class="btn" onclick="skip()">Skip</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="finishMessage" style="text-align:center;font-weight:800;font-size:1.2rem">
+    🎉 Congratulations! You completed the Final Review Game! 🎉
+  </div>
+</main>
+
+<script>
+// All 20 lessons
+const LESSONS=[
+{emoji:"👋",name:"Hallo",sentence:"Hallo! Wie geht's?"},
+{emoji:"📝",name:"Name",sentence:"Ich heiße Anna."},
+{emoji:"🔢",name:"Zahlen",sentence:"Ich habe drei Äpfel."},
+{emoji:"⏰",name:"Uhrzeit",sentence:"Es ist neun Uhr."},
+{emoji:"📅",name:"Wochentage",sentence:"Heute ist Montag."},
+{emoji:"🍽️",name:"Essen",sentence:"Ich mag Pizza."},
+{emoji:"☕",name:"Getränke",sentence:"Ich trinke Wasser."},
+{emoji:"👨‍👩‍👧",name:"Familie",sentence:"Mein Bruder heißt Max."},
+{emoji:"💼",name:"Beruf",sentence:"Ich bin Lehrer."},
+{emoji:"🎨",name:"Hobbys",sentence:"Mein Hobby ist Malen."},
+{emoji:"🛍️",name:"Einkaufen",sentence:"Ich gehe einkaufen."},
+{emoji:"✈️",name:"Reisen",sentence:"Ich reise nach Berlin."},
+{emoji:"🏠",name:"Haus",sentence:"Mein Haus ist klein."},
+{emoji:"🏙️",name:"Stadt",sentence:"Ich wohne in der Stadt."},
+{emoji:"🌤️",name:"Wetter",sentence:"Heute ist das Wetter schön."},
+{emoji:"👕",name:"Kleidung",sentence:"Ich trage ein blaues Hemd."},
+{emoji:"💊",name:"Gesundheit",sentence:"Mir geht es nicht gut."},
+{emoji:"🚆",name:"Transport",sentence:"Ich fahre mit dem Zug."},
+{emoji:"📞",name:"Telefon",sentence:"Ich rufe meinen Freund an."},
+{emoji:"🏞️",name:"Freizeit",sentence:"Am Wochenende gehe ich wandern."}
+];
+
+let state={index:0,corrects:0,xp:0,streak:0,order:[],wrongQueue:[]};
+
+function loadProgress(){const s=JSON.parse(localStorage.getItem('germanState')||'{}');state.xp=s.xp||0;state.streak=s.streak||0;}
+function save(){localStorage.setItem('germanState',JSON.stringify({xp:state.xp,streak:state.streak}));}
+function renderHeader(){document.getElementById('xp').textContent=`⭐ ${state.xp} XP`;document.getElementById('streak').textContent=`🔥 ${state.streak}`;}
+function speak(txt){if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(txt);u.lang='de-DE';window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}}
+
+function startGame(){state.order=shuffle([...LESSONS]);state.index=0;state.corrects=0;state.wrongQueue=[];document.getElementById('practice').classList.remove('hidden');document.getElementById('finishMessage').classList.add('hidden');loadQ();}
+
+function loadQ(){
+  if(state.index>=state.order.length && state.wrongQueue.length===0){finish();return;}
+  if(state.index>=state.order.length){state.order=state.wrongQueue;state.index=0;state.wrongQueue=[];}
+  const cur=state.order[state.index];
+  document.getElementById('practiceSentence').textContent=cur.sentence;
+  speak(cur.sentence);
+  document.getElementById('bar').style.width=`${(state.index/state.order.length)*100}%`;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('nextBtn').disabled=true;
+
+  let opts=shuffle([...LESSONS].slice(0,4));
+  if(!opts.some(o=>o.name===cur.name)) opts[0]=cur;
+  opts=shuffle(opts);
+  const container=document.getElementById('options');container.innerHTML='';
+  opts.forEach(opt=>{
+    const d=document.createElement('div');d.className='choice';
+    d.innerHTML=`<div style="font-size:1.5rem">${opt.emoji}</div><div style="font-weight:700">${opt.name}</div>`;
+    d.onclick=()=>choose(opt.name,cur.name,d);
+    container.appendChild(d);
+  });
+}
+
+function choose(sel,correct,node){
+  const cur=state.order[state.index];
+  if(sel===correct){
+    state.corrects++;state.xp+=5;state.streak++;save();renderHeader();
+    document.getElementById('feedback').innerHTML=`<span style="color:var(--good)">✅ Richtig!</span>`;
+    node.style.boxShadow='0 10px 24px rgba(72,187,120,.14)';
+    document.getElementById('nextBtn').disabled=false;
+  }else{
+    state.xp+=1;state.streak=0;save();renderHeader();
+    document.getElementById('feedback').innerHTML=`<span style="color:var(--bad)">❌ Falsch!</span>`;
+    node.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:240});
+    state.wrongQueue.push(cur);
+  }
+}
+
+function nextQ(){state.index++;loadQ();}
+function skip(){state.index++;loadQ();}
+function finish(){document.getElementById('practice').classList.add('hidden');document.getElementById('finishMessage').classList.remove('hidden');alert('🎉 Final Review Complete!');}
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+loadProgress();renderHeader();startGame();
+</script>
+</body>
+</html>
