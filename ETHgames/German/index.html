@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>German A2 Course</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --secondary-color: #f4f4f4;
+      --text-color: #333;
+      --button-color: #4CAF50;
+      --button-hover: #45a049;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+    }
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .lesson-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .lesson-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .lesson-card:hover {
+      transform: translateY(-5px);
+    }
+    .lesson-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .lesson-card button {
+      background-color: var(--button-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .lesson-card button:hover {
+      background-color: var(--button-hover);
+    }
+    .lesson-content {
+      margin-top: 2rem;
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .lesson-content h3 {
+      color: var(--primary-color);
+    }
+    .lesson-content ul {
+      padding-left: 1.2rem;
+    }
+    .exercise {
+      margin-top: 1rem;
+      background-color: #e8f5e9;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .exercise input, .exercise textarea {
+      width: 100%;
+      padding: 0.4rem;
+      margin: 0.3rem 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>German A2 Course</h1>
+  <p>Learn German for everyday life – vocabulary, conversation, and exercises</p>
+</header>
+
+<main>
+  <section class="lesson-list">
+    <div class="lesson-card">
+      <h2>Lesson 1: Freiwilliger Dienst</h2>
+      <button onclick="showLesson(1)">Open Lesson</button>
+    </div>
+    <div class="lesson-card">
+      <h2>Lesson 2: Regierung & Politik</h2>
+      <button onclick="showLesson(2)">Open Lesson</button>
+    </div>
+    <div class="lesson-card">
+      <h2>Lesson 3: Umwelt & Energie</h2>
+      <button onclick="showLesson(3)">Open Lesson</button>
+    </div>
+    <div class="lesson-card">
+      <h2>Lesson 4: Alltag & Arbeit</h2>
+      <button onclick="showLesson(4)">Open Lesson</button>
+    </div>
+  </section>
+
+  <section class="lesson-content" id="lessonContent">
+    <h3>Welcome! Select a lesson to see its content.</h3>
+  </section>
+</main>
+
+<script>
+  const lessons = {
+    1: {
+      title: "Freiwilliger Dienst",
+      vocab: ["die Regierung", "der Bürger", "unterstützen", "die Änderung", "freiwillig"],
+      collocations: ["freiwilliger Dienst", "eine Änderung vorschlagen", "ein Modell entwickeln"],
+      article: `Im Jahr 2025 plant die deutsche Regierung eine wichtige Änderung. Das Ziel ist: mehr junge Menschen für den Militärdienst zu gewinnen. Der Dienst soll freiwillig bleiben.`,
+      conversation: ["Kannst du dir vorstellen, freiwillig zu dienen?", "Glaubst du, dass die Änderung gut ist für Deutschland?"],
+      exercises: ["Fülle die Lücken: Die Regierung möchte das ___ der Soldaten erhöhen."]
+    },
+    2: {
+      title: "Regierung & Politik",
+      vocab: ["der Minister", "die Wahl", "die Partei", "das Gesetz", "die Pflicht"],
+      collocations: ["eine Reform durchführen", "zur Pflicht machen", "die Diskussion führen"],
+      article: "Die Politik 2025 in Deutschland beschäftigt sich mit neuen Reformen und Bürgerbeteiligung.",
+      conversation: ["Welche Partei würdest du wählen?", "Was hältst du von neuen Gesetzen?"],
+      exercises: ["Schreibe einen Satz über eine neue Reform."]
+    },
+    3: {
+      title: "Umwelt & Energie",
+      vocab: ["die Energie", "der Klimawandel", "recyceln", "die Solarenergie", "umweltfreundlich"],
+      collocations: ["Solarenergie nutzen", "umweltfreundlich leben", "die CO2-Emissionen reduzieren"],
+      article: "Deutschland setzt 2025 verstärkt auf Solarenergie und umweltfreundliche Projekte.",
+      conversation: ["Wie kannst du die Umwelt schützen?", "Welche Energiequellen sind die besten?"],
+      exercises: ["Nenne drei umweltfreundliche Aktivitäten."]
+    },
+    4: {
+      title: "Alltag & Arbeit",
+      vocab: ["der Arbeitsplatz", "der Chef", "das Gehalt", "der Kollege", "die Pause"],
+      collocations: ["eine Pause machen", "mit Kollegen sprechen", "das Gehalt erhöhen"],
+      article: "Im Alltag 2025 arbeiten viele Menschen im Homeoffice und achten auf Work-Life-Balance.",
+      conversation: ["Wie oft machst du Pause?", "Was ist dir bei Kollegen wichtig?"],
+      exercises: ["Schreibe einen kurzen Tagesablauf in 3 Sätzen."]
+    }
+  };
+
+  function showLesson(id) {
+    const lesson = lessons[id];
+    const contentDiv = document.getElementById('lessonContent');
+    contentDiv.innerHTML = `
+      <h3>${lesson.title}</h3>
+      <h4>Vocabulary</h4>
+      <ul>${lesson.vocab.map(v => `<li>${v}</li>`).join('')}</ul>
+      <h4>Collocations</h4>
+      <ul>${lesson.collocations.map(c => `<li>${c}</li>`).join('')}</ul>
+      <h4>Short Article</h4>
+      <p>${lesson.article}</p>
+      <h4>Conversation Questions</h4>
+      <ul>${lesson.conversation.map(q => `<li>${q}</li>`).join('')}</ul>
+      <h4>Exercise</h4>
+      <div class="exercise">
+        <label>${lesson.exercises[0]}</label>
+        <input type="text" placeholder="Deine Antwort">
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>
