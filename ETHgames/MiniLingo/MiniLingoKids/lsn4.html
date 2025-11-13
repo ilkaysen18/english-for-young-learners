@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 | It's not summer</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #f4f9ff;
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background: #4a90e2;
+    padding: 18px;
+    color: white;
+    text-align: center;
+    font-weight: 700;
+    font-size: 22px;
+  }
+
+  .section {
+    padding: 20px;
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .word-card {
+    background: white;
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: transform .12s ease;
+  }
+
+  .word-card:active {
+    transform: scale(0.97);
+  }
+
+  .word-emoji {
+    font-size: 32px;
+  }
+
+  .practice-option {
+    background: white;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 2px solid #eee;
+    cursor: pointer;
+    transition: .15s;
+  }
+
+  .practice-option.correct {
+    border-color: #4CAF50;
+    background: #e9f9ee;
+  }
+
+  .practice-option.wrong {
+    border-color: #ff4d4d;
+    background: #ffecec;
+  }
+
+  #next-btn {
+    display: none;
+    margin-top: 16px;
+    padding: 14px;
+    width: 100%;
+    background: #4a90e2;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  #finish-review {
+    display: none;
+    margin-top: 16px;
+    padding: 14px;
+    width: 100%;
+    background: #4CAF50;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<header>Lesson 4 — It’s not summer.</header>
+
+<div class="section" id="learn-section">
+  <h2>Learn</h2>
+
+  <div class="word-card" onclick="speak('It’s not spring')">
+    <div>It’s not spring.</div>
+    <div class="word-emoji">🌱</div>
+  </div>
+
+  <div class="word-card" onclick="speak('It’s not summer')">
+    <div>It’s not summer.</div>
+    <div class="word-emoji">☀️</div>
+  </div>
+
+  <div class="word-card" onclick="speak('It’s not autumn')">
+    <div>It’s not autumn.</div>
+    <div class="word-emoji">🍂</div>
+  </div>
+
+  <div class="word-card" onclick="speak('It’s not winter')">
+    <div>It’s not winter.</div>
+    <div class="word-emoji">❄️</div>
+  </div>
+</div>
+
+<div class="section" id="practice-section">
+  <h2>Practice</h2>
+
+  <p><strong>Which one means “It’s not summer”?</strong></p>
+
+  <div class="practice-option" onclick="selectPractice(this, true)">☀️ It’s not summer.</div>
+  <div class="practice-option" onclick="selectPractice(this, false)">🌱 It’s not spring.</div>
+  <div class="practice-option" onclick="selectPractice(this, false)">🍂 It’s not autumn.</div>
+  <div class="practice-option" onclick="selectPractice(this, false)">❄️ It’s not winter.</div>
+
+  <div id="next-btn" onclick="finishPractice()">Continue</div>
+</div>
+
+<div class="section" id="review-section" style="display:none;">
+  <h2>Review</h2>
+
+  <p>Tap and say the sentence.</p>
+
+  <div class="word-card" onclick="speak('It’s not spring')">
+    <div>🌱 It’s not spring.</div>
+  </div>
+
+  <div class="word-card" onclick="speak('It’s not summer')">
+    <div>☀️ It’s not summer.</div>
+  </div>
+
+  <div class="word-card" onclick="speak('It’s not autumn')">
+    <div>🍂 It’s not autumn.</div>
+  </div>
+
+  <div class="word-card" onclick="speak('It’s not winter')">
+    <div>❄️ It’s not winter.</div>
+  </div>
+
+  <div id="finish-review" onclick="completeLesson()">Finish Lesson</div>
+</div>
+
+<script>
+function speak(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = 'en-US';
+  speechSynthesis.speak(msg);
+}
+
+let practiceDone = false;
+
+function selectPractice(el, correct) {
+  if (practiceDone) return;
+
+  if (correct) {
+    el.classList.add("correct");
+  } else {
+    el.classList.add("wrong");
+  }
+
+  practiceDone = true;
+  document.getElementById("next-btn").style.display = "block";
+}
+
+function finishPractice() {
+  document.getElementById("practice-section").style.display = "none";
+  document.getElementById("review-section").style.display = "block";
+}
+
+function completeLesson() {
+  let state = JSON.parse(localStorage.getItem("minilingoState") || "{}");
+  state.l4 = 100;
+  state.xp = (state.xp || 0) + 10;
+  state.streak = (state.streak || 0) + 1;
+  localStorage.setItem("minilingoState", JSON.stringify(state));
+
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
