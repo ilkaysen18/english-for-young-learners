@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 4 | It's not summer</title>
-<link rel="stylesheet" href="style.css">
+<title>Lesson 4 | It’s not summer.</title>
 
 <style>
   body {
     font-family: 'Montserrat', sans-serif;
-    background: #f4f9ff;
+    background: #eef6ff;
     margin: 0;
-    padding: 0;
   }
 
   header {
@@ -19,8 +17,8 @@
     padding: 18px;
     color: white;
     text-align: center;
-    font-weight: 700;
     font-size: 22px;
+    font-weight: 700;
   }
 
   .section {
@@ -28,77 +26,68 @@
   }
 
   h2 {
-    margin-top: 0;
+    margin: 0 0 14px;
     font-size: 20px;
     font-weight: 600;
-    color: #333;
   }
 
-  .word-card {
-    background: white;
+  .card {
+    background: #fff;
     padding: 16px;
-    margin: 12px 0;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-radius: 14px;
+    margin-bottom: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     cursor: pointer;
-    transition: transform .12s ease;
+    transition: 0.15s;
   }
 
-  .word-card:active {
+  .card:active {
     transform: scale(0.97);
   }
 
-  .word-emoji {
+  .emoji {
     font-size: 32px;
   }
 
-  .practice-option {
-    background: white;
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 10px;
+  .option {
+    background: #fff;
     border: 2px solid #eee;
-    cursor: pointer;
-    transition: .15s;
-  }
-
-  .practice-option.correct {
-    border-color: #4CAF50;
-    background: #e9f9ee;
-  }
-
-  .practice-option.wrong {
-    border-color: #ff4d4d;
-    background: #ffecec;
-  }
-
-  #next-btn {
-    display: none;
-    margin-top: 16px;
     padding: 14px;
-    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.15s;
+  }
+
+  .option.correct {
+    background: #e8fbe8;
+    border-color: #46c46c;
+  }
+
+  .option.wrong {
+    background: #ffeaea;
+    border-color: #ff6b6b;
+  }
+
+  #next-btn,
+  #finish-btn {
+    display: none;
     background: #4a90e2;
     color: white;
-    border-radius: 12px;
+    padding: 14px;
+    width: 100%;
     text-align: center;
+    border-radius: 12px;
     font-weight: 600;
+    margin-top: 16px;
     cursor: pointer;
   }
 
-  #finish-review {
-    display: none;
-    margin-top: 16px;
-    padding: 14px;
-    width: 100%;
-    background: #4CAF50;
-    color: white;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: 600;
-    cursor: pointer;
+  #finish-btn {
+    background: #46c46c;
   }
 </style>
 </head>
@@ -107,103 +96,105 @@
 
 <header>Lesson 4 — It’s not summer.</header>
 
-<div class="section" id="learn-section">
+<!-- LEARN -->
+<div class="section" id="learn">
   <h2>Learn</h2>
 
-  <div class="word-card" onclick="speak('It’s not spring')">
+  <div class="card" onclick="say('It’s not spring')">
     <div>It’s not spring.</div>
-    <div class="word-emoji">🌱</div>
+    <div class="emoji">🌱</div>
   </div>
 
-  <div class="word-card" onclick="speak('It’s not summer')">
+  <div class="card" onclick="say('It’s not summer')">
     <div>It’s not summer.</div>
-    <div class="word-emoji">☀️</div>
+    <div class="emoji">☀️</div>
   </div>
 
-  <div class="word-card" onclick="speak('It’s not autumn')">
+  <div class="card" onclick="say('It’s not autumn')">
     <div>It’s not autumn.</div>
-    <div class="word-emoji">🍂</div>
+    <div class="emoji">🍂</div>
   </div>
 
-  <div class="word-card" onclick="speak('It’s not winter')">
+  <div class="card" onclick="say('It’s not winter')">
     <div>It’s not winter.</div>
-    <div class="word-emoji">❄️</div>
+    <div class="emoji">❄️</div>
   </div>
 </div>
 
-<div class="section" id="practice-section">
+<!-- PRACTICE -->
+<div class="section" id="practice">
   <h2>Practice</h2>
 
   <p><strong>Which one means “It’s not summer”?</strong></p>
 
-  <div class="practice-option" onclick="selectPractice(this, true)">☀️ It’s not summer.</div>
-  <div class="practice-option" onclick="selectPractice(this, false)">🌱 It’s not spring.</div>
-  <div class="practice-option" onclick="selectPractice(this, false)">🍂 It’s not autumn.</div>
-  <div class="practice-option" onclick="selectPractice(this, false)">❄️ It’s not winter.</div>
+  <div class="option" onclick="check(this, true)">☀️ It’s not summer.</div>
+  <div class="option" onclick="check(this, false)">🌱 It’s not spring.</div>
+  <div class="option" onclick="check(this, false)">🍂 It’s not autumn.</div>
+  <div class="option" onclick="check(this, false)">❄️ It’s not winter.</div>
 
-  <div id="next-btn" onclick="finishPractice()">Continue</div>
+  <div id="next-btn" onclick="goReview()">Continue</div>
 </div>
 
-<div class="section" id="review-section" style="display:none;">
+<!-- REVIEW -->
+<div class="section" id="review" style="display:none;">
   <h2>Review</h2>
 
   <p>Tap and say the sentence.</p>
 
-  <div class="word-card" onclick="speak('It’s not spring')">
+  <div class="card" onclick="say('It’s not spring')">
     <div>🌱 It’s not spring.</div>
   </div>
 
-  <div class="word-card" onclick="speak('It’s not summer')">
+  <div class="card" onclick="say('It’s not summer')">
     <div>☀️ It’s not summer.</div>
   </div>
 
-  <div class="word-card" onclick="speak('It’s not autumn')">
+  <div class="card" onclick="say('It’s not autumn')">
     <div>🍂 It’s not autumn.</div>
   </div>
 
-  <div class="word-card" onclick="speak('It’s not winter')">
+  <div class="card" onclick="say('It’s not winter')">
     <div>❄️ It’s not winter.</div>
   </div>
 
-  <div id="finish-review" onclick="completeLesson()">Finish Lesson</div>
+  <div id="finish-btn" onclick="finishLesson()">Finish Lesson</div>
 </div>
 
 <script>
-function speak(text) {
-  const msg = new SpeechSynthesisUtterance(text);
-  msg.lang = 'en-US';
-  speechSynthesis.speak(msg);
+function say(t) {
+  let u = new SpeechSynthesisUtterance(t);
+  u.lang = 'en-US';
+  speechSynthesis.speak(u);
 }
 
-let practiceDone = false;
+let done = false;
 
-function selectPractice(el, correct) {
-  if (practiceDone) return;
+function check(el, correct) {
+  if (done) return;
 
-  if (correct) {
-    el.classList.add("correct");
-  } else {
-    el.classList.add("wrong");
-  }
+  if (correct) el.classList.add('correct');
+  else el.classList.add('wrong');
 
-  practiceDone = true;
-  document.getElementById("next-btn").style.display = "block";
+  done = true;
+  document.getElementById('next-btn').style.display = 'block';
 }
 
-function finishPractice() {
-  document.getElementById("practice-section").style.display = "none";
-  document.getElementById("review-section").style.display = "block";
+function goReview() {
+  document.getElementById('practice').style.display = 'none';
+  document.getElementById('review').style.display = 'block';
 }
 
-function completeLesson() {
-  let state = JSON.parse(localStorage.getItem("minilingoState") || "{}");
+function finishLesson() {
+  let state = JSON.parse(localStorage.getItem('minilingoState') || '{}');
   state.l4 = 100;
   state.xp = (state.xp || 0) + 10;
   state.streak = (state.streak || 0) + 1;
-  localStorage.setItem("minilingoState", JSON.stringify(state));
+  localStorage.setItem('minilingoState', JSON.stringify(state));
 
-  window.location.href = "index.html";
+  window.location.href = 'index.html';
 }
+
+document.getElementById('finish-btn').style.display = 'block';
 </script>
 
 </body>
