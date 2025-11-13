@@ -1,213 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 1 | Weather words</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson 1 | Weather Words</title>
 
-<style>
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background: #f4f9ff;
-    margin: 0;
-    padding: 0;
-  }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 
-  header {
-    background: #4a90e2;
-    padding: 18px;
-    color: white;
-    text-align: center;
-    font-weight: 700;
-    font-size: 22px;
-  }
+    :root {
+      --primary: #4A90E2;
+      --secondary: #50E3C2;
+      --accent: #F5A623;
+      --bg: #F7F9FC;
+      --text: #333;
+      --card-bg: #FFF;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
 
-  .section {
-    padding: 20px;
-  }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      color: var(--text);
+    }
 
-  h2 {
-    margin-top: 0;
-    font-size: 20px;
-    font-weight: 600;
-    color: #333;
-  }
+    .lesson-container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px 20px;
+    }
 
-  .word-card {
-    background: white;
-    padding: 16px;
-    margin: 12px 0;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: transform .12s ease;
-  }
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
 
-  .word-card:active {
-    transform: scale(0.97);
-  }
+    h2 {
+      margin-top: 40px;
+      color: var(--accent);
+    }
 
-  .word-emoji {
-    font-size: 32px;
-  }
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px var(--shadow);
+      margin: 20px 0;
+    }
 
-  .practice-option {
-    background: white;
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: 2px solid #eee;
-    cursor: pointer;
-    transition: .15s;
-  }
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
 
-  .practice-option.correct {
-    border-color: #4CAF50;
-    background: #e9f9ee;
-  }
+    .vocab-item {
+      background: var(--secondary);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+    }
 
-  .practice-option.wrong {
-    border-color: #ff4d4d;
-    background: #ffecec;
-  }
+    .practice-item {
+      padding: 12px 15px;
+      background: white;
+      border-radius: 8px;
+      margin: 10px 0;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
 
-  #next-btn {
-    display: none;
-    margin-top: 16px;
-    padding: 14px;
-    width: 100%;
-    background: #4a90e2;
-    color: white;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: 600;
-    cursor: pointer;
-  }
+    .footer-nav {
+      text-align: center;
+      margin-top: 40px;
+    }
 
-  #finish-review {
-    display: none;
-    margin-top: 16px;
-    padding: 14px;
-    width: 100%;
-    background: #4CAF50;
-    color: white;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: 600;
-    cursor: pointer;
-  }
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+      margin: 5px;
+    }
 
-</style>
+    .btn:hover {
+      background: var(--accent);
+    }
+  </style>
 </head>
 
 <body>
+  <div class="lesson-container">
 
-<header>Lesson 1 — Weather words</header>
+    <h1>Lesson 1 — Weather Words</h1>
 
-<div class="section" id="learn-section">
-  <h2>Learn the words</h2>
+    <!-- VOCABULARY -->
+    <h2>Vocabulary</h2>
+    <div class="card">
+      <p>Learn these weather words:</p>
 
-  <div class="word-card" onclick="speak('sunny')">
-    <div>Sunny</div>
-    <div class="word-emoji">☀️</div>
+      <div class="vocab-grid">
+        <div class="vocab-item">☀️ Sunny</div>
+        <div class="vocab-item">🌧️ Rainy</div>
+        <div class="vocab-item">❄️ Snowy</div>
+        <div class="vocab-item">💨 Windy</div>
+      </div>
+    </div>
+
+    <!-- EXAMPLES -->
+    <h2>Examples</h2>
+    <div class="card">
+      <p>Example sentences:</p>
+      <ul>
+        <li>It is sunny.</li>
+        <li>It is rainy.</li>
+        <li>It is snowy today.</li>
+        <li>It is windy outside.</li>
+      </ul>
+    </div>
+
+    <!-- PRACTICE -->
+    <h2>Practice</h2>
+    <div class="card">
+      <p>Match the picture to the weather word.</p>
+
+      <div class="practice-item">1. ☀️ _________</div>
+      <div class="practice-item">2. 🌧️ _________</div>
+      <div class="practice-item">3. ❄️ _________</div>
+      <div class="practice-item">4. 💨 _________</div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="footer-nav">
+      <a href="index.html" class="btn">Back to Menu</a>
+      <a href="lsn2.html" class="btn">Next Lesson</a>
+    </div>
+
   </div>
-
-  <div class="word-card" onclick="speak('rainy')">
-    <div>Rainy</div>
-    <div class="word-emoji">🌧️</div>
-  </div>
-
-  <div class="word-card" onclick="speak('snowy')">
-    <div>Snowy</div>
-    <div class="word-emoji">❄️</div>
-  </div>
-
-  <div class="word-card" onclick="speak('windy')">
-    <div>Windy</div>
-    <div class="word-emoji">💨</div>
-  </div>
-</div>
-
-
-<div class="section" id="practice-section">
-  <h2>Practice</h2>
-
-  <p><strong>Which one is “sunny”?</strong></p>
-
-  <div class="practice-option" onclick="selectPractice(this, true)">☀️ Sunny</div>
-  <div class="practice-option" onclick="selectPractice(this, false)">🌧️ Rainy</div>
-  <div class="practice-option" onclick="selectPractice(this, false)">❄️ Snowy</div>
-  <div class="practice-option" onclick="selectPractice(this, false)">💨 Windy</div>
-
-  <div id="next-btn" onclick="finishPractice()">Continue</div>
-</div>
-
-
-<div class="section" id="review-section" style="display:none;">
-  <h2>Review</h2>
-
-  <p>Say the word when you tap the emoji.</p>
-
-  <div class="word-card" onclick="speak('sunny')">
-    <div>☀️ Sunny</div>
-  </div>
-
-  <div class="word-card" onclick="speak('rainy')">
-    <div>🌧️ Rainy</div>
-  </div>
-
-  <div class="word-card" onclick="speak('snowy')">
-    <div>❄️ Snowy</div>
-  </div>
-
-  <div class="word-card" onclick="speak('windy')">
-    <div>💨 Windy</div>
-  </div>
-
-  <div id="finish-review" onclick="completeLesson()">Finish Lesson</div>
-</div>
-
-<script>
-function speak(text) {
-  const msg = new SpeechSynthesisUtterance(text);
-  msg.lang = 'en-US';
-  speechSynthesis.speak(msg);
-}
-
-let practiceDone = false;
-
-function selectPractice(el, correct) {
-  if (practiceDone) return;
-
-  if (correct) {
-    el.classList.add("correct");
-  } else {
-    el.classList.add("wrong");
-  }
-
-  practiceDone = true;
-  document.getElementById("next-btn").style.display = "block";
-}
-
-function finishPractice() {
-  document.getElementById("practice-section").style.display = "none";
-  document.getElementById("review-section").style.display = "block";
-}
-
-function completeLesson() {
-  let state = JSON.parse(localStorage.getItem("minilingoState") || "{}");
-  state.l1 = 100;
-  state.xp = (state.xp || 0) + 10;
-  state.streak = (state.streak || 0) + 1;
-  localStorage.setItem("minilingoState", JSON.stringify(state));
-
-  window.location.href = "index.html";
-}
-</script>
-
 </body>
 </html>
