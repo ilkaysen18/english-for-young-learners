@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lesson 5 – She has an umbrella</title>
+<meta name="theme-color" content="#4CAF50"/>
+<style>
+:root{
+  --green:#4CAF50;--green-2:#81C784;--blue:#8ECDF1;
+  --card:#fff;--shadow:0 6px 18px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,"Comic Sans MS","Poppins",Arial,sans-serif;
+  background:linear-gradient(#8ECDF1,#E1F5FE);
+  color:#2f3437;text-align:center;
+}
+header{
+  background:#4CAF50;color:#fff;padding:1rem;
+  position:sticky;top:0;z-index:10;font-weight:800;
+}
+.container{
+  background:var(--card);margin:16px auto;padding:18px;border-radius:14px;
+  max-width:520px;width:90%;box-shadow:var(--shadow);
+}
+.btn{
+  background:#4CAF50;color:#fff;border:none;border-radius:10px;
+  padding:10px 14px;font-weight:800;cursor:pointer;
+}
+.btn:hover{filter:brightness(1.05)}
+.hidden{display:none}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.card{
+  border:1px solid #e8eef3;border-radius:12px;padding:18px 10px;
+  background:#f6fbff;cursor:pointer;font-size:1.1rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;min-height:80px;
+}
+.card.correct{background:#C8E6C9}
+.card.wrong{background:#FFCDD2}
+.progress{height:8px;background:#eaf5ff;border-radius:999px;overflow:hidden;margin:10px 0}
+.progress>div{height:100%;background:linear-gradient(90deg,#4CAF50,#81C784);width:0%}
+.result{min-height:1.4rem;margin-top:8px;text-align:center;font-weight:700}
+.small{font-size:.9rem;color:#4b5563}
+</style>
+</head>
+<body>
+<header>Lesson 5: She has an umbrella ☂️</header>
+
+<div class="container" id="intro">
+  <h2>Have / Has + Weather Items</h2>
+  <p class="small">Pattern: <strong>She has [item].</strong></p>
+  <div class="cards">
+    <div class="card" aria-hidden="true">☂️<div>umbrella</div></div>
+    <div class="card" aria-hidden="true">🕶️<div>sunglasses</div></div>
+    <div class="card" aria-hidden="true">🧤<div>gloves</div></div>
+    <div class="card" aria-hidden="true">🧥<div>coat</div></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:10px">
+    <a href="index.html">⬅️ Home</a>
+    <button class="btn" onclick="start()">Start Practice ➡️</button>
+  </div>
+</div>
+
+<div class="container hidden" id="practice">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2 id="question">Question</h2>
+    <div><span id="score">0</span>/4</div>
+  </div>
+  <div class="progress"><div id="bar"></div></div>
+  <p class="small" id="instruction">Choose the right meaning.</p>
+  <div class="cards" id="options"></div>
+  <div class="result" id="res"></div>
+</div>
+
+<script>
+const LESSON_ID = 5;
+
+// Each item has an emoji + sentence
+const data = [
+  {emoji:"☂️", text:"She has an umbrella."},
+  {emoji:"🕶️", text:"She has sunglasses."},
+  {emoji:"🧤", text:"She has gloves."},
+  {emoji:"🧥", text:"She has a coat."}
+];
+
+let mode="emoji-text"; // toggle style
+let order=[],index=0,score=0;
+
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+
+function start(){
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("practice").classList.remove("hidden");
+  order = shuffle([...data]);
+  mode = Math.random()>0.5? "emoji-text" : "text-emoji";
+  index=0;score=0;
+  next();
+}
+
+function next(){
+  const current = order[index];
+  document.getElementById("bar").style.width=`${index/order.length*100}%`;
+  document.getElementById("score").textContent=score;
+  const resEl=document.getElementById("res");resEl.textContent="";
+  const qEl=document.getElementById("question");
+  const optBox=document.getElementById("options");
+  optBox.innerHTML="";
+  
+  if(mode==="emoji-text"){
+    // show emoji → choose sentence meaning
+    qEl.textContent=`What does this mean?`;
+    document.getElementById("instruction").textContent="Tap the correct sentence.";
+    const qEmoji=document.createElement("div");
+    qEmoji.style.fontSize="3rem";qEmoji.textContent=current.emoji;
+    qEl.appendChild(qEmoji);
+
+    const choices=shuffle(data.map(item=>({
+      label:item.text,
+      correct:item.text===current.text
+    })));
+    choices.forEach(ch=>{
+      const div=document.createElement("div");
+      div.className="card";div.textContent=ch.label;
+      div.onclick=()=>check(div,ch.correct);
+      optBox.appendChild(div);
+    });
+  }else{
+    // show text → choose emoji meaning
+    qEl.textContent=current.text;
+    document.getElementById("instruction").textContent="Tap the correct picture.";
+    const choices=shuffle(data.map(item=>({
+      label:item.emoji,
+      correct:item.emoji===current.emoji
+    })));
+    choices.forEach(ch=>{
+      const div=document.createElement("div");
+      div.className="card";div.textContent=ch.label;
+      div.style.fontSize="2rem";
+      div.onclick=()=>check(div,ch.correct);
+      optBox.appendChild(div);
+    });
+  }
+}
+
+function check(el,isCorrect){
+  const res=document.getElementById("res");
+  if(isCorrect){
+    el.classList.add("correct");
+    res.textContent="✅ Great!";
+    score++;
+  }else{
+    el.classList.add("wrong");
+    res.textContent="❌ Try again!";
+  }
+  setTimeout(()=>{
+    index++;
+    if(index>=order.length){done();}else{next();}
+  },700);
+}
+
+function addXP(n=15){
+  const s=JSON.parse(localStorage.getItem("minilingoState")||"{}");
+  s.xp=(s.xp||0)+n;
+  localStorage.setItem("minilingoState",JSON.stringify(s));
+}
+function markComplete(){
+  const s=JSON.parse(localStorage.getItem("minilingoState")||"{}");
+  s.progress=s.progress||{}; s.progress[LESSON_ID]=true;
+  localStorage.setItem("minilingoState",JSON.stringify(s));
+}
+function bumpDaily(){
+  const s=JSON.parse(localStorage.getItem("minilingoState")||"{}");
+  const t=(new Date()).toISOString().slice(0,10);
+  if(s.lastDay!==t){s.lastDay=t;s.streak=(s.streak? s.streak+1:1);s.daily=0;}
+  s.daily=Math.min(10,(s.daily||0)+4);
+  localStorage.setItem("minilingoState",JSON.stringify(s));
+}
+function done(){
+  document.getElementById("bar").style.width="100%";
+  addXP(15);markComplete();bumpDaily();
+  setTimeout(()=>window.location.href="index.html",700);
+}
+</script>
+</body>
+</html>
