@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch Lernen | Daily Routine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #faf8f3;
+            --bg-secondary: #f0ebe0;
+            --bg-card: #ffffff;
+            --text-primary: #2d2416;
+            --text-secondary: #6b5d4f;
+            --accent-primary: #d97706;
+            --accent-secondary: #059669;
+            --accent-warm: #dc2626;
+            --border-color: #e5dcc9;
+            --shadow-sm: 0 1px 3px rgba(45, 36, 22, 0.08);
+            --shadow-md: 0 4px 12px rgba(45, 36, 22, 0.12);
+            --shadow-lg: 0 8px 24px rgba(45, 36, 22, 0.15);
+        }
+
+        .dark {
+            --bg-primary: #1a1510;
+            --bg-secondary: #231d15;
+            --bg-card: #2d2416;
+            --text-primary: #f5f1e8;
+            --text-secondary: #c4b5a0;
+            --accent-primary: #fbbf24;
+            --accent-secondary: #34d399;
+            --accent-warm: #f87171;
+            --border-color: #3d3427;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 2.5rem 0 2rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            margin: -1.5rem -1.5rem 2rem;
+            border-radius: 0 0 24px 24px;
+            box-shadow: var(--shadow-lg);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+            flex: 1;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .section.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .section.collapsed .section-content {
+            max-height: 0 !important;
+            opacity: 0;
+        }
+
+        .question {
+            background: var(--bg-secondary);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-primary);
+            transition: background 0.2s ease;
+        }
+
+        .question:hover {
+            background: var(--border-color);
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-right: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .question-translation {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: white;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
+        }
+
+        tbody tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .example {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .article {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            padding: 1.5rem;
+            border-radius: 12px;
+            line-height: 1.9;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--border-color);
+            font-family: 'Crimson Pro', serif;
+        }
+
+        .article-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        .summary {
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            border-left: 4px solid var(--accent-secondary);
+        }
+
+        .summary-title {
+            font-weight: 700;
+            color: var(--accent-secondary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .input-group {
+            margin-top: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-card);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            background: var(--accent-secondary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 640px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 1.25rem;
+            }
+
+            .section-title {
+                font-size: 1.25rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.6rem;
+                white-space: nowrap;
+            }
+
+            td:last-child {
+                min-width: 200px;
+            }
+
+            .article {
+                font-size: 1rem;
+            }
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.1), rgba(5, 150, 105, 0.1));
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            border: 2px dashed var(--accent-primary);
+        }
+
+        .info-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇩🇪 Deutsch Lernen</h1>
+            <p>Mein Tag — My Day <span class="badge">A1-A2</span></p>
+        </header>
+
+        <!-- WARM-UP SECTION -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">🟢</span>
+                <h2 class="section-title">WARM-UP / EINSTIEG</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <span class="question-number">1.</span>
+                    <div class="question-text">Wann stehst du morgens auf?</div>
+                    <div class="question-translation">When do you get up in the morning?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">2.</span>
+                    <div class="question-text">Was machst du vor der Arbeit oder vor der Schule?</div>
+                    <div class="question-translation">What do you do before work or school?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">3.</span>
+                    <div class="question-text">Trinkst du Kaffee oder Tee am Morgen?</div>
+                    <div class="question-translation">Do you drink coffee or tea in the morning?</div>
+                </div>
+
+                <div class="input-group">
+                    <textarea placeholder="Schreib deine Antworten hier... / Write your answers here..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOCABULARY SECTION -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">📚</span>
+                <h2 class="section-title">WORTSCHATZ & KOLLOKATIONEN</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Deutsch</th>
+                                <th>English</th>
+                                <th>Beispiel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>aufstehen</strong></td>
+                                <td>to get up</td>
+                                <td class="example">Ich stehe um 7 Uhr auf.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>frühstücken</strong></td>
+                                <td>to have breakfast</td>
+                                <td class="example">Wir frühstücken zusammen.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>zur Arbeit gehen</strong></td>
+                                <td>to go to work</td>
+                                <td class="example">Er geht um acht Uhr zur Arbeit.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>sich anziehen</strong></td>
+                                <td>to get dressed</td>
+                                <td class="example">Ich ziehe mich schnell an.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ins Bett gehen</strong></td>
+                                <td>to go to bed</td>
+                                <td class="example">Ich gehe um zehn Uhr ins Bett.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>den Haushalt machen</strong></td>
+                                <td>to do the housework</td>
+                                <td class="example">Am Wochenende mache ich den Haushalt.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ARTICLE SECTION -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">📖</span>
+                <h2 class="section-title">KURZER ARTIKEL</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="article">
+                    <div class="article-title">Mein Tag</div>
+                    <p>Ich stehe jeden Tag um halb sieben auf. Zuerst dusche ich und ziehe mich an. Dann frühstücke ich – meistens Kaffee und Brot mit Käse. Um acht Uhr gehe ich zur Arbeit. Am Nachmittag mache ich Einkäufe oder treffe Freunde. Abends sehe ich fern und gehe um zehn Uhr ins Bett.</p>
+                </div>
+
+                <div class="summary">
+                    <span class="summary-title">English Summary:</span>
+                    I get up every day at 6:30. First I shower and get dressed. Then I have breakfast — usually coffee and bread with cheese. At 8:00 I go to work. In the afternoon I shop or meet friends. In the evening I watch TV and go to bed at 10.
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPREHENSION SECTION -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">✓</span>
+                <h2 class="section-title">LESEVERSTEHEN</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <span class="question-number">1.</span>
+                    <div class="question-text">Wann steht die Person auf?</div>
+                    <div class="question-translation">When does the person get up?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">2.</span>
+                    <div class="question-text">Was isst sie zum Frühstück?</div>
+                    <div class="question-translation">What does she eat for breakfast?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">3.</span>
+                    <div class="question-text">Was macht sie am Nachmittag?</div>
+                    <div class="question-translation">What does she do in the afternoon?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">4.</span>
+                    <div class="question-text">Wann geht sie ins Bett?</div>
+                    <div class="question-translation">When does she go to bed?</div>
+                </div>
+
+                <div class="input-group">
+                    <textarea placeholder="Schreib deine Antworten hier... / Write your answers here..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- DISCUSSION SECTION -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-icon">💬</span>
+                <h2 class="section-title">MEINUNG / DISKUSSION</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content">
+                <div class="question">
+                    <span class="question-number">1.</span>
+                    <div class="question-text">Wie ist dein Tagesablauf?</div>
+                    <div class="question-translation">How is your daily routine?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">2.</span>
+                    <div class="question-text">Stehst du früh oder spät auf?</div>
+                    <div class="question-translation">Do you get up early or late?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">3.</span>
+                    <div class="question-text">Magst du deine Routine, oder ist sie langweilig?</div>
+                    <div class="question-translation">Do you like your routine, or is it boring?</div>
+                </div>
+
+                <div class="question">
+                    <span class="question-number">4.</span>
+                    <div class="question-text">Was möchtest du an deinem Alltag ändern?</div>
+                    <div class="question-translation">What would you like to change about your everyday life?</div>
+                </div>
+
+                <div class="input-group">
+                    <textarea placeholder="Schreib deine Gedanken hier... / Write your thoughts here..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🎓 Viel Erfolg beim Lernen! / Good luck with your learning!</p>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Section toggle functionality
+        function toggleSection(header) {
+            const section = header.parentElement;
+            const content = section.querySelector('.section-content');
+
+            if (section.classList.contains('collapsed')) {
+                section.classList.remove('collapsed');
+                content.style.maxHeight = content.scrollHeight + 'px';
+            } else {
+                section.classList.add('collapsed');
+                content.style.maxHeight = '0';
+            }
+        }
+
+        // Initialize section heights
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => {
+                section.style.maxHeight = section.scrollHeight + 'px';
+            });
+        });
+    </script>
+</body>
+</html>
+
