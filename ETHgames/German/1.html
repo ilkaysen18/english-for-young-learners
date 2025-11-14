@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning App</title>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header & Navbar */
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        nav a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Main content */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .card img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .card p {
+            color: #777;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .progress-bar div {
+            height: 10px;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            width: 50%; /* You can dynamically change this based on progress */
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #007BFF;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 18px;
+            }
+            nav a {
+                font-size: 16px;
+            }
+            .card h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Language Learning App</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <!-- Greeting & Progress Section -->
+        <div class="card">
+            <h3>Hello, [User Name]!</h3>
+            <p>Continue Your Learning</p>
+            <div class="progress-bar">
+                <div style="width: 60%"></div> <!-- Change width dynamically -->
+            </div>
+        </div>
+
+        <!-- Courses Section -->
+        <div class="card">
+            <h3>Available Courses</h3>
+            <img src="https://via.placeholder.com/60" alt="Course Image">
+            <p>Learn Spanish - 60% Completed</p>
+        </div>
+        
+        <div class="card">
+            <h3>Daily Challenge</h3>
+            <p>Complete today's task to unlock a reward!</p>
+            <button onclick="alert('Challenge Started!')">Start Challenge</button>
+        </div>
+
+        <!-- Practice Section -->
+        <div class="card">
+            <h3>Speaking Practice</h3>
+            <button onclick="alert('Record your voice')">Record Voice</button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Courses</a>
+        <a href="#">Practice</a>
+        <a href="#">Profile</a>
+    </nav>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Language Learning App</p>
+    </footer>
+
+</body>
+</html>
