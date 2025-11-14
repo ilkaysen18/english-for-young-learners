@@ -1,2 +1,2 @@
 ### German
-[Course](englishtraininghub.org/ETHgames/German/1.html)
+[Course](englishtraininghub.org/ETHgames/German/course.html)
