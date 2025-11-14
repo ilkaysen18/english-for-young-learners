@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Learning App</title>
+    <title>Language Learning Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -14,31 +14,32 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #F4F7FC;
+            background-color: #f6f6f6;
             color: #333;
             line-height: 1.6;
         }
 
         header {
-            background-color: #FF6F61;
+            background-color: #FF9F43;
             color: white;
-            padding: 30px 20px;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 10px;
         }
 
         header p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 300;
         }
 
         .btn-primary {
-            background-color: #FF6F61;
+            background-color: #FF9F43;
             color: white;
             padding: 12px 30px;
             font-size: 1rem;
@@ -52,15 +53,15 @@
         }
 
         .btn-primary:hover {
-            background-color: #E55B4A;
+            background-color: #E68934;
         }
 
         nav {
             display: flex;
             justify-content: space-between;
-            background-color: #FF6F61;
-            padding: 12px 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            background-color: #FF9F43;
+            padding: 15px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         nav a {
@@ -68,7 +69,6 @@
             font-size: 1rem;
             text-decoration: none;
             font-weight: 600;
-            text-align: center;
             transition: color 0.3s ease;
         }
 
@@ -83,13 +83,14 @@
         }
 
         .intro, .courses {
-            margin-bottom: 30px;
             text-align: center;
+            margin-bottom: 30px;
         }
 
         .intro h2 {
             font-size: 2rem;
             color: #333;
+            margin-bottom: 10px;
         }
 
         .intro p {
@@ -107,9 +108,9 @@
 
         .course-card {
             background-color: white;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 25px;
             text-align: center;
             transition: transform 0.3s ease;
         }
@@ -120,29 +121,33 @@
 
         .course-card img {
             max-width: 100%;
-            border-radius: 8px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
 
         .course-card h3 {
-            color: #FF6F61;
-            font-size: 1.3rem;
+            color: #FF9F43;
+            font-size: 1.4rem;
             margin: 15px 0;
         }
 
         .course-card p {
             color: #555;
-            font-size: 1rem;
+            font-size: 1.1rem;
             margin-bottom: 15px;
         }
 
         .footer {
-            background-color: #FF6F61;
+            background-color: #FF9F43;
             color: white;
             text-align: center;
             padding: 20px;
             position: relative;
             bottom: 0;
             width: 100%;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
         }
 
         .footer p {
@@ -163,15 +168,15 @@
             }
 
             .course-card {
-                padding: 15px;
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Learn a New Language</h1>
-        <p>Start learning today and unlock new opportunities!</p>
+        <h1>Language Learning Hub</h1>
+        <p>Unlock new languages and cultures, start your learning journey today!</p>
         <a href="#courses" class="btn-primary">Browse Courses</a>
     </header>
 
@@ -184,38 +189,38 @@
 
     <div class="container">
         <section id="home" class="intro">
-            <h2>Welcome to Language Learning</h2>
-            <p>Explore interactive courses in various languages. Start your learning journey now!</p>
+            <h2>Welcome to the Language Hub</h2>
+            <p>Explore engaging courses to learn English, Spanish, French, and more, at your own pace.</p>
         </section>
 
         <section id="courses" class="courses">
-            <h2>Our Popular Courses</h2>
+            <h2>Featured Courses</h2>
 
             <div class="course-card">
                 <img src="https://via.placeholder.com/300x200" alt="English for Beginners">
                 <h3>English for Beginners</h3>
-                <p>Start your English learning journey with engaging lessons for all levels.</p>
+                <p>Start learning English from scratch with fun and interactive lessons.</p>
                 <a href="#" class="btn-primary">Enroll Now</a>
             </div>
 
             <div class="course-card">
-                <img src="https://via.placeholder.com/300x200" alt="French for Travelers">
+                <img src="https://via.placeholder.com/300x200" alt="French for Beginners">
                 <h3>French for Travelers</h3>
-                <p>Learn essential French phrases to enhance your travel experience.</p>
+                <p>Learn essential French phrases for your next adventure abroad.</p>
                 <a href="#" class="btn-primary">Enroll Now</a>
             </div>
 
             <div class="course-card">
                 <img src="https://via.placeholder.com/300x200" alt="Spanish for Beginners">
                 <h3>Spanish for Beginners</h3>
-                <p>Master the basics of Spanish with our easy-to-follow beginner course.</p>
+                <p>Learn the basics of Spanish with clear lessons and practice.</p>
                 <a href="#" class="btn-primary">Enroll Now</a>
             </div>
 
             <div class="course-card">
                 <img src="https://via.placeholder.com/300x200" alt="German Intermediate">
-                <h3>German Intermediate</h3>
-                <p>Improve your German speaking and writing skills with our intermediate course.</p>
+                <h3>Intermediate German</h3>
+                <p>Improve your German skills with advanced lessons and conversation practice.</p>
                 <a href="#" class="btn-primary">Enroll Now</a>
             </div>
         </section>
