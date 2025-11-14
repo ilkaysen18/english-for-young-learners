@@ -1,459 +1,459 @@
-+   1 <!DOCTYPE html>
-+   2 <html lang="en">
-+   3 <head>
-+   4     <meta charset="UTF-8">
-+   5     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+   6     <title>Ed Tech - Courses</title>
-+   7     <link rel="preconnect" href="https://fonts.googleapis.com">
-+   8     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-+   9     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-+  10     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-+  11     <style>
-+  12         :root {
-+  13             --primary-blue: #2B7FEB;
-+  14             --primary-blue-dark: #1e5bb8;
-+  15             --bg-light: #F8F9FA;
-+  16             --bg-card-light: #FFFFFF;
-+  17             --text-dark: #1a1a1a;
-+  18             --text-gray: #555555;
-+  19             --shadow-light: 0 4px 20px rgba(43, 127, 235, 0.08);
-+  20             --shadow-hover: 0 8px 30px rgba(43, 127, 235, 0.15);
-+  21         }
-+  22 
-+  23         .dark {
-+  24             --primary-blue: #4A90E2;
-+  25             --primary-blue-dark: #5fa3f5;
-+  26             --bg-light: #0f0f0f;
-+  27             --bg-card-light: #1a1a1a;
-+  28             --text-dark: #f0f0f0;
-+  29             --text-gray: #b0b0b0;
-+  30             --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.4);
-+  31             --shadow-hover: 0 8px 30px rgba(74, 144, 226, 0.2);
-+  32         }
-+  33 
-+  34         * {
-+  35             margin: 0;
-+  36             padding: 0;
-+  37             box-sizing: border-box;
-+  38         }
-+  39 
-+  40         body {
-+  41             font-family: 'DM Sans', sans-serif;
-+  42             background-color: var(--bg-light);
-+  43             color: var(--text-dark);
-+  44             transition: background-color 0.3s ease, color 0.3s ease;
-+  45             overflow-x: hidden;
-+  46         }
-+  47 
-+  48         /* Header Styles */
-+  49         header {
-+  50             background: linear-gradient(135deg, #2B7FEB 0%, #1e5bb8 100%);
-+  51             padding: 1.5rem 2rem;
-+  52             box-shadow: 0 2px 20px rgba(43, 127, 235, 0.2);
-+  53             position: sticky;
-+  54             top: 0;
-+  55             z-index: 1000;
-+  56             animation: slideDown 0.6s ease-out;
-+  57         }
-+  58 
-+  59         @keyframes slideDown {
-+  60             from {
-+  61                 transform: translateY(-100%);
-+  62                 opacity: 0;
-+  63             }
-+  64             to {
-+  65                 transform: translateY(0);
-+  66                 opacity: 1;
-+  67             }
-+  68         }
-+  69 
-+  70         .header-container {
-+  71             max-width: 1200px;
-+  72             margin: 0 auto;
-+  73             display: flex;
-+  74             justify-content: space-between;
-+  75             align-items: center;
-+  76         }
-+  77 
-+  78         .logo {
-+  79             display: flex;
-+  80             align-items: center;
-+  81             gap: 0.75rem;
-+  82             text-decoration: none;
-+  83             color: white;
-+  84             font-family: 'Sora', sans-serif;
-+  85             font-weight: 700;
-+  86             font-size: 1.5rem;
-+  87             transition: transform 0.3s ease;
-+  88         }
-+  89 
-+  90         .logo:hover {
-+  91             transform: scale(1.05);
-+  92         }
-+  93 
-+  94         .logo-icon {
-+  95             width: 45px;
-+  96             height: 45px;
-+  97             background: rgba(255, 255, 255, 0.2);
-+  98             border: 2px solid white;
-+  99             border-radius: 10px;
-+ 100             display: flex;
-+ 101             align-items: center;
-+ 102             justify-content: center;
-+ 103             font-size: 1.3rem;
-+ 104         }
-+ 105 
-+ 106         nav ul {
-+ 107             list-style: none;
-+ 108             display: flex;
-+ 109             gap: 2.5rem;
-+ 110         }
-+ 111 
-+ 112         nav a {
-+ 113             color: white;
-+ 114             text-decoration: none;
-+ 115             font-weight: 500;
-+ 116             font-size: 1.05rem;
-+ 117             position: relative;
-+ 118             transition: opacity 0.3s ease;
-+ 119         }
-+ 120 
-+ 121         nav a::after {
-+ 122             content: '';
-+ 123             position: absolute;
-+ 124             bottom: -5px;
-+ 125             left: 0;
-+ 126             width: 0;
-+ 127             height: 2px;
-+ 128             background: white;
-+ 129             transition: width 0.3s ease;
-+ 130         }
-+ 131 
-+ 132         nav a:hover::after {
-+ 133             width: 100%;
-+ 134         }
-+ 135 
-+ 136         nav a.active {
-+ 137             font-weight: 600;
-+ 138         }
-+ 139 
-+ 140         nav a.active::after {
-+ 141             width: 100%;
-+ 142         }
-+ 143 
-+ 144         /* Main Content */
-+ 145         main {
-+ 146             max-width: 1200px;
-+ 147             margin: 0 auto;
-+ 148             padding: 4rem 2rem;
-+ 149         }
-+ 150 
-+ 151         .courses-header {
-+ 152             text-align: center;
-+ 153             margin-bottom: 4rem;
-+ 154             animation: fadeInUp 0.8s ease-out 0.2s backwards;
-+ 155         }
-+ 156 
-+ 157         @keyframes fadeInUp {
-+ 158             from {
-+ 159                 opacity: 0;
-+ 160                 transform: translateY(30px);
-+ 161             }
-+ 162             to {
-+ 163                 opacity: 1;
-+ 164                 transform: translateY(0);
-+ 165             }
-+ 166         }
-+ 167 
-+ 168         .courses-header h1 {
-+ 169             font-family: 'Sora', sans-serif;
-+ 170             font-size: 3.5rem;
-+ 171             font-weight: 700;
-+ 172             color: var(--text-dark);
-+ 173             margin-bottom: 1.5rem;
-+ 174             letter-spacing: -0.02em;
-+ 175         }
-+ 176 
-+ 177         .courses-header p {
-+ 178             font-size: 1.15rem;
-+ 179             color: var(--text-gray);
-+ 180             max-width: 700px;
-+ 181             margin: 0 auto;
-+ 182             line-height: 1.7;
-+ 183         }
-+ 184 
-+ 185         /* Course Grid */
-+ 186         .courses-grid {
-+ 187             display: grid;
-+ 188             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-+ 189             gap: 2rem;
-+ 190             margin-top: 3rem;
-+ 191         }
-+ 192 
-+ 193         .course-card {
-+ 194             background: var(--bg-card-light);
-+ 195             border-radius: 20px;
-+ 196             padding: 2.5rem 2rem;
-+ 197             text-align: center;
-+ 198             box-shadow: var(--shadow-light);
-+ 199             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-+ 200             animation: fadeInUp 0.8s ease-out backwards;
-+ 201             border: 1px solid transparent;
-+ 202         }
-+ 203 
-+ 204         .course-card:nth-child(1) { animation-delay: 0.3s; }
-+ 205         .course-card:nth-child(2) { animation-delay: 0.4s; }
-+ 206         .course-card:nth-child(3) { animation-delay: 0.5s; }
-+ 207         .course-card:nth-child(4) { animation-delay: 0.6s; }
-+ 208 
-+ 209         .course-card:hover {
-+ 210             transform: translateY(-10px);
-+ 211             box-shadow: var(--shadow-hover);
-+ 212             border-color: var(--primary-blue);
-+ 213         }
-+ 214 
-+ 215         .course-icon {
-+ 216             width: 80px;
-+ 217             height: 80px;
-+ 218             margin: 0 auto 1.5rem;
-+ 219             background: linear-gradient(135deg, #2B7FEB 0%, #4A90E2 100%);
-+ 220             border-radius: 16px;
-+ 221             display: flex;
-+ 222             align-items: center;
-+ 223             justify-content: center;
-+ 224             font-size: 2rem;
-+ 225             color: white;
-+ 226             transition: transform 0.3s ease;
-+ 227         }
-+ 228 
-+ 229         .course-card:hover .course-icon {
-+ 230             transform: scale(1.1) rotate(5deg);
-+ 231         }
-+ 232 
-+ 233         .course-card h2 {
-+ 234             font-family: 'Sora', sans-serif;
-+ 235             font-size: 1.75rem;
-+ 236             font-weight: 600;
-+ 237             margin-bottom: 1rem;
-+ 238             color: var(--text-dark);
-+ 239         }
-+ 240 
-+ 241         .course-card p {
-+ 242             color: var(--text-gray);
-+ 243             font-size: 1rem;
-+ 244             line-height: 1.6;
-+ 245             margin-bottom: 2rem;
-+ 246         }
-+ 247 
-+ 248         .learn-more-btn {
-+ 249             background: var(--primary-blue);
-+ 250             color: white;
-+ 251             border: none;
-+ 252             padding: 0.9rem 2.5rem;
-+ 253             border-radius: 12px;
-+ 254             font-size: 1rem;
-+ 255             font-weight: 600;
-+ 256             cursor: pointer;
-+ 257             transition: all 0.3s ease;
-+ 258             font-family: 'DM Sans', sans-serif;
-+ 259             text-decoration: none;
-+ 260             display: inline-block;
-+ 261         }
-+ 262 
-+ 263         .learn-more-btn:hover {
-+ 264             background: var(--primary-blue-dark);
-+ 265             transform: scale(1.05);
-+ 266             box-shadow: 0 4px 15px rgba(43, 127, 235, 0.3);
-+ 267         }
-+ 268 
-+ 269         .learn-more-btn:active {
-+ 270             transform: scale(0.98);
-+ 271         }
-+ 272 
-+ 273         /* Mobile Navigation Toggle */
-+ 274         .mobile-menu-toggle {
-+ 275             display: none;
-+ 276             background: none;
-+ 277             border: none;
-+ 278             color: white;
-+ 279             font-size: 1.5rem;
-+ 280             cursor: pointer;
-+ 281         }
-+ 282 
-+ 283         /* Responsive Design */
-+ 284         @media (max-width: 768px) {
-+ 285             header {
-+ 286                 padding: 1.25rem 1.5rem;
-+ 287             }
-+ 288 
-+ 289             .header-container {
-+ 290                 flex-wrap: wrap;
-+ 291             }
-+ 292 
-+ 293             .mobile-menu-toggle {
-+ 294                 display: block;
-+ 295             }
-+ 296 
-+ 297             nav {
-+ 298                 display: none;
-+ 299                 width: 100%;
-+ 300                 margin-top: 1rem;
-+ 301             }
-+ 302 
-+ 303             nav.active {
-+ 304                 display: block;
-+ 305             }
-+ 306 
-+ 307             nav ul {
-+ 308                 flex-direction: column;
-+ 309                 gap: 1rem;
-+ 310             }
-+ 311 
-+ 312             nav a {
-+ 313                 display: block;
-+ 314                 padding: 0.5rem 0;
-+ 315             }
-+ 316 
-+ 317             .courses-header h1 {
-+ 318                 font-size: 2.5rem;
-+ 319             }
-+ 320 
-+ 321             .courses-header p {
-+ 322                 font-size: 1rem;
-+ 323             }
-+ 324 
-+ 325             .courses-grid {
-+ 326                 grid-template-columns: 1fr;
-+ 327                 gap: 1.5rem;
-+ 328             }
-+ 329 
-+ 330             main {
-+ 331                 padding: 3rem 1.5rem;
-+ 332             }
-+ 333         }
-+ 334 
-+ 335         @media (max-width: 480px) {
-+ 336             .logo {
-+ 337                 font-size: 1.25rem;
-+ 338             }
-+ 339 
-+ 340             .logo-icon {
-+ 341                 width: 40px;
-+ 342                 height: 40px;
-+ 343                 font-size: 1.1rem;
-+ 344             }
-+ 345 
-+ 346             .courses-header h1 {
-+ 347                 font-size: 2rem;
-+ 348             }
-+ 349 
-+ 350             input, button {
-+ 351                 font-size: 16px !important;
-+ 352             }
-+ 353         }
-+ 354     </style>
-+ 355 </head>
-+ 356 <body>
-+ 357     <header>
-+ 358         <div class="header-container">
-+ 359             <a href="#" class="logo">
-+ 360                 <div class="logo-icon">
-+ 361                     <i class="fas fa-graduation-cap"></i>
-+ 362                 </div>
-+ 363                 Ed Tech
-+ 364             </a>
-+ 365             <button class="mobile-menu-toggle" aria-label="Toggle menu">
-+ 366                 <i class="fas fa-bars"></i>
-+ 367             </button>
-+ 368             <nav>
-+ 369                 <ul>
-+ 370                     <li><a href="#home">Home</a></li>
-+ 371                     <li><a href="#courses" class="active">Courses</a></li>
-+ 372                     <li><a href="#about">About</a></li>
-+ 373                     <li><a href="#contact">Contact</a></li>
-+ 374                 </ul>
-+ 375             </nav>
-+ 376         </div>
-+ 377     </header>
-+ 378 
-+ 379     <main>
-+ 380         <div class="courses-header">
-+ 381             <h1>Courses</h1>
-+ 382             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-+ 383         </div>
-+ 384 
-+ 385         <div class="courses-grid">
-+ 386             <div class="course-card">
-+ 387                 <div class="course-icon">
-+ 388                     <i class="fas fa-play-circle"></i>
-+ 389                 </div>
-+ 390                 <h2>Course 1</h2>
-+ 391                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-+ 392                 <button class="learn-more-btn">Learn More</button>
-+ 393             </div>
-+ 394 
-+ 395             <div class="course-card">
-+ 396                 <div class="course-icon">
-+ 397                     <i class="fas fa-pencil-alt"></i>
-+ 398                 </div>
-+ 399                 <h2>Course 2</h2>
-+ 400                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-+ 401                 <button class="learn-more-btn">Learn More</button>
-+ 402             </div>
-+ 403 
-+ 404             <div class="course-card">
-+ 405                 <div class="course-icon">
-+ 406                     <i class="fas fa-book-open"></i>
-+ 407                 </div>
-+ 408                 <h2>Course 3</h2>
-+ 409                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-+ 410                 <button class="learn-more-btn">Learn More</button>
-+ 411             </div>
-+ 412 
-+ 413             <div class="course-card">
-+ 414                 <div class="course-icon">
-+ 415                     <i class="fas fa-user-graduate"></i>
-+ 416                 </div>
-+ 417                 <h2>Course 4</h2>
-+ 418                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-+ 419                 <button class="learn-more-btn">Learn More</button>
-+ 420             </div>
-+ 421         </div>
-+ 422     </main>
-+ 423 
-+ 424     <script>
-+ 425         // Dark mode detection and handling
-+ 426         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-+ 427             document.documentElement.classList.add('dark');
-+ 428         }
-+ 429         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-+ 430             if (event.matches) {
-+ 431                 document.documentElement.classList.add('dark');
-+ 432             } else {
-+ 433                 document.documentElement.classList.remove('dark');
-+ 434             }
-+ 435         });
-+ 436 
-+ 437         // Mobile menu toggle
-+ 438         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-+ 439         const nav = document.querySelector('nav');
-+ 440 
-+ 441         mobileMenuToggle.addEventListener('click', () => {
-+ 442             nav.classList.toggle('active');
-+ 443             const icon = mobileMenuToggle.querySelector('i');
-+ 444             icon.classList.toggle('fa-bars');
-+ 445             icon.classList.toggle('fa-times');
-+ 446         });
-+ 447 
-+ 448         // Course card interaction
-+ 449         const learnMoreButtons = document.querySelectorAll('.learn-more-btn');
-+ 450         learnMoreButtons.forEach((button, index) => {
-+ 451             button.addEventListener('click', () => {
-+ 452                 const courseTitle = button.parentElement.querySelector('h2').textContent;
-+ 453                 console.log(`Learn More clicked for: ${courseTitle}`);
-+ 454                 // Add your navigation logic here
-+ 455             });
-+ 456         });
-+ 457     </script>
-+ 458 </body>
-+ 459 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ed Tech - Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2B7FEB;
+            --primary-blue-dark: #1e5bb8;
+            --bg-light: #F8F9FA;
+            --bg-card-light: #FFFFFF;
+            --text-dark: #1a1a1a;
+            --text-gray: #555555;
+            --shadow-light: 0 4px 20px rgba(43, 127, 235, 0.08);
+            --shadow-hover: 0 8px 30px rgba(43, 127, 235, 0.15);
+        }
+
+        .dark {
+            --primary-blue: #4A90E2;
+            --primary-blue-dark: #5fa3f5;
+            --bg-light: #0f0f0f;
+            --bg-card-light: #1a1a1a;
+            --text-dark: #f0f0f0;
+            --text-gray: #b0b0b0;
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 8px 30px rgba(74, 144, 226, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2B7FEB 0%, #1e5bb8 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(43, 127, 235, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: white;
+            font-family: 'Sora', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            position: relative;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .courses-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .courses-header h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .courses-header p {
+            font-size: 1.15rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Course Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .course-card {
+            background: var(--bg-card-light);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease-out backwards;
+            border: 1px solid transparent;
+        }
+
+        .course-card:nth-child(1) { animation-delay: 0.3s; }
+        .course-card:nth-child(2) { animation-delay: 0.4s; }
+        .course-card:nth-child(3) { animation-delay: 0.5s; }
+        .course-card:nth-child(4) { animation-delay: 0.6s; }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-blue);
+        }
+
+        .course-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #2B7FEB 0%, #4A90E2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .course-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .course-card h2 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .course-card p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .learn-more-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .learn-more-btn:hover {
+            background: var(--primary-blue-dark);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(43, 127, 235, 0.3);
+        }
+
+        .learn-more-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Mobile Navigation Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 1.25rem 1.5rem;
+            }
+
+            .header-container {
+                flex-wrap: wrap;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            nav {
+                display: none;
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            nav.active {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav a {
+                display: block;
+                padding: 0.5rem 0;
+            }
+
+            .courses-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .courses-header p {
+                font-size: 1rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            main {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+
+            .courses-header h1 {
+                font-size: 2rem;
+            }
+
+            input, button {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                Ed Tech
+            </a>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#courses" class="active">Courses</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="courses-header">
+            <h1>Courses</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+
+        <div class="courses-grid">
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <h2>Course 1</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <button class="learn-more-btn">Learn More</button>
+            </div>
+
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-pencil-alt"></i>
+                </div>
+                <h2>Course 2</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <button class="learn-more-btn">Learn More</button>
+            </div>
+
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h2>Course 3</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <button class="learn-more-btn">Learn More</button>
+            </div>
+
+            <div class="course-card">
+                <div class="course-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h2>Course 4</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <button class="learn-more-btn">Learn More</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dark mode detection and handling
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const nav = document.querySelector('nav');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Course card interaction
+        const learnMoreButtons = document.querySelectorAll('.learn-more-btn');
+        learnMoreButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const courseTitle = button.parentElement.querySelector('h2').textContent;
+                console.log(`Learn More clicked for: ${courseTitle}`);
+                // Add your navigation logic here
+            });
+        });
+    </script>
+</body>
+</html>
