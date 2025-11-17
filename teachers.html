@@ -311,7 +311,7 @@
       const tags=document.createElement('div'); tags.className='tags';
       t.subjects.slice(0,3).forEach(s=>{const sp=document.createElement('div'); sp.className='tag'; sp.textContent=s; tags.appendChild(sp);});
       const bottom=document.createElement('div'); bottom.className='card-bottom';
-      const rate=document.createElement('div'); rate.className='rate'; rate.textContent=`$${t.rate}/hr`;
+      const rate=document.createElement('div'); rate.className='rate'; rate.textContent=`₺${t.rate}/hr`;
       const actions=document.createElement('div'); actions.className='actions';
       const view=document.createElement('button'); view.className='outline'; view.textContent='View'; view.addEventListener('click',()=>openModal(t));
       const contact=document.createElement('button'); contact.className='btn'; contact.textContent='Contact'; contact.addEventListener('click',()=>contactTeacher(t));
