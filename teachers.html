@@ -1,1 +1,268 @@
-E.T.H. teachers page
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>English Training Hub Teachers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 18px rgba(16,24,40,0.08);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);color:#0f172a}
+    .wrap{max-width:1200px;margin:36px auto;padding:20px}header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:20px}
+header h1{font-size:20px;margin:0}
+.controls{display:flex;gap:12px;align-items:center}
+.search{display:flex;align-items:center;background:var(--card);padding:8px 12px;border-radius:10px;box-shadow:var(--shadow)}
+.search input{border:0;outline:none;font-size:14px;background:transparent}
+.select, .btn{padding:8px 12px;border-radius:10px;border:1px solid #e6e9ef;background:var(--card);font-size:14px}
+.btn{cursor:pointer}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:flex-start}
+.avatar{width:72px;height:72px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,#e6eefc,#f7f9ff);display:grid;place-items:center;color:var(--accent);font-weight:700}
+.info{flex:1}
+.name{font-weight:700;font-size:16px;margin:0}
+.meta{font-size:13px;color:var(--muted);margin:6px 0}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;padding:6px 8px;border-radius:999px;border:1px solid #eef2ff;background:#fbfdff}
+.rate{font-weight:600;color:var(--accent)}
+.actions{display:flex;gap:8px;margin-top:8px}
+.outline{border:1px solid #e6e9ef;background:transparent;padding:8px 10px;border-radius:10px;cursor:pointer}
+
+/* rating */
+.rating{display:inline-flex;gap:6px;align-items:center;font-size:13px}
+
+/* responsive header stack */
+@media (max-width:560px){header{flex-direction:column;align-items:stretch;gap:12px}}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+.modal{max-width:820px;width:100%;background:var(--card);border-radius:12px;padding:18px;box-shadow:0 12px 40px rgba(2,6,23,0.35);}
+.modal .hero{display:flex;gap:16px}
+.modal .hero .avatar{width:120px;height:120px;border-radius:12px;font-size:32px}
+.modal h2{margin:0}
+.modal .bio{margin-top:12px;color:var(--muted);line-height:1.5}
+.close{background:transparent;border:0;font-size:18px;cursor:pointer}
+
+footer{margin-top:20px;text-align:center;color:var(--muted);font-size:13px}
+
+/* empty state */
+.empty{padding:36px;text-align:center;color:var(--muted);background:linear-gradient(180deg,#fff,#fbfdff);border-radius:10px;border:1px dashed #e6ecff}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Find a Teacher</h1>
+        <div style="color:var(--muted);font-size:13px">Browse verified teacher profiles — subjects, rates, availability</div>
+      </div><div class="controls">
+    <div class="search" role="search" aria-label="Search teachers">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <input id="q" placeholder="Search by name, subject, language" />
+    </div>
+    <select id="subject" class="select" aria-label="Filter by subject">
+      <option value="">All subjects</option>
+    </select>
+    <select id="sort" class="select" aria-label="Sort results">
+      <option value="relevance">Sort: Relevance</option>
+      <option value="rating">Top rated</option>
+      <option value="price_low">Price: Low to high</option>
+      <option value="price_high">Price: High to low</option>
+    </select>
+    <button id="clear" class="btn">Clear</button>
+  </div>
+</header>
+
+<main>
+  <div id="results" class="grid" aria-live="polite">
+    <!-- teacher cards injected here -->
+  </div>
+
+  <div id="empty" class="empty" style="display:none;margin-top:18px">No teachers found. Try different filters or search terms.</div>
+</main>
+
+<footer>
+  <small>Example directory — replace sample data with your real teacher profiles. Works as a single-file static page for GitHub Pages.</small>
+</footer>
+
+  </div>  <!-- modal -->  <div id="backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div id="m-avatar" class="avatar">A</div>
+          <div>
+            <h2 id="m-name">Teacher Name</h2>
+            <div id="m-sub" class="meta">Subject • Location</div>
+            <div id="m-rating" class="rating">★★★★★ <span style="color:var(--muted);font-size:13px">(4.9 • 120 reviews)</span></div>
+          </div>
+        </div>
+        <button id="closeModal" class="close" aria-label="Close details">✕</button>
+      </div>
+      <div class="bio" id="m-bio">Full bio goes here.</div>
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+        <div style="font-weight:700;font-size:18px">Hourly: <span id="m-rate" class="rate">$25</span></div>
+        <button id="contactBtn" class="btn">Contact</button>
+        <a id="profileLink" class="outline" href="#">View full profile</a>
+      </div>
+    </div>
+  </div>  <script>
+    // SAMPLE DATA - replace with your database or API
+    const teachers = [
+      {
+        id:1,
+        name:'Amelia Carter',
+        subjects:['English','IELTS','Conversation'],
+        languages:['English'],
+        rate:30,
+        rating:4.9,
+        reviews:124,
+        city:'Istanbul, TR',
+        bio:'Experienced English teacher specialising in exam prep and conversational fluency. 8+ years online teaching. Lessons are practical, interactive and tailor-made to student goals.',
+        avatarText:'AC'
+      },
+      {
+        id:2,
+        name:'Mehmet Yılmaz',
+        subjects:['Math','Physics'],
+        languages:['Turkish','English'],
+        rate:20,
+        rating:4.7,
+        reviews:98,
+        city:'Ankara, TR',
+        bio:'High school & university level Math tutor. Clear explanations, step-by-step problem solving and exam strategies.',
+        avatarText:'MY'
+      },
+      {
+        id:3,
+        name:'Sofia Martín',
+        subjects:['Spanish','Conversation'],
+        languages:['Spanish','English'],
+        rate:25,
+        rating:4.8,
+        reviews:76,
+        city:'Madrid, ES',
+        bio:'Native Spanish teacher, focus on speaking and cultural competence. Lessons for adults and kids.',
+        avatarText:'SM'
+      }
+    ];
+
+    // DOM refs
+    const results = document.getElementById('results');
+    const q = document.getElementById('q');
+    const subject = document.getElementById('subject');
+    const sort = document.getElementById('sort');
+    const clear = document.getElementById('clear');
+    const empty = document.getElementById('empty');
+
+    // modal refs
+    const backdrop = document.getElementById('backdrop');
+    const closeModal = document.getElementById('closeModal');
+    const mAvatar = document.getElementById('m-avatar');
+    const mName = document.getElementById('m-name');
+    const mSub = document.getElementById('m-sub');
+    const mBio = document.getElementById('m-bio');
+    const mRate = document.getElementById('m-rate');
+    const mRating = document.getElementById('m-rating');
+
+    // init subject options
+    const subjectsSet = new Set();
+    teachers.forEach(t=>t.subjects.forEach(s=>subjectsSet.add(s)));
+    Array.from(subjectsSet).sort().forEach(s=>{
+      const opt = document.createElement('option'); opt.value = s; opt.textContent = s; subject.appendChild(opt);
+    });
+
+    function render(list){
+      results.innerHTML = '';
+      if(!list.length){ empty.style.display='block'; return }
+      empty.style.display='none';
+      for(const t of list){
+        const card = document.createElement('article'); card.className='card';
+        card.setAttribute('tabindex','0');
+
+        const av = document.createElement('div'); av.className='avatar'; av.textContent = t.avatarText;
+        const info = document.createElement('div'); info.className='info';
+        const name = document.createElement('h3'); name.className='name'; name.textContent = t.name;
+        const meta = document.createElement('div'); meta.className='meta'; meta.textContent = `${t.subjects[0]} • ${t.city}`;
+        const rating = document.createElement('div'); rating.className='rating'; rating.innerHTML = `${renderStars(t.rating)} <span style="color:var(--muted);font-size:13px">(${t.rating} • ${t.reviews} reviews)</span>`;
+        const bio = document.createElement('div'); bio.style.color='var(--muted)'; bio.style.fontSize='13px'; bio.style.marginTop='8px'; bio.textContent = t.bio.slice(0,120) + (t.bio.length>120?'…':'');
+        const tags = document.createElement('div'); tags.className='tags'; tags.style.marginTop='8px';
+        t.subjects.slice(0,3).forEach(s=>{const sp = document.createElement('div'); sp.className='tag'; sp.textContent = s; tags.appendChild(sp)});
+
+        const bottom = document.createElement('div'); bottom.style.display='flex'; bottom.style.justifyContent='space-between'; bottom.style.alignItems='center'; bottom.style.marginTop='10px';
+        const rate = document.createElement('div'); rate.innerHTML = `<div class="rate">$${t.rate}/hr</div>`;
+        const actions = document.createElement('div'); actions.className='actions';
+        const view = document.createElement('button'); view.className='outline'; view.textContent='View'; view.addEventListener('click', ()=>openModal(t));
+        const contact = document.createElement('button'); contact.className='btn'; contact.textContent='Contact'; contact.addEventListener('click', ()=>contactTeacher(t));
+
+        actions.appendChild(view); actions.appendChild(contact);
+        bottom.appendChild(rate); bottom.appendChild(actions);
+
+        info.appendChild(name); info.appendChild(meta); info.appendChild(rating); info.appendChild(bio); info.appendChild(tags); info.appendChild(bottom);
+        card.appendChild(av); card.appendChild(info);
+        results.appendChild(card);
+      }
+    }
+
+    function renderStars(n){
+      const whole = Math.round(n*2)/2; // nearest half
+      let out = '';
+      for(let i=1;i<=5;i++){
+        if(i<=Math.floor(whole)) out += '★';
+        else if(i===Math.ceil(whole) && whole%1!==0) out += '☆';
+        else out += '☆';
+      }
+      // keep it simple (CSS uses plain stars)
+      return `<span style="color:#f59e0b;font-size:14px;margin-right:6px">${'★'.repeat(Math.round(n))}</span>`;
+    }
+
+    function openModal(t){
+      mAvatar.textContent = t.avatarText; mName.textContent = t.name; mSub.textContent = `${t.subjects.join(', ')} • ${t.city}`;
+      mBio.textContent = t.bio; mRate.textContent = `$${t.rate}`; mRating.innerHTML = `${renderStars(t.rating)} <span style="color:var(--muted);font-size:13px">(${t.rating} • ${t.reviews} reviews)</span>`;
+      backdrop.style.display='flex'; backdrop.setAttribute('aria-hidden','false');
+    }
+    function close(){ backdrop.style.display='none'; backdrop.setAttribute('aria-hidden','true'); }
+    closeModal.addEventListener('click', close);
+    backdrop.addEventListener('click', (e)=>{ if(e.target===backdrop) close() });
+
+    function contactTeacher(t){
+      // Example behaviour: prefill mailto (replace with real contact flow)
+      const subject = encodeURIComponent(`Lesson request with ${t.name}`);
+      const body = encodeURIComponent(`Hi ${t.name},%0D%0A%0D%0AI'd like to book a lesson about ${t.subjects[0]}. Please let me know your availability.%0D%0A%0D%0AThanks!`);
+      window.location.href = `mailto:example+teacher${t.id}@example.com?subject=${subject}&body=${body}`;
+    }
+
+    // filtering & searching
+    function update(){
+      const qv = q.value.trim().toLowerCase();
+      const sub = subject.value;
+      let list = teachers.slice();
+      if(qv){
+        list = list.filter(t=> (t.name+t.subjects.join(' ')+t.languages.join(' ')+t.city).toLowerCase().includes(qv));
+      }
+      if(sub){ list = list.filter(t=>t.subjects.includes(sub)) }
+      const s = sort.value;
+      if(s==='rating') list.sort((a,b)=>b.rating - a.rating);
+      else if(s==='price_low') list.sort((a,b)=>a.rate - b.rate);
+      else if(s==='price_high') list.sort((a,b)=>b.rate - a.rate);
+      // relevance or default keeps original order
+      render(list);
+    }
+
+    q.addEventListener('input', update);
+    subject.addEventListener('change', update);
+    sort.addEventListener('change', update);
+    clear.addEventListener('click', ()=>{ q.value=''; subject.value=''; sort.value='relevance'; update() });
+
+    // initial render
+    render(teachers);
+  </script></body>
+</html>
