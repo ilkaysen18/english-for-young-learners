@@ -316,4 +316,79 @@
       const view=document.createElement('button'); view.className='outline'; view.textContent='View'; view.addEventListener('click',()=>openModal(t));
       const contact=document.createElement('button'); contact.className='btn'; contact.textContent='Contact'; contact.addEventListener('click',()=>contactTeacher(t));
       actions.appendChild(view); actions.appendChild(contact);
-      bottom.appendChild(rate); bottom
+      bottom.appendChild(rate); bottom.appendChild(actions);
+
+      info.appendChild(name);
+      info.appendChild(meta);
+      info.appendChild(rating);
+      info.appendChild(bio);
+      info.appendChild(tags);
+      info.appendChild(bottom);
+
+      card.appendChild(av);
+      card.appendChild(info);
+
+      return card;
+    }
+
+    function render(list){
+      results.innerHTML='';
+      if(!list.length){ empty.style.display='block'; return; }
+      empty.style.display='none';
+      list.forEach(t=>{
+        results.appendChild(createCard(t));
+      });
+    }
+
+    function openModal(t){
+      lastFocusedElement = document.activeElement;
+      mAvatar.textContent = t.avatarText;
+      mName.textContent = t.name;
+      mSub.textContent = `${t.subjects.join(', ')} • ${t.city}`;
+      mBio.textContent = t.bio;
+      mRate.textContent = `$${t.rate}`;
+      mRating.innerHTML = `${renderStars(t.rating)} <span style="color:var(--muted);font-size:0.92rem">(${t.rating} • ${t.reviews} reviews)</span>`;
+      backdrop.style.display='flex';
+      backdrop.setAttribute('aria-hidden','false');
+    }
+
+    function closeModalFunc(){
+      backdrop.style.display='none';
+      backdrop.setAttribute('aria-hidden','true');
+      if(lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    closeModal.addEventListener('click', closeModalFunc);
+    backdrop.addEventListener('click', (e)=>{ if(e.target===backdrop) closeModalFunc(); });
+
+    function contactTeacher(t){
+      const subject = encodeURIComponent(`Lesson request with ${t.name}`);
+      const body = encodeURIComponent(`Hi ${t.name},%0D%0A%0D%0AI'd like to book a lesson about ${t.subjects[0]}. Please let me know your availability.%0D%0A%0D%0AThanks!`);
+      window.location.href = `https://wa.me/905357397248?text=${body}`;
+    }
+
+    // Filter & Search
+    function update(){
+      const qv=q.value.trim().toLowerCase();
+      const sub=subject.value;
+      let list=teachers.slice();
+      if(qv) list=list.filter(t=>(t.name+t.subjects.join(' ')+t.languages.join(' ')+t.city).toLowerCase().includes(qv));
+      if(sub) list=list.filter(t=>t.subjects.includes(sub));
+      const s=sort.value;
+      if(s==='rating') list.sort((a,b)=>b.rating-a.rating);
+      else if(s==='price_low') list.sort((a,b)=>a.rate-b.rate);
+      else if(s==='price_high') list.sort((a,b)=>b.rate-a.rate);
+      render(list);
+    }
+
+    q.addEventListener('input', update);
+    subject.addEventListener('change', update);
+    sort.addEventListener('change', update);
+    clear.addEventListener('click', ()=>{ q.value=''; subject.value=''; sort.value='relevance'; update(); });
+
+    // Initial render
+    render(teachers);
+
+  </script>
+</body>
+</html>
