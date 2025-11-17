@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>English Training Hub — Teachers</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --shadow: 0 6px 18px rgba(16,24,40,0.08);
+      --radius: 12px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%; margin:0; background: linear-gradient(180deg,var(--bg),#eef2ff); color:#0f172a; font-size:16px; line-height:1.45;}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer}
+
+    .wrap{max-width:1200px;margin:28px auto;padding:16px}
+
+    /* HEADER — Yellow Gradient with bold font */
+    header {
+      background: linear-gradient(135deg, #F9D423, #FF4E50);
+      color: #1a1a1a;
+      padding: 26px 20px;
+      border-radius: 0 0 22px 22px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    }
+
+    header h1 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: #1a1a1a;
+      margin: 0;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      text-shadow: none;
+    }
+
+    header .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #333333;
+      margin-top: 6px;
+    }
+
+    header .heading { display:flex; flex-direction:column; gap:6px }
+
+    /* Controls */
+    .controls{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px}
+    .row{display:flex;gap:10px;width:100%;align-items:center}
+    .search{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:var(--card);
+      padding:8px 10px;
+      border-radius:10px;
+      box-shadow:var(--shadow);
+      flex:1 1 auto;
+      min-width:0;
+    }
+    .search svg{flex:0 0 18px}
+    .search input{
+      border:0;
+      outline:none;
+      font-size:0.95rem;
+      background:transparent;
+      width:100%;
+      min-width:0;
+    }
+    .select, .btn {
+      padding:9px 12px;
+      border-radius:10px;
+      border:1px solid #e6e9ef;
+      background:var(--card);
+      font-size:0.95rem;
+    }
+    .select{min-width:120px}
+    .btn{white-space:nowrap}
+    .controls .actions-row{display:flex;gap:10px;align-items:center}
+
+    /* Grid */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      margin-top:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:var(--shadow);
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      border: 1px solid transparent;
+    }
+    .card:hover, .card:focus-within{
+      transform: translateY(-6px);
+      box-shadow: 0 14px 30px rgba(16,24,40,0.12);
+      border-color: #f9d423;
+    }
+    .avatar{
+      width:72px;
+      height:72px;
+      border-radius:10px;
+      flex-shrink:0;
+      background:linear-gradient(135deg,#e6eefc,#f7f9ff);
+      display:grid;
+      place-items:center;
+      color:var(--accent);
+      font-weight:700;
+      font-size:1rem;
+    }
+    .info{flex:1;min-width:0}
+    .name{font-weight:700;font-size:1rem;margin:0}
+    .meta{font-size:0.9rem;color:var(--muted);margin:6px 0}
+    .bio{color:var(--muted);font-size:0.95rem;margin-top:6px;overflow:hidden}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .tag{font-size:0.82rem;padding:6px 8px;border-radius:999px;border:1px solid #eef2ff;background:#fbfdff;transition: background .12s ease, transform .12s ease;}
+    .tag:hover{background:#fff7cc;transform:translateY(-2px);}
+    .card-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px}
+    .rate{font-weight:700;color:var(--accent)}
+    .actions{display:flex;gap:8px;align-items:center}
+    .outline{border:1px solid #e6e9ef;background:transparent;padding:8px 10px;border-radius:10px;cursor:pointer;transition: background .15s ease, color .15s ease, box-shadow .15s ease;}
+    .outline:hover{background:#fff7cc;border-color:#f9d423}
+    .btn{transition: background .15s ease, color .15s ease, box-shadow .15s ease;}
+    .btn:hover{background:#ffec99;color:#000;box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+    .rating{display:inline-flex;gap:8px;align-items:center;font-size:0.92rem;color:#f59e0b}
+    .empty{padding:28px;text-align:center;color:var(--muted);background:linear-gradient(180deg,#fff,#fbfdff);border-radius:10px;border:1px dashed #e6ecff;margin-top:18px}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.92rem;padding-bottom:30px}
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed;inset:0;background:rgba(2,6,23,0.45);
+      display:none;align-items:center;justify-content:center;padding:16px;z-index:1200;
+    }
+    .modal{
+      max-width:920px;width:100%;background:var(--card);border-radius:12px;padding:18px;box-shadow:0 12px 40px rgba(2,6,23,0.35);
+    }
+    .modal-hero{display:flex;gap:16px;align-items:flex-start;flex-direction:column}
+    .modal .avatar{width:120px;height:120px;border-radius:12px;font-size:28px}
+    .modal h2{margin:0;font-size:1.15rem}
+    .modal .meta{margin-top:6px}
+    .modal .bio{margin-top:12px;color:var(--muted);line-height:1.6}
+    .modal .modal-actions{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+    .close{background:transparent;border:0;font-size:20px;cursor:pointer}
+    [aria-hidden="true"]{display:none}
+
+    /* Responsive */
+    @media (max-width:420px){
+      h1{font-size:1.5rem}
+      .subtitle{font-size:0.86rem}
+      .avatar{width:64px;height:64px}
+      .card{padding:12px;flex-direction:column;align-items:center;text-align:center}
+      .info{text-align:center}
+      .card-bottom{flex-direction:column;align-items:center;gap:10px}
+      .controls .actions-row{flex-direction:column;align-items:stretch}
+      .select,.btn{width:100%}
+    }
+    @media (min-width:600px){
+      .grid{grid-template-columns:repeat(2,1fr);gap:16px}
+      .controls{flex-direction:row;align-items:center;width:auto;margin-top:0}
+      .search{flex:1 1 320px;min-width:0}
+      .controls .actions-row{margin-left:auto}
+      .modal-hero{flex-direction:row}
+    }
+    @media (min-width:900px){
+      .grid{grid-template-columns:repeat(3,1fr);gap:18px}
+      .avatar{width:80px;height:80px}
+      h1{font-size:2rem}
+    }
+    @media (min-width:1400px){.grid{grid-template-columns:repeat(4,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="heading">
+        <h1>English Training Hub — Teachers</h1>
+        <div class="subtitle">
+          TEFL & TESOL certified tutors from Türkiye and abroad — experienced tutors for adults and children, exam prep, conversation, and professional English.
+        </div>
+      </div>
+
+      <div class="controls" role="region" aria-label="search and filters">
+        <div class="search" role="search" aria-label="Search teachers">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <input id="q" type="search" placeholder="Search by name, subject, language or city" aria-label="Search teachers" />
+        </div>
+
+        <select id="subject" class="select" aria-label="Filter by subject">
+          <option value="">All subjects</option>
+        </select>
+
+        <div class="actions-row">
+          <select id="sort" class="select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="rating">Top rated</option>
+            <option value="price_low">Price: Low → High</option>
+            <option value="price_high">Price: High → Low</option>
+          </select>
+          <button id="clear" class="btn" aria-label="Clear filters">Clear</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div id="results" class="grid" aria-live="polite" aria-busy="false"></div>
+      <div id="empty" class="empty" style="display:none" role="status">No teachers found. Try different filters or search terms.</div>
+    </main>
+
+    <footer>
+      <small>© <span id="year"></span> English Training Hub. All rights reserved.</small>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div id="backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document" aria-labelledby="m-name" aria-describedby="m-bio">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:12px">
+        <div style="display:flex;gap:12px;align-items:center;flex:1">
+          <div id="m-avatar" class="avatar">A</div>
+          <div style="flex:1;min-width:0">
+            <h2 id="m-name">Teacher Name</h2>
+            <div id="m-sub" class="meta">Subject • Location</div>
+            <div id="m-rating" class="rating" style="margin-top:6px">★★★★★ <span style="color:var(--muted);font-size:0.9rem">(4.9 • 120 reviews)</span></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="closeModal" class="close" aria-label="Close details">✕</button>
+        </div>
+      </div>
+
+      <div id="m-bio" class="bio">Full bio goes here.</div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div style="font-weight:700;font-size:1.05rem">Hourly: <span id="m-rate" class="rate">$25</span></div>
+        <button id="contactBtn" class="btn">Contact</button>
+        <a id="profileLink" class="outline" href="#" target="_blank" rel="noopener">View full profile</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const teachers = [
+      { id:1, name:'Amelia Carter', subjects:['English','IELTS','Conversation'], languages:['English'], rate:30, rating:4.9, reviews:124, city:'Istanbul, TR', bio:'Experienced English teacher specialising in exam prep and conversational fluency. 8+ years online teaching. Lessons are practical, interactive and tailor-made to student goals.', avatarText:'AC' },
+      { id:2, name:'Mehmet Yılmaz', subjects:['Math','Physics'], languages:['Turkish','English'], rate:20, rating:4.7, reviews:98, city:'Ankara, TR', bio:'High school & university level Math tutor. Clear explanations, step-by-step problem solving and exam strategies.', avatarText:'MY' },
+      { id:3, name:'Sofia Martín', subjects:['Spanish','Conversation'], languages:['Spanish','English'], rate:25, rating:4.8, reviews:76, city:'Madrid, ES', bio:'Native Spanish teacher, focus on speaking and cultural competence. Lessons for adults and kids.', avatarText:'SM' }
+    ];
+
+    const results = document.getElementById('results');
+    const q = document.getElementById('q');
+    const subject = document.getElementById('subject');
+    const sort = document.getElementById('sort');
+    const clear = document.getElementById('clear');
+    const empty = document.getElementById('empty');
+
+    const backdrop = document.getElementById('backdrop');
+    const closeModal = document.getElementById('closeModal');
+    const mAvatar = document.getElementById('m-avatar');
+    const mName = document.getElementById('m-name');
+    const mSub = document.getElementById('m-sub');
+    const mBio = document.getElementById('m-bio');
+    const mRate = document.getElementById('m-rate');
+    const mRating = document.getElementById('m-rating');
+    const contactBtn = document.getElementById('contactBtn');
+
+    let lastFocusedElement = null;
+
+    function initSubjects(){
+      const subjectsSet = new Set();
+      teachers.forEach(t=>t.subjects.forEach(s=>subjectsSet.add(s)));
+      Array.from(subjectsSet).sort().forEach(s=>{
+        const opt = document.createElement('option'); opt.value = s; opt.textContent = s; subject.appendChild(opt);
+      });
+    }
+
+    function renderStars(n){ return `<span style="color:#f59e0b;font-size:1rem">${'★'.repeat(Math.round(n))}</span>` }
+
+    function createCard(t){
+      const card = document.createElement('article'); card.className='card'; card.tabIndex=0;
+      const av = document.createElement('div'); av.className='avatar'; av.textContent=t.avatarText;
+      const info = document.createElement('div'); info.className='info';
+      const name = document.createElement('h3'); name.className='name'; name.textContent=t.name;
+      const meta = document.createElement('div'); meta.className='meta'; meta.textContent=`${t.subjects[0]} • ${t.city}`;
+      const rating = document.createElement('div'); rating.className='rating'; rating.innerHTML=`${renderStars(t.rating)} <span style="color:var(--muted);font-size:0.92rem">(${t.rating} • ${t.reviews})</span>`;
+      const bio = document.createElement('div'); bio.className='bio'; bio.textContent=t.bio.length>140?t.bio.slice(0,140)+'…':t.bio;
+      const tags = document.createElement('div'); tags.className='tags';
+      t.subjects.slice(0,3).forEach(s=>{ const sp=document.createElement('div'); sp.className='tag'; sp.textContent=s; tags.appendChild(sp); });
+      const bottom = document.createElement('div'); bottom.className='card-bottom';
+      const rate = document.createElement('div'); rate.innerHTML=`<div class="rate">$${t.rate}/hr</div>`;
+      const actions = document.createElement('div'); actions.className='actions';
+      const view = document.createElement('button'); view.className='outline'; view.textContent='View'; 
+      view.addEventListener('click', ()=>openModal(t));
+      const contact = document.createElement('button'); contact.className='btn'; contact.textContent='Contact'; 
+      contact.addEventListener('click', ()=>contactTeacher(t));
+      actions.appendChild(view); actions.appendChild(contact);
+      bottom.appendChild(rate); bottom.appendChild(actions);
+      info.appendChild(name);
+      info.appendChild(meta);
+      info.appendChild(rating);
+      info.appendChild(bio);
+      info.appendChild(tags);
+      info.appendChild(bottom);
+      card.appendChild(av);
+      card.appendChild(info);
+      return card;
+    }
+
+    function render(list){
+      results.innerHTML = '';
+      if(list.length === 0){
+        empty.style.display='block';
+        return;
+      }
+      empty.style.display='none';
+      list.forEach(t => results.appendChild(createCard(t)));
+    }
+
+    function openModal(t){
+      lastFocusedElement = document.activeElement;
+      mAvatar.textContent = t.avatarText;
+      mName.textContent = t.name;
+      mSub.textContent = `${t.subjects.join(', ')} • ${t.city}`;
+      mBio.textContent = t.bio;
+      mRate.textContent = `$${t.rate}/hr`;
+      mRating.innerHTML = `${renderStars(t.rating)} <span style="color:var(--muted);font-size:0.92rem">(${t.rating} • ${t.reviews})</span>`;
+      backdrop.style.display='flex';
+      backdrop.setAttribute('aria-hidden','false');
+      contactBtn.focus();
+    }
+
+    function closeModalFunc(){
+      backdrop.style.display='none';
+      backdrop.setAttribute('aria-hidden','true');
+      if(lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    closeModal.addEventListener('click', closeModalFunc);
+    backdrop.addEventListener('click', e => { if(e.target === backdrop) closeModalFunc(); });
+
+    function contactTeacher(t){
+      const message = encodeURIComponent(`Hi ${t.name}, I would like to book a lesson about ${t.subjects[0]}.`);
+      const phone = '+905357397248';
+      window.open(`https://wa.me/${phone.replace(/\D/g,'')}?text=${message}`, '_blank');
+    }
+
+    function updateFilters(){
+      let filtered = teachers.slice();
+      const query = q.value.trim().toLowerCase();
+      const sub = subject.value;
+
+      if(query){
+        filtered = filtered.filter(t => (t.name+t.subjects.join('')+t.languages.join('')+t.city).toLowerCase().includes(query));
+      }
+      if(sub) filtered = filtered.filter(t => t.subjects.includes(sub));
+
+      const sortVal = sort.value;
+      if(sortVal==='rating') filtered.sort((a,b)=>b.rating - a.rating);
+      else if(sortVal==='price_low') filtered.sort((a,b)=>a.rate - b.rate);
+      else if(sortVal==='price_high') filtered.sort((a,b)=>b.rate - a.rate);
+
+      render(filtered);
+    }
+
+    q.addEventListener('input', updateFilters);
+    subject.addEventListener('change', updateFilters);
+    sort.addEventListener('change', updateFilters);
+    clear.addEventListener('click', ()=>{
+      q.value=''; subject.value=''; sort.value='relevance';
+      updateFilters();
+    });
+
+    // Initialize
+    initSubjects();
+    render(teachers);
+  </script>
+</body>
+</html>
