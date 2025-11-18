@@ -1,0 +1,265 @@
+/* ==========================
+   English Training Hub - Global Styles
+   ========================== */
+
+/* Root variables for colors, fonts, and sizes */
+:root {
+  /* Colors */
+  --yellow: #ffeb3b;
+  --blue: #0057ff;
+  --light-blue: #f6faff;
+  --dark: #0a1a2b;
+  --white: #ffffff;
+  --muted: #6b7280;
+  --shadow: rgba(0, 0, 0, 0.12);
+
+  /* Font sizes */
+  --font-base: 16px;
+  --font-small: 13px;
+  --font-large: 2rem;
+
+  /* Border radius */
+  --radius: 10px;
+
+  /* Transition */
+  --transition: 0.3s ease;
+}
+
+/* ==========================
+   Global Reset
+   ========================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Comic Neue', sans-serif;
+  font-size: var(--font-base);
+  line-height: 1.5;
+  color: var(--dark);
+  background: var(--light-blue);
+}
+
+/* ==========================
+   Headers / Banner
+   ========================== */
+.header {
+  background: linear-gradient(135deg, var(--yellow), var(--blue));
+  color: var(--white);
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 20px;
+  margin: 20px;
+}
+
+.header h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.header p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* ==========================
+   CTA Buttons
+   ========================== */
+.cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.cta-buttons a {
+  background: var(--yellow);
+  color: var(--dark);
+  padding: 14px 30px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  transition: var(--transition);
+  border: 2px solid transparent;
+}
+
+.cta-buttons a:hover {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--yellow);
+}
+
+/* ==========================
+   Footer
+   ========================== */
+footer {
+  text-align: center;
+  padding: 25px 10px;
+  font-size: var(--font-small);
+  color: var(--muted);
+  background: #f5f5f5;
+  margin-top: 40px;
+  border-radius: 10px 10px 0 0;
+}
+
+/* ==========================
+   Cards / Teacher Section
+   ========================== */
+.card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.08);
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+.card .avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg,#e6eefc,#f7f9ff);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: var(--blue);
+  font-size: 1.5rem;
+}
+
+.card .name {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.card .meta {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 6px 0;
+}
+
+.card .bio {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.card .tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.card .tag {
+  font-size: 0.82rem;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid #eef2ff;
+  background: #fbfdff;
+  transition: background 0.12s ease, transform 0.12s ease;
+}
+
+.card .tag:hover {
+  background: #fff7cc;
+  transform: translateY(-2px);
+}
+
+.card .card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.card .rate {
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.card .actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.card .outline {
+  border: 1px solid #e6e9ef;
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card .outline:hover {
+  background: #fff7cc;
+  border-color: var(--yellow);
+}
+
+.card .btn {
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card .btn:hover {
+  background: #ffec99;
+  color: #000;
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+/* ==========================
+   Rating Stars
+   ========================== */
+.rating {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.92rem;
+  color: #f59e0b;
+}
+
+/* ==========================
+   Empty State
+   ========================== */
+.empty {
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+  background: linear-gradient(180deg,#fff,#fbfdff);
+  border-radius: 10px;
+  border: 1px dashed #e6ecff;
+  margin-top: 18px;
+}
+
+/* ==========================
+   Responsive Header & Cards
+   ========================== */
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .header p {
+    font-size: 1rem;
+  }
+
+  .cta-buttons a {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+
+  .card {
+    flex-direction: column;
+    padding: 12px;
+  }
+}
