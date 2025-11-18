@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>English Training Hub | Tanıtım</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+    :root {
+      --primary: #1E90FF;
+      --secondary: #F9D423;
+      --bg: #f6faff;
+      --text-dark: #0a1750;  /* darker for better contrast */
+      --text-light: #2d3a55;
+      --list-text: #222;
+      --card-bg: #fffdf7;
+      --radius: 16px;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      --container-max: 960px;
+
+      /* Heights (tunable) */
+      --nav-h: 52px;     /* compact nav */
+      --footer-h: 44px;  /* compact footer */
+      --gap-v: clamp(10px, 2vw, 16px);
+    }
+
+    /* Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      min-height: 100%;
+      font-family: "Montserrat", Arial, sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(to bottom, #a7dfff, #f6faff);
+      line-height: 1.65;
+      display: grid;
+      /* Fit everything to the screen: header + nav + main + footer */
+      grid-template-rows: auto var(--nav-h) 1fr var(--footer-h);
+    }
+
+    /* Containers */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 clamp(14px, 3vw, 24px);
+    }
+
+    /* Header (kept visually strong but height-trimmed) */
+    header {
+      position: relative;
+      text-align: center;
+      background: linear-gradient(135deg, #F9D423, #1E90FF);
+      color: #fff;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+      border-radius: 0 0 22px 22px;
+      padding: clamp(16px, 3vw, 24px) 0 clamp(18px, 3.2vw, 26px);
+    }
+    header .inner { max-width: 820px; margin: 0 auto; padding: 0 12px; }
+
+    header h1 {
+      font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+      margin-bottom: 4px;
+      letter-spacing: 1.2px;
+      color: #ffffff;
+      text-shadow:
+        2px 2px 0px #0a1f7a,
+        4px 4px 8px rgba(0, 0, 0, 0.35);
+      font-weight: 900;
+      -webkit-text-stroke: 1px #0a1f7a;
+      paint-order: stroke fill;
+    }
+
+    header .subtitle {
+      font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+      color: #ffffff;
+      font-weight: 800;
+      margin-bottom: 6px;
+      text-shadow: 1px 1px 0px #0a1f7a, 2px 2px 6px rgba(0, 0, 0, 0.35);
+      letter-spacing: 0.6px;
+      -webkit-text-stroke: 0.6px #0a1f7a;
+    }
+
+    header p {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: clamp(0.92rem, 1.6vw, 1.02rem);
+      color: #f8faff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      padding: 0 6px;
+    }
+
+    /* Decorative shapes (subtle, smaller) */
+    header::after, header::before {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 0;
+    }
+    header::before { width: 200px; height: 200px; bottom: -80px; left: -60px; }
+    header::after  { width: 180px; height: 180px; top: -70px; right: -50px; }
+
+    /* Navigation - compact and always fitting */
+    nav {
+      position: sticky; top: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+      border-bottom: 2px solid transparent;
+      border-image: linear-gradient(90deg, #F9D423, #1E90FF) 1;
+    }
+    nav .nav-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(6px, 1.2vw, 10px);
+      overflow-x: auto;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+    nav a {
+      color: var(--text-dark);
+      font-weight: 600;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+      white-space: nowrap;
+      flex: 0 0 auto;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    nav a:hover {
+      background: linear-gradient(135deg, #F9D423, #1E90FF);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(30,144,255,0.25);
+    }
+
+    /* Main fits remaining screen height */
+    main {
+      display: grid;
+      place-items: center; /* centers content vertically and horizontally for symmetry */
+      padding: var(--gap-v) 0;
+      overflow: hidden; /* keep entire page within screen */
+    }
+
+    /* Sections wrapper with scrolling if needed */
+    .sections {
+      width: 100%;
+      max-width: var(--container-max);
+      height: 100%;
+      display: grid;
+      gap: var(--gap-v);
+      grid-auto-rows: minmax(0, auto);
+      overflow: auto;        /* allow internal scroll instead of page overflow */
+      padding: 0 clamp(12px, 3vw, 20px);
+    }
+
+    section {
+      background: var(--card-bg);
+      padding: clamp(14px, 2.4vw, 22px);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      border: 3px solid transparent;
+      background-image: linear-gradient(#fffdf7, #fffdf7), linear-gradient(135deg, #F9D423, #1E90FF);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+    }
+
+    section h2 {
+      color: var(--text-dark);
+      border-left: 6px solid #1E90FF;
+      padding-left: 10px;
+      margin-bottom: 0.7rem;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+    }
+    section h3 {
+      color: #0a1f7a;
+      font-size: clamp(1rem, 1.8vw, 1.12rem);
+      margin-top: 1.1rem;
+    }
+    section p {
+      color: var(--text-light);
+      font-size: clamp(0.95rem, 1.6vw, 1.02rem);
+      margin: 0.6rem 0 0.9rem;
+    }
+    ul { list-style: none; margin-top: 0.5rem; }
+    ul li {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #eee;
+      color: var(--list-text);
+      font-size: clamp(0.95rem, 1.6vw, 1rem);
+    }
+    .highlight { color: var(--text-dark); font-weight: 700; }
+
+    /* Footer - compact */
+    footer {
+      height: var(--footer-h);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #f0f0f0;
+      background: linear-gradient(135deg, #F9D423, #1E90FF);
+      letter-spacing: 0.2px;
+      font-size: clamp(0.78rem, 1.4vw, 0.86rem);
+      box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+    }
+    footer p {
+      color: #f7faff;
+      margin: 0;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+    footer span {
+      font-weight: 800;
+      color: #0a1f7a;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* WhatsApp Floating Button (kept inside viewport without overlap) */
+    .whatsapp-container {
+      position: fixed;
+      bottom: calc(var(--footer-h) + 12px);
+      right: 14px;
+      display: flex;
+      align-items: center;
+      z-index: 999;
+    }
+    .whatsapp-label {
+      background-color: #25D366;
+      color: white;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 28px;
+      margin-right: 8px;
+      font-size: 0.92rem;
+      opacity: 0;
+      transform: translateX(8px);
+      pointer-events: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .whatsapp-button {
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 26px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .whatsapp-container:hover .whatsapp-label {
+      opacity: 1; transform: translateX(0); pointer-events: auto;
+    }
+    .whatsapp-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+      background-color: #20ba5a;
+    }
+
+    /* Small screens */
+    @media (max-width: 640px) {
+      :root {
+        --nav-h: 48px;
+        --footer-h: 42px;
+      }
+      header h1 { -webkit-text-stroke: 0.8px #0a1f7a; }
+      .whatsapp-label { display: none; }
+      .whatsapp-button { width: 52px; height: 52px; font-size: 24px; }
+      footer p { white-space: normal; }
+    }
+
+    /* Very narrow */
+    @media (max-width: 360px) {
+      nav a { padding: 5px 10px; font-size: 0.84rem; }
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="inner">
+      <h1>🌏💡 English Training Hub</h1>
+      <div class="subtitle">Who Are We?</div>
+      <p>TEFL & TESOL Belgeli Anadili İngilizce öğretmenleri ile <strong>7 yıllık global tecrübe</strong> – İngilizce öğrenmeye hazırsanız, <em>let's begin!</em></p>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container nav-inner">
+      <a href="#about">Hakkımızda</a>
+      <a href="#courses">Derslerimiz</a>
+      <a href="#method">Metodolojimiz</a>
+      <a href="#contact">İletişim</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="sections">
+      <section id="about">
+        <h2>Hakkımızda</h2>
+        <p><strong>Hello students,</strong> welcome to <span class="highlight">English Training Hub!</span></p>
+        <p>Biz <strong>English for Aviation, Medicine, IT, Business, General, YDS, TOEFL, IELTS</strong> ve <strong>Cambridge (Yr-12) A/AS-levels</strong> alanlarında uzmanız.</p>
+        <p>Eğer hedefiniz İngilizcenizi <span class="highlight">hızla geliştirmek</span>se, aşağıdaki Methodological Lesson ile başlayabiliriz:</p>
+        <ul>
+          <li>➊ Seviyenizi, hedefinizi ve ilgi alanınızı analiz ederiz.</li>
+          <li>★ İlerlemeniz düzenli olarak takip edilir!</li>
+          <li>➋ 1–2 aylık ders planı hazırlanır.</li>
+          <li>★ Öğrenci tercihlerine göre esnektir.</li>
+        </ul>
+        <p>We look forward to meeting you soon! ✰彡</p>
+      </section>
+
+      <section id="courses">
+        <h2>Derslerimiz</h2>
+        <h3>📘 General English Group Lessons</h3>
+        <ul>
+          <li>✎ [4] öğrenciden oluşan sınıflar</li>
+          <li>✎ Haftada [2] × 30 dk ders</li>
+          <li>✎ 150 TL / saat</li>
+        </ul>
+
+        <h3>📗 General English Individual Lessons</h3>
+        <ul>
+          <li>✎ [1] öğrenciye özel</li>
+          <li>✎ Haftada [2] × 30 dk ders</li>
+          <li>✎ 300 TL / saat</li>
+        </ul>
+        <p>✻ Uzman eğitmenlerden ✯<strong>Tavsiye Belgenizi</strong>✯ 1–2 ayda alabilirsiniz.</p>
+      </section>
+
+      <section id="method">
+        <h2>Metodolojimiz</h2>
+        <p><strong>Uluslararası araştırılmış pedagojik destekli:</strong></p>
+        <ul>
+          <li>✓ Haftada 2/3/4/5 gün, 20–60 dk. ders planlarıyla esnek seçenekler</li>
+          <li>✓ Pratik & eğlenceli derslerle 1 ayda fark edilir ilerleme</li>
+        </ul>
+        <p>Her kur sonunda TEFL & TESOL Belgeli eğitmenlerden ✯<strong>Tavsiye Mektubu</strong>✯ kazanabilirsiniz.</p>
+        <p><em>★彡 Small steps every day ≈ big results!</em></p>
+        <p class="highlight">Hazır mısınız? Size özel planlanmış bir kursla akıcı İngilizce adım adım mümkün!</p>
+      </section>
+    </div>
+  </main>
+
+  <footer id="contact">
+    <p>© 2025 <span>English Training Hub</span> — Professional English Tutoring</p>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <div class="whatsapp-container">
+    <div class="whatsapp-label">📲 Book a Lesson | Ders Ayırt</div>
+    <a
+      href="https://wa.me/905357397248?text=Merhaba!%20Bir%20ders%20planlamak%20istiyorum.%20%F0%9F%8F%AB"
+      class="whatsapp-button"
+      target="_blank"
+      rel="noopener"
+      aria-label="WhatsApp Chat"
+    >
+      💬
+    </a>
+  </div>
+</body>
+</html>
