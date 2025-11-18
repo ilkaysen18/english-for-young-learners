@@ -1,80 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>💡🌏 English Training Hub — Teachers!</title>
-  <link href="styles.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>English Training Hub - Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+  body{
+    margin:0;
+    font-family:'Comic Neue',sans-serif;
+    background:linear-gradient(to bottom,#a7dfff,#f6faff);
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .container{width:100%;max-width:900px;height:90vh;perspective:1500px;position:relative;}
+  .page{
+    position:absolute;width:100%;height:100%;background:white;border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);display:flex;flex-direction:column;
+    align-items:center;transition:transform 0.8s ease,opacity 0.8s ease;
+    backface-visibility:hidden;overflow-y:auto;padding:20px;box-sizing:border-box;
+  }
+  .visible{opacity:1;transform:translateX(0);}
+  .hidden{opacity:0;pointer-events:none;transform:translateX(100%);}
+  h1{font-size:2em;margin-top:10px;}
+  p{font-size:1em;text-align:center;margin:10px 0;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;margin:20px 0;width:100%;max-width:800px;}
+  .vocab{font-size:2rem;background:#fdf6e3;border-radius:15px;padding:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1);text-align:center;min-height:60px;display:flex;align-items:center;justify-content:center;}
+  .nav{margin-top:20px;margin-bottom:20px;display:flex;flex-wrap:wrap;justify-content:center;}
+  button{margin:10px;padding:10px 20px;background:#ffd34e;border:none;border-radius:10px;font-size:1em;cursor:pointer;box-shadow:0 3px 0 #e0a800;}
+  button:hover{background:#ffe678;}
+
+  footer {
+    text-align: center;
+    padding: 25px 10px;
+    font-size: 0.9rem;
+    color: #1b1b1b;
+    background: #f5f5f5;
+    margin-top: 40px;
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- HEADER -->
-    <header>
-      <div class="heading">
-        <h1>💡🌏 English Training Hub — Teachers!</h1>
-        <div class="subtitle">
-          TEFL & TESOL Certified tutors from Türkiye and abroad — experienced in language teaching for adults and children, exam prep, speaking & vocabulary, and professional English.
-        </div>
-      </div>
+<div class="container">
 
-      <div class="controls" role="region" aria-label="search and filters">
-        <div class="search" role="search" aria-label="Search teachers">
-          <input id="q" type="search" placeholder="Search by name, subject, language or city" aria-label="Search teachers" />
-        </div>
+  <!-- Home Page -->
+  <div class="page visible" id="course">
+    <h2>🌏💡 English Training Hub</h2>
 
-        <select id="subject" class="select" aria-label="Filter by subject">
-          <option value="">All subjects</option>
-        </select>
+       <button onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/about.html'">
+  <h3>💡 Who Are We? 🌏🎓</h3>
+       <button onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/teachers.html'">
+  <h3>🗓 Teachers Profiles! 👤💬</h3>
+    <h5>👉 Book a free trial lesson with a teacher now! ⏳️ Plan your lessons. 🚀 And watch your fluency soar fast!</h5>
+       <button onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/courses.html'">
+  <h3>🇬🇧 Our English Courses 🇬🇧</h3>
+       <button onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/languages/german/spk.html'">
+  <h3>🇩🇪 Our German Courses 🇩🇪</h3>
+       <button onclick="window.location.href='https://ilkaysen18.github.io/englishtraininghub/contact.html'">
+  <h3>💻 Contact Us ☎️💬</h3>
+</button>
+</div>
+</script>
 
-        <div class="actions-row">
-          <select id="sort" class="select" aria-label="Sort results">
-            <option value="relevance">Sort: Relevance</option>
-            <option value="rating">Top rated</option>
-            <option value="price_low">Price: Low → High</option>
-            <option value="price_high">Price: High → Low</option>
-          </select>
-          <button id="clear" class="btn" aria-label="Clear filters">Clear</button>
-        </div>
-      </div>
-    </header>
+<footer>
+  © <span id="year"></span> English Training Hub — All Rights Reserved.
+</footer>
 
-    <!-- MAIN CONTENT -->
-    <main>
-      <div id="results" class="grid" aria-live="polite" aria-busy="false"></div>
-      <div id="empty" class="empty" style="display:none" role="status">No teachers found. Try different filters or search terms.</div>
-    </main>
-
-    <footer>
-      <small>© <span id="year"></span> English Training Hub. All rights reserved.</small>
-    </footer>
-  </div>
-
-  <!-- MODAL -->
-  <div id="backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal">
-      <div style="display:flex;justify-content:space-between;align-items:start">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div id="m-avatar" class="avatar">A</div>
-          <div>
-            <h2 id="m-name">Teacher Name</h2>
-            <div id="m-sub" class="meta">Subject • Location</div>
-            <div id="m-rating" class="rating">★★★★★ <span style="color:var(--muted);font-size:0.92rem">(4.9 • 120 reviews)</span></div>
-          </div>
-        </div>
-        <button id="closeModal" class="close" aria-label="Close details">✕</button>
-      </div>
-      <div class="bio" id="m-bio">Full bio goes here.</div>
-      <div class="modal-actions">
-        <div style="font-weight:700;font-size:1rem">Hourly: <span id="m-rate" class="rate">₺300</span></div>
-        <button id="contactBtn" class="btn">Contact</button>
-        <a id="profileLink" class="outline" href="#">View full profile</a>
-      </div>
-    </div>
-  </div>
-
-  <script src="teachers.js"></script>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+         
 </body>
-          </html>
+       </html>
