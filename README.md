@@ -54,7 +54,7 @@
 ##### ✅️ Course lesson content
 * new lessons added to the English course "Speaking with Pictures"
 ##### ✅️ Teacher Profiles 
-* teacher profiles page created - for students to book lessons directly through
+* [teacher profiles page](https://ilkaysen18.github.io/englishtraininghub/teachers.html) created - for students to book lessons directly through
 
 ...
 
