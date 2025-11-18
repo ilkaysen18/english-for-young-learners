@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Rachel Teacher",
+    "subjects": ["English","Speaking"],
+    "languages": ["English","Turkish"],
+    "rate": 300,
+    "rating": 5,
+    "reviews": 120,
+    "city": "Sakarya, TR",
+    "bio": "Native English teacher specialising in speaking & vocabulary lessons.",
+    "avatarText": "R"
+  },
+  {
+    "id": 2,
+    "name": "Elyas Teacher",
+    "subjects": ["English","IELTS"],
+    "languages": ["English","Turkish"],
+    "rate": 300,
+    "rating": 5,
+    "reviews": 60,
+    "city": "Istanbul, TR",
+    "bio": "Exam prep and conversational fluency tutor.",
+    "avatarText": "E"
+  }
+]
