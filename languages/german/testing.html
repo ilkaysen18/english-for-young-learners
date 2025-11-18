@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch A2 - 20 Lektionen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+    /* Font (keep Google Fonts link in head, or download for full local) */
+    body {
+        font-family: 'Comic Neue', sans-serif;
+    }
+
+    /* Lesson card hover effect */
+    .lesson-card {
+        transition: all 0.3s ease;
+    }
+    .lesson-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Vocabulary fade-in animation */
+    .vocab-item {
+        animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Smooth transition for dark mode elements */
+    .transition-colors {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Optional: card shadows and rounding for other sections */
+    .shadow-lg {
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    }
+    .rounded-lg {
+        border-radius: 0.75rem;
+    }
+
+    /* Primary color */
+    .text-primary {
+        color: #5D5CDE;
+    }
+    .bg-primary {
+        background-color: #5D5CDE;
+    }
+    </style>
+</head>
+<body class="bg-white dark:bg-[#181818] text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-primary text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <h1 class="text-3xl md:text-4xl font-bold text-center">🇩🇪 Deutsch A2 Lernen</h1>
+                <p class="text-center mt-2 text-blue-100">20 Lektionen für A2-Niveau</p>
+            </div>
+        </header>
+
+        <div class="container mx-auto px-4 py-8">
+            <!-- Lesson Selection -->
+            <div id="lessonSelection" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Wähle eine Lektion:</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    <!-- Lesson buttons will be generated here -->
+                </div>
+            </div>
+
+            <!-- Lesson Content -->
+            <div id="lessonContent" class="hidden">
+                <button onclick="showLessonSelection()" class="mb-6 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                    ← Zurück zur Übersicht
+                </button>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                    <h2 id="lessonTitle" class="text-3xl font-bold mb-2 text-primary"></h2>
+                    <p id="lessonSubtitle" class="text-gray-600 dark:text-gray-400 mb-4"></p>
+                </div>
+
+                <!-- Vocabulary Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">📚</span> Vokabeln
+                    </h3>
+                    <div id="vocabularyList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Vocabulary items will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Conversational Questions -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">💬</span> Gesprächsfragen
+                    </h3>
+                    <div id="questionsList" class="space-y-3">
+                        <!-- Questions will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Agree/Disagree Statements -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">✓✗</span> Zustimmen oder Ablehnen
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Bist du einverstanden? Sage "Ich stimme zu" oder "Ich stimme nicht zu"</p>
+                    <div id="statementsList" class="space-y-3">
+                        <!-- Statements will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- News Article -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">📰</span> Kurzer Artikel
+                    </h3>
+                    <div id="articleContent" class="prose dark:prose-invert max-w-none">
+                        <!-- Article will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode setup
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Lesson data
+        const lessons = [
+            {
+                id: 1,
+                title: "Familie und Freunde",
+                subtitle: "Family and Friends",
+                vocabulary: [
+                    { de: "die Familie", en: "the family" },
+                    { de: "der Freund / die Freundin", en: "the friend" },
+                    { de: "die Eltern", en: "the parents" },
+                    { de: "die Geschwister", en: "the siblings" },
+                    { de: "verheiratet", en: "married" },
+                    { de: "ledig", en: "single" },
+                    { de: "kennenlernen", en: "to get to know" },
+                    { de: "treffen", en: "to meet" }
+                ],
+                questions: [
+                    "Wie groß ist deine Familie?",
+                    "Hast du Geschwister?",
+                    "Wie oft triffst du deine Freunde?",
+                    "Was machst du gern mit deiner Familie?",
+                    "Wo wohnen deine Eltern?"
+                ],
+                statements: [
+                    "Familie ist wichtiger als Freunde.",
+                    "Ich treffe meine Freunde jeden Tag.",
+                    "Große Familien sind besser als kleine Familien.",
+                    "Man braucht viele Freunde im Leben.",
+                    "Geschwister sind die besten Freunde."
+                ],
+                article: {
+                    title: "Deutsche Familien werden kleiner",
+                    content: "In Deutschland leben immer mehr Menschen allein. Viele junge Menschen ziehen früh von zu Hause weg. Die durchschnittliche Familie hat heute nur 1,5 Kinder. Experten sagen, dass die Familien in Zukunft noch kleiner werden."
+                }
+            },
+            {
+                id: 2,
+                title: "Essen und Trinken",
+                subtitle: "Food and Drink",
+                vocabulary: [
+                    { de: "das Frühstück", en: "breakfast" },
+                    { de: "das Mittagessen", en: "lunch" },
+                    { de: "das Abendessen", en: "dinner" },
+                    { de: "gesund", en: "healthy" },
+                    { de: "lecker", en: "delicious" },
+                    { de: "das Gemüse", en: "vegetables" },
+                    { de: "das Obst", en: "fruit" },
+                    { de: "kochen", en: "to cook" }
+                ],
+                questions: [
+                    "Was isst du normalerweise zum Frühstück?",
+                    "Kochst du gern?",
+                    "Was ist dein Lieblingsessen?",
+                    "Isst du oft in Restaurants?",
+                    "Trinkst du lieber Kaffee oder Tee?"
+                ],
+                statements: [
+                    "Frühstück ist die wichtigste Mahlzeit des Tages.",
+                    "Fast Food ist nicht immer ungesund.",
+                    "Ich esse jeden Tag Obst und Gemüse.",
+                    "Kochen macht mehr Spaß als Essen gehen.",
+                    "Vegetarisches Essen ist gesünder als Fleisch."
+                ],
+                article: {
+                    title: "Deutsche essen mehr vegetarisch",
+                    content: "Immer mehr Menschen in Deutschland essen vegetarisch oder vegan. Etwa 10% der Deutschen essen kein Fleisch mehr. Supermärkte verkaufen jetzt viele vegetarische Produkte. Die junge Generation isst besonders wenig Fleisch."
+                }
+            },
+            {
+                id: 3,
+                title: "Wohnen",
+                subtitle: "Housing",
+                vocabulary: [
+                    { de: "die Wohnung", en: "apartment" },
+                    { de: "das Haus", en: "house" },
+                    { de: "die Miete", en: "rent" },
+                    { de: "der Nachbar", en: "neighbor" },
+                    { de: "das Zimmer", en: "room" },
+                    { de: "umziehen", en: "to move" },
+                    { de: "gemütlich", en: "cozy" },
+                    { de: "die Möbel", en: "furniture" }
+                ],
+                questions: [
+                    "Wo wohnst du?",
+                    "Wie viele Zimmer hat deine Wohnung?",
+                    "Wohnst du lieber in der Stadt oder auf dem Land?",
+                    "Kennst du deine Nachbarn gut?",
+                    "Möchtest du ein eigenes Haus haben?"
+                ],
+                statements: [
+                    "Eine große Wohnung ist besser als ein kleines Haus.",
+                    "Mieten ist besser als Kaufen.",
+                    "Nachbarn soll man nicht zu gut kennen.",
+                    "Ich möchte lieber in der Stadt wohnen als auf dem Land.",
+                    "Ein Balkon ist sehr wichtig für eine Wohnung."
+                ],
+                article: {
+                    title: "Wohnungen in Berlin werden teurer",
+                    content: "Die Mieten in deutschen Großstädten steigen weiter. Besonders in Berlin, München und Hamburg ist Wohnen sehr teuer. Viele junge Menschen können keine bezahlbare Wohnung finden. Die Regierung plant neue Gesetze gegen hohe Mieten."
+                }
+            },
+            {
+                id: 4,
+                title: "Arbeit und Beruf",
+                subtitle: "Work and Career",
+                vocabulary: [
+                    { de: "der Beruf", en: "profession" },
+                    { de: "die Arbeit", en: "work" },
+                    { de: "der Chef / die Chefin", en: "boss" },
+                    { de: "das Gehalt", en: "salary" },
+                    { de: "die Ausbildung", en: "training/apprenticeship" },
+                    { de: "arbeitslos", en: "unemployed" },
+                    { de: "die Bewerbung", en: "application" },
+                    { de: "Teilzeit / Vollzeit", en: "part-time / full-time" }
+                ],
+                questions: [
+                    "Was arbeitest du?",
+                    "Wie viele Stunden arbeitest du pro Woche?",
+                    "Magst du deinen Job?",
+                    "Was ist dein Traumberuf?",
+                    "Arbeitest du lieber allein oder im Team?"
+                ],
+                statements: [
+                    "Geld ist wichtiger als Jobzufriedenheit.",
+                    "Homeoffice ist besser als im Büro arbeiten.",
+                    "Jeder sollte seinen Traumberuf finden.",
+                    "40 Stunden pro Woche sind zu viel.",
+                    "Eine gute Ausbildung garantiert einen guten Job."
+                ],
+                article: {
+                    title: "Homeoffice bleibt populär",
+                    content: "Nach der Pandemie arbeiten viele Deutsche weiter von zu Hause. Etwa 25% der Arbeitnehmer nutzen Homeoffice regelmäßig. Die meisten Firmen erlauben jetzt flexible Arbeitszeiten. Experten sagen, dass dies die Zukunft der Arbeit ist."
+                }
+            },
+            {
+                id: 5,
+                title: "Freizeit und Hobbys",
+                subtitle: "Free Time and Hobbies",
+                vocabulary: [
+                    { de: "die Freizeit", en: "free time" },
+                    { de: "das Hobby", en: "hobby" },
+                    { de: "entspannen", en: "to relax" },
+                    { de: "Sport treiben", en: "to do sports" },
+                    { de: "spazieren gehen", en: "to go for a walk" },
+                    { de: "lesen", en: "to read" },
+                    { de: "das Kino", en: "cinema" },
+                    { de: "das Konzert", en: "concert" }
+                ],
+                questions: [
+                    "Was machst du in deiner Freizeit?",
+                    "Welche Hobbys hast du?",
+                    "Gehst du oft ins Kino?",
+                    "Treibst du regelmäßig Sport?",
+                    "Wie entspannst du dich nach der Arbeit?"
+                ],
+                statements: [
+                    "Hobbys sind wichtig für die Gesundheit.",
+                    "Ich habe genug Freizeit.",
+                    "Fernsehen ist Zeitverschwendung.",
+                    "Man sollte mindestens ein kreatives Hobby haben.",
+                    "Sport ist das beste Hobby."
+                ],
+                article: {
+                    title: "Deutsche haben weniger Freizeit",
+                    content: "Eine neue Studie zeigt: Die Deutschen haben weniger Freizeit als früher. Im Durchschnitt haben sie nur 4 Stunden freie Zeit pro Tag. Die meisten Menschen nutzen diese Zeit für Fernsehen oder Internet. Nur 30% treiben regelmäßig Sport."
+                }
+            },
+            {
+                id: 6,
+                title: "Reisen",
+                subtitle: "Travel",
+                vocabulary: [
+                    { de: "die Reise", en: "trip/journey" },
+                    { de: "der Urlaub", en: "vacation" },
+                    { de: "das Flugzeug", en: "airplane" },
+                    { de: "der Koffer", en: "suitcase" },
+                    { de: "die Sehenswürdigkeit", en: "sight/attraction" },
+                    { de: "buchen", en: "to book" },
+                    { de: "das Hotel", en: "hotel" },
+                    { de: "der Strand", en: "beach" }
+                ],
+                questions: [
+                    "Wohin reist du gern?",
+                    "Wie oft machst du Urlaub?",
+                    "Reist du lieber allein oder mit anderen?",
+                    "Was ist dein Traumreiseziel?",
+                    "Fliegst du gern?"
+                ],
+                statements: [
+                    "Reisen bildet den Charakter.",
+                    "Urlaub am Strand ist besser als Städtereisen.",
+                    "Fliegen ist schlecht für die Umwelt.",
+                    "Man sollte mindestens einmal im Jahr verreisen.",
+                    "Allein reisen macht mehr Spaß als in Gruppen."
+                ],
+                article: {
+                    title: "Spanien bleibt Lieblingsziel der Deutschen",
+                    content: "Deutsche lieben Spanien als Urlaubsziel. Über 12 Millionen Deutsche reisen jedes Jahr nach Spanien. Auch Italien und die Türkei sind sehr beliebt. Viele Menschen buchen ihre Reisen jetzt online statt im Reisebüro."
+                }
+            },
+            {
+                id: 7,
+                title: "Gesundheit",
+                subtitle: "Health",
+                vocabulary: [
+                    { de: "gesund", en: "healthy" },
+                    { de: "krank", en: "sick" },
+                    { de: "der Arzt / die Ärztin", en: "doctor" },
+                    { de: "das Krankenhaus", en: "hospital" },
+                    { de: "die Apotheke", en: "pharmacy" },
+                    { de: "der Schmerz", en: "pain" },
+                    { de: "fit bleiben", en: "to stay fit" },
+                    { de: "die Erkältung", en: "cold" }
+                ],
+                questions: [
+                    "Wie bleibst du gesund?",
+                    "Gehst du oft zum Arzt?",
+                    "Schläfst du genug?",
+                    "Was machst du, wenn du krank bist?",
+                    "Treibst du Sport für deine Gesundheit?"
+                ],
+                statements: [
+                    "Gesundheit ist wichtiger als Reichtum.",
+                    "Ich gehe nur zum Arzt, wenn ich sehr krank bin.",
+                    "Mindestens 8 Stunden Schlaf sind notwendig.",
+                    "Stress macht krank.",
+                    "Sport ist der beste Arzt."
+                ],
+                article: {
+                    title: "Grippe-Saison beginnt früher",
+                    content: "Die Grippe-Welle kommt dieses Jahr früher als normal. Ärzte empfehlen eine Impfung für alle Menschen über 60 Jahre. Apotheken berichten von mehr Erkältungen als im letzten Jahr. Experten sagen, dass man sich warm anziehen soll."
+                }
+            },
+            {
+                id: 8,
+                title: "Einkaufen",
+                subtitle: "Shopping",
+                vocabulary: [
+                    { de: "einkaufen", en: "to shop" },
+                    { de: "der Supermarkt", en: "supermarket" },
+                    { de: "das Geschäft", en: "store" },
+                    { de: "teuer / billig", en: "expensive / cheap" },
+                    { de: "das Sonderangebot", en: "special offer" },
+                    { de: "bezahlen", en: "to pay" },
+                    { de: "die Kasse", en: "checkout/cashier" },
+                    { de: "umtauschen", en: "to exchange" }
+                ],
+                questions: [
+                    "Wo kaufst du normalerweise ein?",
+                    "Gehst du gern einkaufen?",
+                    "Kaufst du oft online ein?",
+                    "Wie oft gehst du in den Supermarkt?",
+                    "Zahlst du lieber bar oder mit Karte?"
+                ],
+                statements: [
+                    "Online-Shopping ist besser als in Geschäften einkaufen.",
+                    "Ich achte immer auf Sonderangebote.",
+                    "Einkaufen ist Zeitverschwendung.",
+                    "Teure Produkte sind immer bessere Qualität.",
+                    "Ich kaufe nur, was ich wirklich brauche."
+                ],
+                article: {
+                    title: "Online-Shopping wächst weiter",
+                    content: "Immer mehr Deutsche kaufen im Internet ein. Besonders Kleidung und Elektronik werden online gekauft. Viele kleine Geschäfte in den Städten schließen. Supermärkte bieten jetzt auch Online-Lieferung an. Der Trend wird weitergehen."
+                }
+            },
+            {
+                id: 9,
+                title: "Verkehr",
+                subtitle: "Transportation",
+                vocabulary: [
+                    { de: "das Auto", en: "car" },
+                    { de: "der Bus", en: "bus" },
+                    { de: "die Bahn / der Zug", en: "train" },
+                    { de: "das Fahrrad", en: "bicycle" },
+                    { de: "die U-Bahn", en: "subway" },
+                    { de: "der Verkehr", en: "traffic" },
+                    { de: "die Fahrkarte", en: "ticket" },
+                    { de: "der Stau", en: "traffic jam" }
+                ],
+                questions: [
+                    "Wie kommst du zur Arbeit?",
+                    "Hast du ein Auto?",
+                    "Fährst du gern Fahrrad?",
+                    "Wie ist der Verkehr in deiner Stadt?",
+                    "Nutzt du öffentliche Verkehrsmittel?"
+                ],
+                statements: [
+                    "Öffentliche Verkehrsmittel sind besser als Autos.",
+                    "Jeder sollte ein Auto haben.",
+                    "Fahrradfahren ist die beste Art, sich fortzubewegen.",
+                    "Der Verkehr in Großstädten ist zu viel.",
+                    "Autofahren macht Spaß."
+                ],
+                article: {
+                    title: "Deutschland plant günstiges Bahnticket",
+                    content: "Ab nächstem Monat gibt es ein neues Ticket für 49 Euro. Mit diesem Ticket kann man einen Monat lang alle Busse und Bahnen nutzen. Die Regierung will mehr Menschen motivieren, öffentliche Verkehrsmittel zu benutzen. Umweltschützer sind sehr zufrieden."
+                }
+            },
+            {
+                id: 10,
+                title: "Wetter und Jahreszeiten",
+                subtitle: "Weather and Seasons",
+                vocabulary: [
+                    { de: "das Wetter", en: "weather" },
+                    { de: "der Frühling", en: "spring" },
+                    { de: "der Sommer", en: "summer" },
+                    { de: "der Herbst", en: "autumn" },
+                    { de: "der Winter", en: "winter" },
+                    { de: "es regnet", en: "it's raining" },
+                    { de: "die Sonne", en: "sun" },
+                    { de: "der Schnee", en: "snow" }
+                ],
+                questions: [
+                    "Welche Jahreszeit magst du am liebsten?",
+                    "Wie ist das Wetter heute?",
+                    "Magst du Schnee?",
+                    "Was machst du im Sommer?",
+                    "Regnet es oft in deiner Stadt?"
+                ],
+                statements: [
+                    "Sommer ist die beste Jahreszeit.",
+                    "Ich mag Regen nicht.",
+                    "Winter ohne Schnee ist langweilig.",
+                    "Das Wetter beeinflusst meine Stimmung.",
+                    "Jede Jahreszeit hat ihre Vorteile."
+                ],
+                article: {
+                    title: "Winter wird immer wärmer",
+                    content: "Der Klimawandel verändert die Jahreszeiten in Deutschland. Die Winter werden wärmer und es schneit weniger. Die Sommer sind heißer und trockener als früher. Wissenschaftler warnen vor mehr extremem Wetter in der Zukunft."
+                }
+            },
+            {
+                id: 11,
+                title: "Schule und Bildung",
+                subtitle: "School and Education",
+                vocabulary: [
+                    { de: "die Schule", en: "school" },
+                    { de: "der Lehrer / die Lehrerin", en: "teacher" },
+                    { de: "lernen", en: "to learn" },
+                    { de: "die Prüfung", en: "exam" },
+                    { de: "die Universität", en: "university" },
+                    { de: "das Studium", en: "studies" },
+                    { de: "die Hausaufgaben", en: "homework" },
+                    { de: "die Note", en: "grade" }
+                ],
+                questions: [
+                    "Hast du studiert?",
+                    "Was war dein Lieblingsfach in der Schule?",
+                    "Lernst du gern neue Dinge?",
+                    "Machst du gern Prüfungen?",
+                    "Möchtest du eine neue Sprache lernen?"
+                ],
+                statements: [
+                    "Bildung ist sehr wichtig im Leben.",
+                    "Hausaufgaben sind notwendig zum Lernen.",
+                    "Jeder sollte studieren.",
+                    "Praktische Erfahrung ist wichtiger als Theorie.",
+                    "Gute Noten garantieren Erfolg im Leben."
+                ],
+                article: {
+                    title: "Mehr Studenten an deutschen Unis",
+                    content: "Die Zahl der Studenten in Deutschland steigt weiter. Fast 3 Millionen junge Menschen studieren an Universitäten. Die beliebtesten Fächer sind Betriebswirtschaft, Informatik und Medizin. Viele internationale Studenten kommen nach Deutschland zum Studieren."
+                }
+            },
+            {
+                id: 12,
+                title: "Sport",
+                subtitle: "Sports",
+                vocabulary: [
+                    { de: "der Sport", en: "sport" },
+                    { de: "das Training", en: "training" },
+                    { de: "der Fußball", en: "football/soccer" },
+                    { de: "schwimmen", en: "to swim" },
+                    { de: "laufen", en: "to run" },
+                    { de: "das Fitnessstudio", en: "gym" },
+                    { de: "gewinnen", en: "to win" },
+                    { de: "verlieren", en: "to lose" }
+                ],
+                questions: [
+                    "Welchen Sport machst du?",
+                    "Siehst du gern Sport im Fernsehen?",
+                    "Gehst du ins Fitnessstudio?",
+                    "Bist du Fan von einer Mannschaft?",
+                    "Wie oft treibst du Sport?"
+                ],
+                statements: [
+                    "Fußball ist der beste Sport.",
+                    "Jeder sollte jeden Tag Sport treiben.",
+                    "Mannschaftssport ist besser als Individualsport.",
+                    "Sport im Fitnessstudio ist langweilig.",
+                    "Profisportler verdienen zu viel Geld."
+                ],
+                article: {
+                    title: "Frauenfußball wird populärer",
+                    content: "Immer mehr Menschen interessieren sich für Frauenfußball. Die letzte WM der Frauen hatte Rekord-Zuschauerzahlen. Viele junge Mädchen spielen jetzt Fußball in Vereinen. Experten sagen, dass Frauenfußball noch wachsen wird."
+                }
+            },
+            {
+                id: 13,
+                title: "Medien und Technologie",
+                subtitle: "Media and Technology",
+                vocabulary: [
+                    { de: "das Handy", en: "mobile phone" },
+                    { de: "der Computer", en: "computer" },
+                    { de: "das Internet", en: "internet" },
+                    { de: "die App", en: "app" },
+                    { de: "die E-Mail", en: "email" },
+                    { de: "die sozialen Medien", en: "social media" },
+                    { de: "chatten", en: "to chat" },
+                    { de: "herunterladen", en: "to download" }
+                ],
+                questions: [
+                    "Wie viel Zeit verbringst du am Handy?",
+                    "Welche Apps benutzt du am meisten?",
+                    "Nutzt du soziale Medien?",
+                    "Kannst du ohne Internet leben?",
+                    "Was machst du im Internet?"
+                ],
+                statements: [
+                    "Wir verbringen zu viel Zeit am Handy.",
+                    "Soziale Medien sind schlecht für die Gesellschaft.",
+                    "Technologie macht das Leben einfacher.",
+                    "Kinder sollten kein Handy haben.",
+                    "Ich könnte ohne Internet nicht leben."
+                ],
+                article: {
+                    title: "Deutsche nutzen Smartphone 3 Stunden täglich",
+                    content: "Eine neue Studie zeigt: Deutsche benutzen ihr Smartphone durchschnittlich 3 Stunden pro Tag. Junge Menschen nutzen es noch länger. Die beliebtesten Apps sind WhatsApp, Instagram und YouTube. Experten warnen vor zu viel Bildschirmzeit."
+                }
+            },
+            {
+                id: 14,
+                title: "Umwelt und Natur",
+                subtitle: "Environment and Nature",
+                vocabulary: [
+                    { de: "die Umwelt", en: "environment" },
+                    { de: "die Natur", en: "nature" },
+                    { de: "der Müll", en: "garbage/trash" },
+                    { de: "recyceln", en: "to recycle" },
+                    { de: "der Klimawandel", en: "climate change" },
+                    { de: "der Wald", en: "forest" },
+                    { de: "schützen", en: "to protect" },
+                    { de: "umweltfreundlich", en: "environmentally friendly" }
+                ],
+                questions: [
+                    "Was tust du für die Umwelt?",
+                    "Recycelst du zu Hause?",
+                    "Gehst du oft in die Natur?",
+                    "Machst du dir Sorgen um den Klimawandel?",
+                    "Kaufst du umweltfreundliche Produkte?"
+                ],
+                statements: [
+                    "Jeder muss etwas für die Umwelt tun.",
+                    "Recycling ist sehr wichtig.",
+                    "Der Klimawandel ist das größte Problem unserer Zeit.",
+                    "Ich trenne meinen Müll immer.",
+                    "Plastik sollte verboten werden."
+                ],
+                article: {
+                    title: "Deutschland will klimaneutral werden",
+                    content: "Deutschland plant, bis 2045 klimaneutral zu werden. Dafür braucht das Land mehr erneuerbare Energie. Viele neue Windräder und Solaranlagen werden gebaut. Die Regierung investiert Milliarden Euro in grüne Technologie."
+                }
+            },
+            {
+                id: 15,
+                title: "Feste und Traditionen",
+                subtitle: "Festivals and Traditions",
+                vocabulary: [
+                    { de: "das Fest", en: "festival/celebration" },
+                    { de: "feiern", en: "to celebrate" },
+                    { de: "Weihnachten", en: "Christmas" },
+                    { de: "Ostern", en: "Easter" },
+                    { de: "der Geburtstag", en: "birthday" },
+                    { de: "das Geschenk", en: "gift" },
+                    { de: "die Tradition", en: "tradition" },
+                    { de: "der Brauch", en: "custom" }
+                ],
+                questions: [
+                    "Welches Fest magst du am liebsten?",
+                    "Wie feierst du deinen Geburtstag?",
+                    "Feierst du Weihnachten?",
+                    "Welche Traditionen hat deine Familie?",
+                    "Schenkst du gern Geschenke?"
+                ],
+                statements: [
+                    "Weihnachten ist das schönste Fest.",
+                    "Traditionen sind wichtig für die Kultur.",
+                    "Ich feiere meinen Geburtstag nicht gern.",
+                    "Geschenke sind nicht wichtig, Zeit ist wichtiger.",
+                    "Alte Traditionen sollten bewahrt werden."
+                ],
+                article: {
+                    title: "Oktoberfest nach zwei Jahren zurück",
+                    content: "Das berühmte Oktoberfest in München findet wieder statt. Millionen Besucher aus der ganzen Welt kommen nach Bayern. Das Fest dauert 16 Tage und ist eine wichtige Tradition. Die Wirtschaft verdient viel Geld mit dem Oktoberfest."
+                }
+            },
+            {
+                id: 16,
+                title: "Kleidung und Mode",
+                subtitle: "Clothing and Fashion",
+                vocabulary: [
+                    { de: "die Kleidung", en: "clothing" },
+                    { de: "die Mode", en: "fashion" },
+                    { de: "das T-Shirt", en: "t-shirt" },
+                    { de: "die Hose", en: "pants" },
+                    { de: "die Schuhe", en: "shoes" },
+                    { de: "tragen", en: "to wear" },
+                    { de: "anprobieren", en: "to try on" },
+                    { de: "modisch", en: "fashionable" }
+                ],
+                questions: [
+                    "Was trägst du am liebsten?",
+                    "Interessierst du dich für Mode?",
+                    "Wo kaufst du deine Kleidung?",
+                    "Wie oft kaufst du neue Kleidung?",
+                    "Was ist dein Lieblings-Kleidungsstück?"
+                ],
+                statements: [
+                    "Mode ist wichtig für den ersten Eindruck.",
+                    "Ich kaufe nur Markenkleidung.",
+                    "Bequeme Kleidung ist besser als modische Kleidung.",
+                    "Man sollte keine Tiere für Kleidung töten.",
+                    "Second-Hand-Kleidung ist gut für die Umwelt."
+                ],
+                article: {
+                    title: "Nachhaltige Mode wird beliebter",
+                    content: "Immer mehr Deutsche kaufen nachhaltige und faire Kleidung. Viele junge Menschen interessieren sich für Second-Hand-Mode. Fast Fashion wird kritischer gesehen. Mehrere große Modeketten starten nachhaltige Kollektionen."
+                }
+            },
+            {
+                id: 17,
+                title: "Tiere",
+                subtitle: "Animals",
+                vocabulary: [
+                    { de: "das Tier", en: "animal" },
+                    { de: "das Haustier", en: "pet" },
+                    { de: "der Hund", en: "dog" },
+                    { de: "die Katze", en: "cat" },
+                    { de: "der Vogel", en: "bird" },
+                    { de: "füttern", en: "to feed" },
+                    { de: "der Zoo", en: "zoo" },
+                    { de: "wild", en: "wild" }
+                ],
+                questions: [
+                    "Hast du ein Haustier?",
+                    "Welches Tier magst du am liebsten?",
+                    "Gehst du gern in den Zoo?",
+                    "Sollten Tiere in Zoos leben?",
+                    "Welches wilde Tier findest du interessant?"
+                ],
+                statements: [
+                    "Hunde sind bessere Haustiere als Katzen.",
+                    "Jeder sollte ein Haustier haben.",
+                    "Zoos sind nicht gut für Tiere.",
+                    "Haustiere machen Menschen glücklicher.",
+                    "Tiere haben die gleichen Rechte wie Menschen."
+                ],
+                article: {
+                    title: "Immer mehr Haustiere in Deutschland",
+                    content: "In Deutschland leben jetzt über 34 Millionen Haustiere. Katzen sind am beliebtesten, gefolgt von Hunden. Während der Pandemie haben viele Menschen ein Haustier gekauft. Tierärzte berichten von mehr Arbeit als je zuvor."
+                }
+            },
+            {
+                id: 18,
+                title: "Stadt und Land",
+                subtitle: "City and Country",
+                vocabulary: [
+                    { de: "die Stadt", en: "city" },
+                    { de: "das Land", en: "countryside" },
+                    { de: "das Dorf", en: "village" },
+                    { de: "die Großstadt", en: "big city" },
+                    { de: "ruhig", en: "quiet" },
+                    { de: "laut", en: "loud/noisy" },
+                    { de: "der Lärm", en: "noise" },
+                    { de: "die Luft", en: "air" }
+                ],
+                questions: [
+                    "Wohnst du lieber in der Stadt oder auf dem Land?",
+                    "Was sind die Vorteile vom Landleben?",
+                    "Ist deine Stadt laut?",
+                    "Möchtest du in einer Großstadt leben?",
+                    "Vermisst du etwas am Landleben?"
+                ],
+                statements: [
+                    "Das Leben in der Stadt ist besser als auf dem Land.",
+                    "Großstädte sind zu laut und stressig.",
+                    "Auf dem Land ist es langweilig.",
+                    "Die Luft auf dem Land ist besser.",
+                    "Städte bieten mehr Möglichkeiten."
+                ],
+                article: {
+                    title: "Junge Menschen ziehen in die Städte",
+                    content: "Immer mehr junge Deutsche verlassen das Land und ziehen in Städte. Besonders kleine Dörfer verlieren Einwohner. In Großstädten gibt es mehr Jobs und bessere Infrastruktur. Viele Dörfer kämpfen um ihre Zukunft."
+                }
+            },
+            {
+                id: 19,
+                title: "Kultur und Kunst",
+                subtitle: "Culture and Art",
+                vocabulary: [
+                    { de: "die Kultur", en: "culture" },
+                    { de: "die Kunst", en: "art" },
+                    { de: "das Museum", en: "museum" },
+                    { de: "das Theater", en: "theater" },
+                    { de: "malen", en: "to paint" },
+                    { de: "die Ausstellung", en: "exhibition" },
+                    { de: "der Künstler / die Künstlerin", en: "artist" },
+                    { de: "kreativ", en: "creative" }
+                ],
+                questions: [
+                    "Gehst du gern ins Museum?",
+                    "Interessierst du dich für Kunst?",
+                    "Warst du schon mal im Theater?",
+                    "Machst du selbst Kunst?",
+                    "Was ist deine Lieblingskunstform?"
+                ],
+                statements: [
+                    "Kunst ist wichtig für die Gesellschaft.",
+                    "Jeder kann Kunst machen.",
+                    "Moderne Kunst verstehe ich nicht.",
+                    "Theater ist langweilig.",
+                    "Museen sollten kostenlos sein."
+                ],
+                article: {
+                    title: "Berliner Museen öffnen nachts",
+                    content: "Mehrere Museen in Berlin bieten jetzt Nachtöffnungen an. Besucher können Kunst bis Mitternacht sehen. Das Programm ist besonders bei jungen Menschen beliebt. Die Museen hoffen auf mehr Besucher durch die neuen Öffnungszeiten."
+                }
+            },
+            {
+                id: 20,
+                title: "Zukunftspläne",
+                subtitle: "Future Plans",
+                vocabulary: [
+                    { de: "die Zukunft", en: "future" },
+                    { de: "der Plan", en: "plan" },
+                    { de: "das Ziel", en: "goal" },
+                    { de: "hoffen", en: "to hope" },
+                    { de: "träumen", en: "to dream" },
+                    { de: "vorhaben", en: "to intend/plan to" },
+                    { de: "erreichen", en: "to achieve" },
+                    { de: "sich freuen auf", en: "to look forward to" }
+                ],
+                questions: [
+                    "Was sind deine Pläne für die Zukunft?",
+                    "Wo siehst du dich in 5 Jahren?",
+                    "Was ist dein größtes Ziel?",
+                    "Worauf freust du dich am meisten?",
+                    "Hast du einen Traum, den du erreichen möchtest?"
+                ],
+                statements: [
+                    "Jeder sollte klare Ziele im Leben haben.",
+                    "Die Zukunft ist wichtiger als die Vergangenheit.",
+                    "Ich mache mir oft Sorgen um die Zukunft.",
+                    "Träume können wahr werden.",
+                    "Ohne Plan kann man nicht erfolgreich sein."
+                ],
+                article: {
+                    title: "Junge Menschen blicken optimistisch in die Zukunft",
+                    content: "Eine neue Umfrage zeigt: Die meisten jungen Deutschen sind optimistisch. 65% glauben, dass ihre Zukunft gut wird. Viele planen zu studieren oder zu reisen. Die Sorge um Klimawandel bleibt aber groß."
+                }
+            }
+        ];
+
+        // Generate lesson buttons
+        function generateLessonButtons() {
+            const container = document.querySelector('#lessonSelection .grid');
+            lessons.forEach(lesson => {
+                const button = document.createElement('button');
+                button.className = 'lesson-card bg-primary hover:bg-blue-700 text-white font-semibold py-4 px-3 rounded-lg shadow-md';
+                button.innerHTML = `
+                    <div class="text-lg">Lektion ${lesson.id}</div>
+                    <div class="text-xs mt-1 opacity-90">${lesson.title}</div>
+                `;
+                button.onclick = () => loadLesson(lesson.id);
+                container.appendChild(button);
+            });
+        }
+
+        // Load a specific lesson
+        function loadLesson(lessonId) {
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+
+            // Update title
+            document.getElementById('lessonTitle').textContent = `Lektion ${lesson.id}: ${lesson.title}`;
+            document.getElementById('lessonSubtitle').textContent = lesson.subtitle;
+
+            // Update vocabulary
+            const vocabList = document.getElementById('vocabularyList');
+            vocabList.innerHTML = '';
+            lesson.vocabulary.forEach((vocab, index) => {
+                const item = document.createElement('div');
+                item.className = 'vocab-item bg-gray-50 dark:bg-gray-700 p-3 rounded-lg';
+                item.style.animationDelay = `${index * 0.05}s`;
+                item.innerHTML = `
+                    <div class="font-semibold text-primary">${vocab.de}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">${vocab.en}</div>
+                `;
+                vocabList.appendChild(item);
+            });
+
+            // Update questions
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            lesson.questions.forEach((question, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-gray-50 dark:bg-gray-700 p-3 rounded-lg';
+                item.innerHTML = `<div class="flex items-start"><span class="text-primary mr-2">❓</span><span>${question}</span></div>`;
+                questionsList.appendChild(item);
+            });
+
+            // Update statements
+            const statementsList = document.getElementById('statementsList');
+            statementsList.innerHTML = '';
+            lesson.statements.forEach((statement, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-gray-50 dark:bg-gray-700 p-3 rounded-lg';
+                item.innerHTML = `<div class="flex items-start"><span class="text-primary mr-2">💭</span><span>${statement}</span></div>`;
+                statementsList.appendChild(item);
+            });
+
+            // Update article
+            const articleContent = document.getElementById('articleContent');
+            articleContent.innerHTML = `
+                <h4 class="font-bold text-lg mb-3 text-gray-800 dark:text-gray-100">${lesson.article.title}</h4>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${lesson.article.content}</p>
+            `;
+
+            // Show lesson content, hide selection
+            document.getElementById('lessonSelection').classList.add('hidden');
+            document.getElementById('lessonContent').classList.remove('hidden');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show lesson selection
+        function showLessonSelection() {
+            document.getElementById('lessonSelection').classList.remove('hidden');
+            document.getElementById('lessonContent').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        generateLessonButtons();
+    </script>
+</body>
+                                                                                        </html>
