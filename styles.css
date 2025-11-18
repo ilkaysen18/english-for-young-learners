@@ -1,63 +1,162 @@
-/* Import Google Font */
-body {
+/* --------------------
+GLOBAL STYLES (CSS)
+-------------------- */
+* {
   margin: 0;
-  font-family: "Comic Neue", sans-serif;
-  background: linear-gradient(135deg, #f0f8ff, #e0eaff);
-  color: #333;
-  text-align: center;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* HEADER */
-header {
-  padding: 60px 20px;
-  background: #4a90e2;
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  color: #222;
+  padding-top: 70px; /* space for navbar */
+}
+
+/* --------------------
+NAVIGATION BAR
+-------------------- */
+nav {
+  width: 100%;
+  background: #1e1e1e;
   color: white;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-header h1 {
-  font-size: 2.4rem;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-/* CTA BUTTONS */
-.cta-buttons {
-  margin: 40px auto;
-  max-width: 600px;
+  padding: 15px 20px;
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
 }
 
-.cta-buttons a {
-  display: block;
-  padding: 15px;
-  background: #ffffff;
-  border-radius: 12px;
-  text-decoration: none;
-  color: #333;
-  font-size: 1.1rem;
+nav .logo {
+  font-size: 1.2rem;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: 0.2s ease-in-out;
 }
 
-.cta-buttons a:hover {
-  background: #4a90e2;
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li a {
   color: white;
-  transform: scale(1.03);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
-/* FOOTER */
-.footer {
-  margin-top: 50px;
-  padding: 20px;
-  font-size: 0.9rem;
-  color: #555;
+nav ul li a:hover {
+  opacity: 0.7;
 }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 3px;
+}
+
+/* Mobile Menu */
+@media (max-width: 800px) {
+  nav ul {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    background: #1e1e1e;
+    width: 200px;
+    height: 100vh;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    transition: 0.3s ease;
+  }
+
+  nav ul.open {
+    right: 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* --------------------
+FOOTER
+-------------------- */
+.footer {
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+  background: #1e1e1e;
+  color: white;
+  font-size: 0.9rem;
+}
+
+/* --------------------
+GLOWING WHATSAPP BUTTON
+-------------------- */
+#whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25d366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 9999;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0px #25d366; }
+  50% { box-shadow: 0 0 10px #25d366; }
+  100% { box-shadow: 0 0 0px #25d366; }
+}
+
+/* --------------------
+SCROLL TO TOP BUTTON
+-------------------- */
+#scroll-top-btn {
+  position: fixed;
+  bottom: 100px;
+  right: 25px;
+  width: 50px;
+  height: 50px;
+  background: black;
+  color: white;
+  font-size: 25px;
+  border-radius: 10px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 9000;
+}
+
+/* --------------------
+LANGUAGE SWITCHER
+-------------------- */
+.language-switcher select {
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+      }
