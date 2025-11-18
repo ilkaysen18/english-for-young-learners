@@ -1,0 +1,28 @@
+/* TOP OF PAGE --- IN THE CSS SECTION */
+
+<style>
+
+    /* FOOTER */
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted); /* grey text */
+      font-size: 13px;
+    }
+</style>
+
+
+
+
+/* BOTTOM OF PAGE --- RIGHT BEFORE THE SCRIPT SECTION ENDS */
+
+<script>
+
+  <footer>
+    © <span id="year"></span> English Training Hub — All Rights Reserved.
+  </footer>
+
+  <script>
+    // Auto-update year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
