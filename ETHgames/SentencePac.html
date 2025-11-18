@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentencePac - Learn Sentences While Playing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a1a2e;
+            --bg-medium: #16213e;
+            --bg-light: #0f3460;
+            --accent-yellow: #ffed4e;
+            --accent-pink: #ff6b9d;
+            --accent-cyan: #4ecdc4;
+            --accent-orange: #ff9800;
+            --text-light: #ffffff;
+            --text-dim: #a0a0a0;
+            --ghost-red: #ff0000;
+            --ghost-pink: #ffb8ff;
+            --ghost-cyan: #00ffff;
+            --ghost-orange: #ffb852;
+        }
+
+        .dark {
+            --bg-dark: #1a1a2e;
+            --bg-medium: #16213e;
+            --bg-light: #0f3460;
+            --text-light: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        html:not(.dark) {
+            --bg-dark: #f0f0f0;
+            --bg-medium: #ffffff;
+            --bg-light: #e0e0e0;
+            --text-light: #1a1a2e;
+            --text-dim: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                transparent 1px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 3px
+            );
+            z-index: 1000;
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% {
+                transform: translate(0);
+            }
+            92% {
+                transform: translate(-2px, 2px);
+            }
+            94% {
+                transform: translate(2px, -2px);
+            }
+            96% {
+                transform: translate(-2px, -2px);
+            }
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--accent-yellow);
+            text-shadow:
+                3px 3px 0 var(--accent-pink),
+                6px 6px 0 var(--accent-cyan);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 1100px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side-panel {
+                max-width: 600px;
+                margin: 0 auto;
+                width: 100%;
+            }
+        }
+
+        .side-panel {
+            background: var(--bg-medium);
+            border: 4px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(255, 237, 78, 0.3);
+        }
+
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
+            color: var(--accent-yellow);
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-pink);
+            padding-bottom: 10px;
+        }
+
+        .stat-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .stat-item {
+            background: var(--bg-light);
+            padding: 12px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+
+        .stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            color: var(--accent-yellow);
+        }
+
+        #game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #game-canvas {
+            border: 4px solid var(--accent-yellow);
+            background: var(--bg-medium);
+            box-shadow:
+                0 0 30px rgba(255, 237, 78, 0.5),
+                inset 0 0 20px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            font-family: 'Press Start 2P', cursive;
+            padding: 15px 25px;
+            font-size: 0.8rem;
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            border: 3px solid var(--accent-pink);
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0 var(--accent-pink);
+        }
+
+        button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--accent-pink);
+        }
+
+        button:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 var(--accent-pink);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--accent-cyan);
+            border-color: var(--accent-orange);
+            box-shadow: 4px 4px 0 var(--accent-orange);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 2px 2px 0 var(--accent-orange);
+        }
+
+        .sentence-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .sentence-list::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .sentence-list::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        .sentence-list::-webkit-scrollbar-thumb {
+            background: var(--accent-yellow);
+            border: 2px solid var(--bg-light);
+        }
+
+        .sentence-item {
+            background: var(--bg-light);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 4px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sentence-item.learned {
+            border-left-color: var(--accent-yellow);
+            background: linear-gradient(90deg, var(--bg-light) 0%, rgba(255, 237, 78, 0.1) 100%);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-medium);
+            border: 4px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 0 40px rgba(255, 237, 78, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--accent-pink);
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: var(--accent-yellow);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--accent-pink);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0 10px;
+            font-family: 'Press Start 2P', cursive;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--accent-orange);
+            transform: none;
+            box-shadow: none;
+        }
+
+        input, textarea {
+            font-family: 'VT323', monospace;
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border: 3px solid var(--accent-cyan);
+            background: var(--bg-light);
+            color: var(--text-light);
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 15px rgba(255, 237, 78, 0.3);
+        }
+
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 2px dashed var(--accent-cyan);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--accent-cyan);
+            border-top-color: var(--accent-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #ai-response {
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            min-height: 80px;
+            border: 2px solid var(--accent-cyan);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .game-over-modal {
+            text-align: center;
+        }
+
+        .game-over-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2rem;
+            color: var(--accent-pink);
+            margin-bottom: 30px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .touch-controls {
+            display: none;
+            grid-template-areas:
+                ". up ."
+                "left . right"
+                ". down .";
+            gap: 10px;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .touch-controls {
+                display: grid;
+            }
+        }
+
+        .touch-btn {
+            padding: 25px;
+            font-size: 1.8rem;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 70px;
+        }
+
+        .touch-btn.up { grid-area: up; }
+        .touch-btn.down { grid-area: down; }
+        .touch-btn.left { grid-area: left; }
+        .touch-btn.right { grid-area: right; }
+
+        .lives {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .life-icon {
+            width: 25px;
+            height: 25px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+            border: 2px solid var(--accent-pink);
+        }
+    </style>
+</head>
+<body>
+    <div class="scan-lines"></div>
+
+    <div class="container">
+        <header>
+            <h1>SENTENCEPAC</h1>
+            <p class="subtitle">Eat Dots. Learn Sentences.</p>
+        </header>
+
+        <div class="game-layout">
+            <div class="side-panel">
+                <h3 class="panel-title">Stats</h3>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">SCORE</span>
+                        <span class="stat-value" id="score">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">LEVEL</span>
+                        <span class="stat-value" id="level">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">LEARNED</span>
+                        <span class="stat-value" id="learned-count">0</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="stat-label" style="text-align: center; margin-bottom: 10px;">LIVES</div>
+                    <div class="lives" id="lives-display"></div>
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <h3 class="panel-title" style="font-size: 0.7rem;">Controls</h3>
+                    <div class="controls">
+                        <button id="start-btn">Start</button>
+                        <button id="pause-btn" disabled>Pause</button>
+                    </div>
+                    <div style="margin-top: 15px; text-align: center; font-size: 1.1rem; color: var(--text-dim); line-height: 1.8;">
+                        Arrow Keys<br>to Move
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-area">
+                <canvas id="game-canvas" width="560" height="620"></canvas>
+                <div class="controls">
+                    <button id="manage-btn" class="btn-secondary">Manage</button>
+                </div>
+                <div class="touch-controls">
+                    <button class="touch-btn up" id="touch-up">▲</button>
+                    <button class="touch-btn left" id="touch-left">◄</button>
+                    <button class="touch-btn right" id="touch-right">►</button>
+                    <button class="touch-btn down" id="touch-down">▼</button>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <h3 class="panel-title">Learned</h3>
+                <div id="learned-sentences" class="sentence-list">
+                    <p style="text-align: center; color: var(--text-dim); margin-top: 20px; font-size: 1.1rem;">
+                        Eat all dots to<br>learn sentences!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-modal" class="modal">
+        <div class="modal-content game-over-modal">
+            <h2 class="game-over-title">GAME OVER</h2>
+            <div class="stat-grid" style="max-width: 400px; margin: 0 auto 30px;">
+                <div class="stat-item">
+                    <span class="stat-label">FINAL SCORE</span>
+                    <span class="stat-value" id="final-score">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">LEVEL REACHED</span>
+                    <span class="stat-value" id="final-level">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">SENTENCES</span>
+                    <span class="stat-value" id="final-learned">0</span>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="restart-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="manage-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Sentences</h3>
+                <button class="close-btn" id="close-manage">×</button>
+            </div>
+
+            <div class="section">
+                <h4 class="section-title">Add Manually</h4>
+                <input type="text" id="new-sentence" placeholder="Enter a short sentence (e.g., 'The early bird catches the worm.')">
+                <button id="add-sentence-btn">Add Sentence</button>
+            </div>
+
+            <div class="section">
+                <h4 class="section-title">Generate with AI</h4>
+                <input type="text" id="ai-topic" placeholder="Topic (e.g., 'business idioms' or 'daily conversation')">
+                <input type="number" id="ai-count" placeholder="Number of sentences" value="10" min="5" max="30">
+                <button id="generate-btn">Generate</button>
+                <div id="ai-response"></div>
+            </div>
+
+            <div class="section">
+                <h4 class="section-title">Sentence Bank (<span id="bank-count">0</span> sentences)</h4>
+                <div id="sentence-bank" class="sentence-list" style="max-height: 250px;"></div>
+                <button id="clear-bank-btn" class="btn-secondary" style="width: 100%; margin-top: 15px;">Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Game Constants
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const TILE_SIZE = 20;
+        const MAZE_WIDTH = 28;
+        const MAZE_HEIGHT = 31;
+
+        // Simplified Pac-Man maze (0=wall, 1=dot, 2=power pellet, 3=empty, 4=ghost house)
+        const MAZE = [
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+            [0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0],
+            [0,2,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,2,0],
+            [0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0],
+            [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+            [0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0],
+            [0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0],
+            [0,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,0],
+            [0,0,0,0,0,0,1,0,0,0,0,0,3,0,0,3,0,0,0,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,0,0,0,0,0,3,0,0,3,0,0,0,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,0,0,3,3,3,3,3,3,3,3,3,3,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,0,0,3,0,0,0,4,4,0,0,0,3,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,0,0,3,0,4,4,4,4,4,4,0,3,0,0,1,0,0,0,0,0,0],
+            [3,3,3,3,3,3,1,3,3,3,0,4,4,4,4,4,4,0,3,3,3,1,3,3,3,3,3,3],
+            [0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,0,0,3,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,0,0,3,3,3,3,3,3,3,3,3,3,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,0,0,3,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,0,0,0,3,0,0,1,0,0,0,0,0,0],
+            [0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+            [0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0],
+            [0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0],
+            [0,2,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,2,0],
+            [0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0],
+            [0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0],
+            [0,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,1,0],
+            [0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
+            [0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
+            [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        ];
+
+        // Sentence Bank
+        let sentenceBank = [
+            "The early bird catches the worm.",
+            "Practice makes perfect.",
+            "Actions speak louder than words.",
+            "When in Rome, do as the Romans do.",
+            "Better late than never.",
+            "A picture is worth a thousand words.",
+            "Don't put all your eggs in one basket.",
+            "Time flies when you're having fun.",
+            "Knowledge is power.",
+            "The pen is mightier than the sword."
+        ];
+
+        let learnedSentences = [];
+        let currentSentence = null;
+
+        // Game State
+        let gameBoard = [];
+        let pacman = { x: 14, y: 23, direction: { x: 0, y: 0 }, nextDirection: { x: 0, y: 0 } };
+        let ghosts = [
+            { x: 13, y: 14, direction: { x: -1, y: 0 }, color: '#ff0000', mode: 'chase' },
+            { x: 14, y: 14, direction: { x: 1, y: 0 }, color: '#ffb8ff', mode: 'chase' },
+            { x: 13, y: 15, direction: { x: -1, y: 0 }, color: '#00ffff', mode: 'chase' },
+            { x: 14, y: 15, direction: { x: 1, y: 0 }, color: '#ffb852', mode: 'chase' }
+        ];
+        let score = 0;
+        let level = 1;
+        let lives = 3;
+        let gameRunning = false;
+        let gamePaused = false;
+        let powerMode = false;
+        let powerModeTimer = 0;
+        let animationFrame = 0;
+        let dotsRemaining = 0;
+
+        function initGame() {
+            gameBoard = MAZE.map(row => [...row]);
+            pacman = { x: 14, y: 23, direction: { x: 0, y: 0 }, nextDirection: { x: 0, y: 0 } };
+            ghosts = [
+                { x: 13, y: 14, direction: { x: -1, y: 0 }, color: '#ff0000', mode: 'chase', scatter: {x: 25, y: 0} },
+                { x: 14, y: 14, direction: { x: 1, y: 0 }, color: '#ffb8ff', mode: 'chase', scatter: {x: 2, y: 0} },
+                { x: 13, y: 15, direction: { x: -1, y: 0 }, color: '#00ffff', mode: 'chase', scatter: {x: 27, y: 30} },
+                { x: 14, y: 15, direction: { x: 1, y: 0 }, color: '#ffb852', mode: 'chase', scatter: {x: 0, y: 30} }
+            ];
+            dotsRemaining = gameBoard.flat().filter(cell => cell === 1 || cell === 2).length;
+            currentSentence = sentenceBank[Math.floor(Math.random() * sentenceBank.length)];
+            updateStats();
+        }
+
+        function drawMaze() {
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-medium');
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let y = 0; y < MAZE_HEIGHT; y++) {
+                for (let x = 0; x < MAZE_WIDTH; x++) {
+                    const cell = gameBoard[y][x];
+                    const px = x * TILE_SIZE;
+                    const py = y * TILE_SIZE;
+
+                    if (cell === 0) {
+                        // Wall
+                        ctx.fillStyle = '#0f3460';
+                        ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                        ctx.strokeStyle = '#4ecdc4';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(px + 1, py + 1, TILE_SIZE - 2, TILE_SIZE - 2);
+                    } else if (cell === 1) {
+                        // Dot
+                        ctx.fillStyle = '#ffed4e';
+                        ctx.beginPath();
+                        ctx.arc(px + TILE_SIZE / 2, py + TILE_SIZE / 2, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (cell === 2) {
+                        // Power pellet
+                        const pulse = Math.sin(animationFrame * 0.1) * 0.3 + 0.7;
+                        ctx.fillStyle = `rgba(255, 237, 78, ${pulse})`;
+                        ctx.beginPath();
+                        ctx.arc(px + TILE_SIZE / 2, py + TILE_SIZE / 2, 5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+        }
+
+        function drawPacman() {
+            const px = pacman.x * TILE_SIZE + TILE_SIZE / 2;
+            const py = pacman.y * TILE_SIZE + TILE_SIZE / 2;
+
+            let angle = 0;
+            if (pacman.direction.x === 1) angle = 0;
+            else if (pacman.direction.x === -1) angle = Math.PI;
+            else if (pacman.direction.y === 1) angle = Math.PI / 2;
+            else if (pacman.direction.y === -1) angle = -Math.PI / 2;
+
+            const mouthOpen = Math.sin(animationFrame * 0.3) > 0;
+            const mouthAngle = mouthOpen ? 0.3 : 0.1;
+
+            ctx.fillStyle = '#ffed4e';
+            ctx.beginPath();
+            ctx.arc(px, py, TILE_SIZE / 2 - 2, angle + mouthAngle, angle + (Math.PI * 2) - mouthAngle);
+            ctx.lineTo(px, py);
+            ctx.fill();
+        }
+
+        function drawGhosts() {
+            ghosts.forEach(ghost => {
+                const px = ghost.x * TILE_SIZE + TILE_SIZE / 2;
+                const py = ghost.y * TILE_SIZE + TILE_SIZE / 2;
+
+                if (powerMode && ghost.mode === 'frightened') {
+                    ctx.fillStyle = '#2b2bff';
+                } else {
+                    ctx.fillStyle = ghost.color;
+                }
+
+                // Body
+                ctx.beginPath();
+                ctx.arc(px, py - 3, TILE_SIZE / 2 - 2, Math.PI, 0);
+                ctx.lineTo(px + TILE_SIZE / 2 - 2, py + TILE_SIZE / 2 - 2);
+
+                // Wavy bottom
+                const wave = Math.sin(animationFrame * 0.2 + ghost.x) > 0 ? 3 : 0;
+                ctx.lineTo(px + 4, py + TILE_SIZE / 2 - 2 - wave);
+                ctx.lineTo(px, py + TILE_SIZE / 2 - 2);
+                ctx.lineTo(px - 4, py + TILE_SIZE / 2 - 2 - wave);
+                ctx.lineTo(px - TILE_SIZE / 2 + 2, py + TILE_SIZE / 2 - 2);
+                ctx.closePath();
+                ctx.fill();
+
+                // Eyes
+                if (!powerMode || ghost.mode !== 'frightened') {
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(px - 5, py - 6, 4, 5);
+                    ctx.fillRect(px + 1, py - 6, 4, 5);
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(px - 4 + (ghost.direction.x * 2), py - 5 + (ghost.direction.y * 2), 2, 3);
+                    ctx.fillRect(px + 2 + (ghost.direction.x * 2), py - 5 + (ghost.direction.y * 2), 2, 3);
+                }
+            });
+        }
+
+        function canMove(x, y) {
+            if (x < 0 || x >= MAZE_WIDTH || y < 0 || y >= MAZE_HEIGHT) return false;
+            const cell = gameBoard[y][x];
+            return cell !== 0;
+        }
+
+        function updatePacman() {
+            // Try to change direction
+            const nextX = pacman.x + pacman.nextDirection.x;
+            const nextY = pacman.y + pacman.nextDirection.y;
+            if (canMove(nextX, nextY)) {
+                pacman.direction = { ...pacman.nextDirection };
+            }
+
+            // Move in current direction
+            const newX = pacman.x + pacman.direction.x;
+            const newY = pacman.y + pacman.direction.y;
+
+            if (canMove(newX, newY)) {
+                pacman.x = newX;
+                pacman.y = newY;
+
+                // Tunnel wrap
+                if (pacman.x < 0) pacman.x = MAZE_WIDTH - 1;
+                if (pacman.x >= MAZE_WIDTH) pacman.x = 0;
+
+                // Collect dots
+                const cell = gameBoard[pacman.y][pacman.x];
+                if (cell === 1) {
+                    gameBoard[pacman.y][pacman.x] = 3;
+                    score += 10;
+                    dotsRemaining--;
+                } else if (cell === 2) {
+                    gameBoard[pacman.y][pacman.x] = 3;
+                    score += 50;
+                    dotsRemaining--;
+                    activatePowerMode();
+                }
+
+                if (dotsRemaining === 0) {
+                    levelComplete();
+                }
+            }
+        }
+
+        function updateGhosts() {
+            ghosts.forEach(ghost => {
+                if (animationFrame % 8 !== 0) return; // Ghosts move slower
+
+                const possibleDirections = [
+                    { x: 0, y: -1 },
+                    { x: 0, y: 1 },
+                    { x: -1, y: 0 },
+                    { x: 1, y: 0 }
+                ].filter(dir => {
+                    const newX = ghost.x + dir.x;
+                    const newY = ghost.y + dir.y;
+                    // Don't reverse and check if valid
+                    return !(dir.x === -ghost.direction.x && dir.y === -ghost.direction.y) && canMove(newX, newY);
+                });
+
+                if (possibleDirections.length > 0) {
+                    let bestDir;
+                    if (ghost.mode === 'frightened') {
+                        // Random movement when frightened
+                        bestDir = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
+                    } else {
+                        // Chase pacman or scatter
+                        const targetX = ghost.mode === 'scatter' ? ghost.scatter.x : pacman.x;
+                        const targetY = ghost.mode === 'scatter' ? ghost.scatter.y : pacman.y;
+
+                        let minDist = Infinity;
+                        possibleDirections.forEach(dir => {
+                            const newX = ghost.x + dir.x;
+                            const newY = ghost.y + dir.y;
+                            const dist = Math.sqrt((newX - targetX) ** 2 + (newY - targetY) ** 2);
+                            if (dist < minDist) {
+                                minDist = dist;
+                                bestDir = dir;
+                            }
+                        });
+                    }
+
+                    ghost.direction = bestDir;
+                    ghost.x += bestDir.x;
+                    ghost.y += bestDir.y;
+
+                    // Tunnel wrap
+                    if (ghost.x < 0) ghost.x = MAZE_WIDTH - 1;
+                    if (ghost.x >= MAZE_WIDTH) ghost.x = 0;
+                }
+            });
+        }
+
+        function checkCollisions() {
+            ghosts.forEach(ghost => {
+                if (ghost.x === pacman.x && ghost.y === pacman.y) {
+                    if (powerMode && ghost.mode === 'frightened') {
+                        score += 200;
+                        ghost.x = 13 + Math.floor(Math.random() * 2);
+                        ghost.y = 14;
+                        ghost.mode = 'chase';
+                    } else if (ghost.mode !== 'eaten') {
+                        loseLife();
+                    }
+                }
+            });
+        }
+
+        function activatePowerMode() {
+            powerMode = true;
+            powerModeTimer = 200; // About 6 seconds at 30fps
+            ghosts.forEach(g => {
+                if (g.mode === 'chase' || g.mode === 'scatter') {
+                    g.mode = 'frightened';
+                }
+            });
+        }
+
+        function loseLife() {
+            lives--;
+            updateStats();
+
+            if (lives <= 0) {
+                gameOver();
+            } else {
+                // Reset positions
+                pacman.x = 14;
+                pacman.y = 23;
+                pacman.direction = { x: 0, y: 0 };
+                ghosts.forEach((g, i) => {
+                    g.x = 13 + (i % 2);
+                    g.y = 14 + Math.floor(i / 2);
+                    g.mode = 'chase';
+                });
+                powerMode = false;
+            }
+        }
+
+        function levelComplete() {
+            learnedSentences.push(currentSentence);
+            level++;
+            updateLearnedDisplay();
+            initGame();
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('final-level').textContent = level;
+            document.getElementById('final-learned').textContent = learnedSentences.length;
+            document.getElementById('game-over-modal').style.display = 'flex';
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = true;
+        }
+
+        function gameLoop() {
+            if (!gameRunning || gamePaused) return;
+
+            animationFrame++;
+
+            if (animationFrame % 6 === 0) { // Slower pace
+                updatePacman();
+                checkCollisions();
+            }
+
+            updateGhosts();
+            checkCollisions();
+
+            if (powerMode) {
+                powerModeTimer--;
+                if (powerModeTimer <= 0) {
+                    powerMode = false;
+                    ghosts.forEach(g => {
+                        if (g.mode === 'frightened') {
+                            g.mode = 'chase';
+                        }
+                    });
+                }
+            }
+
+            // Mode switching (scatter/chase)
+            if (animationFrame % 400 === 0) {
+                ghosts.forEach(g => {
+                    if (g.mode === 'chase') g.mode = 'scatter';
+                    else if (g.mode === 'scatter') g.mode = 'chase';
+                });
+            }
+
+            drawMaze();
+            drawPacman();
+            drawGhosts();
+            updateStats();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            score = 0;
+            level = 1;
+            lives = 3;
+            learnedSentences = [];
+            animationFrame = 0;
+            powerMode = false;
+            initGame();
+
+            gameRunning = true;
+            gamePaused = false;
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('pause-btn').disabled = false;
+            document.getElementById('game-over-modal').style.display = 'none';
+
+            gameLoop();
+        }
+
+        function pauseGame() {
+            gamePaused = !gamePaused;
+            document.getElementById('pause-btn').textContent = gamePaused ? 'Resume' : 'Pause';
+            if (!gamePaused) {
+                gameLoop();
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('level').textContent = level;
+            document.getElementById('learned-count').textContent = learnedSentences.length;
+
+            const livesDisplay = document.getElementById('lives-display');
+            livesDisplay.innerHTML = '';
+            for (let i = 0; i < lives; i++) {
+                const life = document.createElement('div');
+                life.className = 'life-icon';
+                livesDisplay.appendChild(life);
+            }
+        }
+
+        function updateLearnedDisplay() {
+            const container = document.getElementById('learned-sentences');
+            if (learnedSentences.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-dim); margin-top: 20px; font-size: 1.1rem;">Eat all dots to<br>learn sentences!</p>';
+            } else {
+                container.innerHTML = learnedSentences.map(s =>
+                    `<div class="sentence-item learned">${s}</div>`
+                ).join('');
+            }
+        }
+
+        function updateSentenceBank() {
+            const container = document.getElementById('sentence-bank');
+            const count = document.getElementById('bank-count');
+            count.textContent = sentenceBank.length;
+
+            if (sentenceBank.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-dim);">No sentences</p>';
+            } else {
+                container.innerHTML = sentenceBank.map((s, i) =>
+                    `<div class="sentence-item" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="flex: 1;">${s}</span>
+                        <button onclick="removeSentence(${i})" style="padding: 5px 10px; font-size: 0.7rem; margin-left: 10px;">×</button>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        function removeSentence(index) {
+            sentenceBank.splice(index, 1);
+            updateSentenceBank();
+        }
+
+        // Controls
+        document.addEventListener('keydown', (e) => {
+            if (!gameRunning || gamePaused) return;
+
+            switch(e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    pacman.nextDirection = { x: 0, y: -1 };
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    pacman.nextDirection = { x: 0, y: 1 };
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    pacman.nextDirection = { x: -1, y: 0 };
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    pacman.nextDirection = { x: 1, y: 0 };
+                    break;
+            }
+        });
+
+        // Touch controls
+        document.getElementById('touch-up').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) pacman.nextDirection = { x: 0, y: -1 };
+        });
+        document.getElementById('touch-down').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) pacman.nextDirection = { x: 0, y: 1 };
+        });
+        document.getElementById('touch-left').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) pacman.nextDirection = { x: -1, y: 0 };
+        });
+        document.getElementById('touch-right').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) pacman.nextDirection = { x: 1, y: 0 };
+        });
+
+        // Buttons
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('pause-btn').addEventListener('click', pauseGame);
+        document.getElementById('restart-btn').addEventListener('click', startGame);
+
+        document.getElementById('manage-btn').addEventListener('click', () => {
+            document.getElementById('manage-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-manage').addEventListener('click', () => {
+            document.getElementById('manage-modal').style.display = 'none';
+        });
+
+        document.getElementById('add-sentence-btn').addEventListener('click', () => {
+            const sentence = document.getElementById('new-sentence').value.trim();
+            if (sentence) {
+                sentenceBank.push(sentence);
+                updateSentenceBank();
+                document.getElementById('new-sentence').value = '';
+            }
+        });
+
+        document.getElementById('clear-bank-btn').addEventListener('click', () => {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div style="background: var(--bg-medium); padding: 30px; border-radius: 8px; max-width: 400px; text-align: center; border: 4px solid var(--accent-yellow);">
+                    <h3 style="color: var(--accent-pink); margin-bottom: 20px; font-family: 'Press Start 2P', cursive; font-size: 1rem;">Clear All?</h3>
+                    <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 1.1rem;">Remove all sentences?</p>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button id="confirm-clear">Yes</button>
+                        <button id="cancel-clear" class="btn-secondary">No</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            document.getElementById('confirm-clear').onclick = () => {
+                sentenceBank = [];
+                updateSentenceBank();
+                modal.remove();
+            };
+
+            document.getElementById('cancel-clear').onclick = () => {
+                modal.remove();
+            };
+        });
+
+        // AI Generation
+        document.getElementById('generate-btn').addEventListener('click', async () => {
+            const topic = document.getElementById('ai-topic').value.trim();
+            const count = parseInt(document.getElementById('ai-count').value) || 10;
+            const responseDiv = document.getElementById('ai-response');
+
+            if (!topic) {
+                responseDiv.innerHTML = '<p style="color: var(--accent-pink);">Please enter a topic</p>';
+                return;
+            }
+
+            if (!window.Poe) {
+                responseDiv.innerHTML = '<p style="color: var(--accent-pink);">AI only works on Poe</p>';
+                return;
+            }
+
+            responseDiv.innerHTML = '<div class="loading"></div> <span style="margin-left: 10px;">Generating...</span>';
+
+            const prompt = `Generate exactly ${count} short sentences (10-15 words each) related to "${topic}". These are for language learning. Provide ONLY raw JSON with no explanations, text, or code blocks (no \`\`\`). Format: ["sentence1","sentence2",...]`;
+
+            try {
+                window.Poe.registerHandler('sentence-handler', (result) => {
+                    const msg = result.responses[0];
+
+                    if (msg.status === 'error') {
+                        responseDiv.innerHTML = `<p style="color: var(--accent-pink);">Error: ${msg.statusText}</p>`;
+                    } else if (msg.status === 'complete') {
+                        try {
+                            let content = msg.content.trim();
+                            content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+
+                            const sentences = JSON.parse(content);
+
+                            if (Array.isArray(sentences) && sentences.length > 0) {
+                                sentences.forEach(s => {
+                                    if (s && typeof s === 'string') {
+                                        sentenceBank.push(s);
+                                    }
+                                });
+                                updateSentenceBank();
+                                responseDiv.innerHTML = `<p style="color: var(--accent-cyan);">✓ Added ${sentences.length} sentences!</p>`;
+                            } else {
+                                responseDiv.innerHTML = `<p style="color: var(--accent-pink);">Invalid format</p>`;
+                            }
+                        } catch (error) {
+                            responseDiv.innerHTML = `<p style="color: var(--accent-pink);">Parse error: ${error.message}</p>`;
+                        }
+                    }
+                });
+
+                await window.Poe.sendUserMessage(`@Claude-Sonnet-4.5 ${prompt}`, {
+                    handler: 'sentence-handler',
+                    stream: false,
+                    openChat: false
+                });
+            } catch (error) {
+                responseDiv.innerHTML = `<p style="color: var(--accent-pink);">Error: ${error.message}</p>`;
+            }
+        });
+
+        // Initialize
+        updateSentenceBank();
+        updateLearnedDisplay();
+        drawMaze();
+        drawPacman();
+        drawGhosts();
+        updateStats();
+    </script>
+</body>
+</html>
