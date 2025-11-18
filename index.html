@@ -32,6 +32,15 @@
   .nav{margin-top:20px;margin-bottom:20px;display:flex;flex-wrap:wrap;justify-content:center;}
   button{margin:10px;padding:10px 20px;background:#ffd34e;border:none;border-radius:10px;font-size:1em;cursor:pointer;box-shadow:0 3px 0 #e0a800;}
   button:hover{background:#ffe678;}
+
+  footer {
+    text-align: center;
+    padding: 25px 10px;
+    font-size: 0.9rem;
+    color: #1b1b1b;
+    background: #f5f5f5;
+    margin-top: 40px;
+  }
 </style>
 </head>
 <body>
@@ -55,5 +64,14 @@
 </button>
 </div>
 </script>
+
+<footer>
+  © <span id="year"></span> English Training Hub — All Rights Reserved.
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+         
 </body>
        </html>
