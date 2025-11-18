@@ -1,1 +1,906 @@
-.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English A2-B1 - 20 Lessons</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FFD700',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+    body {
+        font-family: sans-serif;
+    }
+
+    /* Lesson card hover effect */
+    .lesson-card {
+        transition: all 0.3s ease;
+        background: #fffdf5;
+        border: 3px solid transparent;
+        background-image: linear-gradient(#fffdf5, #fffdf5), linear-gradient(135deg, #F9D423, #1E90FF);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+    }
+    .lesson-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        background-image: linear-gradient(135deg, #F9D423, #1E90FF), linear-gradient(135deg, #F9D423, #1E90FF);
+    }
+
+    /* Vocabulary fade-in animation */
+    .vocab-item {
+        animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Smooth transition for dark mode elements */
+    .transition-colors {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    }
+    .rounded-lg {
+        border-radius: 0.75rem;
+    }
+
+    /* Primary color */
+    .text-primary {
+        color: #0a1f7a;
+    }
+    .bg-primary {
+        background: linear-gradient(135deg, #F9D423, #1E90FF);
+    }
+    </style>
+</head>
+<body class="bg-white dark:bg-[#181818] text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-primary text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <h1 class="text-3xl md:text-4xl font-bold text-center" style="color: #0a1f7a; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">🇬🇧 Learn English A2-B1</h1>
+                <p class="text-center mt-2" style="color: #f0f0f0;">20 Lessons for Intermediate English Learners</p>
+            </div>
+        </header>
+
+        <div class="container mx-auto px-4 py-8">
+            <!-- Lesson Selection -->
+            <div id="lessonSelection" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Choose a Lesson:</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    <!-- Lesson buttons will be generated here -->
+                </div>
+            </div>
+
+            <!-- Lesson Content -->
+            <div id="lessonContent" class="hidden">
+                <button onclick="showLessonSelection()" class="mb-6 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                    ← Back to Lessons
+                </button>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+                    <h2 id="lessonTitle" class="text-3xl font-bold mb-2 text-primary"></h2>
+                    <p id="lessonSubtitle" class="text-gray-600 dark:text-gray-400 mb-4"></p>
+                </div>
+
+                <!-- Vocabulary Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">📚</span> Vocabulary
+                    </h3>
+                    <div id="vocabularyList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Vocabulary items will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Conversational Questions -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">💬</span> Discussion Questions
+                    </h3>
+                    <div id="questionsList" class="space-y-3">
+                        <!-- Questions will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Agree/Disagree Statements -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">✓✗</span> Agree or Disagree
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Do you agree? Say "I agree" or "I disagree" and explain why.</p>
+                    <div id="statementsList" class="space-y-3">
+                        <!-- Statements will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- News Article -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-2xl font-semibold mb-4 flex items-center">
+                        <span class="text-2xl mr-2">📰</span> Reading Passage
+                    </h3>
+                    <div id="articleContent" class="prose dark:prose-invert max-w-none">
+                        <!-- Article will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode setup
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Lesson data
+        const lessons = [
+            {
+                id: 1,
+                title: "Greetings and Introductions",
+                subtitle: "Meeting People",
+                vocabulary: [
+                    { word: "greeting", def: "a polite word or sign of welcome" },
+                    { word: "introduce", def: "to tell someone your name or another person's name for the first time" },
+                    { word: "pleasure", def: "a feeling of happiness or enjoyment" },
+                    { word: "acquaintance", def: "a person you know but not very well" },
+                    { word: "handshake", def: "greeting someone by holding and shaking their hand" },
+                    { word: "polite", def: "showing good manners and respect" },
+                    { word: "formal", def: "official, serious, following rules" },
+                    { word: "casual", def: "relaxed and informal" }
+                ],
+                questions: [
+                    "How do you usually greet people in your country?",
+                    "What do you say when you meet someone for the first time?",
+                    "Do you prefer formal or informal greetings?",
+                    "How do you introduce yourself in English?",
+                    "What's the most common greeting in your culture?"
+                ],
+                statements: [
+                    "First impressions are very important when meeting new people.",
+                    "It's better to be too formal than too casual when meeting someone.",
+                    "A handshake is the best way to greet someone.",
+                    "Learning someone's name is the most important part of an introduction.",
+                    "In business, formal greetings are always necessary."
+                ],
+                article: {
+                    title: "Greetings Around the World",
+                    content: "Different cultures have different ways of greeting each other. In many Western countries, people shake hands when they meet. In Japan, people bow to show respect. In some Middle Eastern countries, people may kiss on both cheeks. In Thailand, people press their hands together and bow slightly. Understanding these cultural differences is important when traveling or doing international business. However, a smile is understood everywhere as a friendly greeting."
+                }
+            },
+            {
+                id: 2,
+                title: "Family and Relationships",
+                subtitle: "Talking About Family",
+                vocabulary: [
+                    { word: "relatives", def: "members of your family" },
+                    { word: "sibling", def: "a brother or sister" },
+                    { word: "extended family", def: "family beyond parents and children (aunts, uncles, cousins)" },
+                    { word: "close-knit", def: "having strong relationships with each other" },
+                    { word: "married", def: "legally joined as husband and wife" },
+                    { word: "single", def: "not married or in a relationship" },
+                    { word: "raise", def: "to take care of children until they are adults" },
+                    { word: "bond", def: "a strong connection between people" }
+                ],
+                questions: [
+                    "How big is your family?",
+                    "Do you have any siblings?",
+                    "How often do you see your relatives?",
+                    "What do you like to do with your family?",
+                    "Are you close to your extended family?"
+                ],
+                statements: [
+                    "Family is more important than friends.",
+                    "Big families are better than small families.",
+                    "Children should live with their parents until they get married.",
+                    "It's important to see your family every week.",
+                    "Siblings are your best friends for life."
+                ],
+                article: {
+                    title: "Modern Families Are Changing",
+                    content: "Families today look different than they did 50 years ago. Many families are smaller, with only one or two children. More people are choosing to live alone or get married later in life. Single-parent families and blended families are becoming more common. Despite these changes, family remains very important to most people. Studies show that people with strong family connections are usually happier and healthier."
+                }
+            },
+            {
+                id: 3,
+                title: "Daily Routines",
+                subtitle: "Everyday Activities",
+                vocabulary: [
+                    { word: "routine", def: "things you do regularly in the same order" },
+                    { word: "wake up", def: "to stop sleeping and become conscious" },
+                    { word: "get ready", def: "to prepare yourself for something" },
+                    { word: "commute", def: "to travel to work or school regularly" },
+                    { word: "productive", def: "doing or achieving a lot" },
+                    { word: "exhausted", def: "very tired" },
+                    { word: "unwind", def: "to relax after work or stress" },
+                    { word: "schedule", def: "a plan of activities or tasks" }
+                ],
+                questions: [
+                    "What time do you usually wake up?",
+                    "What's the first thing you do in the morning?",
+                    "How do you commute to work or school?",
+                    "What do you do to relax in the evening?",
+                    "Do you have the same routine every day?"
+                ],
+                statements: [
+                    "Having a regular routine is important for success.",
+                    "I'm more productive in the morning than in the evening.",
+                    "Everyone should wake up before 7 a.m.",
+                    "Routines make life boring.",
+                    "It's important to have time to relax every day."
+                ],
+                article: {
+                    title: "The Power of Morning Routines",
+                    content: "Many successful people say that a good morning routine is the key to a productive day. Experts recommend waking up at the same time every day, even on weekends. Starting the day with exercise, a healthy breakfast, and planning can improve your mood and energy. However, everyone is different. Some people are 'morning people' who feel energetic early, while others are 'night owls' who work better in the evening. The most important thing is to find a routine that works for you."
+                }
+            },
+            {
+                id: 4,
+                title: "Food and Dining",
+                subtitle: "Meals and Eating Habits",
+                vocabulary: [
+                    { word: "cuisine", def: "a style of cooking from a particular country" },
+                    { word: "portion", def: "the amount of food for one person" },
+                    { word: "nutritious", def: "having substances that help your body stay healthy" },
+                    { word: "appetite", def: "the feeling of wanting to eat" },
+                    { word: "savory", def: "salty or spicy rather than sweet" },
+                    { word: "craving", def: "a strong desire for a particular food" },
+                    { word: "recipe", def: "instructions for cooking a dish" },
+                    { word: "leftovers", def: "food that remains after a meal" }
+                ],
+                questions: [
+                    "What's your favorite type of cuisine?",
+                    "Do you prefer cooking at home or eating out?",
+                    "What did you eat for breakfast today?",
+                    "Are you a picky eater or do you try everything?",
+                    "How often do you eat fast food?"
+                ],
+                statements: [
+                    "Breakfast is the most important meal of the day.",
+                    "Fast food is always unhealthy.",
+                    "Everyone should know how to cook.",
+                    "Eating together as a family is very important.",
+                    "Organic food is worth the extra cost."
+                ],
+                article: {
+                    title: "Plant-Based Diets on the Rise",
+                    content: "More and more people around the world are choosing vegetarian and vegan diets. Health and environmental concerns are the main reasons for this change. Studies show that eating less meat can reduce the risk of heart disease and help the environment. Supermarkets now offer many plant-based alternatives to meat and dairy products. While some people give up meat completely, others are trying 'flexitarian' diets, where they eat meat only occasionally."
+                }
+            },
+            {
+                id: 5,
+                title: "Shopping",
+                subtitle: "Buying and Spending",
+                vocabulary: [
+                    { word: "bargain", def: "something bought for less than the usual price" },
+                    { word: "receipt", def: "a piece of paper that proves you paid for something" },
+                    { word: "refund", def: "money returned to you when you return something" },
+                    { word: "discount", def: "a reduction in the usual price" },
+                    { word: "cashier", def: "a person who takes payment in a store" },
+                    { word: "browse", def: "to look at things in a store without planning to buy" },
+                    { word: "impulse buy", def: "something bought suddenly without planning" },
+                    { word: "value for money", def: "worth the price you pay" }
+                ],
+                questions: [
+                    "Where do you usually do your shopping?",
+                    "Do you prefer shopping online or in stores?",
+                    "How often do you go shopping?",
+                    "Do you like looking for bargains and discounts?",
+                    "What was the last thing you bought?"
+                ],
+                statements: [
+                    "Online shopping is better than shopping in physical stores.",
+                    "I always look for the cheapest option.",
+                    "Shopping is a waste of time.",
+                    "Expensive products are always better quality.",
+                    "I only buy what I really need."
+                ],
+                article: {
+                    title: "The Growth of Online Shopping",
+                    content: "Online shopping continues to grow rapidly around the world. People love the convenience of shopping from home and having items delivered to their door. Many traditional stores are struggling as more customers shop online. However, some people still prefer physical stores where they can see and touch products before buying. To survive, many stores now offer both online and in-store options, called 'omnichannel' shopping."
+                }
+            },
+            {
+                id: 6,
+                title: "Housing and Home",
+                subtitle: "Where We Live",
+                vocabulary: [
+                    { word: "accommodation", def: "a place to live or stay" },
+                    { word: "landlord", def: "a person who owns property that others rent" },
+                    { word: "tenant", def: "a person who pays rent to live in a property" },
+                    { word: "mortgage", def: "a loan to buy a house" },
+                    { word: "cozy", def: "comfortable and warm" },
+                    { word: "spacious", def: "having a lot of space" },
+                    { word: "neighborhood", def: "an area of a town or city" },
+                    { word: "utilities", def: "services like water, electricity, and gas" }
+                ],
+                questions: [
+                    "Do you live in a house or an apartment?",
+                    "How many rooms does your home have?",
+                    "Do you prefer living in the city or the countryside?",
+                    "Is your neighborhood quiet or busy?",
+                    "Would you like to own your own home someday?"
+                ],
+                statements: [
+                    "Owning a home is better than renting.",
+                    "Everyone needs at least two bedrooms.",
+                    "It's important to know your neighbors well.",
+                    "Living in the city is better than living in the country.",
+                    "A garden is essential for a good home."
+                ],
+                article: {
+                    title: "Housing Prices Continue to Rise",
+                    content: "House prices in many major cities are becoming unaffordable for average workers. Young people especially are finding it difficult to buy their first home. As a result, more people are renting for longer, and some are choosing to live with family to save money. Governments in many countries are trying to build more affordable housing, but demand continues to exceed supply. Experts predict that housing will remain expensive in popular cities for years to come."
+                }
+            },
+            {
+                id: 7,
+                title: "Work and Career",
+                subtitle: "Jobs and Employment",
+                vocabulary: [
+                    { word: "profession", def: "a type of job that needs special training" },
+                    { word: "employee", def: "a person who works for someone else" },
+                    { word: "employer", def: "a person or company that pays people to work" },
+                    { word: "salary", def: "fixed regular payment for work" },
+                    { word: "promotion", def: "a move to a better job in the same company" },
+                    { word: "resign", def: "to leave your job voluntarily" },
+                    { word: "shift", def: "a period of work time" },
+                    { word: "colleague", def: "a person you work with" }
+                ],
+                questions: [
+                    "What kind of work do you do?",
+                    "How many hours do you work per week?",
+                    "Do you enjoy your job?",
+                    "What's your dream job?",
+                    "Do you prefer working alone or in a team?"
+                ],
+                statements: [
+                    "Money is more important than job satisfaction.",
+                    "Working from home is better than working in an office.",
+                    "Everyone should follow their passion when choosing a career.",
+                    "Working 40 hours a week is too much.",
+                    "A good education guarantees a good job."
+                ],
+                article: {
+                    title: "Remote Work Is Here to Stay",
+                    content: "The pandemic changed how many people work. Remote work, once rare, is now common in many industries. Many employees love working from home because it saves commuting time and allows more flexibility. However, some people miss the social interaction of an office. Most companies are now offering hybrid options, where employees work some days at home and some days in the office. Experts believe this flexible approach is the future of work."
+                }
+            },
+            {
+                id: 8,
+                title: "Health and Wellness",
+                subtitle: "Staying Healthy",
+                vocabulary: [
+                    { word: "symptom", def: "a sign that you have an illness" },
+                    { word: "recovery", def: "the process of becoming well again" },
+                    { word: "medication", def: "medicine to treat an illness" },
+                    { word: "checkup", def: "a medical examination to check your health" },
+                    { word: "prescription", def: "a written order from a doctor for medicine" },
+                    { word: "fitness", def: "the condition of being physically strong" },
+                    { word: "immune system", def: "the body's defense against illness" },
+                    { word: "wellness", def: "the state of being healthy and happy" }
+                ],
+                questions: [
+                    "How do you stay healthy?",
+                    "How often do you visit the doctor?",
+                    "Do you get enough sleep?",
+                    "What do you do when you're sick?",
+                    "Do you take vitamins or supplements?"
+                ],
+                statements: [
+                    "Health is more important than wealth.",
+                    "I only go to the doctor when I'm very sick.",
+                    "Everyone needs at least 8 hours of sleep.",
+                    "Stress causes many health problems.",
+                    "Exercise is the best medicine."
+                ],
+                article: {
+                    title: "Mental Health Awareness Grows",
+                    content: "More people are talking about mental health today than ever before. Depression, anxiety, and stress affect millions of people worldwide. The good news is that society is becoming more understanding, and more people are seeking help. Experts recommend regular exercise, good sleep, healthy eating, and social connections to maintain good mental health. Many companies now offer mental health support to their employees. Remember: taking care of your mind is just as important as taking care of your body."
+                }
+            },
+            {
+                id: 9,
+                title: "Hobbies and Free Time",
+                subtitle: "Leisure Activities",
+                vocabulary: [
+                    { word: "pastime", def: "an activity you do for enjoyment in your free time" },
+                    { word: "pursue", def: "to continue doing an activity or hobby" },
+                    { word: "leisure", def: "time when you're not working" },
+                    { word: "recreation", def: "activities done for enjoyment" },
+                    { word: "enthusiast", def: "a person who is very interested in something" },
+                    { word: "craft", def: "an activity involving making things by hand" },
+                    { word: "unwind", def: "to relax and stop worrying" },
+                    { word: "engage in", def: "to take part in an activity" }
+                ],
+                questions: [
+                    "What do you do in your free time?",
+                    "What hobbies do you have?",
+                    "Do you play any musical instruments?",
+                    "How do you relax after work?",
+                    "Would you like to learn a new hobby?"
+                ],
+                statements: [
+                    "Hobbies are important for mental health.",
+                    "I have enough free time.",
+                    "Watching TV is a waste of time.",
+                    "Everyone should have at least one creative hobby.",
+                    "Sports are the best type of hobby."
+                ],
+                article: {
+                    title: "The Benefits of Having a Hobby",
+                    content: "Research shows that having hobbies can improve your health and happiness. Hobbies reduce stress, give you something to look forward to, and can help you meet new people. Popular hobbies include reading, gardening, cooking, and sports. Creative hobbies like painting, writing, or playing music are especially good for your brain. Experts recommend spending at least a few hours each week on activities you enjoy. A good hobby can make you feel more fulfilled and give your life more meaning."
+                }
+            },
+            {
+                id: 10,
+                title: "Travel and Transportation",
+                subtitle: "Getting Around",
+                vocabulary: [
+                    { word: "destination", def: "the place you are traveling to" },
+                    { word: "journey", def: "the act of traveling from one place to another" },
+                    { word: "itinerary", def: "a planned route or journey" },
+                    { word: "luggage", def: "bags and suitcases for traveling" },
+                    { word: "tourist", def: "a person traveling for pleasure" },
+                    { word: "public transport", def: "buses, trains, etc. that everyone can use" },
+                    { word: "commuter", def: "a person who travels to work regularly" },
+                    { word: "traffic jam", def: "a long line of vehicles that cannot move" }
+                ],
+                questions: [
+                    "How do you usually get to work or school?",
+                    "Do you use public transportation?",
+                    "What's your favorite way to travel long distances?",
+                    "Have you ever traveled abroad?",
+                    "What's the longest journey you've ever taken?"
+                ],
+                statements: [
+                    "Public transportation is better than driving a car.",
+                    "Everyone should own a car.",
+                    "Cycling is the best way to get around a city.",
+                    "Air travel is bad for the environment.",
+                    "Long journeys are more exciting than short trips."
+                ],
+                article: {
+                    title: "Electric Vehicles Become More Popular",
+                    content: "Electric cars are becoming more common on roads around the world. As concerns about climate change grow, many people are choosing electric vehicles instead of gasoline cars. Governments are encouraging this change by offering tax benefits and building more charging stations. Major car companies are investing billions in electric technology. Experts predict that by 2035, most new cars sold will be electric. This change will help reduce air pollution in cities and lower carbon emissions."
+                }
+            },
+            {
+                id: 11,
+                title: "Weather and Seasons",
+                subtitle: "Climate and Conditions",
+                vocabulary: [
+                    { word: "forecast", def: "a prediction of future weather" },
+                    { word: "temperature", def: "how hot or cold something is" },
+                    { word: "humidity", def: "the amount of water in the air" },
+                    { word: "breeze", def: "a light gentle wind" },
+                    { word: "drizzle", def: "light rain" },
+                    { word: "scorching", def: "very hot" },
+                    { word: "chilly", def: "cold enough to be uncomfortable" },
+                    { word: "mild", def: "not too hot or cold" }
+                ],
+                questions: [
+                    "What's the weather like today?",
+                    "Which season do you like best?",
+                    "Does weather affect your mood?",
+                    "What's the climate like in your country?",
+                    "Do you prefer hot or cold weather?"
+                ],
+                statements: [
+                    "Summer is the best season.",
+                    "Rainy days make me feel sad.",
+                    "Snow is beautiful but inconvenient.",
+                    "Climate change is the biggest problem we face.",
+                    "Every season has its own beauty."
+                ],
+                article: {
+                    title: "Extreme Weather Events Increase",
+                    content: "Scientists report that extreme weather is becoming more frequent due to climate change. Heatwaves, floods, droughts, and storms are affecting more people than ever before. Last year saw record-breaking temperatures in many countries. Weather patterns are becoming less predictable, making it harder for farmers and affecting food production. Experts warn that we must act now to reduce carbon emissions and prepare for more extreme weather in the future."
+                }
+            },
+            {
+                id: 12,
+                title: "Technology and Media",
+                subtitle: "Digital Life",
+                vocabulary: [
+                    { word: "device", def: "a piece of electronic equipment" },
+                    { word: "browse", def: "to look at information on the internet" },
+                    { word: "download", def: "to copy data from the internet to your device" },
+                    { word: "upload", def: "to send data from your device to the internet" },
+                    { word: "streaming", def: "watching or listening to media directly from the internet" },
+                    { word: "social media", def: "websites where people share content and communicate" },
+                    { word: "app", def: "a program for a smartphone or tablet" },
+                    { word: "cyber", def: "relating to computers and the internet" }
+                ],
+                questions: [
+                    "How much time do you spend on your phone daily?",
+                    "What apps do you use most often?",
+                    "Do you use social media? Which platforms?",
+                    "Could you live without the internet?",
+                    "How has technology changed your life?"
+                ],
+                statements: [
+                    "We spend too much time on our phones.",
+                    "Social media is harmful to society.",
+                    "Technology makes life easier.",
+                    "Children shouldn't have smartphones.",
+                    "I couldn't live without the internet."
+                ],
+                article: {
+                    title: "Screen Time Concerns Grow",
+                    content: "A new study shows that people spend an average of 7 hours per day looking at screens. This includes smartphones, computers, tablets, and TVs. Young people spend even more time online, mainly on social media and video platforms. Health experts are concerned about the effects of too much screen time, including sleep problems, eye strain, and reduced physical activity. Many recommend taking regular breaks from screens and spending more time outdoors and with family."
+                }
+            },
+            {
+                id: 13,
+                title: "Education and Learning",
+                subtitle: "Schools and Knowledge",
+                vocabulary: [
+                    { word: "curriculum", def: "the subjects studied in a school" },
+                    { word: "assignment", def: "a task given to students" },
+                    { word: "degree", def: "a qualification from a university" },
+                    { word: "graduate", def: "to complete a course of study" },
+                    { word: "tuition", def: "teaching or the money paid for teaching" },
+                    { word: "literacy", def: "the ability to read and write" },
+                    { word: "knowledge", def: "information and understanding" },
+                    { word: "scholarship", def: "money given to a student to pay for their studies" }
+                ],
+                questions: [
+                    "What subjects did you study at school?",
+                    "Do you enjoy learning new things?",
+                    "Have you been to university?",
+                    "What's the best way to learn a language?",
+                    "Would you like to study something new?"
+                ],
+                statements: [
+                    "Education is very important in life.",
+                    "Homework is necessary for learning.",
+                    "Everyone should go to university.",
+                    "Practical experience is more valuable than theory.",
+                    "Good grades guarantee success in life."
+                ],
+                article: {
+                    title: "Online Education Expands Rapidly",
+                    content: "Online learning has grown dramatically in recent years. Millions of people now take courses on the internet, from language learning to university degrees. Online education offers flexibility, allowing people to study at their own pace and from anywhere in the world. However, some educators worry that online learning lacks the personal interaction of traditional classrooms. Most experts believe the future will combine both online and in-person education for the best results."
+                }
+            },
+            {
+                id: 14,
+                title: "Sports and Fitness",
+                subtitle: "Physical Activity",
+                vocabulary: [
+                    { word: "athlete", def: "a person who is good at sports" },
+                    { word: "compete", def: "to try to win against others" },
+                    { word: "tournament", def: "a competition with many matches" },
+                    { word: "champion", def: "the winner of a competition" },
+                    { word: "workout", def: "a session of physical exercise" },
+                    { word: "endurance", def: "the ability to continue a physical activity" },
+                    { word: "opponent", def: "a person competing against you" },
+                    { word: "stamina", def: "the energy to do something for a long time" }
+                ],
+                questions: [
+                    "Do you play any sports?",
+                    "How often do you exercise?",
+                    "Do you watch sports on TV?",
+                    "What's your favorite sport?",
+                    "Do you prefer team sports or individual sports?"
+                ],
+                statements: [
+                    "Everyone should exercise every day.",
+                    "Football is the best sport in the world.",
+                    "Team sports teach better life skills than individual sports.",
+                    "Going to the gym is boring.",
+                    "Professional athletes earn too much money."
+                ],
+                article: {
+                    title: "Women's Sports Gain Recognition",
+                    content: "Women's sports are becoming more popular and receiving more media coverage than ever before. Attendance at women's sporting events has increased significantly in recent years. Major companies are investing more money in sponsoring female athletes. However, there is still a gap in prize money and salaries compared to men's sports. Activists continue to push for equal treatment and opportunities for women in all sports. The future looks bright as more young girls are inspired to play sports professionally."
+                }
+            },
+            {
+                id: 15,
+                title: "Environment and Nature",
+                subtitle: "Protecting Our Planet",
+                vocabulary: [
+                    { word: "pollution", def: "harmful substances in air, water, or land" },
+                    { word: "recycle", def: "to process used materials to make new products" },
+                    { word: "sustainable", def: "able to continue without harming the environment" },
+                    { word: "conservation", def: "protection of nature and wildlife" },
+                    { word: "biodiversity", def: "the variety of plant and animal life" },
+                    { word: "ecosystem", def: "all living things in an area and their environment" },
+                    { word: "renewable", def: "a resource that never runs out" },
+                    { word: "carbon footprint", def: "the amount of CO2 your activities produce" }
+                ],
+                questions: [
+                    "What do you do to protect the environment?",
+                    "Do you recycle at home?",
+                    "Are you worried about climate change?",
+                    "Do you buy eco-friendly products?",
+                    "How often do you spend time in nature?"
+                ],
+                statements: [
+                    "Everyone must do something to protect the environment.",
+                    "Recycling is very important.",
+                    "Climate change is the biggest problem of our time.",
+                    "I always separate my trash for recycling.",
+                    "Plastic should be banned completely."
+                ],
+                article: {
+                    title: "Countries Pledge Net Zero Emissions",
+                    content: "Many countries have committed to reaching net zero carbon emissions by 2050. This means balancing the carbon they produce with carbon removal from the atmosphere. To achieve this goal, countries must increase renewable energy sources like wind and solar power. They also need to reduce use of fossil fuels and protect forests. While progress is being made, scientists warn that countries must act faster to avoid the worst effects of climate change. Individual actions also matter - reducing waste, using less energy, and choosing sustainable products all help."
+                }
+            },
+            {
+                id: 16,
+                title: "Celebrations and Holidays",
+                subtitle: "Special Occasions",
+                vocabulary: [
+                    { word: "celebration", def: "a party or special event for a happy occasion" },
+                    { word: "tradition", def: "a custom passed down through generations" },
+                    { word: "festive", def: "relating to a celebration or festival" },
+                    { word: "ceremony", def: "a formal event for a special occasion" },
+                    { word: "gather", def: "to come together as a group" },
+                    { word: "commemorate", def: "to remember and honor someone or something" },
+                    { word: "reunion", def: "a meeting of people who haven't seen each other" },
+                    { word: "anniversary", def: "a date when something important happened" }
+                ],
+                questions: [
+                    "What's your favorite holiday?",
+                    "How do you celebrate your birthday?",
+                    "What traditions does your family have?",
+                    "Do you like giving or receiving gifts?",
+                    "What's the biggest celebration in your country?"
+                ],
+                statements: [
+                    "Christmas is the best holiday of the year.",
+                    "Traditions are important for culture.",
+                    "I don't enjoy celebrating my birthday.",
+                    "Spending time together is more important than gifts.",
+                    "Old traditions should be preserved."
+                ],
+                article: {
+                    title: "How People Celebrate Around the World",
+                    content: "Every culture has its own special celebrations and holidays. While some holidays like New Year's Day are celebrated globally, the way people celebrate varies greatly. In Spain, people eat 12 grapes at midnight on New Year's Eve for good luck. In India, the festival of Diwali celebrates the victory of light over darkness with fireworks and lamps. Understanding different cultural celebrations helps us appreciate the diversity of our world. Despite differences, most celebrations share common themes: gathering with loved ones, sharing food, and creating happy memories."
+                }
+            },
+            {
+                id: 17,
+                title: "Clothing and Fashion",
+                subtitle: "What We Wear",
+                vocabulary: [
+                    { word: "outfit", def: "a set of clothes worn together" },
+                    { word: "trendy", def: "very fashionable at the moment" },
+                    { word: "casual", def: "relaxed and informal style" },
+                    { word: "wardrobe", def: "all the clothes someone owns" },
+                    { word: "accessory", def: "an item worn to complement clothing" },
+                    { word: "fabric", def: "cloth or material" },
+                    { word: "pattern", def: "a repeated design on fabric" },
+                    { word: "style", def: "a way of dressing or designing" }
+                ],
+                questions: [
+                    "What kind of clothes do you like to wear?",
+                    "Do you follow fashion trends?",
+                    "Where do you buy your clothes?",
+                    "How often do you buy new clothes?",
+                    "What's your favorite piece of clothing?"
+                ],
+                statements: [
+                    "Fashion is important for first impressions.",
+                    "I only buy brand-name clothing.",
+                    "Comfortable clothes are better than fashionable ones.",
+                    "Fast fashion is bad for the environment.",
+                    "Second-hand clothes are a good choice."
+                ],
+                article: {
+                    title: "Sustainable Fashion Movement Grows",
+                    content: "More consumers are becoming aware of the environmental impact of the fashion industry. 'Fast fashion' - cheap, trendy clothes that are quickly replaced - creates huge amounts of waste. Many people are now choosing sustainable alternatives: buying second-hand clothes, choosing quality over quantity, and supporting brands that use eco-friendly materials and fair labor practices. Some people are even learning to repair and customize their existing clothes instead of buying new ones. This shift toward conscious consumption could help reduce the fashion industry's environmental footprint."
+                }
+            },
+            {
+                id: 18,
+                title: "Animals and Pets",
+                subtitle: "Our Animal Friends",
+                vocabulary: [
+                    { word: "pet", def: "an animal kept for companionship" },
+                    { word: "breed", def: "a type of animal" },
+                    { word: "adopt", def: "to take an animal into your home" },
+                    { word: "veterinarian", def: "an animal doctor" },
+                    { word: "wildlife", def: "animals living in nature" },
+                    { word: "endangered", def: "in danger of disappearing completely" },
+                    { word: "habitat", def: "the natural home of an animal" },
+                    { word: "domesticated", def: "tamed to live with humans" }
+                ],
+                questions: [
+                    "Do you have any pets?",
+                    "What's your favorite animal?",
+                    "Have you ever been to a zoo?",
+                    "Should wild animals be kept in zoos?",
+                    "Would you like to have a pet?"
+                ],
+                statements: [
+                    "Dogs are better pets than cats.",
+                    "Everyone should have a pet.",
+                    "Zoos are cruel to animals.",
+                    "Pets make people happier.",
+                    "Animals deserve the same rights as humans."
+                ],
+                article: {
+                    title: "Pet Ownership Increases Worldwide",
+                    content: "The number of pet owners has increased significantly in recent years. Dogs and cats remain the most popular pets, but people also keep birds, fish, rabbits, and other animals. Studies show that having a pet can reduce stress, lower blood pressure, and help people feel less lonely. During the pandemic, many people adopted pets for companionship. However, pet ownership is a big responsibility. Potential owners should carefully consider the time, money, and effort required before getting a pet."
+                }
+            },
+            {
+                id: 19,
+                title: "City Life vs Country Life",
+                subtitle: "Urban and Rural Living",
+                vocabulary: [
+                    { word: "urban", def: "relating to a city or town" },
+                    { word: "rural", def: "relating to the countryside" },
+                    { word: "metropolitan", def: "relating to a large city" },
+                    { word: "suburbs", def: "residential areas on the edge of a city" },
+                    { word: "infrastructure", def: "basic facilities like roads and utilities" },
+                    { word: "hustle and bustle", def: "busy, noisy activity" },
+                    { word: "peaceful", def: "quiet and calm" },
+                    { word: "convenience", def: "the quality of being easy and suitable" }
+                ],
+                questions: [
+                    "Do you prefer living in the city or countryside?",
+                    "What are the advantages of city life?",
+                    "Is your hometown quiet or busy?",
+                    "Would you like to live in a big city?",
+                    "What do you miss about country life?"
+                ],
+                statements: [
+                    "City life is better than country life.",
+                    "Big cities are too noisy and stressful.",
+                    "Living in the countryside is boring.",
+                    "The air quality is better in rural areas.",
+                    "Cities offer more opportunities."
+                ],
+                article: {
+                    title: "Young People Move to Cities",
+                    content: "Around the world, young people are leaving rural areas and moving to cities in search of better opportunities. Cities offer more jobs, better education, and more entertainment options. However, this trend is causing problems for both rural and urban areas. Small towns are losing population and struggling to maintain services, while cities become overcrowded with rising housing costs. Some countries are trying to encourage people to stay in rural areas by improving infrastructure and creating more local jobs."
+                }
+            },
+            {
+                id: 20,
+                title: "Future Plans and Dreams",
+                subtitle: "Looking Ahead",
+                vocabulary: [
+                    { word: "ambition", def: "a strong desire to achieve something" },
+                    { word: "goal", def: "something you want to achieve" },
+                    { word: "aspiration", def: "a hope or dream for the future" },
+                    { word: "intention", def: "a plan or purpose" },
+                    { word: "determination", def: "the quality of being committed to achieving something" },
+                    { word: "visualize", def: "to imagine something in your mind" },
+                    { word: "pursue", def: "to work toward achieving something" },
+                    { word: "accomplish", def: "to successfully complete something" }
+                ],
+                questions: [
+                    "What are your plans for the future?",
+                    "Where do you see yourself in 5 years?",
+                    "What's your biggest goal in life?",
+                    "What are you most looking forward to?",
+                    "Do you have a dream you want to achieve?"
+                ],
+                statements: [
+                    "Everyone should have clear goals in life.",
+                    "The future is more important than the past.",
+                    "I often worry about the future.",
+                    "Dreams can come true if you work hard.",
+                    "Without a plan, you cannot succeed."
+                ],
+                article: {
+                    title: "Young People Optimistic About Future",
+                    content: "A recent survey shows that most young people remain optimistic about their future despite global challenges. Many plan to pursue higher education, travel the world, and build meaningful careers. However, concerns about climate change, economic stability, and housing affordability are common. Financial security and work-life balance are top priorities for the younger generation. Unlike previous generations, many young people value experiences over material possessions and seek careers that align with their personal values rather than just high salaries."
+                }
+            }
+        ];
+
+        // Generate lesson buttons
+        function generateLessonButtons() {
+            const container = document.querySelector('#lessonSelection .grid');
+            lessons.forEach(lesson => {
+                const button = document.createElement('button');
+                button.className = 'lesson-card font-semibold py-4 px-3 rounded-lg shadow-md';
+                button.style.color = '#0a1f7a';
+                button.innerHTML = `
+                    <div class="text-lg">Lesson ${lesson.id}</div>
+                    <div class="text-xs mt-1 opacity-90">${lesson.title}</div>
+                `;
+                button.onclick = () => loadLesson(lesson.id);
+                container.appendChild(button);
+            });
+        }
+
+        // Load a specific lesson
+        function loadLesson(lessonId) {
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+
+            // Update title
+            document.getElementById('lessonTitle').textContent = `Lesson ${lesson.id}: ${lesson.title}`;
+            document.getElementById('lessonSubtitle').textContent = lesson.subtitle;
+
+            // Update vocabulary
+            const vocabList = document.getElementById('vocabularyList');
+            vocabList.innerHTML = '';
+            lesson.vocabulary.forEach((vocab, index) => {
+                const item = document.createElement('div');
+                item.className = 'vocab-item bg-gray-50 dark:bg-gray-700 p-3 rounded-lg';
+                item.style.animationDelay = `${index * 0.05}s`;
+                item.innerHTML = `
+                    <div class="font-semibold text-primary">${vocab.word}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">${vocab.def}</div>
+                `;
+                vocabList.appendChild(item);
+            });
+
+            // Update questions
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            lesson.questions.forEach((question, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-gray-50 dark:bg-gray-700 p-3 rounded-lg';
+                item.innerHTML = `<div class="flex items-start"><span class="text-primary mr-2">❓</span><span>${question}</span></div>`;
+                questionsList.appendChild(item);
+            });
+
+            // Update statements
+            const statementsList = document.getElementById('statementsList');
+            statementsList.innerHTML = '';
+            lesson.statements.forEach((statement, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-gray-50 dark:bg-gray-700 p-3 rounded-lg';
+                item.innerHTML = `<div class="flex items-start"><span class="text-primary mr-2">💭</span><span>${statement}</span></div>`;
+                statementsList.appendChild(item);
+            });
+
+            // Update article
+            const articleContent = document.getElementById('articleContent');
+            articleContent.innerHTML = `
+                <h4 class="font-bold text-lg mb-3 text-gray-800 dark:text-gray-100">${lesson.article.title}</h4>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${lesson.article.content}</p>
+            `;
+
+            // Show lesson content, hide selection
+            document.getElementById('lessonSelection').classList.add('hidden');
+            document.getElementById('lessonContent').classList.remove('hidden');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show lesson selection
+        function showLessonSelection() {
+            document.getElementById('lessonSelection').classList.remove('hidden');
+            document.getElementById('lessonContent').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        generateLessonButtons();
+    </script>
+</body>
+</html>
