@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>General English for Adults</title>
+<style>
+  :root{
+    --bg: #f6f7fb;
+    --card: #fffdf5;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --shadow: 0 6px 18px rgba(16,24,40,0.08);
+    --radius: 12px;
+    --text-primary: #0a1f7a;
+  }
+
+  body{
+    font-family:sans-serif;
+    margin:0;
+    background:linear-gradient(to bottom,#a7dfff,#f6faff);
+    text-align:center;
+    color:#333;
+    min-height:100vh;
+  }
+
+  header {
+    background: linear-gradient(135deg, #F9D423, #1E90FF);
+    padding: 26px 20px;
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    overflow: hidden;
+    position: relative;
+    opacity:0;
+    transform: translateY(-40px);
+    transition: transform 0.8s ease, opacity 0.8s ease;
+  }
+  header.visible {
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  header h1 {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #0a1f7a;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  header p {
+    font-size: 1rem;
+    color: #f0f0f0;
+    margin-top: 6px;
+  }
+
+  main{
+    max-width:600px;
+    margin:auto;
+    padding:1rem;
+  }
+
+  section{
+    display:none;
+    background:#fff;
+    margin:1rem auto;
+    padding:2rem 1rem;
+    border-radius:var(--radius);
+    box-shadow:0 6px 15px rgba(0,0,0,0.1);
+    opacity:0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  section.active{
+    display:block;
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  a.button{
+    display:inline-block;
+    margin:.5rem .3rem;
+    padding:.8rem 1.2rem;
+    background: #fffdf5;
+    color: var(--text-primary);
+    font-weight: bold;
+    text-decoration:none;
+    border-radius:var(--radius);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    border: 3px solid transparent;
+    background-image: linear-gradient(#fffdf5, #fffdf5), linear-gradient(135deg, #F9D423, #1E90FF);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  a.button:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    background-image: linear-gradient(135deg, #F9D423, #1E90FF), linear-gradient(135deg, #F9D423, #1E90FF);
+  }
+
+  h2{
+    color: var(--text-primary);
+    margin-top:0;
+  }
+
+  section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin: 0.8rem 0;
+  }
+
+  /* Responsive */
+  @media(max-width:500px){
+    header h1{ font-size:1.5rem; }
+    a.button{ padding:.6rem 1rem; font-size:0.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <h1>🌍 General English for Adults</h1>
+  <p>Everyday English through simple emoji lessons.</p>
+</header>
+
+<main>
+  <!-- COURSE PAGE -->
+  <section id="course" class="active">
+    <h2>Choose a Lesson 📘</h2>
+    <a href="#lesson1" class="button">Lesson 1 – Greetings 👋</a>
+    <a href="#lesson2" class="button">Lesson 2 – At a Café ☕</a>
+    <a href="#lesson3" class="button">Lesson 3 – Travel ✈️</a>
+    <a href="#lesson4" class="button">Lesson 4 – Work 💼</a>
+    <a href="#lesson5" class="button">Lesson 5 – Daily Routine ⏰</a>
+  </section>
+
+  <!-- LESSON 1 -->
+  <section id="lesson1">
+    <h2>Lesson 1 – Greetings 👋</h2>
+    <p>👋 Hello / Hi – Common greetings.</p>
+    <p>🙋‍♂️ How are you? – I'm good, thanks.</p>
+    <p>🤝 Nice to meet you! – A polite introduction.</p>
+    <a href="#course" class="button">⬅ Back to Course</a>
+    <a href="#lesson2" class="button">Next Lesson ➡</a>
+  </section>
+
+  <!-- LESSON 2 -->
+  <section id="lesson2">
+    <h2>Lesson 2 – At a Café ☕</h2>
+    <p>☕ I'd like a coffee, please.</p>
+    <p>🥐 Can I have a croissant?</p>
+    <p>💳 How much is it?</p>
+    <a href="#lesson1" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+    <a href="#lesson3" class="button">Next ➡</a>
+  </section>
+
+  <!-- LESSON 3 -->
+  <section id="lesson3">
+    <h2>Lesson 3 – Travel ✈️</h2>
+    <p>🧳 Where is the airport?</p>
+    <p>🗺️ I need a taxi to the hotel.</p>
+    <p>📸 Let's take some photos!</p>
+    <a href="#lesson2" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+    <a href="#lesson4" class="button">Next ➡</a>
+  </section>
+
+  <!-- LESSON 4 -->
+  <section id="lesson4">
+    <h2>Lesson 4 – Work 💼</h2>
+    <p>💬 I work as a teacher.</p>
+    <p>📅 I start work at 9 a.m.</p>
+    <p>🖥️ I use email and join meetings.</p>
+    <a href="#lesson3" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+    <a href="#lesson5" class="button">Next ➡</a>
+  </section>
+
+  <!-- LESSON 5 -->
+  <section id="lesson5">
+    <h2>Lesson 5 – Daily Routine ⏰</h2>
+    <p>🛏️ I wake up at 7 a.m.</p>
+    <p>🍳 I have breakfast and go to work.</p>
+    <p>📺 In the evening, I watch TV.</p>
+    <a href="#lesson4" class="button">⬅ Previous</a>
+    <a href="#course" class="button">Back to Course</a>
+  </section>
+</main>
+
+<script>
+  // Animate header
+  const header = document.getElementById('header');
+  setTimeout(()=>header.classList.add('visible'), 100);
+
+  const sections=document.querySelectorAll('section');
+  function showSection(id){
+    sections.forEach(s=>s.classList.remove('active'));
+    const active=document.querySelector(id);
+    if(active) {
+      active.classList.add('active');
+    }
+  }
+  window.addEventListener('hashchange',()=>showSection(location.hash||'#course'));
+  showSection(location.hash||'#course');
+</script>
+
+</body>
+</html>
