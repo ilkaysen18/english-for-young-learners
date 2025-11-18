@@ -50,8 +50,11 @@
 
 🚀
 
-#### 🔟 Course lesson content
+#### 🔟✅️ Course lesson content
 * new lessons added to the English course "Speaking with Pictures"
+#### 🔟✅️ Teachers Profiles 
+* teacher profiles page created - for students to book lessons directly through
+...
 #### 1️⃣1️⃣ Full CMS config with Google Cloud (using iFrame with Drive Docs)(rather than Firestore API)
 * update / recover CMS - under the "Tutors" button
 * Add a login-to-access further lessons button for each course
