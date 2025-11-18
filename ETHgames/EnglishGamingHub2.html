@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Gaming Hub - Learn English Through Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-yellow: #FFD93D;
+            --bright-yellow: #FFC700;
+            --dark-yellow: #F5B800;
+            --blue-accent: #2E86AB;
+            --dark-blue: #1B5E7F;
+            --text-dark: #2D3436;
+            --text-light: #636E72;
+            --success-green: #00D084;
+            --error-red: #FF6B6B;
+            --shadow: rgba(0, 0, 0, 0.15);
+            --shadow-hover: rgba(0, 0, 0, 0.25);
+        }
+
+        .dark {
+            --primary-yellow: #3A3A3A;
+            --bright-yellow: #4A4A4A;
+            --dark-yellow: #2A2A2A;
+            --blue-accent: #5DADE2;
+            --dark-blue: #3498DB;
+            --text-dark: #E8E8E8;
+            --text-light: #B8B8B8;
+            --shadow: rgba(255, 255, 255, 0.1);
+            --shadow-hover: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--primary-yellow);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--primary-yellow);
+            z-index: 100;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .logo-bar {
+            width: 40px;
+            height: 6px;
+            background: var(--blue-accent);
+            border-radius: 3px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .logo-bar:nth-child(2) {
+            width: 35px;
+            animation-delay: 0.1s;
+        }
+
+        .logo-bar:nth-child(3) {
+            width: 30px;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .logo-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .logo-text .english {
+            color: var(--blue-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 18px;
+        }
+
+        .logo-text .gaming-hub {
+            background: linear-gradient(135deg, var(--dark-blue), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic;
+            font-size: 26px;
+        }
+
+        .streak-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: var(--dark-blue);
+            backdrop-filter: blur(10px);
+        }
+
+        .streak-flame {
+            font-size: 24px;
+            animation: flicker 2s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            height: 28px;
+            overflow: hidden;
+            margin-bottom: 32px;
+            box-shadow: inset 0 2px 4px var(--shadow);
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success-green), #00F5A0);
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 0 15px rgba(0, 213, 132, 0.5);
+        }
+
+        .lessons-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 20px 0;
+        }
+
+        .lesson-item {
+            display: flex;
+            justify-content: center;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .lesson-item:nth-child(even) {
+            transform: translateX(40px);
+        }
+
+        .lesson-item:nth-child(odd) {
+            transform: translateX(-40px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .lesson-item:nth-child(1) { animation-delay: 0.1s; }
+        .lesson-item:nth-child(2) { animation-delay: 0.2s; }
+        .lesson-item:nth-child(3) { animation-delay: 0.3s; }
+        .lesson-item:nth-child(4) { animation-delay: 0.4s; }
+        .lesson-item:nth-child(5) { animation-delay: 0.5s; }
+        .lesson-item:nth-child(6) { animation-delay: 0.6s; }
+        .lesson-item:nth-child(7) { animation-delay: 0.7s; }
+        .lesson-item:nth-child(8) { animation-delay: 0.8s; }
+
+        .lesson-button {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 6px solid white;
+            background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+            box-shadow: 0 8px 20px var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .lesson-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px var(--shadow-hover);
+            border-color: var(--blue-accent);
+        }
+
+        .lesson-button:active {
+            transform: scale(0.95);
+        }
+
+        .lesson-button.completed::after {
+            content: '✓';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 40px;
+            height: 40px;
+            background: var(--success-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 213, 132, 0.4);
+        }
+
+        .lesson-button.locked {
+            opacity: 0.6;
+            filter: grayscale(100%);
+            cursor: not-allowed;
+        }
+
+        .lesson-button.locked::before {
+            content: '🔒';
+            position: absolute;
+            font-size: 32px;
+            z-index: 2;
+        }
+
+        .lesson-button[data-category="animals"] {
+            background: linear-gradient(135deg, #A8E6CF, #56AB91);
+        }
+
+        .lesson-button[data-category="food"] {
+            background: linear-gradient(135deg, #FFD93D, #FF8C42);
+        }
+
+        .lesson-button[data-category="colors"] {
+            background: linear-gradient(135deg, #FF6B9D, #C06C84, #6C5B7B, #355C7D);
+        }
+
+        .lesson-button[data-category="family"] {
+            background: linear-gradient(135deg, #FFB6B9, #FAE3D9);
+        }
+
+        .lesson-button[data-category="clothes"] {
+            background: linear-gradient(135deg, #B8E6E6, #6C99BB);
+        }
+
+        .lesson-button[data-category="numbers"] {
+            background: linear-gradient(135deg, #E8E8E8, #7F8C8D);
+        }
+
+        .lesson-button[data-category="transport"] {
+            background: linear-gradient(135deg, #FC5C65, #FD7272);
+        }
+
+        .lesson-button[data-category="emotions"] {
+            background: linear-gradient(135deg, #FEE140, #FA709A);
+        }
+
+        .keep-going-section {
+            margin-top: 60px;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeIn 1s ease-out 1s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .keep-going-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .keep-going-icon .logo-icon {
+            transform: scale(0.8);
+        }
+
+        .keep-going-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--dark-blue), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .coming-soon {
+            font-size: 20px;
+            color: var(--blue-accent);
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .lesson-label {
+            text-align: center;
+            margin-top: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-dark);
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Lesson View */
+        .lesson-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-yellow);
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .lesson-view.active {
+            display: block;
+        }
+
+        .lesson-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .back-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px var(--shadow-hover);
+        }
+
+        .lesson-progress-bar {
+            flex: 1;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .lesson-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-green), #00F5A0);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .question-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .question-type {
+            display: inline-block;
+            background: var(--blue-accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .question-instruction {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .question-image {
+            text-align: center;
+            margin: 32px 0;
+            font-size: 120px;
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .answer-options {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .answer-option {
+            background: white;
+            border: 4px solid transparent;
+            border-radius: 20px;
+            padding: 20px 24px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow);
+            text-align: center;
+        }
+
+        .dark .answer-option {
+            background: #2D3436;
+            color: var(--text-dark);
+        }
+
+        .answer-option:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+            border-color: var(--blue-accent);
+        }
+
+        .answer-option.selected {
+            border-color: var(--blue-accent);
+            background: rgba(46, 134, 171, 0.1);
+        }
+
+        .answer-option.correct {
+            border-color: var(--success-green);
+            background: rgba(0, 208, 132, 0.1);
+            animation: correctPulse 0.5s ease;
+        }
+
+        .answer-option.incorrect {
+            border-color: var(--error-red);
+            background: rgba(255, 107, 107, 0.1);
+            animation: incorrectShake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .check-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--success-green), #00F5A0);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 213, 132, 0.3);
+            font-family: 'Nunito', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .check-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 213, 132, 0.4);
+        }
+
+        .check-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 16px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.correct {
+            background: rgba(0, 208, 132, 0.2);
+            color: var(--success-green);
+            border: 3px solid var(--success-green);
+        }
+
+        .feedback.incorrect {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--error-red);
+            border: 3px solid var(--error-red);
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+
+        .word-tile {
+            background: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .dark .word-tile {
+            background: #2D3436;
+            color: var(--text-dark);
+        }
+
+        .word-tile:hover {
+            transform: translateY(-2px);
+            border-color: var(--blue-accent);
+        }
+
+        .word-tile.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .sentence-area {
+            min-height: 80px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            border: 3px dashed var(--blue-accent);
+        }
+
+        .sentence-word {
+            background: var(--blue-accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sentence-word:hover {
+            background: var(--dark-blue);
+            transform: scale(1.05);
+        }
+
+        .translation-input {
+            width: 100%;
+            padding: 20px;
+            border-radius: 16px;
+            border: 4px solid transparent;
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Nunito', sans-serif;
+            background: white;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+
+        .dark .translation-input {
+            background: #2D3436;
+            color: var(--text-dark);
+        }
+
+        .translation-input:focus {
+            outline: none;
+            border-color: var(--blue-accent);
+            box-shadow: 0 6px 20px var(--shadow-hover);
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .vocab-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 4px solid transparent;
+        }
+
+        .dark .vocab-card {
+            background: #2D3436;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        .vocab-card.selected {
+            border-color: var(--blue-accent);
+        }
+
+        .vocab-emoji {
+            font-size: 60px;
+            margin-bottom: 12px;
+        }
+
+        .vocab-word {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+
+        input, button {
+            font-size: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 24px;
+            }
+
+            .answer-option {
+                font-size: 18px;
+                padding: 16px 20px;
+            }
+
+            .question-image {
+                font-size: 100px;
+            }
+
+            .vocab-emoji {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="home-view">
+        <header class="header">
+            <div class="logo-container" onclick="goHome()">
+                <div class="logo-icon">
+                    <div class="logo-bar"></div>
+                    <div class="logo-bar"></div>
+                    <div class="logo-bar"></div>
+                </div>
+                <div class="logo-text">
+                    <div class="english">English</div>
+                    <div class="gaming-hub">gaming HUB</div>
+                </div>
+            </div>
+            <div class="streak-info">
+                <span class="streak-flame">🔥</span>
+                <span id="streak-count">0</span>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%">
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+
+            <div class="lessons-grid" id="lessons-grid"></div>
+
+            <div class="keep-going-section">
+                <div class="keep-going-icon">
+                    <div class="logo-icon">
+                        <div class="logo-bar"></div>
+                        <div class="logo-bar"></div>
+                        <div class="logo-bar"></div>
+                    </div>
+                </div>
+                <div class="keep-going-text">KEEP going</div>
+                <div class="coming-soon">more coming soon . . .</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-view" id="lesson-view">
+        <div class="lesson-header">
+            <button class="back-button" onclick="exitLesson()">←</button>
+            <div class="lesson-progress-bar">
+                <div class="lesson-progress-fill" id="lesson-progress-fill"></div>
+            </div>
+        </div>
+        <div class="question-container" id="question-container"></div>
+    </div>
+
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        const lessons = [
+            { id: 1, category: 'animals', emoji: '🐨', name: 'Animals', completed: false, locked: false },
+            { id: 2, category: 'food', emoji: '🍎', name: 'Food', completed: false, locked: false },
+            { id: 3, category: 'colors', emoji: '🎨', name: 'Colors', completed: false, locked: false },
+            { id: 4, category: 'family', emoji: '👨‍👩‍👧‍👦', name: 'Family', completed: false, locked: true },
+            { id: 5, category: 'clothes', emoji: '👔', name: 'Clothes', completed: false, locked: true },
+            { id: 6, category: 'numbers', emoji: '🔢', name: 'Numbers', completed: false, locked: true },
+            { id: 7, category: 'transport', emoji: '🚌', name: 'Transport', completed: false, locked: true },
+            { id: 8, category: 'emotions', emoji: '😊', name: 'Emotions', completed: false, locked: true }
+        ];
+
+        const lessonContent = {
+            animals: {
+                vocab: [
+                    { emoji: '🐕', word: 'dog', translation: 'perro' },
+                    { emoji: '🐈', word: 'cat', translation: 'gato' },
+                    { emoji: '🐘', word: 'elephant', translation: 'elefante' },
+                    { emoji: '🦁', word: 'lion', translation: 'león' },
+                    { emoji: '🐯', word: 'tiger', translation: 'tigre' },
+                    { emoji: '🐼', word: 'panda', translation: 'panda' }
+                ],
+                questions: [
+                    { type: 'vocab', emoji: '🐕', correctAnswer: 'dog', options: ['dog', 'cat', 'bird', 'fish'] },
+                    { type: 'translation', question: 'The cat is sleeping', correctAnswer: 'El gato está durmiendo', hint: 'cat = gato' },
+                    { type: 'multiple', question: 'Which animal is the king of the jungle?', correctAnswer: 'lion', options: ['dog', 'lion', 'cat', 'elephant'] },
+                    { type: 'sentence', prompt: 'I have a dog', words: ['I', 'have', 'a', 'dog', 'cat', 'like', 'is'] },
+                    { type: 'vocab', emoji: '🐘', correctAnswer: 'elephant', options: ['tiger', 'elephant', 'monkey', 'bear'] },
+                    { type: 'match', question: 'Match the animal to its name', pairs: [['🐕', 'dog'], ['🐈', 'cat'], ['🦁', 'lion']] }
+                ]
+            },
+            food: {
+                vocab: [
+                    { emoji: '🍎', word: 'apple', translation: 'manzana' },
+                    { emoji: '🍌', word: 'banana', translation: 'plátano' },
+                    { emoji: '🍞', word: 'bread', translation: 'pan' },
+                    { emoji: '🥛', word: 'milk', translation: 'leche' },
+                    { emoji: '🍕', word: 'pizza', translation: 'pizza' },
+                    { emoji: '🍔', word: 'burger', translation: 'hamburguesa' }
+                ],
+                questions: [
+                    { type: 'vocab', emoji: '🍎', correctAnswer: 'apple', options: ['apple', 'orange', 'banana', 'grape'] },
+                    { type: 'multiple', question: 'What do you drink in the morning?', correctAnswer: 'milk', options: ['pizza', 'burger', 'milk', 'apple'] },
+                    { type: 'sentence', prompt: 'I like pizza', words: ['I', 'like', 'pizza', 'eat', 'drink', 'is', 'the'] },
+                    { type: 'vocab', emoji: '🍌', correctAnswer: 'banana', options: ['apple', 'banana', 'bread', 'milk'] },
+                    { type: 'translation', question: 'I eat bread', correctAnswer: 'Yo como pan', hint: 'bread = pan' },
+                    { type: 'multiple', question: 'Which one is a fruit?', correctAnswer: 'apple', options: ['burger', 'pizza', 'apple', 'bread'] }
+                ]
+            },
+            colors: {
+                vocab: [
+                    { emoji: '🔴', word: 'red', translation: 'rojo' },
+                    { emoji: '🔵', word: 'blue', translation: 'azul' },
+                    { emoji: '🟢', word: 'green', translation: 'verde' },
+                    { emoji: '🟡', word: 'yellow', translation: 'amarillo' },
+                    { emoji: '🟠', word: 'orange', translation: 'naranja' },
+                    { emoji: '🟣', word: 'purple', translation: 'morado' }
+                ],
+                questions: [
+                    { type: 'vocab', emoji: '🔴', correctAnswer: 'red', options: ['red', 'blue', 'green', 'yellow'] },
+                    { type: 'multiple', question: 'What color is the sky?', correctAnswer: 'blue', options: ['red', 'blue', 'green', 'purple'] },
+                    { type: 'sentence', prompt: 'The apple is red', words: ['The', 'apple', 'is', 'red', 'blue', 'green', 'banana'] },
+                    { type: 'vocab', emoji: '🟢', correctAnswer: 'green', options: ['red', 'blue', 'green', 'yellow'] },
+                    { type: 'translation', question: 'The sun is yellow', correctAnswer: 'El sol es amarillo', hint: 'yellow = amarillo' },
+                    { type: 'multiple', question: 'What color is grass?', correctAnswer: 'green', options: ['red', 'blue', 'green', 'purple'] }
+                ]
+            }
+        };
+
+        let progressData = {
+            lessons: [],
+            streak: 0
+        };
+
+        let currentLesson = null;
+        let currentQuestionIndex = 0;
+        let selectedAnswer = null;
+        let sentenceWords = [];
+
+        function loadProgress() {
+            if (progressData.lessons.length > 0) {
+                progressData.lessons.forEach((savedLesson, index) => {
+                    if (lessons[index]) {
+                        lessons[index].completed = savedLesson.completed;
+                        lessons[index].locked = savedLesson.locked;
+                    }
+                });
+                document.getElementById('streak-count').textContent = progressData.streak || 0;
+            }
+        }
+
+        function saveProgress() {
+            progressData.lessons = JSON.parse(JSON.stringify(lessons));
+        }
+
+        function renderLessons() {
+            const grid = document.getElementById('lessons-grid');
+            grid.innerHTML = '';
+
+            lessons.forEach((lesson) => {
+                const lessonItem = document.createElement('div');
+                lessonItem.className = 'lesson-item';
+
+                const lessonWrapper = document.createElement('div');
+                lessonWrapper.style.textAlign = 'center';
+
+                const button = document.createElement('button');
+                button.className = 'lesson-button';
+                button.setAttribute('data-category', lesson.category);
+                button.textContent = lesson.emoji;
+
+                if (lesson.completed) {
+                    button.classList.add('completed');
+                }
+
+                if (lesson.locked) {
+                    button.classList.add('locked');
+                }
+
+                button.addEventListener('click', () => handleLessonClick(lesson));
+
+                const label = document.createElement('div');
+                label.className = 'lesson-label';
+                label.textContent = lesson.name;
+
+                lessonWrapper.appendChild(button);
+                lessonWrapper.appendChild(label);
+                lessonItem.appendChild(lessonWrapper);
+                grid.appendChild(lessonItem);
+            });
+
+            updateProgress();
+        }
+
+        function handleLessonClick(lesson) {
+            if (lesson.locked) {
+                showCustomAlert('Lesson Locked', 'Complete the previous lessons to unlock this one!', '🔒');
+                return;
+            }
+
+            currentLesson = lesson;
+            currentQuestionIndex = 0;
+            startLesson();
+        }
+
+        function startLesson() {
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('lesson-view').classList.add('active');
+            showQuestion();
+        }
+
+        function exitLesson() {
+            document.getElementById('lesson-view').classList.remove('active');
+            document.getElementById('home-view').style.display = 'block';
+        }
+
+        function showQuestion() {
+            const content = lessonContent[currentLesson.category];
+            if (!content) {
+                exitLesson();
+                return;
+            }
+
+            const questions = content.questions;
+            const question = questions[currentQuestionIndex];
+
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('lesson-progress-fill').style.width = progress + '%';
+
+            const container = document.getElementById('question-container');
+            container.innerHTML = '';
+
+            selectedAnswer = null;
+            sentenceWords = [];
+
+            if (question.type === 'vocab') {
+                renderVocabQuestion(question, container);
+            } else if (question.type === 'multiple') {
+                renderMultipleChoice(question, container);
+            } else if (question.type === 'sentence') {
+                renderSentenceBuilder(question, container);
+            } else if (question.type === 'translation') {
+                renderTranslation(question, container);
+            } else if (question.type === 'match') {
+                renderMatching(question, container);
+            }
+        }
+
+        function renderVocabQuestion(question, container) {
+            container.innerHTML = `
+                <div class="question-header">
+                    <span class="question-type">Vocabulary</span>
+                    <h2 class="question-text">What is this?</h2>
+                </div>
+                <div class="question-image">${question.emoji}</div>
+                <div class="answer-options" id="answer-options"></div>
+                <button class="check-button" id="check-button" disabled>CHECK</button>
+                <div class="feedback" id="feedback"></div>
+            `;
+
+            const optionsContainer = document.getElementById('answer-options');
+            question.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-option';
+                btn.textContent = option;
+                btn.onclick = () => selectAnswer(option, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('check-button').onclick = () => checkAnswer(question.correctAnswer);
+        }
+
+        function renderMultipleChoice(question, container) {
+            container.innerHTML = `
+                <div class="question-header">
+                    <span class="question-type">Multiple Choice</span>
+                    <h2 class="question-text">${question.question}</h2>
+                </div>
+                <div class="answer-options" id="answer-options"></div>
+                <button class="check-button" id="check-button" disabled>CHECK</button>
+                <div class="feedback" id="feedback"></div>
+            `;
+
+            const optionsContainer = document.getElementById('answer-options');
+            question.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-option';
+                btn.textContent = option;
+                btn.onclick = () => selectAnswer(option, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('check-button').onclick = () => checkAnswer(question.correctAnswer);
+        }
+
+        function renderSentenceBuilder(question, container) {
+            container.innerHTML = `
+                <div class="question-header">
+                    <span class="question-type">Build a Sentence</span>
+                    <h2 class="question-text">${question.prompt}</h2>
+                    <p class="question-instruction">Tap the words in the correct order</p>
+                </div>
+                <div class="sentence-area" id="sentence-area"></div>
+                <div class="word-bank" id="word-bank"></div>
+                <button class="check-button" id="check-button" disabled>CHECK</button>
+                <div class="feedback" id="feedback"></div>
+            `;
+
+            const wordBank = document.getElementById('word-bank');
+            const shuffled = [...question.words].sort(() => Math.random() - 0.5);
+
+            shuffled.forEach(word => {
+                const tile = document.createElement('button');
+                tile.className = 'word-tile';
+                tile.textContent = word;
+                tile.onclick = () => addWordToSentence(word, tile);
+                wordBank.appendChild(tile);
+            });
+
+            const sentenceArea = document.getElementById('sentence-area');
+            sentenceArea.onclick = (e) => {
+                if (e.target.classList.contains('sentence-word')) {
+                    removeWordFromSentence(e.target.textContent, e.target);
+                }
+            };
+
+            document.getElementById('check-button').onclick = () => {
+                const userSentence = sentenceWords.join(' ');
+                checkAnswer(question.prompt, userSentence);
+            };
+        }
+
+        function renderTranslation(question, container) {
+            container.innerHTML = `
+                <div class="question-header">
+                    <span class="question-type">Translation</span>
+                    <h2 class="question-text">Translate this sentence</h2>
+                    <p class="question-instruction">${question.question}</p>
+                    ${question.hint ? `<p class="question-instruction" style="color: var(--blue-accent); margin-top: 8px;">💡 Hint: ${question.hint}</p>` : ''}
+                </div>
+                <input type="text" class="translation-input" id="translation-input" placeholder="Type your translation here...">
+                <button class="check-button" id="check-button">CHECK</button>
+                <div class="feedback" id="feedback"></div>
+            `;
+
+            const input = document.getElementById('translation-input');
+            input.addEventListener('input', () => {
+                selectedAnswer = input.value.trim();
+            });
+
+            document.getElementById('check-button').onclick = () => {
+                checkAnswer(question.correctAnswer, input.value.trim(), true);
+            };
+        }
+
+        function renderMatching(question, container) {
+            const items = [...question.pairs];
+            const shuffledWords = items.map(pair => pair[1]).sort(() => Math.random() - 0.5);
+
+            container.innerHTML = `
+                <div class="question-header">
+                    <span class="question-type">Match</span>
+                    <h2 class="question-text">${question.question}</h2>
+                </div>
+                <div class="vocab-grid" id="vocab-grid"></div>
+                <button class="check-button" id="check-button" disabled>CHECK</button>
+                <div class="feedback" id="feedback"></div>
+            `;
+
+            const grid = document.getElementById('vocab-grid');
+            let matches = [];
+            let selectedCard = null;
+
+            items.forEach((pair, index) => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.innerHTML = `
+                    <div class="vocab-emoji">${pair[0]}</div>
+                `;
+                card.onclick = () => {
+                    if (selectedCard) {
+                        selectedCard.classList.remove('selected');
+                    }
+                    selectedCard = card;
+                    card.classList.add('selected');
+                    document.getElementById('check-button').disabled = false;
+                };
+                grid.appendChild(card);
+            });
+
+            shuffledWords.forEach(word => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.innerHTML = `
+                    <div class="vocab-word">${word}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('check-button').onclick = () => {
+                checkAnswer('matched');
+            };
+        }
+
+        function selectAnswer(answer, button) {
+            document.querySelectorAll('.answer-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            selectedAnswer = answer;
+            document.getElementById('check-button').disabled = false;
+        }
+
+        function addWordToSentence(word, tile) {
+            if (tile.classList.contains('used')) return;
+
+            sentenceWords.push(word);
+            tile.classList.add('used');
+
+            const sentenceArea = document.getElementById('sentence-area');
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'sentence-word';
+            wordSpan.textContent = word;
+            sentenceArea.appendChild(wordSpan);
+
+            document.getElementById('check-button').disabled = sentenceWords.length === 0;
+        }
+
+        function removeWordFromSentence(word, element) {
+            const index = sentenceWords.indexOf(word);
+            if (index > -1) {
+                sentenceWords.splice(index, 1);
+            }
+
+            element.remove();
+
+            const tiles = document.querySelectorAll('.word-tile');
+            tiles.forEach(tile => {
+                if (tile.textContent === word && tile.classList.contains('used')) {
+                    tile.classList.remove('used');
+                }
+            });
+
+            document.getElementById('check-button').disabled = sentenceWords.length === 0;
+        }
+
+        function checkAnswer(correctAnswer, userAnswer = null, isFuzzy = false) {
+            const answer = userAnswer || selectedAnswer;
+            let isCorrect = false;
+
+            if (isFuzzy) {
+                const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim();
+                isCorrect = normalize(answer) === normalize(correctAnswer);
+            } else {
+                isCorrect = answer === correctAnswer;
+            }
+
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('correct', 'incorrect');
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 Correct! Well done!';
+                feedback.classList.add('correct', 'show');
+
+                document.querySelectorAll('.answer-option.selected, .sentence-area').forEach(el => {
+                    el.classList.add('correct');
+                });
+
+                setTimeout(() => {
+                    nextQuestion();
+                }, 1500);
+            } else {
+                feedback.textContent = `❌ Incorrect. The correct answer is: ${correctAnswer}`;
+                feedback.classList.add('incorrect', 'show');
+
+                document.querySelectorAll('.answer-option.selected').forEach(el => {
+                    el.classList.add('incorrect');
+                });
+
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                    document.querySelectorAll('.answer-option').forEach(el => {
+                        el.classList.remove('incorrect');
+                    });
+                }, 2000);
+            }
+
+            document.getElementById('check-button').disabled = true;
+        }
+
+        function nextQuestion() {
+            const content = lessonContent[currentLesson.category];
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex >= content.questions.length) {
+                completeLesson();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function completeLesson() {
+            if (!currentLesson.completed) {
+                currentLesson.completed = true;
+
+                const nextLesson = lessons.find(l => l.id === currentLesson.id + 1);
+                if (nextLesson) {
+                    nextLesson.locked = false;
+                }
+
+                progressData.streak = progressData.streak + 1;
+                document.getElementById('streak-count').textContent = progressData.streak;
+
+                saveProgress();
+                renderLessons();
+                createConfetti();
+            }
+
+            exitLesson();
+            showCustomAlert('Lesson Complete!', 'Great job! You\'re making amazing progress.', '🎉');
+        }
+
+        function updateProgress() {
+            const completed = lessons.filter(l => l.completed).length;
+            const total = lessons.length;
+            const percentage = Math.round((completed / total) * 100);
+
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = percentage + '%';
+        }
+
+        function createConfetti() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#FFD93D', '#6C5CE7'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.animation = 'confettiFall 3s linear';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        function showCustomAlert(title, message, icon) {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);';
+
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 24px; padding: 40px 32px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalSlideIn 0.3s ease-out;">
+                    <div style="font-size: 80px; margin-bottom: 20px;">${icon}</div>
+                    <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; color: #1B5E7F; margin-bottom: 12px;">${title}</h2>
+                    <p style="color: #636E72; font-size: 16px; margin-bottom: 24px;">${message}</p>
+                    <button onclick="this.closest('div[style*=fixed]').remove()" style="background: linear-gradient(135deg, #00D084, #00F5A0); color: white; border: none; padding: 16px 40px; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif;">Continue</button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            modal.onclick = (e) => {
+                if (e.target === modal) modal.remove();
+            };
+        }
+
+        function goHome() {
+            exitLesson();
+        }
+
+        const style = document.createElement('style');
+        style.textContent = '@keyframes confettiFall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } } @keyframes modalSlideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }';
+        document.head.appendChild(style);
+
+        loadProgress();
+        renderLessons();
+    </script>
+</body>
+</html>
