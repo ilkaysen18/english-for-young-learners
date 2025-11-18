@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VocabBlocks - Learn While You Play</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151933;
+            --bg-tertiary: #1f2547;
+            --accent-primary: #00f5d4;
+            --accent-secondary: #f15bb5;
+            --accent-tertiary: #fee440;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c1ec;
+            --border-color: #2d3561;
+            --success: #00f5d4;
+            --danger: #ff006e;
+            --shadow-glow: rgba(0, 245, 212, 0.3);
+        }
+
+        .dark {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151933;
+            --bg-tertiary: #1f2547;
+            --accent-primary: #00f5d4;
+            --accent-secondary: #f15bb5;
+            --accent-tertiary: #fee440;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c1ec;
+            --border-color: #2d3561;
+        }
+
+        html:not(.dark) {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e9ecef;
+            --accent-primary: #0077b6;
+            --accent-secondary: #d62828;
+            --accent-tertiary: #f77f00;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --border-color: #dee2e6;
+            --shadow-glow: rgba(0, 119, 182, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background:
+                linear-gradient(45deg, var(--accent-primary) 0%, transparent 50%),
+                linear-gradient(-45deg, var(--accent-secondary) 0%, transparent 50%);
+            animation: bgRotate 20s linear infinite;
+        }
+
+        @keyframes bgRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 30px;
+            align-items: start;
+            animation: fadeIn 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 968px) {
+            .game-container {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+
+            .side-panel {
+                order: 2;
+            }
+
+            #game-canvas-container {
+                order: 1;
+            }
+        }
+
+        .side-panel {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .panel-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--accent-primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-tertiary);
+        }
+
+        #game-canvas-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        #tetris-canvas {
+            border: 3px solid var(--accent-primary);
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            box-shadow:
+                0 0 20px var(--shadow-glow),
+                0 8px 32px rgba(0, 0, 0, 0.4);
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            font-family: 'Exo 2', sans-serif;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid var(--accent-primary);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 6px 20px rgba(0, 0, 0, 0.3),
+                0 0 20px var(--shadow-glow);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .vocab-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .vocab-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .vocab-list::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .vocab-list::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        .vocab-item {
+            background: var(--bg-tertiary);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-primary);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .vocab-word {
+            font-weight: 600;
+            color: var(--accent-tertiary);
+            margin-bottom: 4px;
+            font-size: 1.05rem;
+        }
+
+        .vocab-definition {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-style: italic;
+        }
+
+        #game-over-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeInOverlay 0.3s ease-out;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .game-over-modal {
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent-primary);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 40px var(--shadow-glow);
+            animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .game-over-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent-secondary);
+            margin-bottom: 20px;
+        }
+
+        .game-over-stats {
+            margin: 30px 0;
+        }
+
+        .game-over-stat {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            color: var(--text-secondary);
+        }
+
+        .game-over-stat strong {
+            color: var(--accent-tertiary);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .touch-controls {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .touch-controls {
+                display: grid;
+            }
+        }
+
+        .touch-btn {
+            padding: 20px;
+            font-size: 1.5rem;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .touch-btn.rotate {
+            grid-column: 2;
+        }
+
+        .touch-btn.down {
+            grid-column: 2;
+        }
+
+        input, textarea {
+            font-family: 'Exo 2', sans-serif;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px var(--shadow-glow);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--accent-secondary);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #ai-response {
+            background: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <div class="container">
+        <header>
+            <h1>VOCABBLOCKS</h1>
+            <p class="subtitle">Master vocabulary while mastering blocks</p>
+        </header>
+
+        <div class="game-container">
+            <div class="side-panel">
+                <div class="panel-section">
+                    <h3 class="panel-title">Statistics</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="score">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value" id="level">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Lines</span>
+                        <span class="stat-value" id="lines">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Words Learned</span>
+                        <span class="stat-value" id="words-learned">0</span>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="panel-title">Controls</h3>
+                    <div class="controls">
+                        <button id="start-btn">Start Game</button>
+                        <button id="pause-btn" disabled>Pause</button>
+                        <button id="vocab-btn" class="btn-secondary">Manage Vocab</button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="panel-title">Keyboard Controls</h3>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+                        ← → : Move<br>
+                        ↓ : Soft Drop<br>
+                        Space : Hard Drop<br>
+                        ↑ : Rotate
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-canvas-container">
+                <canvas id="tetris-canvas" width="300" height="600"></canvas>
+                <div class="touch-controls">
+                    <button class="touch-btn" id="touch-left">←</button>
+                    <button class="touch-btn rotate" id="touch-rotate">↻</button>
+                    <button class="touch-btn" id="touch-right">→</button>
+                    <button class="touch-btn" id="touch-hard-drop">↓↓</button>
+                    <button class="touch-btn down" id="touch-down">↓</button>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="panel-section">
+                    <h3 class="panel-title">Current Words</h3>
+                    <div id="current-words" class="vocab-list">
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; margin-top: 20px;">
+                            Words will appear here as you play
+                        </p>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3 class="panel-title">Learned Vocabulary</h3>
+                    <div id="learned-vocab" class="vocab-list">
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; margin-top: 20px;">
+                            Clear lines to learn words!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-overlay">
+        <div class="game-over-modal">
+            <h2 class="game-over-title">Game Over!</h2>
+            <div class="game-over-stats">
+                <div class="game-over-stat">Final Score: <strong id="final-score">0</strong></div>
+                <div class="game-over-stat">Level Reached: <strong id="final-level">1</strong></div>
+                <div class="game-over-stat">Lines Cleared: <strong id="final-lines">0</strong></div>
+                <div class="game-over-stat">Words Learned: <strong id="final-words">0</strong></div>
+            </div>
+            <div class="controls">
+                <button id="restart-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="vocab-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Vocabulary</h3>
+                <button class="close-btn" id="close-vocab-modal">×</button>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: var(--accent-primary); margin-bottom: 10px;">Add Words Manually</h4>
+                <input type="text" id="new-word" placeholder="Word (e.g., ephemeral)">
+                <input type="text" id="new-definition" placeholder="Definition (e.g., lasting for a very short time)">
+                <button id="add-word-btn">Add Word</button>
+            </div>
+
+            <div style="margin-bottom: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                <h4 style="color: var(--accent-primary); margin-bottom: 10px;">Generate with AI</h4>
+                <input type="text" id="ai-topic" placeholder="Topic (e.g., 'business English' or 'SAT vocabulary')">
+                <input type="number" id="ai-count" placeholder="Number of words" value="10" min="5" max="50">
+                <button id="generate-vocab-btn">Generate Vocabulary</button>
+                <div id="ai-response"></div>
+            </div>
+
+            <div style="padding-top: 20px; border-top: 1px solid var(--border-color);">
+                <h4 style="color: var(--accent-primary); margin-bottom: 10px;">Current Vocabulary Bank (<span id="vocab-bank-count">0</span> words)</h4>
+                <div id="vocab-bank" class="vocab-list" style="max-height: 200px;"></div>
+                <button id="clear-vocab-btn" class="btn-secondary" style="margin-top: 10px; width: 100%;">Clear All Words</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Tetris Game Logic
+        const canvas = document.getElementById('tetris-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const COLS = 10;
+        const ROWS = 20;
+        const BLOCK_SIZE = 30;
+
+        const SHAPES = [
+            [[1,1,1,1]], // I
+            [[1,1],[1,1]], // O
+            [[1,1,1],[0,1,0]], // T
+            [[1,1,1],[1,0,0]], // L
+            [[1,1,1],[0,0,1]], // J
+            [[1,1,0],[0,1,1]], // S
+            [[0,1,1],[1,1,0]]  // Z
+        ];
+
+        const COLORS = [
+            '#00f5d4', // cyan
+            '#f15bb5', // magenta
+            '#fee440', // yellow
+            '#9b5de5', // purple
+            '#00bbf9', // blue
+            '#f15bb5', // pink
+            '#00f5d4'  // teal
+        ];
+
+        // Vocabulary System
+        let vocabularyBank = [
+            { word: 'ephemeral', definition: 'lasting for a very short time' },
+            { word: 'ubiquitous', definition: 'present, appearing, or found everywhere' },
+            { word: 'eloquent', definition: 'fluent or persuasive in speaking or writing' },
+            { word: 'meticulous', definition: 'showing great attention to detail' },
+            { word: 'resilient', definition: 'able to withstand or recover quickly from difficulties' },
+            { word: 'ambiguous', definition: 'open to more than one interpretation' },
+            { word: 'benevolent', definition: 'well meaning and kindly' },
+            { word: 'cognizant', definition: 'having knowledge or being aware of' },
+            { word: 'diligent', definition: 'having or showing care in one\'s work' },
+            { word: 'enigmatic', definition: 'difficult to interpret or understand' }
+        ];
+
+        let learnedVocab = [];
+        let currentWords = new Set();
+
+        // Game State
+        let board = Array(ROWS).fill().map(() => Array(COLS).fill(0));
+        let score = 0;
+        let level = 1;
+        let lines = 0;
+        let gameRunning = false;
+        let gamePaused = false;
+        let currentPiece = null;
+        let gameLoop = null;
+        let dropCounter = 0;
+        let dropInterval = 1000;
+        let lastTime = 0;
+
+        // Vocabulary storage (in-memory only in iframe environment)
+        function loadVocabulary() {
+            // Vocabulary is stored in memory only
+            updateVocabBank();
+        }
+
+        function saveVocabulary() {
+            // In iframe environment, vocabulary persists only during session
+        }
+
+        function getRandomWord() {
+            if (vocabularyBank.length === 0) return { word: '?', definition: 'Add vocabulary!' };
+            return vocabularyBank[Math.floor(Math.random() * vocabularyBank.length)];
+        }
+
+        function createPiece() {
+            const shapeIndex = Math.floor(Math.random() * SHAPES.length);
+            const vocab = getRandomWord();
+            currentWords.add(JSON.stringify(vocab));
+            updateCurrentWords();
+
+            return {
+                shape: SHAPES[shapeIndex],
+                color: COLORS[shapeIndex],
+                x: Math.floor(COLS / 2) - Math.floor(SHAPES[shapeIndex][0].length / 2),
+                y: 0,
+                vocab: vocab
+            };
+        }
+
+        function drawBlock(x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        }
+
+        function drawBoard() {
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-secondary');
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let row = 0; row < ROWS; row++) {
+                for (let col = 0; col < COLS; col++) {
+                    if (board[row][col]) {
+                        drawBlock(col, row, board[row][col].color);
+                    }
+                }
+            }
+        }
+
+        function drawPiece() {
+            if (!currentPiece) return;
+
+            currentPiece.shape.forEach((row, dy) => {
+                row.forEach((value, dx) => {
+                    if (value) {
+                        drawBlock(currentPiece.x + dx, currentPiece.y + dy, currentPiece.color);
+                    }
+                });
+            });
+
+            // Draw word on piece
+            if (currentPiece.vocab) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.font = 'bold 12px Orbitron';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const pieceWidth = currentPiece.shape[0].length;
+                const pieceHeight = currentPiece.shape.length;
+                const centerX = (currentPiece.x + pieceWidth / 2) * BLOCK_SIZE;
+                const centerY = (currentPiece.y + pieceHeight / 2) * BLOCK_SIZE;
+
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(currentPiece.vocab.word.substring(0, 8), centerX, centerY);
+            }
+        }
+
+        function collision(piece, offsetX = 0, offsetY = 0) {
+            for (let dy = 0; dy < piece.shape.length; dy++) {
+                for (let dx = 0; dx < piece.shape[dy].length; dx++) {
+                    if (piece.shape[dy][dx]) {
+                        const newX = piece.x + dx + offsetX;
+                        const newY = piece.y + dy + offsetY;
+
+                        if (newX < 0 || newX >= COLS || newY >= ROWS) {
+                            return true;
+                        }
+                        if (newY >= 0 && board[newY][newX]) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        function mergePiece() {
+            currentPiece.shape.forEach((row, dy) => {
+                row.forEach((value, dx) => {
+                    if (value) {
+                        const y = currentPiece.y + dy;
+                        const x = currentPiece.x + dx;
+                        if (y >= 0) {
+                            board[y][x] = {
+                                color: currentPiece.color,
+                                vocab: currentPiece.vocab
+                            };
+                        }
+                    }
+                });
+            });
+        }
+
+        function clearLines() {
+            let linesCleared = 0;
+            let clearedVocab = [];
+
+            for (let row = ROWS - 1; row >= 0; row--) {
+                if (board[row].every(cell => cell !== 0)) {
+                    // Collect vocabulary from cleared line
+                    board[row].forEach(cell => {
+                        if (cell.vocab && !learnedVocab.find(v => v.word === cell.vocab.word)) {
+                            clearedVocab.push(cell.vocab);
+                        }
+                    });
+
+                    board.splice(row, 1);
+                    board.unshift(Array(COLS).fill(0));
+                    linesCleared++;
+                    row++;
+                }
+            }
+
+            if (linesCleared > 0) {
+                lines += linesCleared;
+                score += linesCleared * 100 * level;
+                level = Math.floor(lines / 10) + 1;
+                dropInterval = Math.max(100, 1000 - (level - 1) * 100);
+
+                // Add learned vocabulary
+                clearedVocab.forEach(vocab => {
+                    if (!learnedVocab.find(v => v.word === vocab.word)) {
+                        learnedVocab.push(vocab);
+                    }
+                });
+
+                updateStats();
+                updateLearnedVocab();
+            }
+        }
+
+        function rotatePiece() {
+            const rotated = currentPiece.shape[0].map((_, i) =>
+                currentPiece.shape.map(row => row[i]).reverse()
+            );
+            const previous = currentPiece.shape;
+            currentPiece.shape = rotated;
+
+            if (collision(currentPiece)) {
+                currentPiece.shape = previous;
+            }
+        }
+
+        function movePiece(dir) {
+            if (!collision(currentPiece, dir, 0)) {
+                currentPiece.x += dir;
+            }
+        }
+
+        function dropPiece() {
+            if (!collision(currentPiece, 0, 1)) {
+                currentPiece.y++;
+                dropCounter = 0;
+            } else {
+                mergePiece();
+                clearLines();
+                currentPiece = createPiece();
+
+                if (collision(currentPiece)) {
+                    gameOver();
+                }
+            }
+        }
+
+        function hardDrop() {
+            while (!collision(currentPiece, 0, 1)) {
+                currentPiece.y++;
+            }
+            dropPiece();
+        }
+
+        function update(time = 0) {
+            if (!gameRunning || gamePaused) return;
+
+            const deltaTime = time - lastTime;
+            lastTime = time;
+            dropCounter += deltaTime;
+
+            if (dropCounter > dropInterval) {
+                dropPiece();
+            }
+
+            drawBoard();
+            drawPiece();
+
+            gameLoop = requestAnimationFrame(update);
+        }
+
+        function startGame() {
+            board = Array(ROWS).fill().map(() => Array(COLS).fill(0));
+            score = 0;
+            level = 1;
+            lines = 0;
+            learnedVocab = [];
+            currentWords.clear();
+            dropInterval = 1000;
+            gameRunning = true;
+            gamePaused = false;
+            currentPiece = createPiece();
+
+            updateStats();
+            updateLearnedVocab();
+            updateCurrentWords();
+
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('pause-btn').disabled = false;
+            document.getElementById('game-over-overlay').style.display = 'none';
+
+            lastTime = 0;
+            dropCounter = 0;
+            gameLoop = requestAnimationFrame(update);
+        }
+
+        function pauseGame() {
+            gamePaused = !gamePaused;
+            document.getElementById('pause-btn').textContent = gamePaused ? 'Resume' : 'Pause';
+            if (!gamePaused) {
+                lastTime = 0;
+                dropCounter = 0;
+                gameLoop = requestAnimationFrame(update);
+            }
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            cancelAnimationFrame(gameLoop);
+
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('final-level').textContent = level;
+            document.getElementById('final-lines').textContent = lines;
+            document.getElementById('final-words').textContent = learnedVocab.length;
+            document.getElementById('game-over-overlay').style.display = 'flex';
+
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = true;
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('level').textContent = level;
+            document.getElementById('lines').textContent = lines;
+            document.getElementById('words-learned').textContent = learnedVocab.length;
+        }
+
+        function updateLearnedVocab() {
+            const container = document.getElementById('learned-vocab');
+            if (learnedVocab.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; margin-top: 20px;">Clear lines to learn words!</p>';
+            } else {
+                container.innerHTML = learnedVocab.map(vocab => `
+                    <div class="vocab-item">
+                        <div class="vocab-word">${vocab.word}</div>
+                        <div class="vocab-definition">${vocab.definition}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function updateCurrentWords() {
+            const container = document.getElementById('current-words');
+            const wordsArray = Array.from(currentWords).map(w => JSON.parse(w));
+            if (wordsArray.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; margin-top: 20px;">Words will appear here as you play</p>';
+            } else {
+                container.innerHTML = wordsArray.map(vocab => `
+                    <div class="vocab-item">
+                        <div class="vocab-word">${vocab.word}</div>
+                        <div class="vocab-definition">${vocab.definition}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function updateVocabBank() {
+            const container = document.getElementById('vocab-bank');
+            document.getElementById('vocab-bank-count').textContent = vocabularyBank.length;
+
+            if (vocabularyBank.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center;">No words in bank</p>';
+            } else {
+                container.innerHTML = vocabularyBank.map((vocab, index) => `
+                    <div class="vocab-item" style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <div class="vocab-word">${vocab.word}</div>
+                            <div class="vocab-definition">${vocab.definition}</div>
+                        </div>
+                        <button onclick="removeWord(${index})" style="padding: 5px 10px; font-size: 0.8rem; margin-left: 10px;">×</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeWord(index) {
+            vocabularyBank.splice(index, 1);
+            saveVocabulary();
+            updateVocabBank();
+        }
+
+        // Keyboard Controls
+        document.addEventListener('keydown', (e) => {
+            if (!gameRunning || gamePaused) return;
+
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    movePiece(-1);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    movePiece(1);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    dropPiece();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    rotatePiece();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    hardDrop();
+                    break;
+            }
+
+            drawBoard();
+            drawPiece();
+        });
+
+        // Touch Controls
+        document.getElementById('touch-left').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) {
+                movePiece(-1);
+                drawBoard();
+                drawPiece();
+            }
+        });
+
+        document.getElementById('touch-right').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) {
+                movePiece(1);
+                drawBoard();
+                drawPiece();
+            }
+        });
+
+        document.getElementById('touch-down').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) {
+                dropPiece();
+                drawBoard();
+                drawPiece();
+            }
+        });
+
+        document.getElementById('touch-rotate').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) {
+                rotatePiece();
+                drawBoard();
+                drawPiece();
+            }
+        });
+
+        document.getElementById('touch-hard-drop').addEventListener('click', () => {
+            if (gameRunning && !gamePaused) {
+                hardDrop();
+                drawBoard();
+                drawPiece();
+            }
+        });
+
+        // Button Controls
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('pause-btn').addEventListener('click', pauseGame);
+        document.getElementById('restart-btn').addEventListener('click', startGame);
+
+        // Vocabulary Modal
+        document.getElementById('vocab-btn').addEventListener('click', () => {
+            document.getElementById('vocab-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-vocab-modal').addEventListener('click', () => {
+            document.getElementById('vocab-modal').style.display = 'none';
+        });
+
+        document.getElementById('add-word-btn').addEventListener('click', () => {
+            const word = document.getElementById('new-word').value.trim();
+            const definition = document.getElementById('new-definition').value.trim();
+
+            if (word && definition) {
+                vocabularyBank.push({ word, definition });
+                saveVocabulary();
+                updateVocabBank();
+                document.getElementById('new-word').value = '';
+                document.getElementById('new-definition').value = '';
+            }
+        });
+
+        document.getElementById('clear-vocab-btn').addEventListener('click', () => {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div style="background: var(--bg-secondary); padding: 30px; border-radius: 20px; max-width: 400px; text-align: center; border: 2px solid var(--border-color);">
+                    <h3 style="color: var(--accent-secondary); margin-bottom: 20px;">Clear All Vocabulary?</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 30px;">This will remove all words from your vocabulary bank. This action cannot be undone.</p>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button id="confirm-clear" style="background: var(--danger);">Clear All</button>
+                        <button id="cancel-clear" class="btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            document.getElementById('confirm-clear').onclick = () => {
+                vocabularyBank = [];
+                saveVocabulary();
+                updateVocabBank();
+                modal.remove();
+            };
+
+            document.getElementById('cancel-clear').onclick = () => {
+                modal.remove();
+            };
+        });
+
+        // AI Vocabulary Generation
+        document.getElementById('generate-vocab-btn').addEventListener('click', async () => {
+            const topic = document.getElementById('ai-topic').value.trim();
+            const count = parseInt(document.getElementById('ai-count').value) || 10;
+            const responseDiv = document.getElementById('ai-response');
+
+            if (!topic) {
+                responseDiv.innerHTML = '<p style="color: var(--danger);">Please enter a topic</p>';
+                return;
+            }
+
+            if (!window.Poe) {
+                responseDiv.innerHTML = '<p style="color: var(--danger);">AI features are only available when running on Poe</p>';
+                return;
+            }
+
+            responseDiv.innerHTML = '<div class="loading"></div> <span style="margin-left: 10px;">Generating vocabulary...</span>';
+
+            const prompt = `Generate exactly ${count} vocabulary words related to "${topic}". Provide ONLY raw JSON in your response with no explanations, additional text, or code block formatting (no \`\`\`). The JSON should be an array of objects with "word" and "definition" fields. Example format: [{"word":"example","definition":"a thing characteristic of its kind"}]`;
+
+            try {
+                window.Poe.registerHandler('vocab-handler', (result) => {
+                    const msg = result.responses[0];
+
+                    if (msg.status === 'error') {
+                        responseDiv.innerHTML = `<p style="color: var(--danger);">Error: ${msg.statusText}</p>`;
+                    } else if (msg.status === 'complete') {
+                        try {
+                            // Try to parse the response as JSON
+                            let content = msg.content.trim();
+
+                            // Remove markdown code blocks if present
+                            content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+
+                            const vocabList = JSON.parse(content);
+
+                            if (Array.isArray(vocabList) && vocabList.length > 0) {
+                                vocabList.forEach(item => {
+                                    if (item.word && item.definition) {
+                                        vocabularyBank.push({
+                                            word: item.word,
+                                            definition: item.definition
+                                        });
+                                    }
+                                });
+                                saveVocabulary();
+                                updateVocabBank();
+                                responseDiv.innerHTML = `<p style="color: var(--success);">✓ Added ${vocabList.length} words to your vocabulary bank!</p>`;
+                            } else {
+                                responseDiv.innerHTML = `<p style="color: var(--danger);">Invalid response format. Please try again.</p>`;
+                            }
+                        } catch (error) {
+                            responseDiv.innerHTML = `<p style="color: var(--danger);">Error parsing response: ${error.message}</p><pre style="font-size: 0.8rem; margin-top: 10px; max-height: 200px; overflow: auto;">${msg.content}</pre>`;
+                        }
+                    }
+                });
+
+                await window.Poe.sendUserMessage(`@Claude-Sonnet-4.5 ${prompt}`, {
+                    handler: 'vocab-handler',
+                    stream: false,
+                    openChat: false
+                });
+            } catch (error) {
+                responseDiv.innerHTML = `<p style="color: var(--danger);">Error: ${error.message}</p>`;
+            }
+        });
+
+        // Initialize
+        loadVocabulary();
+        drawBoard();
+    </script>
+</body>
+</html>
