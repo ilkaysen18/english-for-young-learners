@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Training Hub - TEFL & TESOL Certified Tutors</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================
+     CSS RESET & VARIABLES
+     ============================================ */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    /* Color Palette - Vibrant Yellow, Blue, Red */
+    --primary: #1E40AF;          /* Deep blue */
+    --primary-light: #3B82F6;
+    --accent: #EF4444;           /* Vibrant red */
+    --accent-hover: #DC2626;
+    --accent-light: #FEE2E2;
+    --yellow: #FBBF24;           /* Bright yellow */
+    --yellow-light: #FEF3C7;
+    --blue: #3B82F6;
+    --blue-dark: #1E40AF;
+    --red: #EF4444;
+    --text-dark: #1E293B;
+    --text-gray: #64748b;
+    --text-light: #94a3b8;
+    --bg-main: #ffffff;
+    --bg-secondary: #FEF9F3;
+    --bg-accent: #FFF7ED;
+    --border: #FDE68A;
+    --success: #10b981;
+    --warning: #f59e0b;
+
+    /* Typography */
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Playfair Display', Georgia, serif;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+
+    /* Borders & Shadows */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+    --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ============================================
+     GLOBAL STYLES
+     ============================================ */
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-main);
+    color: var(--text-dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ============================================
+     NAVIGATION
+     ============================================ */
+  nav {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 50%, #3B82F6 100%);
+    backdrop-filter: blur(12px);
+    border-bottom: 3px solid var(--red);
+    padding: var(--spacing-sm) 0;
+    z-index: 1000;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+  }
+
+  nav.scrolled {
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .logo:hover {
+    transform: translateY(-2px);
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--red) 0%, #DC2626 100%);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--spacing-md);
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+    position: relative;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: rgba(239, 68, 68, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ffffff;
+    padding: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ============================================
+     HERO SECTION
+     ============================================ */
+  .hero {
+    position: relative;
+    background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%);
+    padding: var(--spacing-xxl) var(--spacing-md);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.2) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(239, 68, 68, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-content {
+    max-width: 700px;
+    animation: fadeInUp 0.8s ease;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(251, 191, 36, 0.3);
+    border: 2px solid rgba(251, 191, 36, 0.6);
+    color: #FEF3C7;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+  }
+
+  .hero h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -0.02em;
+  }
+
+  .hero-highlight {
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.3));
+  }
+
+  .hero p {
+    font-size: 1.25rem;
+    color: #cbd5e1;
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.7;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-body);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* ============================================
+     SECTIONS
+     ============================================ */
+  section {
+    padding: var(--spacing-xxl) var(--spacing-md);
+  }
+
+  .section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    animation: fadeInUp 0.8s ease;
+  }
+
+  .section-label {
+    display: inline-block;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: -0.02em;
+  }
+
+  .section-description {
+    font-size: 1.125rem;
+    color: var(--text-gray);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ============================================
+     CARDS GRID
+     ============================================ */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-light);
+  }
+
+  .card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--bg-accent) 0%, #ede9fe 100%);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-md);
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .card-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .card-description {
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .card-link {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap 0.3s ease;
+  }
+
+  .card-link:hover {
+    gap: 0.75rem;
+  }
+
+  /* ============================================
+     FEATURES SECTION
+     ============================================ */
+  .features-section {
+    background: var(--bg-secondary);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .feature-item {
+    text-align: center;
+    padding: var(--spacing-md);
+  }
+
+  .feature-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto var(--spacing-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .feature-title {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .feature-description {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+  }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  footer {
+    background: var(--primary);
+    color: #cbd5e1;
+    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-md);
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .footer-section h3 {
+    font-family: var(--font-heading);
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 0.95rem;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: var(--spacing-md);
+    text-align: center;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  /* ============================================
+     PAGE CONTENT (for subpages)
+     ============================================ */
+  .page-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-xxl) var(--spacing-md);
+    background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+    border-radius: var(--radius-lg);
+  }
+
+  .page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .content-block {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .content-block h2 {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .content-block h3 {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--text-dark);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .content-block p {
+    color: var(--text-gray);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.7;
+  }
+
+  .content-block ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .content-block li {
+    color: var(--text-gray);
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .content-block li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ============================================
+     TEACHER PROFILES
+     ============================================ */
+  .teacher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .teacher-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    transition: all 0.4s ease;
+  }
+
+  .teacher-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .teacher-avatar {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto var(--spacing-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .teacher-name {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.25rem;
+  }
+
+  .teacher-role {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .teacher-bio {
+    color: var(--text-gray);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  /* ============================================
+     CONTACT FORM
+     ============================================ */
+  .contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .contact-info {
+    background: var(--bg-secondary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+  }
+
+  .contact-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: var(--text-dark);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  /* ============================================
+     ANIMATIONS
+     ============================================ */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================
+     RESPONSIVE DESIGN
+     ============================================ */
+  @media (max-width: 768px) {
+    .nav-links {
+      position: fixed;
+      top: 65px;
+      left: 0;
+      right: 0;
+      background: white;
+      flex-direction: column;
+      padding: var(--spacing-md);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      gap: 0.5rem;
+    }
+
+    .nav-links.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .nav-links a {
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .hero {
+      padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .hero-cta {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-container {
+      grid-template-columns: 1fr;
+    }
+
+    .teacher-grid {
+      grid-template-columns: 1fr;
+    }
+
+    section {
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    :root {
+      --spacing-xl: 2rem;
+      --spacing-xxl: 2.5rem;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  /* ============================================
+     UTILITY CLASSES
+     ============================================ */
+  .hidden {
+    display: none;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .mb-0 { margin-bottom: 0; }
+  .mb-1 { margin-bottom: var(--spacing-sm); }
+  .mb-2 { margin-bottom: var(--spacing-md); }
+  .mb-3 { margin-bottom: var(--spacing-lg); }
+
+  .mt-0 { margin-top: 0; }
+  .mt-1 { margin-top: var(--spacing-sm); }
+  .mt-2 { margin-top: var(--spacing-md); }
+  .mt-3 { margin-top: var(--spacing-lg); }
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     NAVIGATION
+     ============================================ -->
+<nav id="navbar">
+  <div class="nav-container">
+    <a href="#home" class="logo" onclick="showPage('home'); return false;">
+      <div class="logo-icon">🌍</div>
+      <span>English Hub</span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="active" onclick="showPage('home'); return false;">Home</a></li>
+      <li><a href="#about" onclick="showPage('about'); return false;">About</a></li>
+      <li><a href="#teachers" onclick="showPage('teachers'); return false;">Teachers</a></li>
+      <li><a href="#courses" onclick="showPage('courses'); return false;">Courses</a></li>
+      <li><a href="#contact" onclick="showPage('contact'); return false;">Contact</a></li>
+    </ul>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+      ☰
+    </button>
+  </div>
+</nav>
+
+<!-- ============================================
+     PAGE: HOME
+     ============================================ -->
+<div id="page-home" class="page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          ✨ TEFL & TESOL Certified Tutors
+        </div>
+        <h1>
+          Master English with <span class="hero-highlight">Expert Guidance</span>
+        </h1>
+        <p>
+          Professional English training from certified tutors. Exam prep, speaking practice, vocabulary building, and business English — tailored to your goals.
+        </p>
+        <div class="hero-cta">
+          <a href="#courses" class="btn btn-primary" onclick="showPage('courses'); return false;">
+            Explore Courses →
+          </a>
+          <a href="#contact" class="btn btn-secondary" onclick="showPage('contact'); return false;">
+            Get Started
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Overview -->
+  <section>
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">What We Offer</span>
+        <h2 class="section-title">Our Training Programs</h2>
+        <p class="section-description">
+          Comprehensive language learning solutions designed for all levels and objectives
+        </p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card" onclick="showPage('courses')">
+          <div class="card-icon">🇬🇧</div>
+          <h3 class="card-title">English Courses</h3>
+          <p class="card-description">
+            IELTS, TOEFL, Cambridge exams, general & business English. Customized learning paths for every student.
+          </p>
+          <a href="#courses" class="card-link" onclick="showPage('courses'); return false;">
+            View courses →
+          </a>
+        </div>
+
+        <div class="card" onclick="showPage('teachers')">
+          <div class="card-icon">👨‍🏫</div>
+          <h3 class="card-title">Expert Teachers</h3>
+          <p class="card-description">
+            TEFL & TESOL certified professionals with years of teaching experience and proven results.
+          </p>
+          <a href="#teachers" class="card-link" onclick="showPage('teachers'); return false;">
+            Meet our team →
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🇩🇪</div>
+          <h3 class="card-title">German Training</h3>
+          <p class="card-description">
+            Expand your language skills with professional German courses from beginner to advanced levels.
+          </p>
+          <a href="#" class="card-link">
+            Learn more →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">Why Choose Us</span>
+        <h2 class="section-title">Learn with Confidence</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-item animate-on-scroll">
+          <div class="feature-icon">📚</div>
+          <h3 class="feature-title">Structured Curriculum</h3>
+          <p class="feature-description">Proven teaching methods aligned with international standards</p>
+        </div>
+
+        <div class="feature-item animate-on-scroll">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Personalized Learning</h3>
+          <p class="feature-description">Tailored lessons matching your pace and learning style</p>
+        </div>
+
+        <div class="feature-item animate-on-scroll">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">Interactive Practice</h3>
+          <p class="feature-description">Real conversations and practical language application</p>
+        </div>
+
+        <div class="feature-item animate-on-scroll">
+          <div class="feature-icon">⏰</div>
+          <h3 class="feature-title">Flexible Schedule</h3>
+          <p class="feature-description">Learn at times that work for your busy lifestyle</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================
+     PAGE: ABOUT
+     ============================================ -->
+<div id="page-about" class="page hidden">
+  <div class="page-header">
+    <h1 class="page-title">About English Training Hub</h1>
+    <p class="section-description">Your trusted partner in language mastery</p>
+  </div>
+
+  <div class="page-content">
+    <div class="content-block">
+      <h2>Who We Are</h2>
+      <p>
+        English Training Hub is a leading online language learning platform founded by certified TEFL and TESOL educators. We're passionate about making quality English education accessible to learners worldwide.
+      </p>
+      <p>
+        With years of combined teaching experience, our team has helped thousands of students achieve their language goals — from acing international exams to confidently communicating in professional environments.
+      </p>
+    </div>
+
+    <div class="content-block">
+      <h2>Our Mission</h2>
+      <p>
+        We believe that language learning should be engaging, effective, and accessible. Our mission is to provide world-class English training that empowers individuals to:
+      </p>
+      <ul>
+        <li>Excel in international English proficiency exams (IELTS, TOEFL, Cambridge)</li>
+        <li>Communicate confidently in academic and professional settings</li>
+        <li>Build a strong foundation in grammar, vocabulary, and pronunciation</li>
+        <li>Develop fluency through practical, real-world conversations</li>
+        <li>Achieve career advancement through business English mastery</li>
+      </ul>
+    </div>
+
+    <div class="content-block">
+      <h2>Our Approach</h2>
+      <p>
+        We combine proven pedagogical methods with modern technology to create an immersive learning experience:
+      </p>
+      <ul>
+        <li><strong>Certified Instructors:</strong> All our teachers hold TEFL/TESOL certifications and extensive teaching experience</li>
+        <li><strong>Customized Learning:</strong> Lessons adapted to your level, goals, and learning style</li>
+        <li><strong>Interactive Methods:</strong> Engaging activities, real conversations, and practical exercises</li>
+        <li><strong>Continuous Support:</strong> Regular feedback and progress tracking to ensure success</li>
+        <li><strong>Flexible Delivery:</strong> Online sessions that fit your schedule and lifestyle</li>
+      </ul>
+    </div>
+
+    <div class="content-block">
+      <h2>What Sets Us Apart</h2>
+      <p>
+        Unlike generic language apps or overcrowded classrooms, English Training Hub offers:
+      </p>
+      <ul>
+        <li>One-on-one attention from qualified educators</li>
+        <li>Curriculum designed for your specific needs</li>
+        <li>Focus on practical communication skills</li>
+        <li>Proven exam preparation strategies</li>
+        <li>Supportive learning community</li>
+      </ul>
+    </div>
+
+    <div class="text-center mt-3">
+      <a href="#contact" class="btn btn-primary" onclick="showPage('contact'); return false;">
+        Start Your Journey →
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     PAGE: TEACHERS
+     ============================================ -->
+<div id="page-teachers" class="page hidden">
+  <div class="page-header">
+    <h1 class="page-title">Meet Our Teachers</h1>
+    <p class="section-description">TEFL & TESOL certified professionals dedicated to your success</p>
+  </div>
+
+  <section>
+    <div class="section-container">
+      <div class="teacher-grid">
+        <div class="teacher-card">
+          <div class="teacher-avatar">👨‍🏫</div>
+          <h3 class="teacher-name">Dr. James Anderson</h3>
+          <p class="teacher-role">IELTS & Academic English Specialist</p>
+          <p class="teacher-bio">
+            PhD in Applied Linguistics with 12+ years experience. Specialized in IELTS preparation with 95% student success rate for Band 7+.
+          </p>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-avatar">👩‍🏫</div>
+          <h3 class="teacher-name">Sarah Mitchell</h3>
+          <p class="teacher-role">Business English & Communication Coach</p>
+          <p class="teacher-bio">
+            Former corporate trainer with TESOL certification. Helps professionals excel in presentations, negotiations, and workplace communication.
+          </p>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-avatar">👨‍🏫</div>
+          <h3 class="teacher-name">Michael Chen</h3>
+          <p class="teacher-role">TOEFL & Conversation Expert</p>
+          <p class="teacher-bio">
+            Trilingual educator specializing in TOEFL prep and conversational fluency. Known for engaging lessons and rapid student progress.
+          </p>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-avatar">👩‍🏫</div>
+          <h3 class="teacher-name">Emma Thompson</h3>
+          <p class="teacher-role">Cambridge Exam & Grammar Specialist</p>
+          <p class="teacher-bio">
+            Cambridge certified examiner with expertise in FCE, CAE, and CPE preparation. Master of making grammar fun and accessible.
+          </p>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-avatar">👨‍🏫</div>
+          <h3 class="teacher-name">David Rodriguez</h3>
+          <p class="teacher-role">Pronunciation & Speaking Coach</p>
+          <p class="teacher-bio">
+            Accent reduction specialist helping non-native speakers achieve clear, confident English pronunciation and natural fluency.
+          </p>
+        </div>
+
+        <div class="teacher-card">
+          <div class="teacher-avatar">👩‍🏫</div>
+          <h3 class="teacher-name">Lisa Wang</h3>
+          <p class="teacher-role">General English & Beginners Expert</p>
+          <p class="teacher-bio">
+            Patient and encouraging teacher specializing in building strong foundations for beginner and intermediate learners.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
+        <h3 class="section-title mb-2">All Our Teachers Have</h3>
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🎓</div>
+            <h3 class="feature-title">TEFL/TESOL Certified</h3>
+            <p class="feature-description">Internationally recognized qualifications</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⭐</div>
+            <h3 class="feature-title">Proven Track Record</h3>
+            <p class="feature-description">Years of successful student outcomes</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🌍</div>
+            <h3 class="feature-title">Global Experience</h3>
+            <p class="feature-description">Teaching students from diverse backgrounds</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💡</div>
+            <h3 class="feature-title">Modern Methods</h3>
+            <p class="feature-description">Engaging, student-centered approaches</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================
+     PAGE: COURSES
+     ============================================ -->
+<div id="page-courses" class="page hidden">
+  <div class="page-header">
+    <h1 class="page-title">English Courses</h1>
+    <p class="section-description">Comprehensive programs for every goal and level</p>
+  </div>
+
+  <section>
+    <div class="section-container">
+      <div class="cards-grid">
+        <!-- IELTS Preparation -->
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <h3 class="card-title">IELTS Preparation</h3>
+          <p class="card-description">
+            Complete IELTS training covering all four skills: Listening, Reading, Writing, and Speaking. Proven strategies for Academic & General modules.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>Band 7+ focused curriculum</li>
+            <li>Practice tests & feedback</li>
+            <li>Writing task correction</li>
+            <li>Speaking mock exams</li>
+          </ul>
+        </div>
+
+        <!-- TOEFL Preparation -->
+        <div class="card">
+          <div class="card-icon">📘</div>
+          <h3 class="card-title">TOEFL Preparation</h3>
+          <p class="card-description">
+            Comprehensive TOEFL iBT training with expert strategies, practice materials, and timed simulations for all test sections.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>Integrated & independent tasks</li>
+            <li>Note-taking techniques</li>
+            <li>Time management skills</li>
+            <li>Score-boosting strategies</li>
+          </ul>
+        </div>
+
+        <!-- Cambridge Exams -->
+        <div class="card">
+          <div class="card-icon">🎓</div>
+          <h3 class="card-title">Cambridge Exams</h3>
+          <p class="card-description">
+            Specialized preparation for FCE (B2 First), CAE (C1 Advanced), and CPE (C2 Proficiency) with experienced Cambridge examiners.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>All exam papers covered</li>
+            <li>Examiner insights & tips</li>
+            <li>Practice materials</li>
+            <li>Weak area targeting</li>
+          </ul>
+        </div>
+
+        <!-- Business English -->
+        <div class="card">
+          <div class="card-icon">💼</div>
+          <h3 class="card-title">Business English</h3>
+          <p class="card-description">
+            Professional English for the workplace: presentations, meetings, negotiations, emails, and industry-specific vocabulary.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>Corporate communication</li>
+            <li>Presentation skills</li>
+            <li>Email & report writing</li>
+            <li>Industry terminology</li>
+          </ul>
+        </div>
+
+        <!-- Conversation & Speaking -->
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <h3 class="card-title">Conversation & Speaking</h3>
+          <p class="card-description">
+            Build fluency and confidence through guided conversations, pronunciation work, and real-world communication practice.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>Natural conversation flow</li>
+            <li>Pronunciation training</li>
+            <li>Idiomatic expressions</li>
+            <li>Cultural context</li>
+          </ul>
+        </div>
+
+        <!-- General English -->
+        <div class="card">
+          <div class="card-icon">📚</div>
+          <h3 class="card-title">General English</h3>
+          <p class="card-description">
+            Comprehensive English training for all levels: grammar, vocabulary, reading, writing, listening, and speaking skills.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>A1 to C2 levels</li>
+            <li>Balanced skill development</li>
+            <li>Interactive exercises</li>
+            <li>Progress tracking</li>
+          </ul>
+        </div>
+
+        <!-- Grammar Mastery -->
+        <div class="card">
+          <div class="card-icon">✍️</div>
+          <h3 class="card-title">Grammar Mastery</h3>
+          <p class="card-description">
+            Deep dive into English grammar structures with clear explanations, practice exercises, and real-world applications.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>All grammar levels</li>
+            <li>Clear explanations</li>
+            <li>Practical examples</li>
+            <li>Error correction focus</li>
+          </ul>
+        </div>
+
+        <!-- Vocabulary Building -->
+        <div class="card">
+          <div class="card-icon">📖</div>
+          <h3 class="card-title">Vocabulary Building</h3>
+          <p class="card-description">
+            Systematic vocabulary expansion with context-based learning, memory techniques, and topic-specific word groups.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>Thematic word sets</li>
+            <li>Memory techniques</li>
+            <li>Academic & everyday vocab</li>
+            <li>Collocations & phrases</li>
+          </ul>
+        </div>
+
+        <!-- Academic English -->
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <h3 class="card-title">Academic English</h3>
+          <p class="card-description">
+            Prepare for university study: essay writing, research skills, academic vocabulary, and critical reading techniques.
+          </p>
+          <ul class="content-block" style="margin-top: 1rem; padding: 0;">
+            <li>Essay & thesis writing</li>
+            <li>Research methodology</li>
+            <li>Critical analysis</li>
+            <li>Academic presentations</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
+        <div class="content-block" style="max-width: 800px; margin: 2rem auto;">
+          <h2>Course Features</h2>
+          <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 1.5rem;">
+            <div class="feature-item">
+              <div class="feature-icon">👥</div>
+              <h3 class="feature-title">1-on-1 & Group</h3>
+              <p class="feature-description">Choose individual or group sessions</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">🔄</div>
+              <h3 class="feature-title">Flexible Pace</h3>
+              <p class="feature-description">Learn at your own speed</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">📊</div>
+              <h3 class="feature-title">Progress Tracking</h3>
+              <p class="feature-description">Monitor your improvement</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">🎁</div>
+              <h3 class="feature-title">Resources Included</h3>
+              <p class="feature-description">Materials & practice tests</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#contact" class="btn btn-primary" onclick="showPage('contact'); return false;">
+          Enroll Now →
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================
+     PAGE: CONTACT
+     ============================================ -->
+<div id="page-contact" class="page hidden">
+  <div class="page-header">
+    <h1 class="page-title">Get In Touch</h1>
+    <p class="section-description">Ready to start your English learning journey? Contact us today!</p>
+  </div>
+
+  <section>
+    <div class="section-container">
+      <div class="contact-container">
+        <!-- Contact Information -->
+        <div class="contact-info">
+          <h3>Contact Information</h3>
+          <p style="color: var(--text-gray); margin-bottom: var(--spacing-lg);">
+            Reach out to us through any of the following channels. We typically respond within 24 hours.
+          </p>
+
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div>
+              <strong style="display: block; color: var(--text-dark); margin-bottom: 0.25rem;">Email</strong>
+              <a href="mailto:info@englishtraininghub.org" style="color: var(--accent); text-decoration: none;">
+                info@englishtraininghub.org
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">💬</div>
+            <div>
+              <strong style="display: block; color: var(--text-dark); margin-bottom: 0.25rem;">WhatsApp</strong>
+              <span style="color: var(--text-gray);">+44 7XXX XXXXXX</span>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">🌍</div>
+            <div>
+              <strong style="display: block; color: var(--text-dark); margin-bottom: 0.25rem;">Website</strong>
+              <a href="https://englishtraininghub.org" style="color: var(--accent); text-decoration: none;">
+                englishtraininghub.org
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">⏰</div>
+            <div>
+              <strong style="display: block; color: var(--text-dark); margin-bottom: 0.25rem;">Response Time</strong>
+              <span style="color: var(--text-gray);">Within 24 hours</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div>
+          <form id="contactForm" onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" required placeholder="John Smith">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+44 7XXX XXXXXX">
+            </div>
+
+            <div class="form-group">
+              <label for="course">Interested In *</label>
+              <select id="course" name="course" required>
+                <option value="">Select a course...</option>
+                <option value="ielts">IELTS Preparation</option>
+                <option value="toefl">TOEFL Preparation</option>
+                <option value="cambridge">Cambridge Exams</option>
+                <option value="business">Business English</option>
+                <option value="conversation">Conversation & Speaking</option>
+                <option value="general">General English</option>
+                <option value="grammar">Grammar Mastery</option>
+                <option value="vocabulary">Vocabulary Building</option>
+                <option value="academic">Academic English</option>
+                <option value="other">Other / Not Sure</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" required placeholder="Tell us about your learning goals, current level, and preferred schedule..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              Send Message →
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>English Training Hub</h3>
+        <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6;">
+          Professional TEFL & TESOL certified English training for students worldwide. Excellence in language education since 2015.
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#home" onclick="showPage('home'); return false;">Home</a></li>
+          <li><a href="#about" onclick="showPage('about'); return false;">About Us</a></li>
+          <li><a href="#teachers" onclick="showPage('teachers'); return false;">Our Teachers</a></li>
+          <li><a href="#courses" onclick="showPage('courses'); return false;">Courses</a></li>
+          <li><a href="#contact" onclick="showPage('contact'); return false;">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Popular Courses</h3>
+        <ul class="footer-links">
+          <li><a href="#courses" onclick="showPage('courses'); return false;">IELTS Preparation</a></li>
+          <li><a href="#courses" onclick="showPage('courses'); return false;">TOEFL Preparation</a></li>
+          <li><a href="#courses" onclick="showPage('courses'); return false;">Business English</a></li>
+          <li><a href="#courses" onclick="showPage('courses'); return false;">Conversation Practice</a></li>
+          <li><a href="#courses" onclick="showPage('courses'); return false;">Academic English</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Get In Touch</h3>
+        <ul class="footer-links">
+          <li><a href="mailto:info@englishtraininghub.org">info@englishtraininghub.org</a></li>
+          <li><a href="https://englishtraininghub.org">englishtraininghub.org</a></li>
+          <li style="color: #94a3b8; list-style: none;">Response within 24 hours</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© <span id="currentYear"></span> English Training Hub. All Rights Reserved. | TEFL & TESOL Certified Educators</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================
+     JAVASCRIPT
+     ============================================ -->
+<script>
+  // ============================================
+  // PAGE NAVIGATION SYSTEM
+  // ============================================
+  function showPage(pageId) {
+    // Hide all pages
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => {
+      page.classList.add('hidden');
+    });
+
+    // Show selected page
+    const targetPage = document.getElementById(`page-${pageId}`);
+    if (targetPage) {
+      targetPage.classList.remove('hidden');
+    }
+
+    // Update active nav link
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${pageId}`) {
+        link.classList.add('active');
+      }
+    });
+
+    // Close mobile menu if open
+    const navLinksContainer = document.getElementById('navLinks');
+    navLinksContainer.classList.remove('active');
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Trigger animation for elements on new page
+    setTimeout(() => {
+      const animateElements = targetPage.querySelectorAll('.animate-on-scroll');
+      animateElements.forEach((el, index) => {
+        setTimeout(() => {
+          el.classList.add('visible');
+        }, index * 100);
+      });
+    }, 100);
+  }
+
+  // ============================================
+  // MOBILE MENU
+  // ============================================
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const navLinks = document.getElementById('navLinks');
+
+  mobileMenuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    mobileMenuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-container')) {
+      navLinks.classList.remove('active');
+      mobileMenuBtn.textContent = '☰';
+    }
+  });
+
+  // ============================================
+  // NAVBAR SCROLL EFFECT
+  // ============================================
+  const navbar = document.getElementById('navbar');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+
+    if (currentScroll > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+
+    lastScroll = currentScroll;
+  });
+
+  // ============================================
+  // ANIMATE ON SCROLL
+  // ============================================
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  // Observe all animate-on-scroll elements
+  document.querySelectorAll('.animate-on-scroll').forEach(el => {
+    observer.observe(el);
+  });
+
+  // ============================================
+  // FORM SUBMISSION
+  // ============================================
+  function handleFormSubmit(event) {
+    event.preventDefault();
+
+    // Get form data
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    // Create modal for confirmation
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 1rem;
+      animation: fadeIn 0.3s ease;
+    `;
+
+    modal.innerHTML = `
+      <div style="
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.3s ease;
+      ">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div style="
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1rem;
+          ">✓</div>
+          <h2 style="
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+          ">Message Received!</h2>
+          <p style="color: var(--text-gray); font-size: 1rem;">
+            Thank you for contacting English Training Hub. We'll respond within 24 hours.
+          </p>
+        </div>
+
+        <div style="
+          background: var(--bg-secondary);
+          padding: 1rem;
+          border-radius: 8px;
+          margin-bottom: 1.5rem;
+          font-size: 0.95rem;
+        ">
+          <p style="margin: 0.5rem 0;"><strong>Name:</strong> ${data.name}</p>
+          <p style="margin: 0.5rem 0;"><strong>Email:</strong> ${data.email}</p>
+          <p style="margin: 0.5rem 0;"><strong>Course:</strong> ${event.target.course.options[event.target.course.selectedIndex].text}</p>
+        </div>
+
+        <button onclick="this.closest('div[style*=fixed]').remove()" style="
+          width: 100%;
+          padding: 1rem;
+          background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          font-family: var(--font-body);
+        ">
+          Close
+        </button>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Reset form
+    event.target.reset();
+
+    // In production, you would send this data to your server
+    console.log('Form submitted:', data);
+  }
+
+  // ============================================
+  // INITIALIZATION
+  // ============================================
+  document.addEventListener('DOMContentLoaded', () => {
+    // Set current year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Show home page by default
+    showPage('home');
+
+    // Handle URL hash navigation
+    if (window.location.hash) {
+      const pageId = window.location.hash.substring(1);
+      if (document.getElementById(`page-${pageId}`)) {
+        showPage(pageId);
+      }
+    }
+  });
+
+  // Update URL hash when navigating
+  window.addEventListener('hashchange', () => {
+    const pageId = window.location.hash.substring(1);
+    if (pageId && document.getElementById(`page-${pageId}`)) {
+      showPage(pageId);
+    }
+  });
+</script>
+
+</body>
+</html>
