@@ -1,0 +1,386 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>English Training Hub — Learn English | TEFL &amp; TESOL Tutors</title>
+  <meta name="description" content="Mobile-first English tutoring platform — TEFL & TESOL certified tutors. Book trial lessons, courses & exam prep." />  <!-- Tailwind CDN (good for GitHub Pages prototypes). For production, compile Tailwind. -->  <script src="https://cdn.tailwindcss.com"></script>  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">  <style>
+    :root{
+      --bg:#0f1724;      /* deep navy */
+      --card:#0b1220;    /* slightly lighter */
+      --muted:#94a3b8;    /* muted text */
+      --accent:#7c3aed;   /* primary purple */
+      --accent-2:#facc15; /* warm yellow accent */
+      --glass: rgba(255,255,255,0.03);
+    }
+
+    html,body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    /* small custom utilities for consistency */
+    .container-max{max-width:1100px;margin-left:auto;margin-right:auto;padding-left:1rem;padding-right:1rem}
+    /* subtle scroll snap for mobile sections */
+    @media (max-width:768px){
+      main{scroll-snap-type:y proximity}
+      section{scroll-snap-align:start}
+    }
+    /* focus styles */
+    :focus{outline:none}
+    .focus-ring:focus{box-shadow:0 0 0 3px rgba(124,58,237,0.15);} /* purple focus */
+
+    /* accessible reduced motion */
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+    /* simple teacher avatar placeholder */
+    .avatar{width:64px;height:64px;border-radius:9999px;object-fit:cover}
+
+    /* footer links */
+    .link-underline{position:relative}
+    .link-underline::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--accent);transition:width .25s}
+    .link-underline:hover::after{width:100%}
+
+    /* small shadow for cards */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:1rem}
+  </style></head>
+<body class="bg-[color:var(--bg)] text-white antialiased leading-relaxed">  <!-- Header / Nav -->  <header class="sticky top-0 z-40 bg-[color:var(--bg)]/70 backdrop-blur-sm border-b border-white/5">
+    <div class="container-max flex items-center justify-between gap-4 py-3">
+      <a href="#home" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[color:var(--accent)] to-[color:var(--accent-2)] flex items-center justify-center text-black font-extrabold">EH</div>
+        <div class="hidden sm:block">
+          <div class="text-sm font-semibold">English Training Hub</div>
+          <div class="text-xs text-[color:var(--muted)]">TEFL &amp; TESOL Certified Tutors</div>
+        </div>
+      </a><nav class="hidden md:flex items-center gap-4 text-sm">
+    <a class="hover:opacity-90 link-underline" href="#courses">Courses</a>
+    <a class="hover:opacity-90 link-underline" href="#teachers">Teachers</a>
+    <a class="hover:opacity-90 link-underline" href="#pricing">Pricing</a>
+    <a class="hover:opacity-90 link-underline" href="#contact">Contact</a>
+    <a class="ml-3 inline-flex items-center gap-2 rounded-lg bg-[color:var(--accent)]/95 px-3 py-2 text-black font-medium" href="#book">Book trial</a>
+  </nav>
+
+  <!-- Mobile menu button -->
+  <div class="md:hidden">
+    <button id="menuBtn" aria-label="Open menu" class="p-2 rounded-md focus-ring">
+      <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Mobile menu panel -->
+<div id="mobileMenu" class="md:hidden hidden border-t border-white/5">
+  <div class="container-max py-3 flex flex-col gap-3">
+    <a href="#courses" class="py-2">Courses</a>
+    <a href="#teachers" class="py-2">Teachers</a>
+    <a href="#pricing" class="py-2">Pricing</a>
+    <a href="#contact" class="py-2">Contact</a>
+    <a href="#book" class="py-2 inline-block rounded-lg bg-[color:var(--accent)]/95 px-4 py-2 text-black text-center">Book trial</a>
+  </div>
+</div>
+
+  </header>  <main id="home" class="pt-6 pb-20">
+    <section class="container-max grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <!-- Hero -->
+      <div class="md:col-span-7">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">Learn English with certified tutors — mobile-first lessons that work.</h1>
+        <p class="mt-4 text-[color:var(--muted)] max-w-xl">Speaking practice, exam prep, professional English, and tailored courses. Book a free trial and pick the tutor that fits your goals.</p><div class="mt-6 flex flex-col sm:flex-row gap-3">
+      <a href="#book" class="inline-flex items-center gap-3 rounded-lg bg-[color:var(--accent)] px-4 py-3 font-semibold text-black">Book a free trial</a>
+      <a href="#courses" class="inline-flex items-center gap-2 rounded-lg border border-white/10 px-4 py-3 text-sm">See courses</a>
+    </div>
+
+    <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-[color:var(--muted)]">
+      <div class="flex flex-col"><strong class="text-white">TEFL/TESOL</strong><span>Certified tutors</span></div>
+      <div class="flex flex-col"><strong class="text-white">1:1 &amp; Group</strong><span>Flexible formats</span></div>
+      <div class="flex flex-col"><strong class="text-white">Mobile‑first</strong><span>Lessons on any device</span></div>
+      <div class="flex flex-col"><strong class="text-white">Exam Prep</strong><span>IELTS • TOEFL • B2</span></div>
+    </div>
+  </div>
+
+  <!-- Hero visual / phone mockup -->
+  <div class="md:col-span-5 flex justify-center md:justify-end">
+    <div class="w-[320px] sm:w-[380px] bg-[color:var(--card)] rounded-2xl p-4 shadow-lg card">
+      <div class="flex items-center gap-3">
+        <img src="https://images.unsplash.com/photo-1554384645-13eab16548d3?q=80&w=200&auto=format&fit=crop&crop=faces" alt="Tutor avatar" class="avatar border-2 border-white/5">
+        <div>
+          <div class="text-sm font-semibold">Maria — Speaking Tutor</div>
+          <div class="text-[color:var(--muted)] text-xs">TESOL • 5 years</div>
+        </div>
+      </div>
+
+      <div class="mt-4 text-sm text-[color:var(--muted)]">Focused 1:1 lesson: Pronunciation & instant feedback. Lesson highlights shown in-app in real time.</div>
+
+      <div class="mt-4 grid grid-cols-3 gap-2 text-xs">
+        <div class="p-2 rounded-lg bg-white/3 text-center">20m</div>
+        <div class="p-2 rounded-lg bg-white/3 text-center">Practice</div>
+        <div class="p-2 rounded-lg bg-white/3 text-center">Feedback</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Courses -->
+<section id="courses" class="mt-12 container-max">
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-semibold">Courses</h2>
+    <a href="#" class="text-sm text-[color:var(--muted)]">View all</a>
+  </div>
+
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Course card 1 -->
+    <article class="card">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="text-lg font-semibold">Conversational English — A1→B2</h3>
+          <p class="text-[color:var(--muted)] text-sm mt-1">Practical speaking lessons to build confidence. 1:1 or small group.</p>
+        </div>
+        <div class="text-right">
+          <div class="text-sm font-bold">From</div>
+          <div class="text-xl font-extrabold">$12</div>
+        </div>
+      </div>
+      <ul class="mt-4 flex gap-2 text-xs text-[color:var(--muted)]">
+        <li class="inline-flex items-center gap-2">• 20 lessons</li>
+        <li class="inline-flex items-center gap-2">• Mobile friendly</li>
+      </ul>
+      <div class="mt-4 flex gap-2">
+        <a href="#book" class="flex-1 inline-flex items-center justify-center rounded-lg bg-[color:var(--accent)] px-3 py-2 text-black font-semibold">Book trial</a>
+        <a href="#" class="inline-flex items-center justify-center rounded-lg border border-white/8 px-3 py-2">Details</a>
+      </div>
+    </article>
+
+    <!-- Course card 2 -->
+    <article class="card">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="text-lg font-semibold">IELTS Intensive</h3>
+          <p class="text-[color:var(--muted)] text-sm mt-1">Exam strategies, mock tests & feedback.</p>
+        </div>
+        <div class="text-right">
+          <div class="text-sm font-bold">From</div>
+          <div class="text-xl font-extrabold">$25</div>
+        </div>
+      </div>
+      <ul class="mt-4 flex gap-2 text-xs text-[color:var(--muted)]">
+        <li>• 10‑week plan</li>
+        <li>• Mock exams</li>
+      </ul>
+      <div class="mt-4 flex gap-2">
+        <a href="#book" class="flex-1 inline-flex items-center justify-center rounded-lg bg-[color:var(--accent)] px-3 py-2 text-black font-semibold">Book trial</a>
+        <a href="#" class="inline-flex items-center justify-center rounded-lg border border-white/8 px-3 py-2">Details</a>
+      </div>
+    </article>
+
+    <!-- Course card 3 -->
+    <article class="card">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="text-lg font-semibold">Business English</h3>
+          <p class="text-[color:var(--muted)] text-sm mt-1">Email, presentations & meetings.</p>
+        </div>
+        <div class="text-right">
+          <div class="text-sm font-bold">From</div>
+          <div class="text-xl font-extrabold">$18</div>
+        </div>
+      </div>
+      <div class="mt-4 flex gap-2">
+        <a href="#book" class="flex-1 inline-flex items-center justify-center rounded-lg bg-[color:var(--accent)] px-3 py-2 text-black font-semibold">Book trial</a>
+        <a href="#" class="inline-flex items-center justify-center rounded-lg border border-white/8 px-3 py-2">Details</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- Teachers -->
+<section id="teachers" class="mt-12 container-max">
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-semibold">Teachers</h2>
+    <a class="text-sm text-[color:var(--muted)]" href="#">Meet all</a>
+  </div>
+
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Teacher card template - in a real site this would be generated from JSON -->
+    <article class="card flex items-start gap-3">
+      <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop&crop=faces" alt="Teacher Alice">
+      <div class="flex-1">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-semibold">Alice — IELTS Coach</div>
+            <div class="text-xs text-[color:var(--muted)]">TESOL • 6 years</div>
+          </div>
+          <div class="text-sm font-bold">$22 / hr</div>
+        </div>
+        <p class="mt-2 text-sm text-[color:var(--muted)]">Exam-focused lessons, mock tests, and personalized feedback.</p>
+        <div class="mt-3 flex gap-2">
+          <a href="#book" class="inline-flex items-center gap-2 rounded-md bg-[color:var(--accent)] px-3 py-2 text-black text-sm">Book</a>
+          <a href="#" class="inline-flex items-center gap-2 rounded-md border border-white/8 px-3 py-2 text-sm">Profile</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card flex items-start gap-3">
+      <img class="avatar" src="https://images.unsplash.com/photo-1531123414780-fdb6f4c4d7d3?q=80&w=200&auto=format&fit=crop&crop=faces" alt="Teacher Omar">
+      <div class="flex-1">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-semibold">Omar — Conversation</div>
+            <div class="text-xs text-[color:var(--muted)]">TEFL • 3 years</div>
+          </div>
+          <div class="text-sm font-bold">$12 / hr</div>
+        </div>
+        <p class="mt-2 text-sm text-[color:var(--muted)]">Everyday English practice with real-life topics and feedback.</p>
+        <div class="mt-3 flex gap-2">
+          <a href="#book" class="inline-flex items-center gap-2 rounded-md bg-[color:var(--accent)] px-3 py-2 text-black text-sm">Book</a>
+          <a href="#" class="inline-flex items-center gap-2 rounded-md border border-white/8 px-3 py-2 text-sm">Profile</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card flex items-start gap-3">
+      <img class="avatar" src="https://images.unsplash.com/photo-1545996124-1f5d9ea6f4b0?q=80&w=200&auto=format&fit=crop&crop=faces" alt="Teacher Rachel">
+      <div class="flex-1">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-semibold">Rachel — Business English</div>
+            <div class="text-xs text-[color:var(--muted)]">TESOL • 4 years</div>
+          </div>
+          <div class="text-sm font-bold">$18 / hr</div>
+        </div>
+        <p class="mt-2 text-sm text-[color:var(--muted)]">Presentation coaching, emails and workplace vocabulary.</p>
+        <div class="mt-3 flex gap-2">
+          <a href="#book" class="inline-flex items-center gap-2 rounded-md bg-[color:var(--accent)] px-3 py-2 text-black text-sm">Book</a>
+          <a href="#" class="inline-flex items-center gap-2 rounded-md border border-white/8 px-3 py-2 text-sm">Profile</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="mt-12 container-max">
+  <h2 class="text-2xl font-semibold">Pricing</h2>
+  <p class="mt-2 text-[color:var(--muted)] max-w-xl">Transparent hourly pricing. Choose a tutor, then select a one-off lesson or package. All tutors set their own rates.</p>
+
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="card">
+      <div class="text-sm font-semibold">Trial Lesson</div>
+      <div class="text-2xl font-extrabold mt-2">Free</div>
+      <p class="mt-2 text-[color:var(--muted)] text-sm">15‑20 minute trial to meet your tutor and set goals.</p>
+      <div class="mt-4">
+        <a href="#book" class="inline-flex items-center justify-center rounded-lg bg-[color:var(--accent)] px-3 py-2 text-black font-semibold">Book trial</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="text-sm font-semibold">Single Lesson</div>
+      <div class="text-2xl font-extrabold mt-2">$12 — $30</div>
+      <p class="mt-2 text-[color:var(--muted)] text-sm">Pay-as-you-go lessons. Tutor prices vary.</p>
+    </div>
+
+    <div class="card">
+      <div class="text-sm font-semibold">Course Packages</div>
+      <div class="text-2xl font-extrabold mt-2">Discounted</div>
+      <p class="mt-2 text-[color:var(--muted)] text-sm">Buy 10+ lessons for reduced rates and priority scheduling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact / Book -->
+<section id="contact" class="mt-12 container-max">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+    <div>
+      <h2 class="text-2xl font-semibold">Contact &amp; Book</h2>
+      <p class="mt-2 text-[color:var(--muted)]">Have a question or want to book a trial? Use the form or email us. For faster replies, include your level and goals.</p>
+
+      <div class="mt-6 card">
+        <form action="mailto:hello@englishtraininghub.org" method="post" enctype="text/plain" class="flex flex-col gap-3">
+          <label class="text-xs text-[color:var(--muted)]">Name <input required name="name" class="mt-1 w-full rounded-md bg-transparent border border-white/6 px-3 py-2 focus-ring"></label>
+          <label class="text-xs text-[color:var(--muted)]">Email <input required name="email" type="email" class="mt-1 w-full rounded-md bg-transparent border border-white/6 px-3 py-2 focus-ring"></label>
+          <label class="text-xs text-[color:var(--muted)]">Message <textarea required name="message" rows="4" class="mt-1 w-full rounded-md bg-transparent border border-white/6 px-3 py-2 focus-ring"></textarea></label>
+          <div class="flex gap-2">
+            <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-[color:var(--accent)] px-4 py-2 text-black font-semibold">Send</button>
+            <button type="reset" class="inline-flex items-center gap-2 rounded-md border border-white/8 px-4 py-2">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3 class="font-semibold">Open hours</h3>
+        <p class="text-[color:var(--muted)] text-sm mt-2">Mon–Fri — 8:00–20:00 (local tutors vary). We reply within 48 hours.</p>
+
+        <div class="mt-4">
+          <h4 class="text-sm font-semibold">Quick links</h4>
+          <ul class="mt-2 text-[color:var(--muted)] text-sm space-y-2">
+            <li><a class="link-underline" href="#courses">Courses</a></li>
+            <li><a class="link-underline" href="#teachers">Teachers</a></li>
+            <li><a class="link-underline" href="#pricing">Pricing</a></li>
+            <li><a class="link-underline" href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="mt-4 border-t border-white/5 pt-4 text-sm text-[color:var(--muted)]">
+          <div>Email: <a href="mailto:hello@englishtraininghub.org" class="underline">hello@englishtraininghub.org</a></div>
+          <div class="mt-2">Instagram: <a href="https://www.instagram.com/english.training.hub/" target="_blank" rel="noopener" class="underline">@english.training.hub</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials (placeholder) -->
+<section class="mt-12 container-max">
+  <h2 class="text-2xl font-semibold">What students say</h2>
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="card">
+      <p class="text-[color:var(--muted)]">"I improved my speaking in 6 weeks. My tutor was supportive and gave clear feedback."</p>
+      <div class="mt-3 text-xs text-[color:var(--muted)]">— Kenan, B1 → B2</div>
+    </div>
+    <div class="card">
+      <p class="text-[color:var(--muted)]">"Great exam prep — I raised my IELTS writing score by one band."</p>
+      <div class="mt-3 text-xs text-[color:var(--muted)]">— Leyla</div>
+    </div>
+  </div>
+</section>
+
+  </main>  <!-- Footer -->  <footer class="border-t border-white/5 mt-12 py-6">
+    <div class="container-max flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="text-sm text-[color:var(--muted)]">© English Training Hub — Built for mobile-first learning</div>
+      <div class="flex items-center gap-4">
+        <a href="#" class="text-sm link-underline">Privacy</a>
+        <a href="#" class="text-sm link-underline">Terms</a>
+      </div>
+    </div>
+  </footer>  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+    menuBtn?.addEventListener('click', ()=>{
+      mobileMenu.classList.toggle('hidden');
+      // simple icon swap
+      if(!mobileMenu.classList.contains('hidden')){
+        menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
+      } else {
+        menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
+      }
+    });
+
+    // Simple accessibility: enable keyboard toggle
+    menuBtn?.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') menuBtn.click(); });
+
+    // Lightweight smooth scroll for anchor links (mobile-friendly)
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const href = a.getAttribute('href');
+        if(href.length>1){
+          e.preventDefault();
+          const el = document.querySelector(href);
+          if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      })
+    });
+  </script></body>
+</html>
