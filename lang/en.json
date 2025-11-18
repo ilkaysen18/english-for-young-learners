@@ -1,1 +1,13 @@
-.
+{
+  "brand": "English Training Hub",
+  "hero_title": "Welcome to English Training Hub",
+  "hero_sub": "Learn languages with certified teachers & plan your lessons today!",
+  "nav_who": "Who Are We?",
+  "nav_teachers": "Teachers",
+  "nav_courses": "Courses",
+  "nav_german": "German",
+  "nav_contact": "Contact",
+  "cta_who": "💡 Who Are We? 🌏🎓",
+  "cta_teachers": "🗓 Teachers Profiles! 👤💬",
+  "footer_copy": "All Rights Reserved."
+}
