@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETH-Cards - İngilizce Kelime Öğrenme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f5f1eb;
+            --bg-secondary: #ffffff;
+            --text-primary: #2d2a26;
+            --text-secondary: #6b6763;
+            --accent-1: #0066cc;
+            --accent-2: #0052a3;
+            --accent-3: #003d7a;
+            --card-shadow: rgba(0, 0, 0, 0.06);
+            --border-color: #ddd8d0;
+            --success: #10b981;
+        }
+
+        .dark {
+            --bg-primary: #1a1614;
+            --bg-secondary: #2a2522;
+            --text-primary: #f5f1eb;
+            --text-secondary: #a8a29e;
+            --accent-1: #3b82f6;
+            --accent-2: #2563eb;
+            --accent-3: #1d4ed8;
+            --card-shadow: rgba(0, 0, 0, 0.5);
+            --border-color: #3d3835;
+            --success: #34d399;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background-color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: var(--bg-secondary);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--card-shadow);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-1);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .topics {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        }
+
+        .topic-btn {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.875rem 1.75rem;
+            border-radius: 28px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Outfit', sans-serif;
+            box-shadow: 0 2px 8px var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .topic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px var(--card-shadow);
+            border-color: var(--accent-1);
+        }
+
+        .topic-btn.active {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: white;
+            border-color: var(--accent-1);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .topic-count {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 0.875rem;
+            opacity: 0.8;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+
+        .card-wrapper {
+            perspective: 1200px;
+            height: 220px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 24px var(--card-shadow);
+            border: 2px solid var(--border-color);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card-wrapper:hover .card-face {
+            box-shadow: 0 12px 32px var(--card-shadow);
+        }
+
+        .card-front {
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: white;
+            transform: rotateY(180deg);
+            border: 2px solid var(--accent-1);
+        }
+
+        .card-topic {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-1);
+            margin-bottom: 1.25rem;
+            opacity: 0.9;
+        }
+
+        .card-back .card-topic {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .card-word {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .card-hint {
+            font-size: 0.875rem;
+            margin-top: 1.25rem;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        .flip-icon {
+            position: absolute;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            font-size: 1.5rem;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-wrapper:hover .flip-icon {
+            opacity: 0.6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .topics {
+                gap: 0.5rem;
+            }
+
+            .topic-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 15px;
+            }
+
+            .card-wrapper {
+                height: 200px;
+            }
+
+            .stat-item {
+                padding: 0.875rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats {
+                gap: 0.75rem;
+            }
+
+            .stat-item {
+                padding: 0.75rem 1.25rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DuoCards</h1>
+            <p class="subtitle">İngilizce Kelime Öğrenme</p>
+            <p class="description">Kartları çevirerek İngilizce kelimelerin Türkçe karşılıklarını öğrenin</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCards">0</div>
+                    <div class="stat-label">Toplam Kart</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="flippedCount">0</div>
+                    <div class="stat-label">Çevrilen Kart</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="topics" id="topicsContainer"></div>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+
+    <script>
+        // Detect dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        const vocabulary = {
+            'Meyveler': [
+                { english: 'Apple', turkish: 'Elma' },
+                { english: 'Banana', turkish: 'Muz' },
+                { english: 'Orange', turkish: 'Portakal' },
+                { english: 'Grape', turkish: 'Üzüm' },
+                { english: 'Strawberry', turkish: 'Çilek' },
+                { english: 'Watermelon', turkish: 'Karpuz' },
+                { english: 'Melon', turkish: 'Kavun' },
+                { english: 'Peach', turkish: 'Şeftali' },
+                { english: 'Cherry', turkish: 'Kiraz' },
+                { english: 'Pear', turkish: 'Armut' },
+                { english: 'Lemon', turkish: 'Limon' },
+                { english: 'Pomegranate', turkish: 'Nar' }
+            ],
+            'Sebzeler': [
+                { english: 'Tomato', turkish: 'Domates' },
+                { english: 'Potato', turkish: 'Patates' },
+                { english: 'Onion', turkish: 'Soğan' },
+                { english: 'Carrot', turkish: 'Havuç' },
+                { english: 'Cucumber', turkish: 'Salatalık' },
+                { english: 'Pepper', turkish: 'Biber' },
+                { english: 'Eggplant', turkish: 'Patlıcan' },
+                { english: 'Lettuce', turkish: 'Marul' },
+                { english: 'Spinach', turkish: 'Ispanak' },
+                { english: 'Garlic', turkish: 'Sarımsak' },
+                { english: 'Cabbage', turkish: 'Lahana' },
+                { english: 'Zucchini', turkish: 'Kabak' }
+            ],
+            'Sıfatlar': [
+                { english: 'Good', turkish: 'İyi' },
+                { english: 'Bad', turkish: 'Kötü' },
+                { english: 'Big', turkish: 'Büyük' },
+                { english: 'Small', turkish: 'Küçük' },
+                { english: 'Beautiful', turkish: 'Güzel' },
+                { english: 'Ugly', turkish: 'Çirkin' },
+                { english: 'Hot', turkish: 'Sıcak' },
+                { english: 'Cold', turkish: 'Soğuk' },
+                { english: 'New', turkish: 'Yeni' },
+                { english: 'Old', turkish: 'Eski' },
+                { english: 'Fast', turkish: 'Hızlı' },
+                { english: 'Slow', turkish: 'Yavaş' },
+                { english: 'Happy', turkish: 'Mutlu' },
+                { english: 'Sad', turkish: 'Üzgün' },
+                { english: 'Easy', turkish: 'Kolay' },
+                { english: 'Difficult', turkish: 'Zor' },
+                { english: 'Clean', turkish: 'Temiz' },
+                { english: 'Dirty', turkish: 'Kirli' }
+            ],
+            'Fiiller': [
+                { english: 'Be', turkish: 'Olmak' },
+                { english: 'Have', turkish: 'Sahip olmak' },
+                { english: 'Go', turkish: 'Gitmek' },
+                { english: 'Come', turkish: 'Gelmek' },
+                { english: 'Eat', turkish: 'Yemek' },
+                { english: 'Drink', turkish: 'İçmek' },
+                { english: 'Speak', turkish: 'Konuşmak' },
+                { english: 'See', turkish: 'Görmek' },
+                { english: 'Hear', turkish: 'Duymak' },
+                { english: 'Read', turkish: 'Okumak' },
+                { english: 'Write', turkish: 'Yazmak' },
+                { english: 'Sleep', turkish: 'Uyumak' },
+                { english: 'Walk', turkish: 'Yürümek' },
+                { english: 'Run', turkish: 'Koşmak' },
+                { english: 'Love', turkish: 'Sevmek' },
+                { english: 'Know', turkish: 'Bilmek' }
+            ],
+            'Alışveriş': [
+                { english: 'Money', turkish: 'Para' },
+                { english: 'Price', turkish: 'Fiyat' },
+                { english: 'Expensive', turkish: 'Pahalı' },
+                { english: 'Cheap', turkish: 'Ucuz' },
+                { english: 'Market', turkish: 'Pazar' },
+                { english: 'Store', turkish: 'Mağaza' },
+                { english: 'Bag', turkish: 'Çanta' },
+                { english: 'Cash', turkish: 'Nakit' },
+                { english: 'Credit card', turkish: 'Kredi kartı' },
+                { english: 'Receipt', turkish: 'Fiş' },
+                { english: 'Discount', turkish: 'İndirim' },
+                { english: 'Buy', turkish: 'Satın almak' },
+                { english: 'Sell', turkish: 'Satmak' },
+                { english: 'Pay', turkish: 'Ödemek' }
+            ],
+            'Günlük Rutin': [
+                { english: 'Morning', turkish: 'Sabah' },
+                { english: 'Afternoon', turkish: 'Öğleden sonra' },
+                { english: 'Evening', turkish: 'Akşam' },
+                { english: 'Night', turkish: 'Gece' },
+                { english: 'Wake up', turkish: 'Uyanmak' },
+                { english: 'Get up', turkish: 'Kalkmak' },
+                { english: 'Breakfast', turkish: 'Kahvaltı' },
+                { english: 'Lunch', turkish: 'Öğle yemeği' },
+                { english: 'Dinner', turkish: 'Akşam yemeği' },
+                { english: 'Shower', turkish: 'Duş' },
+                { english: 'Brush teeth', turkish: 'Diş fırçalamak' },
+                { english: 'Get dressed', turkish: 'Giyinmek' },
+                { english: 'Go to work', turkish: 'İşe gitmek' },
+                { english: 'Go home', turkish: 'Eve gitmek' },
+                { english: 'Go to bed', turkish: 'Yatmak' }
+            ],
+            'Renkler': [
+                { english: 'Red', turkish: 'Kırmızı' },
+                { english: 'Blue', turkish: 'Mavi' },
+                { english: 'Green', turkish: 'Yeşil' },
+                { english: 'Yellow', turkish: 'Sarı' },
+                { english: 'Orange', turkish: 'Turuncu' },
+                { english: 'Purple', turkish: 'Mor' },
+                { english: 'Pink', turkish: 'Pembe' },
+                { english: 'Brown', turkish: 'Kahverengi' },
+                { english: 'Black', turkish: 'Siyah' },
+                { english: 'White', turkish: 'Beyaz' },
+                { english: 'Gray', turkish: 'Gri' }
+            ],
+            'Sayılar': [
+                { english: 'One', turkish: 'Bir' },
+                { english: 'Two', turkish: 'İki' },
+                { english: 'Three', turkish: 'Üç' },
+                { english: 'Four', turkish: 'Dört' },
+                { english: 'Five', turkish: 'Beş' },
+                { english: 'Six', turkish: 'Altı' },
+                { english: 'Seven', turkish: 'Yedi' },
+                { english: 'Eight', turkish: 'Sekiz' },
+                { english: 'Nine', turkish: 'Dokuz' },
+                { english: 'Ten', turkish: 'On' },
+                { english: 'Twenty', turkish: 'Yirmi' },
+                { english: 'Fifty', turkish: 'Elli' },
+                { english: 'Hundred', turkish: 'Yüz' },
+                { english: 'Thousand', turkish: 'Bin' }
+            ]
+        };
+
+        let currentTopic = 'all';
+        let flippedCards = new Set();
+
+        function renderTopics() {
+            const topicsContainer = document.getElementById('topicsContainer');
+            const topics = Object.keys(vocabulary);
+
+            const allButton = document.createElement('button');
+            allButton.className = 'topic-btn active';
+            allButton.innerHTML = `Tümü <span class="topic-count">(${getTotalCards()})</span>`;
+            allButton.onclick = () => filterByTopic('all');
+            topicsContainer.appendChild(allButton);
+
+            topics.forEach(topic => {
+                const button = document.createElement('button');
+                button.className = 'topic-btn';
+                button.innerHTML = `${topic} <span class="topic-count">(${vocabulary[topic].length})</span>`;
+                button.onclick = () => filterByTopic(topic);
+                topicsContainer.appendChild(button);
+            });
+        }
+
+        function getTotalCards() {
+            return Object.values(vocabulary).reduce((sum, words) => sum + words.length, 0);
+        }
+
+        function filterByTopic(topic) {
+            currentTopic = topic;
+
+            // Update active button
+            document.querySelectorAll('.topic-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            renderCards();
+        }
+
+        function renderCards() {
+            const cardsGrid = document.getElementById('cardsGrid');
+            cardsGrid.innerHTML = '';
+
+            const cardsToShow = currentTopic === 'all'
+                ? Object.entries(vocabulary).flatMap(([topic, words]) =>
+                    words.map(word => ({ ...word, topic })))
+                : vocabulary[currentTopic].map(word => ({ ...word, topic: currentTopic }));
+
+            if (cardsToShow.length === 0) {
+                cardsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎴</div>
+                        <div class="empty-state-text">Bu kategoride kart bulunmuyor</div>
+                    </div>
+                `;
+                return;
+            }
+
+            cardsToShow.forEach((word, index) => {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'card-wrapper';
+                cardWrapper.style.animationDelay = `${index * 0.05}s`;
+
+                cardWrapper.innerHTML = `
+                    <div class="card" data-index="${index}">
+                        <div class="card-face card-front">
+                            <div class="card-topic">${word.topic}</div>
+                            <div class="card-word">${word.english}</div>
+                            <div class="card-hint">Çevirmek için tıklayın</div>
+                            <div class="flip-icon">🔄</div>
+                        </div>
+                        <div class="card-face card-back">
+                            <div class="card-topic">${word.topic}</div>
+                            <div class="card-word">${word.turkish}</div>
+                            <div class="card-hint">İngilizce: ${word.english}</div>
+                            <div class="flip-icon">🔄</div>
+                        </div>
+                    </div>
+                `;
+
+                const card = cardWrapper.querySelector('.card');
+                card.addEventListener('click', () => toggleCard(card, index));
+
+                cardsGrid.appendChild(cardWrapper);
+            });
+
+            updateStats();
+        }
+
+        function toggleCard(card, index) {
+            card.classList.toggle('flipped');
+
+            if (card.classList.contains('flipped')) {
+                flippedCards.add(index);
+            } else {
+                flippedCards.delete(index);
+            }
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const totalCards = currentTopic === 'all'
+                ? getTotalCards()
+                : vocabulary[currentTopic].length;
+
+            document.getElementById('totalCards').textContent = totalCards;
+            document.getElementById('flippedCount').textContent = flippedCards.size;
+        }
+
+        // Initialize app
+        renderTopics();
+        renderCards();
+    </script>
+</body>
+</html>
