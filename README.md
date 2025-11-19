@@ -59,7 +59,7 @@
 * [teacher profiles page](https://ilkaysen18.github.io/englishtraininghub/teachers.html) created - for students to book lessons directly through
 
 #### 1️⃣1️⃣ Full Platform Update
-✅️ UI Update
+✅️ UI Update - CSS & JS - featuring yellow-blue gradients, highlight upon hover or click, floating & puslse animation buttons, card borders, popups, CTA links, search browser & filter options, header & footer updates, card & button animations, level lock / unlock feature 
 
 ✅️ New Pages - About Us, Contact Us
 
