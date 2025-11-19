@@ -72,7 +72,7 @@
 
 ✅️ "Login to you Dashboard" & "Book a Trial!" floating buttons added to [Home Page](https://englishtraininghub.org/)
 
-➡️ "Login to your Dashboard" - featuring "Student Dashboard" & "Tutor Dashboard" - to be further developed
+➡️ "Login to your Dashboard" - featuring "[Student Dashboard](https://englishtraininghub.org/StudentDashboard.html)" & "Tutor Dashboard" - to be further developed
 
 🚀
 
