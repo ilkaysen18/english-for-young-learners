@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsLearn - Daily English News Platform</title>
+    <title>NewsLearn - Master English Through Daily News</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
@@ -600,6 +600,16 @@
             font-weight: 400;
         }
 
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 25px 10px;
+    font-size: 0.9rem;
+    color: #1b1b1b;
+    background: #f5f5f5;
+    margin-top: 40px;
+  }
+        
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -1016,6 +1026,16 @@
             }
         ];
 
+
+  <footer>
+    © <span id="year"></span> English Training Hub — All Rights Reserved.
+  </footer>
+</div>
+
+<script>
+  // Auto-update year
+  document.getElementById("year").textContent = new Date().getFullYear();
+        
         // State
         let currentFilters = {
             level: 'all',
@@ -1163,5 +1183,6 @@
         // Make openArticle available globally
         window.openArticle = openArticle;
     </script>
+    
 </body>
 </html>
