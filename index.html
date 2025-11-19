@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>English Training Hub - Platform</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+<!-- Font Awesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --shadow: 0 6px 18px rgba(16,24,40,0.08);
+    --radius: 12px;
+    --autumn-gradient: linear-gradient(135deg, #F9A825, #FF8C00, #FFA726);
+  }
+
+  body{
+    margin:0;
+    font-family:'Comic Neue',sans-serif;
+    background:linear-gradient(to bottom,#a7dfff,#f6faff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+  }
+
+  .container{
+    width:100%;
+    max-width:900px;
+    padding:20px;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #F9D423, #1E90FF);
+    padding: 26px 20px;
+    border-radius: 0 0 22px 22px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    text-align:center;
+    opacity:0;
+    transform: translateY(-40px);
+    transition: transform 0.8s ease, opacity 0.8s ease;
+  }
+  header.visible {
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  header h1 {
+    font-family: 'Comic Neue', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #0a1f7a;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  header .subtitle {
+    font-size: 1rem;
+    color: #f0f0f0;
+    margin-top: 6px;
+  }
+
+  /* Page cards/buttons */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+    margin-top:20px;
+  }
+  .card{
+    background: #fffdf5;
+    border-radius:var(--radius);
+    padding:25px 15px;
+    text-align:center;
+    font-size:1.2rem;
+    cursor:pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    opacity:0;
+    transform: translateY(30px);
+    border: 3px solid transparent;
+    background-image: linear-gradient(#fffdf5, #fffdf5), linear-gradient(135deg, #F9D423, #1E90FF);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+  .card span{ font-weight:bold; font-size:1rem; display:block; color: #0a1f7a; }
+  .card.visible{
+    opacity:1;
+    transform: translateY(0);
+  }
+  .card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    background-image: linear-gradient(135deg, #F9D423, #1E90FF), linear-gradient(135deg, #F9D423, #1E90FF);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 25px 10px;
+    font-size: 0.9rem;
+    color: #1b1b1b;
+    background: #f5f5f5;
+    margin-top: 40px;
+  }
+
+  /* FLOATING ACTION BUTTONS */
+  .floating-btn {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--autumn-gradient);
+    box-shadow: 0 6px 20px rgba(249, 168, 37, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: none;
+    overflow: visible;
+  }
+
+  .floating-btn i {
+    font-size: 24px;
+    color: #ffffff;
+  }
+
+  /* Pulsating animation */
+  @keyframes pulsate {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 6px 20px rgba(249, 168, 37, 0.4);
+    }
+    50% {
+      transform: scale(1.1);
+      box-shadow: 0 8px 30px rgba(249, 168, 37, 0.6);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 6px 20px rgba(249, 168, 37, 0.4);
+    }
+  }
+
+  .floating-btn:hover {
+    animation: pulsate 0.8s ease infinite;
+  }
+
+  .floating-btn:active {
+    animation: pulsate 0.4s ease;
+  }
+
+  /* CTA Tooltip */
+  .floating-btn .cta-tooltip {
+    position: absolute;
+    right: 75px;
+    background: var(--autumn-gradient);
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 25px;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(249, 168, 37, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .floating-btn .cta-tooltip::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid #F9A825;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+  }
+
+  .floating-btn:hover .cta-tooltip,
+  .floating-btn.active .cta-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  /* Position buttons */
+  #loginBtn {
+    bottom: 100px;
+    right: 30px;
+  }
+
+  #whatsappBtn {
+    bottom: 30px;
+    right: 30px;
+  }
+
+  /* Responsive adjustments */
+  @media(max-width:500px){
+    header h1{ font-size:1.5rem; }
+    .card{ padding:20px 10px; font-size:1rem; }
+
+    .floating-btn {
+      width: 50px;
+      height: 50px;
+    }
+
+    .floating-btn i {
+      font-size: 20px;
+    }
+
+    .floating-btn .cta-tooltip {
+      font-size: 14px;
+      padding: 10px 16px;
+      right: 65px;
+    }
+
+    #loginBtn {
+      bottom: 90px;
+      right: 20px;
+    }
+
+    #whatsappBtn {
+      bottom: 20px;
+      right: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER -->
+  <header id="header">
+    <h1>🌏💡 English Training Hub</h1>
+    <div class="subtitle">
+      TEFL & TESOL Certified tutors — Exam prep, speaking, vocabulary & professional English lessons.
+    </div>
+  </header>
+
+  <!-- PAGE CARDS -->
+  <div class="grid">
+    <div class="card" onclick="window.location.href='about.html'">💡<span>Who Are We?</span></div>
+    <div class="card" onclick="window.location.href='teachers.html'">👤<span>Teachers Profiles!</span></div>
+    <div class="card" onclick="window.location.href='courses.html'">💂<span>English Courses</span></div>
+    <div class="card" onclick="window.location.href='NewsLearn3.html'">📰<span>Daily News</span></div>
+    <div class="card" onclick="window.location.href='languages/german/spk.html'">🏰<span>German Courses</span></div>
+    <div class="card" onclick="window.location.href='contact.html'">☎️<span>Contact Us</span></div>
+  </div>
+
+  <footer>
+    © <span id="year"></span> English Training Hub — All Rights Reserved.
+  </footer>
+</div>
+
+<!-- FLOATING ACTION BUTTONS -->
+<button class="floating-btn" id="loginBtn">
+  <i class="fas fa-user"></i>
+  <span class="cta-tooltip">Login to your Dashboard</span>
+</button>
+
+<button class="floating-btn" id="whatsappBtn">
+  <i class="fab fa-whatsapp"></i>
+  <span class="cta-tooltip">Book a Trial!</span>
+</button>
+
+<script>
+  // Auto-update year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Animate header
+  const header = document.getElementById('header');
+  setTimeout(()=>header.classList.add('visible'), 100);
+
+  // Animate cards on load
+  const cards = document.querySelectorAll('.card');
+  cards.forEach((card, i) => {
+    setTimeout(() => {
+      card.classList.add('visible');
+    }, i * 150 + 500); // start after header animation
+  });
+
+  // Floating button functionality
+  const loginBtn = document.getElementById('loginBtn');
+  const whatsappBtn = document.getElementById('whatsappBtn');
+
+  // Toggle CTA tooltip on click (for mobile)
+  loginBtn.addEventListener('click', function(e) {
+    this.classList.toggle('active');
+    // Add your login functionality here
+    // Example: window.location.href = 'login.html';
+  });
+
+  whatsappBtn.addEventListener('click', function(e) {
+    this.classList.toggle('active');
+    // Add your WhatsApp link here
+    // Example: window.open('https://wa.me/YOUR_PHONE_NUMBER?text=I%20want%20to%20book%20a%20trial!', '_blank');
+  });
+
+  // Remove active class when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!loginBtn.contains(e.target)) {
+      loginBtn.classList.remove('active');
+    }
+    if (!whatsappBtn.contains(e.target)) {
+      whatsappBtn.classList.remove('active');
+    }
+  });
+</script>
+
+</body>
+</html>
