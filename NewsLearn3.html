@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsLearn - Daily English News Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light mode - Yellow & Blue gradient theme */
+            --color-bg-primary: #fdfdf8;
+            --color-bg-secondary: #f0f4fb;
+            --color-bg-tertiary: #ffffff;
+            --color-text-primary: #0a0a0a;
+            --color-text-secondary: #2d2d2d;
+            --color-text-tertiary: #525252;
+            --color-accent-primary: #2563eb;
+            --color-accent-secondary: #1e40af;
+            --color-accent-tertiary: #fbbf24;
+            --color-yellow: #F7DC6F;
+            --color-blue: #3498DB;
+            --color-blue-dark: #2874A6;
+            --color-border: #e5e7eb;
+            --color-beginner: #3b82f6;
+            --color-intermediate: #f59e0b;
+            --color-advanced: #8b5cf6;
+            --shadow-sm: 0 1px 3px rgba(26, 26, 26, 0.05);
+            --shadow-md: 0 4px 12px rgba(26, 26, 26, 0.08);
+            --shadow-lg: 0 8px 24px rgba(26, 26, 26, 0.12);
+            --gradient-yellow-blue: linear-gradient(90deg, #EDD207 0%, #93C572 25%, #6ABEBD 50%, #5AA8D5 75%, #5B9BD5 100%);
+            --gradient-blue-yellow: linear-gradient(90deg, #5B9BD5 0%, #5AA8D5 25%, #6ABEBD 50%, #93C572 75%, #EDD207 100%);
+            --gradient-featured: linear-gradient(135deg, #FF8C00 0%, #FFD700 100%);
+            --color-highlight-text: #001f3f;
+        }
+
+        .dark {
+            --color-bg-primary: #0f172a;
+            --color-bg-secondary: #1e293b;
+            --color-bg-tertiary: #334155;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #e2e8f0;
+            --color-text-tertiary: #cbd5e1;
+            --color-accent-primary: #3b82f6;
+            --color-accent-secondary: #1d4ed8;
+            --color-accent-tertiary: #fcd34d;
+            --color-yellow: #F9E79F;
+            --color-blue: #5DADE2;
+            --color-blue-dark: #3498DB;
+            --color-border: #475569;
+            --color-beginner: #60a5fa;
+            --color-intermediate: #fbbf24;
+            --color-advanced: #a78bfa;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --gradient-yellow-blue: linear-gradient(90deg, #F4E04D 0%, #A8D97F 25%, #7DD4CE 50%, #6BC4E6 75%, #6CB4EE 100%);
+            --gradient-blue-yellow: linear-gradient(90deg, #6CB4EE 0%, #6BC4E6 25%, #7DD4CE 50%, #A8D97F 75%, #F4E04D 100%);
+            --gradient-featured: linear-gradient(135deg, #FF9500 0%, #FFE135 100%);
+            --color-highlight-text: #001f3f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background: linear-gradient(135deg,
+                var(--color-bg-primary) 0%,
+                var(--color-bg-secondary) 50%,
+                var(--color-bg-primary) 100%);
+            background-attachment: fixed;
+            color: var(--color-text-primary);
+            line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--color-bg-tertiary);
+            border-bottom: 3px solid transparent;
+            border-image: var(--gradient-yellow-blue) 1;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 1rem;
+        }
+
+        .logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-yellow-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .filter-label {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.813rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-primary);
+        }
+
+        .search-container {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 0.75rem 1rem;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 16px;
+            border: 1.5px solid var(--color-border);
+            background: var(--color-bg-tertiary);
+            color: var(--color-text-primary);
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            font-weight: 400;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border: 2px solid transparent;
+            border-image: var(--gradient-yellow-blue) 1;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        .dark .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.2);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            font-family: 'Work Sans', sans-serif;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--color-border);
+            background: var(--color-bg-tertiary);
+            color: var(--color-text-primary);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 20px;
+            letter-spacing: 0.02em;
+            position: relative;
+        }
+
+        .filter-btn:hover {
+            border: 2px solid transparent;
+            background: var(--gradient-yellow-blue);
+            color: var(--color-highlight-text);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .filter-btn.active {
+            border: 2px solid transparent;
+            background: var(--gradient-yellow-blue);
+            color: var(--color-highlight-text);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        /* Article Cards */
+        .article-card {
+            background: var(--color-bg-tertiary);
+            border: 2px solid var(--color-border);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(52, 152, 219, 0.4);
+            border: 2px solid transparent;
+            background: var(--gradient-yellow-blue);
+        }
+
+        .article-card:hover .article-title,
+        .article-card:hover .article-excerpt,
+        .article-card:hover .category-tag {
+            color: var(--color-highlight-text);
+        }
+
+        .article-card:hover .category-tag {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .article-card:hover .level-badge {
+            background: rgba(255, 255, 255, 0.3);
+            color: var(--color-highlight-text);
+        }
+
+        .article-card:hover .article-header {
+            border-bottom-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 8px 24px rgba(255, 215, 0, 0.6),
+                            0 4px 12px rgba(255, 140, 0, 0.5);
+            }
+            50% {
+                box-shadow: 0 12px 32px rgba(255, 215, 0, 0.8),
+                            0 6px 16px rgba(255, 140, 0, 0.7);
+            }
+        }
+
+        .article-card.featured {
+            background: var(--gradient-featured);
+            border: 2px solid transparent;
+            color: var(--color-highlight-text);
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        .article-card.featured .article-title,
+        .article-card.featured .article-excerpt,
+        .article-card.featured .category-tag {
+            color: var(--color-highlight-text);
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .article-card.featured .category-tag {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .article-card.featured .level-badge {
+            background: rgba(255, 255, 255, 0.35);
+            color: var(--color-highlight-text);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .article-card.featured .article-header {
+            border-bottom-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .article-card.featured::before {
+            content: '⭐ FEATURED';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 0.35rem 0.75rem;
+            background: rgba(255, 255, 255, 0.95);
+            background-clip: padding-box;
+            color: #FF8C00;
+            border-radius: 12px;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .article-card.featured:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 48px rgba(255, 215, 0, 0.8),
+                        0 10px 24px rgba(255, 140, 0, 0.7),
+                        0 0 40px rgba(255, 193, 7, 0.6);
+            animation: none;
+        }
+
+        .dark .article-card.featured:hover {
+            box-shadow: 0 20px 48px rgba(255, 225, 53, 0.8),
+                        0 10px 24px rgba(255, 149, 0, 0.7),
+                        0 0 40px rgba(255, 215, 0, 0.6);
+        }
+
+        .article-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .level-badge {
+            font-family: 'Work Sans', sans-serif;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: white;
+        }
+
+        .level-beginner { background: var(--color-beginner); }
+        .level-intermediate { background: var(--color-intermediate); }
+        .level-advanced { background: var(--color-advanced); }
+
+        .category-tag {
+            font-family: 'Work Sans', sans-serif;
+            padding: 0.25rem 0.75rem;
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .article-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--color-text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .article-excerpt {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .article-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 1000;
+            overflow-y: auto;
+            animation: fadeInModal 0.3s ease-out;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .modal-content {
+            background: var(--color-bg-tertiary);
+            max-width: 900px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            animation: slideUpModal 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: auto;
+        }
+
+        @keyframes slideUpModal {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 2.5rem 2.5rem 1.5rem;
+            border-bottom: 3px solid transparent;
+            border-image: var(--gradient-yellow-blue) 1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--color-text-tertiary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--color-bg-secondary);
+            color: var(--color-text-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .article-full-text {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            color: var(--color-text-primary);
+            font-weight: 400;
+        }
+
+        .article-full-text p {
+            margin-bottom: 1.25rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--gradient-yellow-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .vocab-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .vocab-item {
+            padding: 1rem;
+            background: var(--color-bg-secondary);
+            border-left: 4px solid transparent;
+            border-image: var(--gradient-yellow-blue) 1;
+            border-radius: 8px;
+        }
+
+        .vocab-word {
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--color-text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .vocab-meaning {
+            font-family: 'Work Sans', sans-serif;
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .questions-list {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .question-item {
+            padding: 1.25rem;
+            background: var(--color-bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        .question-type {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--gradient-yellow-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.125rem;
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--color-text-tertiary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-text {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: var(--color-bg-tertiary);
+            border-top: 3px solid transparent;
+            border-image: var(--gradient-yellow-blue) 1;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.875rem;
+            color: var(--color-text-tertiary);
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .modal-content {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .close-btn {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">NewsLearn</div>
+            <div class="tagline">Master English Through Daily News</div>
+
+            <div class="filters">
+                <div class="search-container">
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Search articles by title or keyword..."
+                    >
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Level</span>
+                    <div class="filter-buttons" id="levelFilters">
+                        <button class="filter-btn active" data-level="all">All Levels</button>
+                        <button class="filter-btn" data-level="beginner">Beginner</button>
+                        <button class="filter-btn" data-level="intermediate">Intermediate</button>
+                        <button class="filter-btn" data-level="advanced">Advanced</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <span class="filter-label">Topic</span>
+                    <div class="filter-buttons" id="categoryFilters">
+                        <button class="filter-btn active" data-category="all">All Topics</button>
+                        <button class="filter-btn" data-category="technology">Technology</button>
+                        <button class="filter-btn" data-category="health">Health</button>
+                        <button class="filter-btn" data-category="environment">Environment</button>
+                        <button class="filter-btn" data-category="culture">Culture</button>
+                        <button class="filter-btn" data-category="business">Business</button>
+                        <button class="filter-btn" data-category="science">Science</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="articles-grid" id="articlesGrid"></div>
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">📰</div>
+            <div class="empty-state-text">No articles found for the selected filters.</div>
+        </div>
+    </main>
+
+    <footer>
+        brought to you by English Training Hub © <span id="year"></span> — All Rights Reserved.
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="articleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" id="closeModal">&times;</button>
+                <div class="article-meta" id="modalMeta"></div>
+                <h1 class="article-title" id="modalTitle"></h1>
+                <div class="article-excerpt" id="modalExcerpt"></div>
+            </div>
+            <div class="modal-body">
+                <div class="article-full-text" id="modalFullText"></div>
+                <div class="section">
+                    <h2 class="section-title">📚 Vocabulary</h2>
+                    <div class="vocab-list" id="modalVocab"></div>
+                </div>
+                <div class="section">
+                    <h2 class="section-title">💬 Discussion Questions</h2>
+                    <div class="questions-list" id="modalQuestions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Auto-update year
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Article data
+        const articles = [
+            {
+                id: 1,
+                title: "New App Helps People Learn Languages",
+                category: "technology",
+                level: "beginner",
+                featured: true,
+                excerpt: "A new phone app makes learning languages fun and easy. Users can practice speaking with their phone.",
+                fullText: `<p>A new phone app called "SpeakEasy" is helping people learn new languages. The app is very easy to use.</p>
+                <p>Users can talk to their phone and the app listens. The app tells them if they said the words correctly. It also gives them new words to learn every day.</p>
+                <p>Many people say the app is helping them learn faster. The app is free to download and use.</p>`,
+                vocabulary: [
+                    { word: "app", meaning: "a program you use on your phone or computer" },
+                    { word: "practice", meaning: "to do something many times to get better at it" },
+                    { word: "download", meaning: "to get a file or program from the internet to your device" },
+                    { word: "correctly", meaning: "in the right way, without mistakes" }
+                ],
+                questions: [
+                    { type: "conversation", text: "Do you use any apps to learn English? Which ones?" },
+                    { type: "conversation", text: "How often do you practice speaking English?" },
+                    { type: "agree/disagree", text: "Learning languages with apps is better than learning in a classroom." },
+                    { type: "hypothetical", text: "What would you do if you could speak 10 languages perfectly?" }
+                ]
+            },
+            {
+                id: 2,
+                title: "Cities Plant More Trees to Fight Climate Change",
+                category: "environment",
+                level: "beginner",
+                excerpt: "Many cities around the world are planting thousands of trees to help the environment and make cities cooler.",
+                fullText: `<p>Cities around the world are planting more trees. They want to help fight climate change and make their cities better places to live.</p>
+                <p>Trees are very good for cities. They make the air cleaner and the temperature cooler. Trees also give homes to birds and other animals.</p>
+                <p>In New York, the city wants to plant one million trees. In London, they are planting trees in every neighborhood. Many other cities have similar plans.</p>`,
+                vocabulary: [
+                    { word: "plant", meaning: "to put something in the ground so it can grow" },
+                    { word: "climate change", meaning: "changes in Earth's weather and temperature" },
+                    { word: "environment", meaning: "the air, water, and land around us" },
+                    { word: "neighborhood", meaning: "an area of a city where people live" }
+                ],
+                questions: [
+                    { type: "conversation", text: "Are there many trees in your neighborhood?" },
+                    { type: "conversation", text: "What do you do to help the environment?" },
+                    { type: "agree/disagree", text: "Every person should plant at least one tree in their life." },
+                    { type: "hypothetical", text: "What would happen if there were no trees in cities?" }
+                ]
+            },
+            {
+                id: 3,
+                title: "AI-Powered Robots Transform Manufacturing Industry",
+                category: "technology",
+                level: "advanced",
+                featured: true,
+                excerpt: "Cutting-edge artificial intelligence is revolutionizing how factories operate, raising questions about workforce adaptation and economic transformation.",
+                fullText: `<p>The manufacturing sector is undergoing a profound transformation as artificial intelligence-powered robotics systems become increasingly sophisticated and ubiquitous. These advanced machines are capable of performing complex tasks with unprecedented precision and efficiency.</p>
+                <p>Industry analysts predict that by 2030, nearly 45% of manufacturing operations will be fully automated. While this promises substantial productivity gains and cost reductions, it also raises significant concerns about workforce displacement and the need for comprehensive retraining programs.</p>
+                <p>Proponents argue that automation will create new high-skilled positions and eliminate dangerous, repetitive work. Critics contend that the transition period could exacerbate economic inequality and leave millions of workers struggling to adapt to rapidly changing job markets.</p>`,
+                vocabulary: [
+                    { word: "unprecedented", meaning: "never having happened or existed before" },
+                    { word: "ubiquitous", meaning: "present, appearing, or found everywhere" },
+                    { word: "displacement", meaning: "the removal of someone or something from their usual place" },
+                    { word: "exacerbate", meaning: "to make a problem or situation worse" },
+                    { word: "profound", meaning: "very great or intense; showing deep insight" }
+                ],
+                questions: [
+                    { type: "conversation", text: "How has automation affected your industry or field of work?" },
+                    { type: "conversation", text: "What skills do you think will be most valuable in an AI-driven economy?" },
+                    { type: "agree/disagree", text: "Governments should provide universal basic income to workers displaced by automation." },
+                    { type: "hypothetical", text: "If robots could do all human jobs, how should society reorganize its economic systems?" }
+                ]
+            },
+            {
+                id: 4,
+                title: "Mediterranean Diet Linked to Longer Lifespan",
+                category: "health",
+                level: "intermediate",
+                excerpt: "Research suggests that following a Mediterranean diet rich in vegetables, fish, and olive oil may help people live longer and healthier lives.",
+                fullText: `<p>A new study has found strong evidence that the Mediterranean diet can help people live longer. Researchers followed over 25,000 people for more than 20 years.</p>
+                <p>The Mediterranean diet includes lots of vegetables, fruits, fish, and olive oil. People who follow this diet eat less red meat and processed foods. They also eat whole grains and nuts regularly.</p>
+                <p>The study showed that people who followed the Mediterranean diet closely were 20% less likely to die early. They also had lower rates of heart disease and diabetes. Doctors say this diet is one of the healthiest in the world.</p>`,
+                vocabulary: [
+                    { word: "lifespan", meaning: "the length of time that a person or animal lives" },
+                    { word: "evidence", meaning: "facts or information that show something is true" },
+                    { word: "processed foods", meaning: "foods that have been changed from their natural state" },
+                    { word: "regularly", meaning: "happening or done many times with the same amount of time between each time" },
+                    { word: "rates", meaning: "measurements of how often something happens" }
+                ],
+                questions: [
+                    { type: "conversation", text: "What does your typical daily diet consist of?" },
+                    { type: "conversation", text: "Have you ever tried changing your eating habits? How did it go?" },
+                    { type: "agree/disagree", text: "People should only eat food that is good for their health, even if it's not delicious." },
+                    { type: "hypothetical", text: "If you could only eat three types of food for the rest of your life, what would they be?" }
+                ]
+            },
+            {
+                id: 5,
+                title: "Coffee Shop Opens in Small Town",
+                category: "business",
+                level: "beginner",
+                excerpt: "A new coffee shop opened last week in a small town. Many people are happy to have a place to meet friends.",
+                fullText: `<p>A new coffee shop called "Morning Brew" opened in Greenville last week. It is the first coffee shop in this small town.</p>
+                <p>The owner, Sarah Martinez, grew up in Greenville. She always wanted to open a coffee shop in her hometown. The shop sells coffee, tea, and fresh sandwiches.</p>
+                <p>Many people visit the shop every day. They drink coffee and talk with friends. Students also come to study. Everyone is happy to have this new place in town.</p>`,
+                vocabulary: [
+                    { word: "owner", meaning: "a person who owns something" },
+                    { word: "hometown", meaning: "the town where someone was born or grew up" },
+                    { word: "fresh", meaning: "recently made or obtained; not old" },
+                    { word: "visit", meaning: "to go to see a person or place" }
+                ],
+                questions: [
+                    { type: "conversation", text: "Do you often go to coffee shops? What do you usually order?" },
+                    { type: "conversation", text: "What is your favorite place to meet friends?" },
+                    { type: "agree/disagree", text: "Small towns are better places to live than big cities." },
+                    { type: "hypothetical", text: "If you could open any kind of shop, what would it be?" }
+                ]
+            },
+            {
+                id: 6,
+                title: "Ancient Artifacts Discovered in Egyptian Tomb",
+                category: "culture",
+                level: "intermediate",
+                excerpt: "Archaeologists have uncovered remarkable treasures in a newly discovered tomb, shedding light on ancient Egyptian civilization.",
+                fullText: `<p>Egyptian archaeologists have made an extraordinary discovery in the Valley of the Kings. A previously unknown tomb has yielded hundreds of artifacts dating back over 3,000 years.</p>
+                <p>The tomb appears to belong to a high-ranking official from the reign of Ramses II. Inside, researchers found golden jewelry, painted pottery, and well-preserved hieroglyphic inscriptions. The discovery also included several mummies and wooden statues.</p>
+                <p>Dr. Ahmed Hassan, who led the excavation team, described the find as "exceptional." The artifacts will be studied extensively and eventually displayed in museums. This discovery helps historians better understand daily life in ancient Egypt.</p>`,
+                vocabulary: [
+                    { word: "archaeologist", meaning: "a person who studies human history by examining ancient objects and remains" },
+                    { word: "artifacts", meaning: "objects made by humans, especially historical or cultural items" },
+                    { word: "yielded", meaning: "produced or provided something" },
+                    { word: "excavation", meaning: "the process of carefully removing earth to find buried objects" },
+                    { word: "exceptional", meaning: "unusually good or outstanding" }
+                ],
+                questions: [
+                    { type: "conversation", text: "Have you ever visited an archaeology museum? What did you find most interesting?" },
+                    { type: "conversation", text: "What period of history fascinates you the most?" },
+                    { type: "agree/disagree", text: "Ancient artifacts should always remain in the country where they were discovered." },
+                    { type: "hypothetical", text: "If you could travel back to any ancient civilization, which would you choose and why?" }
+                ]
+            },
+            {
+                id: 7,
+                title: "Quantum Computing Breakthrough Promises Revolutionary Changes",
+                category: "science",
+                level: "advanced",
+                featured: true,
+                excerpt: "Scientists achieve quantum supremacy with a new processor, potentially transforming cryptography, drug discovery, and artificial intelligence.",
+                fullText: `<p>Researchers at a leading technology institute have achieved a significant milestone in quantum computing, demonstrating computational capabilities that far surpass traditional supercomputers. The breakthrough involves a 1,000-qubit quantum processor that successfully solved complex problems in minutes that would take conventional computers millennia.</p>
+                <p>This advancement has profound implications across multiple domains. In cryptography, it could render current encryption methods obsolete while enabling unhackable quantum communication networks. Pharmaceutical companies anticipate revolutionary drug discovery processes, simulating molecular interactions with unprecedented accuracy. Climate scientists envision modeling atmospheric systems with previously unattainable precision.</p>
+                <p>However, significant challenges remain. Quantum computers are extremely sensitive to environmental interference, requiring near-absolute-zero temperatures to function. Scalability issues and astronomical costs currently limit practical applications. Nevertheless, experts predict that within two decades, quantum computing will fundamentally reshape technological capabilities.</p>`,
+                vocabulary: [
+                    { word: "quantum supremacy", meaning: "the point at which quantum computers can solve problems impossible for classical computers" },
+                    { word: "qubit", meaning: "the basic unit of quantum information" },
+                    { word: "obsolete", meaning: "no longer in use or out of date" },
+                    { word: "unprecedented", meaning: "never done or known before" },
+                    { word: "astronomical", meaning: "extremely large, especially relating to cost or scale" }
+                ],
+                questions: [
+                    { type: "conversation", text: "How do you think quantum computing will affect your daily life in the future?" },
+                    { type: "conversation", text: "What scientific breakthrough are you most excited about?" },
+                    { type: "agree/disagree", text: "The potential risks of quantum computing outweigh its benefits." },
+                    { type: "hypothetical", text: "If you had access to a quantum computer for one day, what problem would you try to solve?" }
+                ]
+            },
+            {
+                id: 8,
+                title: "Local Library Adds More Books for Children",
+                category: "culture",
+                level: "beginner",
+                excerpt: "The town library bought 500 new children's books. Kids are excited to read the new stories.",
+                fullText: `<p>The Riverside Library has good news for children. They bought 500 new books for kids to read.</p>
+                <p>The new books have many different stories. There are books about animals, space, adventures, and fairy tales. The library also bought books in different languages.</p>
+                <p>Children can borrow the books for free. The library is open every day except Sunday. Many families visit the library together on weekends.</p>`,
+                vocabulary: [
+                    { word: "library", meaning: "a place where books are kept for people to read or borrow" },
+                    { word: "borrow", meaning: "to take something and return it later" },
+                    { word: "adventures", meaning: "exciting or unusual experiences" },
+                    { word: "fairy tales", meaning: "children's stories about magical and imaginary beings" }
+                ],
+                questions: [
+                    { type: "conversation", text: "Do you like reading books? What kind of books do you enjoy?" },
+                    { type: "conversation", text: "Did you go to the library when you were a child?" },
+                    { type: "agree/disagree", text: "Reading paper books is better than reading on a phone or tablet." },
+                    { type: "hypothetical", text: "If you wrote a children's book, what would it be about?" }
+                ]
+            },
+            {
+                id: 9,
+                title: "Workplace Wellness Programs Show Mixed Results",
+                category: "health",
+                level: "intermediate",
+                excerpt: "Companies investing in employee wellness initiatives report varying outcomes, with some seeing improvements while others find minimal impact.",
+                fullText: `<p>Many companies have invested heavily in workplace wellness programs over the past decade. These programs typically include gym memberships, healthy food options, stress management workshops, and mental health resources.</p>
+                <p>Recent studies examining these programs have produced mixed results. Some companies report improved employee satisfaction and reduced sick days. However, other organizations have found little measurable impact on health outcomes or productivity.</p>
+                <p>Experts suggest that successful programs share common features: strong leadership support, personalized approaches, and genuine company culture changes. Simply offering benefits isn't enough—employees need to feel encouraged and supported to participate. The most effective programs treat wellness as an ongoing priority rather than a temporary initiative.</p>`,
+                vocabulary: [
+                    { word: "wellness", meaning: "the state of being in good health, especially as an actively pursued goal" },
+                    { word: "initiatives", meaning: "plans or programs intended to solve a problem or improve a situation" },
+                    { word: "measurable", meaning: "able to be measured or assessed" },
+                    { word: "personalized", meaning: "designed for a particular person" },
+                    { word: "genuine", meaning: "truly what it is said to be; authentic" }
+                ],
+                questions: [
+                    { type: "conversation", text: "Does your workplace offer any wellness programs? Do you participate in them?" },
+                    { type: "conversation", text: "What changes would make your workplace healthier?" },
+                    { type: "agree/disagree", text: "Companies should be responsible for their employees' health and wellbeing." },
+                    { type: "hypothetical", text: "If you could design the perfect workplace wellness program, what would it include?" }
+                ]
+            },
+            {
+                id: 10,
+                title: "Electric Cars Become More Popular",
+                category: "environment",
+                level: "intermediate",
+                excerpt: "Sales of electric vehicles are growing rapidly as more people choose environmentally friendly transportation options.",
+                fullText: `<p>Electric car sales have increased dramatically over the past few years. In 2023, electric vehicles represented 15% of all new car sales worldwide, up from just 4% in 2020.</p>
+                <p>Several factors are driving this growth. Electric cars are becoming more affordable as battery technology improves. Many governments also offer incentives to buyers, such as tax credits or rebates. Additionally, charging stations are becoming more common in cities and along highways.</p>
+                <p>Environmental concerns play a major role in people's decisions. Electric cars produce no direct emissions, helping to reduce air pollution in cities. However, critics point out that electricity generation and battery production still have environmental impacts that need to be addressed.</p>`,
+                vocabulary: [
+                    { word: "dramatically", meaning: "in a sudden and striking way; significantly" },
+                    { word: "incentives", meaning: "things that motivate or encourage someone to do something" },
+                    { word: "rebates", meaning: "partial refunds of money paid" },
+                    { word: "emissions", meaning: "gases or other substances sent out into the air" },
+                    { word: "addressed", meaning: "dealt with or tackled" }
+                ],
+                questions: [
+                    { type: "conversation", text: "Would you consider buying an electric car? Why or why not?" },
+                    { type: "conversation", text: "How do you usually travel around your city?" },
+                    { type: "agree/disagree", text: "All new cars should be electric by 2030." },
+                    { type: "hypothetical", text: "If gasoline became extremely expensive, how would you change your transportation habits?" }
+                ]
+            },
+            {
+                id: 11,
+                title: "Startup Companies Revolutionize Remote Work Technology",
+                category: "business",
+                level: "advanced",
+                excerpt: "Innovative tech startups are developing sophisticated platforms that transform remote collaboration, challenging traditional office paradigms.",
+                fullText: `<p>The remote work revolution has catalyzed a proliferation of innovative startups developing cutting-edge collaboration technologies. These companies are fundamentally reimagining how distributed teams communicate, coordinate, and maintain productivity across geographical boundaries.</p>
+                <p>Leading platforms now incorporate advanced features such as virtual reality meeting spaces, AI-powered productivity analytics, and sophisticated asynchronous communication tools. These innovations address persistent challenges in remote work, including digital fatigue, time zone coordination, and the erosion of spontaneous collaboration that characterizes traditional office environments.</p>
+                <p>However, the rapid adoption of these technologies raises important questions about workplace surveillance, data privacy, and the potential exacerbation of work-life boundary dissolution. Labor advocates express concern that productivity monitoring tools could enable intrusive management practices, while proponents argue they provide valuable insights for performance optimization and employee development.</p>`,
+                vocabulary: [
+                    { word: "catalyzed", meaning: "caused or accelerated a change or event" },
+                    { word: "proliferation", meaning: "rapid increase in numbers or amount" },
+                    { word: "asynchronous", meaning: "not occurring at the same time" },
+                    { word: "erosion", meaning: "gradual destruction or diminution" },
+                    { word: "dissolution", meaning: "the closing down or breaking apart of something" }
+                ],
+                questions: [
+                    { type: "conversation", text: "How has remote work technology changed your professional life?" },
+                    { type: "conversation", text: "What are the biggest challenges you face when working remotely?" },
+                    { type: "agree/disagree", text: "Productivity monitoring software is an invasion of employee privacy." },
+                    { type: "hypothetical", text: "If you could design the ideal remote work environment, what features would it have?" }
+                ]
+            },
+            {
+                id: 12,
+                title: "Neuroscience Reveals How Music Affects the Brain",
+                category: "science",
+                level: "advanced",
+                excerpt: "New research demonstrates the profound neurological effects of music, with implications for therapy, education, and cognitive enhancement.",
+                fullText: `<p>Groundbreaking neuroscientific research has illuminated the extraordinary ways music influences brain structure and function. Advanced neuroimaging techniques reveal that musical engagement activates virtually every region of the brain simultaneously, creating neural connectivity patterns unmatched by any other stimulus.</p>
+                <p>Studies demonstrate that musical training induces measurable neuroplastic changes, enhancing executive functions, spatial reasoning, and linguistic abilities. Professional musicians exhibit enlarged corpus callosum structures and heightened gray matter density in regions associated with motor control and auditory processing. These findings suggest music could serve as a powerful cognitive enhancement tool.</p>
+                <p>Clinical applications are already emerging. Music therapy shows remarkable efficacy in treating Parkinson's disease, stroke recovery, and Alzheimer's dementia. Rhythmic auditory stimulation helps patients regain motor functions, while familiar melodies can temporarily restore memory access in dementia patients. However, researchers caution that music's effects are highly individualized, depending on personal history, cultural background, and specific neurological conditions.</p>`,
+                vocabulary: [
+                    { word: "neuroplastic", meaning: "relating to the brain's ability to reorganize itself by forming new neural connections" },
+                    { word: "corpus callosum", meaning: "the bundle of nerve fibers connecting the brain's two hemispheres" },
+                    { word: "gray matter", meaning: "brain tissue containing nerve cell bodies" },
+                    { word: "efficacy", meaning: "the ability to produce a desired result or effect" },
+                    { word: "individualized", meaning: "tailored to meet individual characteristics or needs" }
+                ],
+                questions: [
+                    { type: "conversation", text: "How does music affect your mood and productivity?" },
+                    { type: "conversation", text: "Do you play any musical instruments? If not, would you like to learn?" },
+                    { type: "agree/disagree", text: "Music education should be mandatory in all schools." },
+                    { type: "hypothetical", text: "If you discovered that listening to a specific type of music could increase your intelligence, would you listen to it even if you didn't enjoy it?" }
+                ]
+            }
+        ];
+
+        // State
+        let currentFilters = {
+            level: 'all',
+            category: 'all',
+            search: ''
+        };
+
+        // Initialize
+        renderArticles();
+        setupFilters();
+        setupModal();
+
+        // Render articles
+        function renderArticles() {
+            const grid = document.getElementById('articlesGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            const filtered = articles.filter(article => {
+                const levelMatch = currentFilters.level === 'all' || article.level === currentFilters.level;
+                const categoryMatch = currentFilters.category === 'all' || article.category === currentFilters.category;
+
+                // Search filter
+                const searchMatch = currentFilters.search === '' ||
+                    article.title.toLowerCase().includes(currentFilters.search.toLowerCase()) ||
+                    article.excerpt.toLowerCase().includes(currentFilters.search.toLowerCase()) ||
+                    article.category.toLowerCase().includes(currentFilters.search.toLowerCase());
+
+                return levelMatch && categoryMatch && searchMatch;
+            });
+
+            if (filtered.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            grid.innerHTML = filtered.map(article => `
+                <div class="article-card ${article.featured ? 'featured' : ''}" onclick="openArticle(${article.id})">
+                    <div class="article-header">
+                        <div class="article-meta">
+                            <span class="level-badge level-${article.level}">${article.level}</span>
+                            <span class="category-tag">${article.category}</span>
+                        </div>
+                        <h2 class="article-title">${article.title}</h2>
+                        <p class="article-excerpt">${article.excerpt}</p>
+                    </div>
+                    <div class="article-body">
+                        <p style="${article.featured ? 'color: var(--color-highlight-text);' : 'background: var(--gradient-yellow-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'} font-family: 'Work Sans', sans-serif; font-size: 0.875rem; font-weight: 600;">Read More →</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Setup filters
+        function setupFilters() {
+            // Search input
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                currentFilters.search = e.target.value;
+                renderArticles();
+            });
+
+            document.getElementById('levelFilters').addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    document.querySelectorAll('#levelFilters .filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    currentFilters.level = e.target.dataset.level;
+                    renderArticles();
+                }
+            });
+
+            document.getElementById('categoryFilters').addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    document.querySelectorAll('#categoryFilters .filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    currentFilters.category = e.target.dataset.category;
+                    renderArticles();
+                }
+            });
+        }
+
+        // Open article modal
+        function openArticle(id) {
+            const article = articles.find(a => a.id === id);
+            if (!article) return;
+
+            document.getElementById('modalMeta').innerHTML = `
+                <span class="level-badge level-${article.level}">${article.level}</span>
+                <span class="category-tag">${article.category}</span>
+            `;
+            document.getElementById('modalTitle').textContent = article.title;
+            document.getElementById('modalExcerpt').textContent = article.excerpt;
+            document.getElementById('modalFullText').innerHTML = article.fullText;
+
+            document.getElementById('modalVocab').innerHTML = article.vocabulary.map(v => `
+                <div class="vocab-item">
+                    <div class="vocab-word">${v.word}</div>
+                    <div class="vocab-meaning">${v.meaning}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('modalQuestions').innerHTML = article.questions.map(q => `
+                <div class="question-item">
+                    <div class="question-type">${q.type}</div>
+                    <div class="question-text">${q.text}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('articleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Setup modal
+        function setupModal() {
+            const modal = document.getElementById('articleModal');
+            const closeBtn = document.getElementById('closeModal');
+
+            closeBtn.addEventListener('click', closeModal);
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('articleModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Make openArticle available globally
+        window.openArticle = openArticle;
+    </script>
+</body>
+</html>
