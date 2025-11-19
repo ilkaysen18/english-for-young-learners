@@ -31,7 +31,7 @@
             --shadow-lg: 0 8px 24px rgba(26, 26, 26, 0.12);
             --gradient-yellow-blue: linear-gradient(90deg, #EDD207 0%, #93C572 25%, #6ABEBD 50%, #5AA8D5 75%, #5B9BD5 100%);
             --gradient-blue-yellow: linear-gradient(90deg, #5B9BD5 0%, #5AA8D5 25%, #6ABEBD 50%, #93C572 75%, #EDD207 100%);
-            --gradient-featured: linear-gradient(135deg, #C04A38 0%, #D6844A 100%);
+            --gradient-featured: linear-gradient(135deg, #FF8C00 0%, #FFD700 100%);
             --color-highlight-text: #001f3f;
         }
 
@@ -57,7 +57,7 @@
             --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
             --gradient-yellow-blue: linear-gradient(90deg, #F4E04D 0%, #A8D97F 25%, #7DD4CE 50%, #6BC4E6 75%, #6CB4EE 100%);
             --gradient-blue-yellow: linear-gradient(90deg, #6CB4EE 0%, #6BC4E6 25%, #7DD4CE 50%, #A8D97F 75%, #F4E04D 100%);
-            --gradient-featured: linear-gradient(135deg, #C04A38 0%, #D6844A 100%);
+            --gradient-featured: linear-gradient(135deg, #FF9500 0%, #FFE135 100%);
             --color-highlight-text: #001f3f;
         }
 
@@ -288,12 +288,12 @@
 
         @keyframes pulseGlow {
             0%, 100% {
-                box-shadow: 0 8px 24px rgba(214, 132, 74, 0.5),
-                            0 4px 12px rgba(192, 74, 56, 0.3);
+                box-shadow: 0 8px 24px rgba(255, 215, 0, 0.6),
+                            0 4px 12px rgba(255, 140, 0, 0.5);
             }
             50% {
-                box-shadow: 0 12px 32px rgba(214, 132, 74, 0.7),
-                            0 6px 16px rgba(192, 74, 56, 0.5);
+                box-shadow: 0 12px 32px rgba(255, 215, 0, 0.8),
+                            0 6px 16px rgba(255, 140, 0, 0.7);
             }
         }
 
@@ -354,16 +354,16 @@
 
         .article-card.featured:hover {
             transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 20px 48px rgba(255, 217, 61, 0.6),
-                        0 10px 24px rgba(77, 150, 255, 0.5),
-                        0 0 40px rgba(107, 207, 127, 0.3);
+            box-shadow: 0 20px 48px rgba(255, 215, 0, 0.8),
+                        0 10px 24px rgba(255, 140, 0, 0.7),
+                        0 0 40px rgba(255, 193, 7, 0.6);
             animation: none;
         }
 
         .dark .article-card.featured:hover {
-            box-shadow: 0 20px 48px rgba(255, 230, 109, 0.6),
-                        0 10px 24px rgba(108, 180, 238, 0.5),
-                        0 0 40px rgba(133, 227, 193, 0.4);
+            box-shadow: 0 20px 48px rgba(255, 225, 53, 0.8),
+                        0 10px 24px rgba(255, 149, 0, 0.7),
+                        0 0 40px rgba(255, 215, 0, 0.6);
         }
 
         .article-header {
