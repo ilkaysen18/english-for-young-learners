@@ -56,35 +56,26 @@
 ##### ✅️ Teacher Profiles 
 * [teacher profiles page](https://ilkaysen18.github.io/englishtraininghub/teachers.html) created - for students to book lessons directly through
 
-...
+#### 1️⃣1️⃣ Full Platform Update
+✅️ UI Update
+✅️ New Pages - About Us, Contact Us
+✅️ New Course - "Speaking for Fluency" English 
+✅️ Daily News Platform added - [NewsLearn](https://ilkaysen18.github.io/englishtraininghub/NewsLearn.html)
+✅️ Game Hub - Fully Interactive Learning Platform - [English Gaming Hub](https://ilkaysen18.github.io/ETHgames/EnglishGamingHub.html)
+✅️ 
 
 🚀
 
-#### 1️⃣1️⃣ Full CMS config with Google Cloud (using iFrame with Drive Docs)(rather than Firestore API)
+#### ---- Full CMS config with Google Cloud (using iFrame with Drive Docs)(rather than Firestore API)
 * update / recover CMS - under the "Tutors" button
 * Add a login-to-access further lessons button for each course
   - lessons available on HTML stay publicly accessible on page
   - further lessons requiring login to be made available through iFrame
-* ...
-#### 1️⃣2️⃣ Student Dashboard
+#### ---- Student Dashboard
 * Add a Student Dashboard page using HTML, CSS
   - the main thing will be the further lessons available through iFrame
   - the next point will be tutors being able to add student lesson notes to Google Drive - which will also be hosted on student lesson notes page through iFrame
-* ...
 
 🚀
-
-#### 1️⃣3️⃣ ...
-* ...
-#### 1️⃣4️⃣ ...
-* ...
-#### 1️⃣5️⃣ ...
-* ...
-
-🚀
-
-
-
-
 
 
