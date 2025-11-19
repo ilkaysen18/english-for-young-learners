@@ -70,7 +70,7 @@
 
 ✅️ Game Hub - Fully Interactive Learning Platform - [English Gaming Hub](https://englishtraininghub.org/ETHgames/EnglishGamingHub.html)
 
-✅️ "Login to you Dashboard" & "Book a Trial!" floating buttons added to [Home Page](https://ilkaysen18.github.io/index.html)
+✅️ "Login to you Dashboard" & "Book a Trial!" floating buttons added to [Home Page](https://englishtraininghub.org/)
 
 ➡️ "Login to your Dashboard" - featuring "Student Dashboard" & "Tutor Dashboard" - to be further developed
 
