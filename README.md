@@ -62,10 +62,15 @@
 ✅️ UI Update
 
 ✅️ New Pages - About Us, Contact Us
+
 ✅️ New Course - "Speaking for Fluency" English
+
 ✅️ Daily News Platform added - [NewsLearn](https://ilkaysen18.github.io/englishtraininghub/NewsLearn.html)
+
 ✅️ Game Hub - Fully Interactive Learning Platform - [English Gaming Hub](https://ilkaysen18.github.io/ETHgames/EnglishGamingHub.html)
+
 ✅️ "Login to you Dashboard" & "Book a Trial!" floating buttons added to [Home Page](https://ilkaysen18.github.io/index.html)
+
 ➡️ "Login to your Dashboard" - featuring "Student Dashboard" & "Tutor Dashboard" - to be further developed
 
 🚀
