@@ -843,56 +843,62 @@
         const lessonContent = {
             animals: {
                 vocab: [
-                    { emoji: '🐕', word: 'dog', translation: 'perro' },
-                    { emoji: '🐈', word: 'cat', translation: 'gato' },
-                    { emoji: '🐘', word: 'elephant', translation: 'elefante' },
-                    { emoji: '🦁', word: 'lion', translation: 'león' },
-                    { emoji: '🐯', word: 'tiger', translation: 'tigre' },
-                    { emoji: '🐼', word: 'panda', translation: 'panda' }
+                    { emoji: '🐕', word: 'dog', translation: 'köpek' },
+                    { emoji: '🐈', word: 'cat', translation: 'kedi' },
+                    { emoji: '🐘', word: 'elephant', translation: 'fil' },
+                    { emoji: '🦁', word: 'lion', translation: 'aslan' },
+                    { emoji: '🐯', word: 'tiger', translation: 'kaplan' },
+                    { emoji: '🐼', word: 'panda', translation: 'panda' },
+                    { emoji: '🐦', word: 'bird', translation: 'kuş' },
+                    { emoji: '🐟', word: 'fish', translation: 'balık' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '🐕', correctAnswer: 'dog', options: ['dog', 'cat', 'bird', 'fish'] },
-                    { type: 'translation', question: 'The cat is sleeping', correctAnswer: 'El gato está durmiendo', hint: 'cat = gato' },
+                    { type: 'translation', question: 'The cat is sleeping', correctAnswer: 'Kedi uyuyor', hint: 'cat = kedi, sleeping = uyuyor' },
                     { type: 'multiple', question: 'Which animal is the king of the jungle?', correctAnswer: 'lion', options: ['dog', 'lion', 'cat', 'elephant'] },
                     { type: 'sentence', prompt: 'I have a dog', words: ['I', 'have', 'a', 'dog', 'cat', 'like', 'is'] },
                     { type: 'vocab', emoji: '🐘', correctAnswer: 'elephant', options: ['tiger', 'elephant', 'monkey', 'bear'] },
-                    { type: 'match', question: 'Match the animal to its name', pairs: [['🐕', 'dog'], ['🐈', 'cat'], ['🦁', 'lion']] }
+                    { type: 'translation', question: 'Kuş uçuyor', correctAnswer: 'The bird is flying', hint: 'kuş = bird, uçuyor = flying', direction: 'tr-en' }
                 ]
             },
             food: {
                 vocab: [
-                    { emoji: '🍎', word: 'apple', translation: 'manzana' },
-                    { emoji: '🍌', word: 'banana', translation: 'plátano' },
-                    { emoji: '🍞', word: 'bread', translation: 'pan' },
-                    { emoji: '🥛', word: 'milk', translation: 'leche' },
+                    { emoji: '🍎', word: 'apple', translation: 'elma' },
+                    { emoji: '🍌', word: 'banana', translation: 'muz' },
+                    { emoji: '🍞', word: 'bread', translation: 'ekmek' },
+                    { emoji: '🥛', word: 'milk', translation: 'süt' },
                     { emoji: '🍕', word: 'pizza', translation: 'pizza' },
-                    { emoji: '🍔', word: 'burger', translation: 'hamburguesa' }
+                    { emoji: '🍔', word: 'burger', translation: 'hamburger' },
+                    { emoji: '🍊', word: 'orange', translation: 'portakal' },
+                    { emoji: '🍇', word: 'grape', translation: 'üzüm' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '🍎', correctAnswer: 'apple', options: ['apple', 'orange', 'banana', 'grape'] },
                     { type: 'multiple', question: 'What do you drink in the morning?', correctAnswer: 'milk', options: ['pizza', 'burger', 'milk', 'apple'] },
                     { type: 'sentence', prompt: 'I like pizza', words: ['I', 'like', 'pizza', 'eat', 'drink', 'is', 'the'] },
                     { type: 'vocab', emoji: '🍌', correctAnswer: 'banana', options: ['apple', 'banana', 'bread', 'milk'] },
-                    { type: 'translation', question: 'I eat bread', correctAnswer: 'Yo como pan', hint: 'bread = pan' },
-                    { type: 'multiple', question: 'Which one is a fruit?', correctAnswer: 'apple', options: ['burger', 'pizza', 'apple', 'bread'] }
+                    { type: 'translation', question: 'I eat bread', correctAnswer: 'Ekmek yerim', hint: 'bread = ekmek, eat = yerim' },
+                    { type: 'translation', question: 'Süt içiyorum', correctAnswer: 'I drink milk', hint: 'süt = milk, içiyorum = I drink', direction: 'tr-en' }
                 ]
             },
             colors: {
                 vocab: [
-                    { emoji: '🔴', word: 'red', translation: 'rojo' },
-                    { emoji: '🔵', word: 'blue', translation: 'azul' },
-                    { emoji: '🟢', word: 'green', translation: 'verde' },
-                    { emoji: '🟡', word: 'yellow', translation: 'amarillo' },
-                    { emoji: '🟠', word: 'orange', translation: 'naranja' },
-                    { emoji: '🟣', word: 'purple', translation: 'morado' }
+                    { emoji: '🔴', word: 'red', translation: 'kırmızı' },
+                    { emoji: '����', word: 'blue', translation: 'mavi' },
+                    { emoji: '🟢', word: 'green', translation: 'yeşil' },
+                    { emoji: '🟡', word: 'yellow', translation: 'sarı' },
+                    { emoji: '🟠', word: 'orange', translation: 'turuncu' },
+                    { emoji: '🟣', word: 'purple', translation: 'mor' },
+                    { emoji: '⚫', word: 'black', translation: 'siyah' },
+                    { emoji: '⚪', word: 'white', translation: 'beyaz' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '🔴', correctAnswer: 'red', options: ['red', 'blue', 'green', 'yellow'] },
                     { type: 'multiple', question: 'What color is the sky?', correctAnswer: 'blue', options: ['red', 'blue', 'green', 'purple'] },
                     { type: 'sentence', prompt: 'The apple is red', words: ['The', 'apple', 'is', 'red', 'blue', 'green', 'banana'] },
                     { type: 'vocab', emoji: '🟢', correctAnswer: 'green', options: ['red', 'blue', 'green', 'yellow'] },
-                    { type: 'translation', question: 'The sun is yellow', correctAnswer: 'El sol es amarillo', hint: 'yellow = amarillo' },
-                    { type: 'multiple', question: 'What color is grass?', correctAnswer: 'green', options: ['red', 'blue', 'green', 'purple'] }
+                    { type: 'translation', question: 'The sun is yellow', correctAnswer: 'Güneş sarıdır', hint: 'sun = güneş, yellow = sarı' },
+                    { type: 'translation', question: 'Gökyüzü mavidir', correctAnswer: 'The sky is blue', hint: 'gökyüzü = sky, mavi = blue', direction: 'tr-en' }
                 ]
             }
         };
@@ -1101,14 +1107,17 @@
         }
 
         function renderTranslation(question, container) {
+            const direction = question.direction === 'tr-en' ? 'Turkish → English' : 'English → Turkish';
+            const placeholder = question.direction === 'tr-en' ? 'Type the English translation...' : 'Türkçe çeviriyi yazın...';
+
             container.innerHTML = `
                 <div class="question-header">
-                    <span class="question-type">Translation</span>
+                    <span class="question-type">Translation ${direction}</span>
                     <h2 class="question-text">Translate this sentence</h2>
-                    <p class="question-instruction">${question.question}</p>
-                    ${question.hint ? `<p class="question-instruction" style="color: var(--blue-accent); margin-top: 8px;">💡 Hint: ${question.hint}</p>` : ''}
+                    <p class="question-instruction" style="font-size: 20px; font-weight: 700; color: var(--text-dark);">${question.question}</p>
+                    ${question.hint ? `<p class="question-instruction" style="color: var(--blue-accent); margin-top: 8px;">💡 ${question.hint}</p>` : ''}
                 </div>
-                <input type="text" class="translation-input" id="translation-input" placeholder="Type your translation here...">
+                <input type="text" class="translation-input" id="translation-input" placeholder="${placeholder}">
                 <button class="check-button" id="check-button">CHECK</button>
                 <div class="feedback" id="feedback"></div>
             `;
