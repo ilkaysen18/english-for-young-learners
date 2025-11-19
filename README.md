@@ -60,6 +60,7 @@
 
 #### 1️⃣1️⃣ Full Platform Update
 ✅️ UI Update
+
 ✅️ New Pages - About Us, Contact Us
 ✅️ New Course - "Speaking for Fluency" English
 ✅️ Daily News Platform added - [NewsLearn](https://ilkaysen18.github.io/englishtraininghub/NewsLearn.html)
