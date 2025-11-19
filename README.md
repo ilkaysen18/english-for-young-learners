@@ -67,7 +67,7 @@
 
 ✅️ Daily News Platform added - [NewsLearn](https://ilkaysen18.github.io/englishtraininghub/NewsLearn.html)
 
-✅️ Game Hub - Fully Interactive Learning Platform - [English Gaming Hub](https://ilkaysen18.github.io/ETHgames/EnglishGamingHub.html)
+✅️ Game Hub - Fully Interactive Learning Platform - [English Gaming Hub](https://englishtraininghub.org/ETHgames/EnglishGamingHub.html)
 
 ✅️ "Login to you Dashboard" & "Book a Trial!" floating buttons added to [Home Page](https://ilkaysen18.github.io/index.html)
 
