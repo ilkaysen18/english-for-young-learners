@@ -3,35 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Gaming Hub - Learn English Through Games</title>
+    <title>Kids English Learning - 50 Fun Topics!</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-yellow: #FFD93D;
-            --bright-yellow: #FFC700;
-            --dark-yellow: #F5B800;
-            --blue-accent: #2E86AB;
-            --dark-blue: #1B5E7F;
-            --text-dark: #2D3436;
-            --text-light: #636E72;
-            --success-green: #00D084;
-            --error-red: #FF6B6B;
-            --shadow: rgba(0, 0, 0, 0.15);
-            --shadow-hover: rgba(0, 0, 0, 0.25);
+            --sunny-yellow: #FFE66D;
+            --bright-orange: #FF8C42;
+            --happy-pink: #FF6B9D;
+            --sky-blue: #4ECDC4;
+            --grass-green: #95E1D3;
+            --ocean-blue: #38A3A5;
+            --purple-fun: #9D65C9;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --card-white: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
 
         .dark {
-            --primary-yellow: #3A3A3A;
-            --bright-yellow: #4A4A4A;
-            --dark-yellow: #2A2A2A;
-            --blue-accent: #5DADE2;
-            --dark-blue: #3498DB;
+            --sunny-yellow: #3A3A3A;
+            --bright-orange: #4A4A4A;
+            --card-white: #2D3436;
             --text-dark: #E8E8E8;
             --text-light: #B8B8B8;
             --shadow: rgba(255, 255, 255, 0.1);
-            --shadow-hover: rgba(255, 255, 255, 0.2);
         }
 
         * {
@@ -41,345 +38,163 @@
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            background: var(--primary-yellow);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--sunny-yellow) 0%, var(--grass-green) 100%);
             color: var(--text-dark);
-            overflow-x: hidden;
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: 60px;
         }
 
         .header {
-            padding: 24px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 20px;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            background: var(--primary-yellow);
-            z-index: 100;
-            box-shadow: 0 2px 8px var(--shadow);
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .logo {
+            font-family: 'Chewy', cursive;
+            font-size: 28px;
+            color: var(--ocean-blue);
             cursor: pointer;
-        }
-
-        .logo-icon {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .logo-bar {
-            width: 40px;
-            height: 6px;
-            background: var(--blue-accent);
-            border-radius: 3px;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .logo-bar:nth-child(2) {
-            width: 35px;
-            animation-delay: 0.1s;
-        }
-
-        .logo-bar:nth-child(3) {
-            width: 30px;
-            animation-delay: 0.2s;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .logo-text {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        .logo-text .english {
-            color: var(--blue-accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 18px;
-        }
-
-        .logo-text .gaming-hub {
-            background: linear-gradient(135deg, var(--dark-blue), var(--blue-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-style: italic;
-            font-size: 26px;
-        }
-
-        .streak-info {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 8px 16px;
-            border-radius: 20px;
+        }
+
+        .logo-emoji {
+            font-size: 36px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .stars-display {
+            background: linear-gradient(135deg, var(--purple-fun), var(--happy-pink));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
             font-weight: 700;
-            color: var(--dark-blue);
-            backdrop-filter: blur(10px);
-        }
-
-        .streak-flame {
-            font-size: 24px;
-            animation: flicker 2s ease-in-out infinite;
-        }
-
-        @keyframes flicker {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.1) rotate(-5deg); }
-            75% { transform: scale(1.1) rotate(5deg); }
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        .progress-section {
+            background: white;
+            border-radius: 20px;
             padding: 20px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 24px var(--shadow);
         }
 
         .progress-bar {
-            background: rgba(255, 255, 255, 0.6);
+            background: #E0E0E0;
+            height: 32px;
             border-radius: 20px;
-            height: 28px;
             overflow: hidden;
-            margin-bottom: 32px;
-            box-shadow: inset 0 2px 4px var(--shadow);
             position: relative;
         }
 
         .progress-fill {
-            background: linear-gradient(90deg, var(--success-green), #00F5A0);
+            background: linear-gradient(90deg, var(--sky-blue), var(--ocean-blue));
             height: 100%;
-            border-radius: 20px;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.8s ease;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding-right: 12px;
+            padding: 0 16px;
             font-weight: 700;
             color: white;
-            font-size: 14px;
-            box-shadow: 0 0 15px rgba(0, 213, 132, 0.5);
+            font-size: 16px;
         }
 
-        .lessons-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-            padding: 20px 0;
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
-        .lesson-item {
-            display: flex;
-            justify-content: center;
-            animation: fadeInUp 0.6s ease-out;
-            animation-fill-mode: both;
-        }
-
-        .lesson-item:nth-child(even) {
-            transform: translateX(40px);
-        }
-
-        .lesson-item:nth-child(odd) {
-            transform: translateX(-40px);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .lesson-item:nth-child(1) { animation-delay: 0.1s; }
-        .lesson-item:nth-child(2) { animation-delay: 0.15s; }
-        .lesson-item:nth-child(3) { animation-delay: 0.2s; }
-        .lesson-item:nth-child(4) { animation-delay: 0.25s; }
-        .lesson-item:nth-child(5) { animation-delay: 0.3s; }
-        .lesson-item:nth-child(6) { animation-delay: 0.35s; }
-        .lesson-item:nth-child(7) { animation-delay: 0.4s; }
-        .lesson-item:nth-child(8) { animation-delay: 0.45s; }
-
-        .lesson-button {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 6px solid white;
-            background: linear-gradient(135deg, #FF6B6B, #FFE66D);
-            box-shadow: 0 8px 20px var(--shadow);
+        .topic-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px var(--shadow);
+            border: 4px solid transparent;
             position: relative;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
         }
 
-        .lesson-button:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 12px 30px var(--shadow-hover);
-            border-color: var(--blue-accent);
+        .dark .topic-card {
+            background: var(--card-white);
         }
 
-        .lesson-button:active {
-            transform: scale(0.95);
-        }
-
-        .lesson-button.completed::after {
-            content: '✓';
+        .topic-card::before {
+            content: '';
             position: absolute;
-            bottom: -5px;
-            right: -5px;
-            width: 40px;
-            height: 40px;
-            background: var(--success-green);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 24px;
-            border: 4px solid white;
-            box-shadow: 0 4px 12px rgba(0, 213, 132, 0.4);
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--happy-pink), var(--bright-orange), var(--sunny-yellow));
         }
 
-        .lesson-button.locked {
-            opacity: 0.6;
-            filter: grayscale(100%);
-            cursor: not-allowed;
+        .topic-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 32px var(--shadow);
+            border-color: var(--ocean-blue);
         }
 
-        .lesson-button.locked::before {
-            content: '🔒';
-            position: absolute;
-            font-size: 32px;
-            z-index: 2;
+        .topic-emoji {
+            font-size: 56px;
+            margin-bottom: 12px;
+            display: block;
         }
 
-        .lesson-button[data-category="animals"] { background: linear-gradient(135deg, #A8E6CF, #56AB91); }
-        .lesson-button[data-category="food"] { background: linear-gradient(135deg, #FFD93D, #FF8C42); }
-        .lesson-button[data-category="colors"] { background: linear-gradient(135deg, #FF6B9D, #C06C84, #6C5B7B, #355C7D); }
-        .lesson-button[data-category="numbers"] { background: linear-gradient(135deg, #E8E8E8, #7F8C8D); }
-        .lesson-button[data-category="family"] { background: linear-gradient(135deg, #FFB6B9, #FAE3D9); }
-        .lesson-button[data-category="body"] { background: linear-gradient(135deg, #FFEAA7, #FDCB6E); }
-        .lesson-button[data-category="clothes"] { background: linear-gradient(135deg, #B8E6E6, #6C99BB); }
-        .lesson-button[data-category="school"] { background: linear-gradient(135deg, #74B9FF, #0984E3); }
-        .lesson-button[data-category="toys"] { background: linear-gradient(135deg, #FD79A8, #E84393); }
-        .lesson-button[data-category="weather"] { background: linear-gradient(135deg, #A29BFE, #6C5CE7); }
-        .lesson-button[data-category="days"] { background: linear-gradient(135deg, #FF7675, #D63031); }
-        .lesson-button[data-category="fruits"] { background: linear-gradient(135deg, #FF6B6B, #EE5A6F); }
-        .lesson-button[data-category="vegetables"] { background: linear-gradient(135deg, #55EFC4, #00B894); }
-        .lesson-button[data-category="house"] { background: linear-gradient(135deg, #FAB1A0, #E17055); }
-        .lesson-button[data-category="furniture"] { background: linear-gradient(135deg, #DFE6E9, #B2BEC3); }
-        .lesson-button[data-category="transport"] { background: linear-gradient(135deg, #FC5C65, #FD7272); }
-        .lesson-button[data-category="emotions"] { background: linear-gradient(135deg, #FEE140, #FA709A); }
-        .lesson-button[data-category="actions"] { background: linear-gradient(135deg, #F093FB, #F5576C); }
-        .lesson-button[data-category="shapes"] { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
-        .lesson-button[data-category="sizes"] { background: linear-gradient(135deg, #43E97B, #38F9D7); }
-        .lesson-button[data-category="positions"] { background: linear-gradient(135deg, #FA8BFF, #2BD2FF); }
-        .lesson-button[data-category="greetings"] { background: linear-gradient(135deg, #FFF200, #F7971E); }
-        .lesson-button[data-category="playground"] { background: linear-gradient(135deg, #96E6A1, #D4FC79); }
-        .lesson-button[data-category="sports"] { background: linear-gradient(135deg, #F97794, #623AA2); }
-        .lesson-button[data-category="music"] { background: linear-gradient(135deg, #CE9FFC, #7367F0); }
-        .lesson-button[data-category="farm"] { background: linear-gradient(135deg, #FFB75E, #ED8F03); }
-        .lesson-button[data-category="wild"] { background: linear-gradient(135deg, #8EC5FC, #E0C3FC); }
-        .lesson-button[data-category="sea"] { background: linear-gradient(135deg, #2AFADF, #4C83FF); }
-        .lesson-button[data-category="insects"] { background: linear-gradient(135deg, #90F7EC, #32CCBC); }
-        .lesson-button[data-category="birds"] { background: linear-gradient(135deg, #FDB99B, #CF8BF3); }
-        .lesson-button[data-category="pets"] { background: linear-gradient(135deg, #FCCF31, #F55555); }
-        .lesson-button[data-category="baby"] { background: linear-gradient(135deg, #FFD89B, #19547B); }
-        .lesson-button[data-category="jobs"] { background: linear-gradient(135deg, #667EEA, #764BA2); }
-        .lesson-button[data-category="kitchen"] { background: linear-gradient(135deg, #F093FB, #F5576C); }
-        .lesson-button[data-category="bathroom"] { background: linear-gradient(135deg, #89F7FE, #66A6FF); }
-        .lesson-button[data-category="bedroom"] { background: linear-gradient(135deg, #FDBB2D, #22C1C3); }
-        .lesson-button[data-category="seasons"] { background: linear-gradient(135deg, #FF9A9E, #FAD0C4, #FAD0C4); }
-        .lesson-button[data-category="holidays"] { background: linear-gradient(135deg, #A18CD1, #FBC2EB); }
-        .lesson-button[data-category="park"] { background: linear-gradient(135deg, #FFECD2, #FCB69F); }
-        .lesson-button[data-category="beach"] { background: linear-gradient(135deg, #FEC163, #DE4313); }
-        .lesson-button[data-category="opposites"] { background: linear-gradient(135deg, #E0C3FC, #8EC5FC); }
-        .lesson-button[data-category="time"] { background: linear-gradient(135deg, #FDCBF1, #E6DEE9); }
-        .lesson-button[data-category="snacks"] { background: linear-gradient(135deg, #FCCB90, #D57EEB); }
-        .lesson-button[data-category="desserts"] { background: linear-gradient(135deg, #FFD3A5, #FD6585); }
-        .lesson-button[data-category="breakfast"] { background: linear-gradient(135deg, #FFDDE1, #EE9CA7); }
-        .lesson-button[data-category="lunch"] { background: linear-gradient(135deg, #FFE985, #FA742B); }
-        .lesson-button[data-category="dinner"] { background: linear-gradient(135deg, #FBC7D4, #9796F0); }
-        .lesson-button[data-category="fastfood"] { background: linear-gradient(135deg, #FF5858, #F09819); }
-        .lesson-button[data-category="healthy"] { background: linear-gradient(135deg, #37ECBA, #72AFD3); }
-        .lesson-button[data-category="party"] { background: linear-gradient(135deg, #FA709A, #FEE140); }
-
-        .keep-going-section {
-            margin-top: 60px;
-            text-align: center;
-            padding: 40px 20px;
-            animation: fadeIn 1s ease-out 1s both;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .keep-going-icon {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .keep-going-icon .logo-icon {
-            transform: scale(0.8);
-        }
-
-        .keep-going-text {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--dark-blue), var(--blue-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .coming-soon {
-            font-size: 20px;
-            color: var(--blue-accent);
-            font-style: italic;
-            font-weight: 600;
-        }
-
-        .lesson-label {
-            text-align: center;
-            margin-top: 12px;
+        .topic-name {
             font-weight: 700;
             font-size: 16px;
             color: var(--text-dark);
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
+        }
+
+        .topic-subtitle {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .topic-card.completed::after {
+            content: '⭐';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 24px;
+            animation: sparkle 1s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(15deg); }
         }
 
         /* Lesson View */
@@ -388,9 +203,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-yellow);
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--sunny-yellow) 0%, var(--grass-green) 100%);
             z-index: 200;
             overflow-y: auto;
         }
@@ -400,156 +215,193 @@
         }
 
         .lesson-header {
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px var(--shadow);
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
-        .back-button {
-            width: 44px;
-            height: 44px;
+        .back-btn {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: white;
+            background: var(--ocean-blue);
+            color: white;
             border: none;
+            font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px var(--shadow);
             transition: all 0.3s ease;
+            font-weight: 700;
         }
 
-        .back-button:hover {
+        .back-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 16px var(--shadow-hover);
+            background: var(--sky-blue);
         }
 
-        .lesson-progress-bar {
+        .lesson-progress {
             flex: 1;
-            height: 16px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
+            height: 20px;
+            background: #E0E0E0;
+            border-radius: 12px;
             overflow: hidden;
         }
 
         .lesson-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--success-green), #00F5A0);
+            background: linear-gradient(90deg, var(--happy-pink), var(--bright-orange));
             transition: width 0.3s ease;
-            border-radius: 10px;
         }
 
-        .question-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .question-box {
+            max-width: 700px;
+            margin: 32px auto;
+            padding: 20px;
         }
 
-        .question-header {
-            text-align: center;
-            margin-bottom: 40px;
+        .question-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 12px 40px var(--shadow);
         }
 
-        .question-type {
+        .dark .question-card {
+            background: var(--card-white);
+        }
+
+        .question-type-badge {
             display: inline-block;
-            background: var(--blue-accent);
+            background: var(--purple-fun);
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
             font-weight: 700;
             font-size: 14px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .question-text {
+        .question-title {
+            font-family: 'Chewy', cursive;
             font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-            font-family: 'Fredoka', sans-serif;
-        }
-
-        .question-instruction {
-            font-size: 16px;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        .question-image {
+            color: var(--ocean-blue);
+            margin-bottom: 24px;
             text-align: center;
-            margin: 32px 0;
-            font-size: 120px;
-            animation: bounceIn 0.6s ease-out;
         }
 
-        @keyframes bounceIn {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .answer-options {
+        .vocab-display-grid {
             display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 16px;
-            margin-bottom: 32px;
+            margin: 24px 0;
         }
 
-        .answer-option {
+        .vocab-card-display {
+            background: linear-gradient(135deg, #FFF5E6, #FFFFFF);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .vocab-card-display:hover {
+            transform: translateY(-4px);
+            border-color: var(--ocean-blue);
+        }
+
+        .vocab-emoji-large {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .vocab-word-main {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .vocab-description {
+            font-size: 13px;
+            color: var(--text-light);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .sentence-examples {
+            background: linear-gradient(135deg, #E8F8F5, #D5F4E6);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .sentence-item {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--ocean-blue);
+            margin: 12px 0;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            border-left: 4px solid var(--happy-pink);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .option-btn {
             background: white;
             border: 4px solid transparent;
-            border-radius: 20px;
-            padding: 20px 24px;
-            font-size: 20px;
+            border-radius: 16px;
+            padding: 20px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow);
             text-align: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            font-family: 'Poppins', sans-serif;
         }
 
-        .dark .answer-option {
+        .dark .option-btn {
             background: #2D3436;
             color: var(--text-dark);
         }
 
-        .answer-option:hover {
+        .option-btn:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 20px var(--shadow-hover);
-            border-color: var(--blue-accent);
+            border-color: var(--sky-blue);
         }
 
-        .answer-option.selected {
-            border-color: var(--blue-accent);
-            background: rgba(46, 134, 171, 0.1);
+        .option-btn.selected {
+            border-color: var(--ocean-blue);
+            background: rgba(78, 205, 196, 0.1);
         }
 
-        .answer-option.correct {
-            border-color: var(--success-green);
-            background: rgba(0, 208, 132, 0.1);
+        .option-btn.correct {
+            border-color: #27AE60;
+            background: rgba(39, 174, 96, 0.1);
             animation: correctPulse 0.5s ease;
         }
 
-        .answer-option.incorrect {
-            border-color: var(--error-red);
-            background: rgba(255, 107, 107, 0.1);
-            animation: incorrectShake 0.5s ease;
+        .option-btn.incorrect {
+            border-color: #E74C3C;
+            background: rgba(231, 76, 60, 0.1);
+            animation: shake 0.5s ease;
         }
 
         @keyframes correctPulse {
@@ -557,41 +409,87 @@
             50% { transform: scale(1.05); }
         }
 
-        @keyframes incorrectShake {
+        @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-10px); }
             75% { transform: translateX(10px); }
         }
 
-        .check-button {
+        .matching-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .match-item {
+            background: white;
+            border: 4px solid transparent;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .dark .match-item {
+            background: #2D3436;
+            color: var(--text-dark);
+        }
+
+        .match-item:hover {
+            transform: scale(1.05);
+        }
+
+        .match-item.selected {
+            border-color: var(--ocean-blue);
+            background: rgba(78, 205, 196, 0.2);
+        }
+
+        .match-item.matched {
+            border-color: #27AE60;
+            background: rgba(39, 174, 96, 0.2);
+            opacity: 0.6;
+        }
+
+        .match-emoji {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .check-btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--success-green), #00F5A0);
+            background: linear-gradient(135deg, var(--sky-blue), var(--ocean-blue));
             color: white;
             border: none;
-            padding: 20px;
             border-radius: 16px;
+            padding: 20px;
             font-size: 20px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(0, 213, 132, 0.3);
-            font-family: 'Nunito', sans-serif;
+            margin-top: 24px;
             text-transform: uppercase;
+            font-family: 'Poppins', sans-serif;
             letter-spacing: 1px;
         }
 
-        .check-button:hover:not(:disabled) {
+        .check-btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 213, 132, 0.4);
+            box-shadow: 0 8px 24px rgba(56, 163, 165, 0.4);
         }
 
-        .check-button:disabled {
+        .check-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .feedback {
-            margin-top: 24px;
+        .feedback-box {
+            margin-top: 20px;
             padding: 20px;
             border-radius: 16px;
             font-weight: 700;
@@ -600,9 +498,9 @@
             display: none;
         }
 
-        .feedback.show {
+        .feedback-box.show {
             display: block;
-            animation: slideUp 0.3s ease-out;
+            animation: slideUp 0.3s ease;
         }
 
         @keyframes slideUp {
@@ -616,224 +514,93 @@
             }
         }
 
-        .feedback.correct {
-            background: rgba(0, 208, 132, 0.2);
-            color: var(--success-green);
-            border: 3px solid var(--success-green);
+        .feedback-box.correct {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27AE60;
+            border: 3px solid #27AE60;
         }
 
-        .feedback.incorrect {
-            background: rgba(255, 107, 107, 0.2);
-            color: var(--error-red);
-            border: 3px solid var(--error-red);
+        .feedback-box.incorrect {
+            background: rgba(231, 76, 60, 0.2);
+            color: #E74C3C;
+            border: 3px solid #E74C3C;
         }
 
-        .word-bank {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 32px;
-        }
-
-        .word-tile {
-            background: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 18px;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow);
-        }
-
-        .dark .word-tile {
-            background: #2D3436;
-            color: var(--text-dark);
-        }
-
-        .word-tile:hover {
-            transform: translateY(-2px);
-            border-color: var(--blue-accent);
-        }
-
-        .word-tile.used {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .sentence-area {
-            min-height: 80px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 24px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            justify-content: center;
-            border: 3px dashed var(--blue-accent);
-        }
-
-        .sentence-word {
-            background: var(--blue-accent);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sentence-word:hover {
-            background: var(--dark-blue);
-            transform: scale(1.05);
-        }
-
-        .translation-input {
-            width: 100%;
-            padding: 20px;
-            border-radius: 16px;
-            border: 4px solid transparent;
-            font-size: 18px;
-            font-weight: 600;
-            font-family: 'Nunito', sans-serif;
-            background: white;
-            box-shadow: 0 4px 12px var(--shadow);
-            transition: all 0.3s ease;
-            margin-bottom: 24px;
-        }
-
-        .dark .translation-input {
-            background: #2D3436;
-            color: var(--text-dark);
-        }
-
-        .translation-input:focus {
-            outline: none;
-            border-color: var(--blue-accent);
-            box-shadow: 0 6px 20px var(--shadow-hover);
-        }
-
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .vocab-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
+        .celebration {
             text-align: center;
-            box-shadow: 0 4px 12px var(--shadow);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 4px solid transparent;
+            padding: 40px 20px;
         }
 
-        .dark .vocab-card {
-            background: #2D3436;
+        .celebration-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
         }
 
-        .vocab-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px var(--shadow-hover);
+        .celebration-text {
+            font-family: 'Chewy', cursive;
+            font-size: 36px;
+            color: var(--ocean-blue);
+            margin-bottom: 16px;
         }
 
-        .vocab-card.selected {
-            border-color: var(--blue-accent);
-        }
-
-        .vocab-emoji {
-            font-size: 60px;
-            margin-bottom: 12px;
-        }
-
-        .vocab-word {
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--text-dark);
-        }
-
-        input, button {
+        input {
             font-size: 16px;
         }
 
         @media (max-width: 480px) {
-            .question-text {
+            .topics-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+
+            .question-title {
                 font-size: 24px;
             }
 
-            .answer-option {
-                font-size: 18px;
-                padding: 16px 20px;
+            .vocab-display-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
 
-            .question-image {
-                font-size: 100px;
-            }
-
-            .vocab-emoji {
-                font-size: 48px;
+            .matching-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div id="home-view">
-        <header class="header">
-            <div class="logo-container" onclick="goHome()">
-                <div class="logo-icon">
-                    <div class="logo-bar"></div>
-                    <div class="logo-bar"></div>
-                    <div class="logo-bar"></div>
-                </div>
-                <div class="logo-text">
-                    <div class="english">English</div>
-                    <div class="gaming-hub">gaming HUB</div>
-                </div>
+        <div class="header">
+            <div class="logo" onclick="goHome()">
+                <span class="logo-emoji">🌟</span>
+                <span>Kids English</span>
             </div>
-            <div class="streak-info">
-                <span class="streak-flame">🔥</span>
-                <span id="streak-count">0</span>
+            <div class="stars-display">
+                <span>⭐</span>
+                <span id="stars-count">0</span>
             </div>
-        </header>
+        </div>
 
         <div class="container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill" style="width: 0%">
-                    <span id="progress-text">0%</span>
-                </div>
-            </div>
-
-            <div class="lessons-grid" id="lessons-grid"></div>
-
-            <div class="keep-going-section">
-                <div class="keep-going-icon">
-                    <div class="logo-icon">
-                        <div class="logo-bar"></div>
-                        <div class="logo-bar"></div>
-                        <div class="logo-bar"></div>
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%">
+                        <span id="progress-text">0/50</span>
                     </div>
                 </div>
-                <div class="keep-going-text">KEEP going</div>
-                <div class="coming-soon">You're doing amazing! 🌟</div>
             </div>
+
+            <div class="topics-grid" id="topics-grid"></div>
         </div>
     </div>
 
     <div class="lesson-view" id="lesson-view">
         <div class="lesson-header">
-            <button class="back-button" onclick="exitLesson()">←</button>
-            <div class="lesson-progress-bar">
+            <button class="back-btn" onclick="exitLesson()">←</button>
+            <div class="lesson-progress">
                 <div class="lesson-progress-fill" id="lesson-progress-fill"></div>
             </div>
         </div>
-        <div class="question-container" id="question-container"></div>
+        <div class="question-box" id="question-box"></div>
     </div>
 
     <script>
@@ -848,264 +615,890 @@
             }
         });
 
-        const lessons = [
-            { id: 1, category: 'animals', emoji: '🐨', name: 'Animals', completed: false, locked: false },
-            { id: 2, category: 'food', emoji: '🍎', name: 'Food', completed: false, locked: false },
-            { id: 3, category: 'colors', emoji: '🎨', name: 'Colors', completed: false, locked: false },
-            { id: 4, category: 'numbers', emoji: '🔢', name: 'Numbers 1-10', completed: false, locked: true },
-            { id: 5, category: 'family', emoji: '👨‍👩‍👧‍👦', name: 'Family', completed: false, locked: true },
-            { id: 6, category: 'body', emoji: '👋', name: 'Body Parts', completed: false, locked: true },
-            { id: 7, category: 'clothes', emoji: '👔', name: 'Clothes', completed: false, locked: true },
-            { id: 8, category: 'school', emoji: '📚', name: 'School Items', completed: false, locked: true },
-            { id: 9, category: 'toys', emoji: '🧸', name: 'Toys', completed: false, locked: true },
-            { id: 10, category: 'weather', emoji: '☀️', name: 'Weather', completed: false, locked: true },
-            { id: 11, category: 'days', emoji: '📅', name: 'Days of Week', completed: false, locked: true },
-            { id: 12, category: 'fruits', emoji: '🍊', name: 'Fruits', completed: false, locked: true },
-            { id: 13, category: 'vegetables', emoji: '🥕', name: 'Vegetables', completed: false, locked: true },
-            { id: 14, category: 'house', emoji: '🏠', name: 'House Rooms', completed: false, locked: true },
-            { id: 15, category: 'furniture', emoji: '🪑', name: 'Furniture', completed: false, locked: true },
-            { id: 16, category: 'transport', emoji: '🚌', name: 'Transport', completed: false, locked: true },
-            { id: 17, category: 'emotions', emoji: '😊', name: 'Feelings', completed: false, locked: true },
-            { id: 18, category: 'actions', emoji: '🏃', name: 'Action Verbs', completed: false, locked: true },
-            { id: 19, category: 'shapes', emoji: '⭐', name: 'Shapes', completed: false, locked: true },
-            { id: 20, category: 'sizes', emoji: '📏', name: 'Big & Small', completed: false, locked: true },
-            { id: 21, category: 'positions', emoji: '📍', name: 'Positions', completed: false, locked: true },
-            { id: 22, category: 'greetings', emoji: '👋', name: 'Greetings', completed: false, locked: true },
-            { id: 23, category: 'playground', emoji: '🛝', name: 'Playground', completed: false, locked: true },
-            { id: 24, category: 'sports', emoji: '⚽', name: 'Sports', completed: false, locked: true },
-            { id: 25, category: 'music', emoji: '🎵', name: 'Music', completed: false, locked: true },
-            { id: 26, category: 'farm', emoji: '🐄', name: 'Farm Animals', completed: false, locked: true },
-            { id: 27, category: 'wild', emoji: '🦁', name: 'Wild Animals', completed: false, locked: true },
-            { id: 28, category: 'sea', emoji: '🐠', name: 'Sea Animals', completed: false, locked: true },
-            { id: 29, category: 'insects', emoji: '🐛', name: 'Insects', completed: false, locked: true },
-            { id: 30, category: 'birds', emoji: '🦅', name: 'Birds', completed: false, locked: true },
-            { id: 31, category: 'pets', emoji: '🐕', name: 'Pets', completed: false, locked: true },
-            { id: 32, category: 'baby', emoji: '🐣', name: 'Baby Animals', completed: false, locked: true },
-            { id: 33, category: 'jobs', emoji: '👨‍⚕️', name: 'Jobs', completed: false, locked: true },
-            { id: 34, category: 'kitchen', emoji: '🍴', name: 'Kitchen', completed: false, locked: true },
-            { id: 35, category: 'bathroom', emoji: '🚿', name: 'Bathroom', completed: false, locked: true },
-            { id: 36, category: 'bedroom', emoji: '🛏️', name: 'Bedroom', completed: false, locked: true },
-            { id: 37, category: 'seasons', emoji: '🍂', name: 'Seasons', completed: false, locked: true },
-            { id: 38, category: 'holidays', emoji: '🎉', name: 'Holidays', completed: false, locked: true },
-            { id: 39, category: 'park', emoji: '🌳', name: 'Park & Nature', completed: false, locked: true },
-            { id: 40, category: 'beach', emoji: '🏖️', name: 'Beach', completed: false, locked: true },
-            { id: 41, category: 'opposites', emoji: '↔️', name: 'Opposites', completed: false, locked: true },
-            { id: 42, category: 'time', emoji: '🕐', name: 'Time of Day', completed: false, locked: true },
-            { id: 43, category: 'snacks', emoji: '🍪', name: 'Snacks', completed: false, locked: true },
-            { id: 44, category: 'desserts', emoji: '🍰', name: 'Desserts', completed: false, locked: true },
-            { id: 45, category: 'breakfast', emoji: '🥞', name: 'Breakfast', completed: false, locked: true },
-            { id: 46, category: 'lunch', emoji: '🍱', name: 'Lunch', completed: false, locked: true },
-            { id: 47, category: 'dinner', emoji: '🍝', name: 'Dinner', completed: false, locked: true },
-            { id: 48, category: 'fastfood', emoji: '🍔', name: 'Fast Food', completed: false, locked: true },
-            { id: 49, category: 'healthy', emoji: '🥗', name: 'Healthy Food', completed: false, locked: true },
-            { id: 50, category: 'party', emoji: '🎈', name: 'Party Time', completed: false, locked: true }
+        const topics = [
+            { id: 1, emoji: '🐄', name: 'Farm Animals', subtitle: 'Learn farm friends' },
+            { id: 2, emoji: '🦁', name: 'Zoo Animals', subtitle: 'Wild and fun!' },
+            { id: 3, emoji: '🐕', name: 'Pets', subtitle: 'Animals at home' },
+            { id: 4, emoji: '🍎', name: 'Fruits', subtitle: 'Yummy and healthy' },
+            { id: 5, emoji: '🥕', name: 'Vegetables', subtitle: 'Good for you' },
+            { id: 6, emoji: '🥤', name: 'Drinks', subtitle: 'What we drink' },
+            { id: 7, emoji: '🍪', name: 'Snacks', subtitle: 'Tasty treats' },
+            { id: 8, emoji: '🍽️', name: 'Meals', subtitle: 'Breakfast & more' },
+            { id: 9, emoji: '🎨', name: 'Colors', subtitle: 'Rainbow fun' },
+            { id: 10, emoji: '⭐', name: 'Shapes', subtitle: 'Circles and more' },
+            { id: 11, emoji: '🔢', name: 'Numbers 1-10', subtitle: 'Count with me' },
+            { id: 12, emoji: '💯', name: 'Numbers 11-20', subtitle: 'Bigger numbers' },
+            { id: 13, emoji: '👨‍👩‍👧‍👦', name: 'Family', subtitle: 'People we love' },
+            { id: 14, emoji: '🖐️', name: 'Body Parts', subtitle: 'Our amazing body' },
+            { id: 15, emoji: '😊', name: 'Face Parts', subtitle: 'Eyes, nose, mouth' },
+            { id: 16, emoji: '👕', name: 'Tops', subtitle: 'Shirts and more' },
+            { id: 17, emoji: '👖', name: 'Bottoms', subtitle: 'Pants and skirts' },
+            { id: 18, emoji: '👟', name: 'Shoes & Hats', subtitle: 'What we wear' },
+            { id: 19, emoji: '☀️', name: 'Weather', subtitle: 'Sunny or rainy?' },
+            { id: 20, emoji: '🍂', name: 'Seasons', subtitle: 'Four seasons' },
+            { id: 21, emoji: '📅', name: 'Days', subtitle: 'Days of the week' },
+            { id: 22, emoji: '✏️', name: 'School Things', subtitle: 'Pencils and books' },
+            { id: 23, emoji: '🪑', name: 'Classroom', subtitle: 'Desk, chair, board' },
+            { id: 24, emoji: '🧸', name: 'Toys', subtitle: 'Fun to play with' },
+            { id: 25, emoji: '⚽', name: 'Sports', subtitle: 'Games we play' },
+            { id: 26, emoji: '🎸', name: 'Instruments', subtitle: 'Make music' },
+            { id: 27, emoji: '🚗', name: 'Vehicles', subtitle: 'Cars and buses' },
+            { id: 28, emoji: '🏪', name: 'Places in Town', subtitle: 'Store, park, school' },
+            { id: 29, emoji: '🏠', name: 'Rooms', subtitle: 'Kitchen, bedroom' },
+            { id: 30, emoji: '🛋️', name: 'Furniture', subtitle: 'Sofa, table, bed' },
+            { id: 31, emoji: '🍳', name: 'Kitchen Items', subtitle: 'Cooking tools' },
+            { id: 32, emoji: '🚿', name: 'Bathroom', subtitle: 'Bath and shower' },
+            { id: 33, emoji: '😃', name: 'Feelings', subtitle: 'Happy or sad?' },
+            { id: 34, emoji: '🌅', name: 'Daily Routine', subtitle: 'Wake up, sleep' },
+            { id: 35, emoji: '🤸', name: 'Playing', subtitle: 'Jump, run, play' },
+            { id: 36, emoji: '🚶', name: 'Movement', subtitle: 'Walk, sit, stand' },
+            { id: 37, emoji: '🌳', name: 'Plants', subtitle: 'Trees and flowers' },
+            { id: 38, emoji: '☁️', name: 'Sky', subtitle: 'Sun, moon, stars' },
+            { id: 39, emoji: '🐝', name: 'Insects', subtitle: 'Bees and bugs' },
+            { id: 40, emoji: '🐠', name: 'Ocean Animals', subtitle: 'Fish and more' },
+            { id: 41, emoji: '🦅', name: 'Birds', subtitle: 'Animals that fly' },
+            { id: 42, emoji: '👨‍⚕️', name: 'Jobs', subtitle: 'What people do' },
+            { id: 43, emoji: '🎭', name: 'Hobbies', subtitle: 'Fun activities' },
+            { id: 44, emoji: '🛝', name: 'Park', subtitle: 'Play outside' },
+            { id: 45, emoji: '🏖️', name: 'Beach', subtitle: 'Sand and waves' },
+            { id: 46, emoji: '🌲', name: 'Forest', subtitle: 'Trees and animals' },
+            { id: 47, emoji: '🎂', name: 'Birthday', subtitle: 'Party time!' },
+            { id: 48, emoji: '📏', name: 'Size Words', subtitle: 'Big and small' },
+            { id: 49, emoji: '🏃', name: 'Speed Words', subtitle: 'Fast and slow' },
+            { id: 50, emoji: '👋', name: 'Greetings', subtitle: 'Hello, goodbye' }
         ];
 
-        const lessonContent = {
-            animals: {
+        const lessonData = {
+            1: {
                 vocab: [
-                    { emoji: '🐕', word: 'dog', translation: 'a common pet that barks' },
-                    { emoji: '🐈', word: 'cat', translation: 'a small furry pet that meows' },
-                    { emoji: '🐘', word: 'elephant', translation: 'a large animal with a trunk' },
-                    { emoji: '🦁', word: 'lion', translation: 'the king of the jungle' },
-                    { emoji: '🐯', word: 'tiger', translation: 'a large striped wild cat' },
-                    { emoji: '🐼', word: 'panda', translation: 'a black and white bear' },
-                    { emoji: '🐦', word: 'bird', translation: 'an animal that can fly' },
-                    { emoji: '🐟', word: 'fish', translation: 'an animal that lives in water' }
+                    { emoji: '🐄', word: 'cow', desc: 'a big animal that gives milk' },
+                    { emoji: '🐷', word: 'pig', desc: 'a pink farm animal' },
+                    { emoji: '🐑', word: 'sheep', desc: 'a white fluffy animal' },
+                    { emoji: '🐓', word: 'chicken', desc: 'a bird that lays eggs' },
+                    { emoji: '🐴', word: 'horse', desc: 'a fast animal you can ride' },
+                    { emoji: '🦆', word: 'duck', desc: 'a bird that swims' }
                 ],
+                sentences: ['I see a cow', 'The pig is pink', 'I hear a chicken', 'The horse runs fast'],
                 questions: [
-                    { type: 'vocab', emoji: '🐕', correctAnswer: 'dog', options: ['dog', 'cat', 'bird', 'fish'] },
-                    { type: 'vocab', emoji: '🐈', correctAnswer: 'cat', options: ['dog', 'cat', 'bird', 'fish'] },
-                    { type: 'sentence', prompt: 'I see a dog', words: ['I', 'see', 'a', 'dog', 'cat', 'two', 'the'] },
-                    { type: 'sentence', prompt: 'I have a cat', words: ['I', 'have', 'a', 'cat', 'dog', 'see', 'birds'] },
-                    { type: 'vocab', emoji: '🐦', correctAnswer: 'bird', options: ['bird', 'cat', 'dog', 'fish'] },
-                    { type: 'sentence', prompt: 'I see dogs AND I see cats', words: ['I', 'see', 'dogs', 'AND', 'cats', 'a', 'the', 'bird'] }
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the animals!' },
+                    { type: 'choice', question: 'Which animal gives us milk?', options: ['cow', 'pig', 'duck', 'chicken'], answer: 'cow' },
+                    { type: 'choice', question: 'Which animal says "oink oink"?', options: ['sheep', 'pig', 'cow', 'horse'], answer: 'pig' }
                 ]
             },
-            food: {
+            2: {
                 vocab: [
-                    { emoji: '🍎', word: 'apple', translation: 'a red or green fruit' },
-                    { emoji: '🍌', word: 'banana', translation: 'a long yellow fruit' },
-                    { emoji: '🍞', word: 'bread', translation: 'food made from flour' },
-                    { emoji: '🥛', word: 'milk', translation: 'a white drink' },
-                    { emoji: '🍕', word: 'pizza', translation: 'a round food with cheese' },
-                    { emoji: '🥪', word: 'sandwich', translation: 'food between two pieces of bread' },
-                    { emoji: '🍊', word: 'orange juice', translation: 'a drink made from oranges' },
-                    { emoji: '🍋', word: 'lemonade', translation: 'a sweet drink made from lemons' }
+                    { emoji: '🦁', word: 'lion', desc: 'the king of the jungle' },
+                    { emoji: '🐘', word: 'elephant', desc: 'a very big animal with a trunk' },
+                    { emoji: '🦒', word: 'giraffe', desc: 'a tall animal with a long neck' },
+                    { emoji: '🦓', word: 'zebra', desc: 'a striped animal like a horse' },
+                    { emoji: '🐻', word: 'bear', desc: 'a big furry animal' },
+                    { emoji: '🐵', word: 'monkey', desc: 'a funny animal that climbs trees' }
                 ],
+                sentences: ['I see a lion at the zoo', 'The giraffe is very tall', 'Monkeys like bananas', 'The elephant is big'],
                 questions: [
-                    { type: 'vocab', emoji: '🍎', correctAnswer: 'apple', options: ['apple', 'banana', 'bread', 'milk'] },
-                    { type: 'sentence', prompt: 'I eat an apple', words: ['I', 'eat', 'an', 'apple', 'drink', 'a', 'the'] },
-                    { type: 'sentence', prompt: 'I drink milk', words: ['I', 'drink', 'milk', 'eat', 'orange juice', 'a', 'the'] },
-                    { type: 'vocab', emoji: '🥪', correctAnswer: 'sandwich', options: ['sandwich', 'pizza', 'bread', 'milk'] },
-                    { type: 'sentence', prompt: 'I eat a sandwich AND I drink orange juice', words: ['I', 'eat', 'a', 'sandwich', 'AND', 'drink', 'orange juice', 'the', 'milk'] },
-                    { type: 'multiple', question: 'I drink ___', correctAnswer: 'orange juice', options: ['pizza', 'sandwich', 'orange juice', 'bread'] }
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the zoo animals!' },
+                    { type: 'choice', question: 'Which animal is the tallest?', options: ['lion', 'giraffe', 'monkey', 'zebra'], answer: 'giraffe' },
+                    { type: 'choice', question: 'Which animal is called the king of the jungle?', options: ['bear', 'elephant', 'lion', 'monkey'], answer: 'lion' }
                 ]
             },
-            colors: {
+            3: {
                 vocab: [
-                    { emoji: '🔴', word: 'red', translation: 'the color of an apple' },
-                    { emoji: '🔵', word: 'blue', translation: 'the color of the sky' },
-                    { emoji: '🟢', word: 'green', translation: 'the color of grass' },
-                    { emoji: '🟡', word: 'yellow', translation: 'the color of the sun' },
-                    { emoji: '🟠', word: 'orange', translation: 'the color of a carrot' },
-                    { emoji: '🟣', word: 'purple', translation: 'the color of grapes' },
-                    { emoji: '⚫', word: 'black', translation: 'the darkest color' },
-                    { emoji: '⚪', word: 'white', translation: 'the color of snow' }
+                    { emoji: '🐕', word: 'dog', desc: 'a pet that barks' },
+                    { emoji: '🐈', word: 'cat', desc: 'a soft pet that meows' },
+                    { emoji: '🐇', word: 'rabbit', desc: 'a small pet with long ears' },
+                    { emoji: '🐹', word: 'hamster', desc: 'a tiny pet in a cage' },
+                    { emoji: '🐠', word: 'fish', desc: 'a pet that swims' },
+                    { emoji: '🐦', word: 'bird', desc: 'a pet that sings' }
                 ],
+                sentences: ['I have a dog', 'My cat is sleeping', 'The rabbit hops', 'I feed my fish'],
                 questions: [
-                    { type: 'vocab', emoji: '🔴', correctAnswer: 'red', options: ['red', 'blue', 'green', 'yellow'] },
-                    { type: 'sentence', prompt: 'I see a red apple', words: ['I', 'see', 'a', 'red', 'apple', 'green', 'blue', 'the'] },
-                    { type: 'vocab', emoji: '🟢', correctAnswer: 'green', options: ['red', 'blue', 'green', 'yellow'] },
-                    { type: 'sentence', prompt: 'I see green leaves', words: ['I', 'see', 'green', 'leaves', 'red', 'a', 'the', 'orange'] },
-                    { type: 'sentence', prompt: 'I see orange leaves', words: ['I', 'see', 'orange', 'leaves', 'green', 'a', 'the', 'red'] },
-                    { type: 'multiple', question: 'I see ___ grass', correctAnswer: 'green', options: ['red', 'blue', 'green', 'purple'] }
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the pets!' },
+                    { type: 'choice', question: 'Which pet says "woof woof"?', options: ['cat', 'dog', 'bird', 'fish'], answer: 'dog' },
+                    { type: 'choice', question: 'Which pet lives in water?', options: ['hamster', 'rabbit', 'fish', 'cat'], answer: 'fish' }
                 ]
             },
-            numbers: {
+            4: {
                 vocab: [
-                    { emoji: '1️⃣', word: 'one', translation: 'the number 1' },
-                    { emoji: '2️⃣', word: 'two', translation: 'the number 2' },
-                    { emoji: '3️⃣', word: 'three', translation: 'the number 3' },
-                    { emoji: '4️⃣', word: 'four', translation: 'the number 4' },
-                    { emoji: '5️⃣', word: 'five', translation: 'the number 5' },
-                    { emoji: '6️⃣', word: 'six', translation: 'the number 6' },
-                    { emoji: '7️⃣', word: 'seven', translation: 'the number 7' },
-                    { emoji: '8️⃣', word: 'eight', translation: 'the number 8' }
+                    { emoji: '🍎', word: 'apple', desc: 'a red or green round fruit' },
+                    { emoji: '🍌', word: 'banana', desc: 'a long yellow fruit' },
+                    { emoji: '🍊', word: 'orange', desc: 'a round orange fruit' },
+                    { emoji: '🍇', word: 'grapes', desc: 'small round purple or green fruits' },
+                    { emoji: '🍓', word: 'strawberry', desc: 'a small red fruit' },
+                    { emoji: '🍉', word: 'watermelon', desc: 'a big green fruit that is red inside' }
                 ],
+                sentences: ['I eat an apple', 'Bananas are yellow', 'I like strawberries', 'Watermelon is sweet'],
                 questions: [
-                    { type: 'vocab', emoji: '1️⃣', correctAnswer: 'one', options: ['one', 'two', 'three', 'four'] },
-                    { type: 'vocab', emoji: '2️⃣', correctAnswer: 'two', options: ['one', 'two', 'three', 'four'] },
-                    { type: 'sentence', prompt: 'I see one dog', words: ['I', 'see', 'one', 'dog', 'two', 'three', 'a', 'the'] },
-                    { type: 'sentence', prompt: 'I have two cats', words: ['I', 'have', 'two', 'cats', 'one', 'three', 'a', 'cat'] },
-                    { type: 'vocab', emoji: '5️⃣', correctAnswer: 'five', options: ['three', 'four', 'five', 'six'] },
-                    { type: 'sentence', prompt: 'I see five birds', words: ['I', 'see', 'five', 'birds', 'four', 'six', 'a', 'bird'] }
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the fruits!' },
+                    { type: 'choice', question: 'Which fruit is yellow?', options: ['apple', 'banana', 'strawberry', 'grapes'], answer: 'banana' },
+                    { type: 'choice', question: 'Which fruit is red and small?', options: ['watermelon', 'orange', 'strawberry', 'banana'], answer: 'strawberry' }
                 ]
             },
-            family: {
+            5: {
                 vocab: [
-                    { emoji: '👨', word: 'father', translation: 'my dad' },
-                    { emoji: '👩', word: 'mother', translation: 'my mom' },
-                    { emoji: '👦', word: 'brother', translation: 'a boy in my family' },
-                    { emoji: '👧', word: 'sister', translation: 'a girl in my family' },
-                    { emoji: '👴', word: 'grandfather', translation: 'my grandpa' },
-                    { emoji: '👵', word: 'grandmother', translation: 'my grandma' },
-                    { emoji: '👶', word: 'baby', translation: 'a very young child' },
-                    { emoji: '👨‍👩‍👧‍👦', word: 'family', translation: 'people I live with' }
+                    { emoji: '🥕', word: 'carrot', desc: 'a long orange vegetable' },
+                    { emoji: '🥔', word: 'potato', desc: 'a brown vegetable that grows underground' },
+                    { emoji: '🥦', word: 'broccoli', desc: 'a green vegetable like a tree' },
+                    { emoji: '🍅', word: 'tomato', desc: 'a red round vegetable' },
+                    { emoji: '🌽', word: 'corn', desc: 'a yellow vegetable' },
+                    { emoji: '🥒', word: 'cucumber', desc: 'a long green vegetable' }
                 ],
+                sentences: ['I eat carrots', 'Broccoli is green', 'Tomatoes are red', 'I like corn'],
                 questions: [
-                    { type: 'vocab', emoji: '👨', correctAnswer: 'father', options: ['father', 'mother', 'brother', 'sister'] },
-                    { type: 'vocab', emoji: '👩', correctAnswer: 'mother', options: ['father', 'mother', 'brother', 'sister'] },
-                    { type: 'sentence', prompt: 'I love my mother', words: ['I', 'love', 'my', 'mother', 'father', 'a', 'the', 'see'] },
-                    { type: 'sentence', prompt: 'I see my father', words: ['I', 'see', 'my', 'father', 'mother', 'a', 'the', 'love'] },
-                    { type: 'vocab', emoji: '👦', correctAnswer: 'brother', options: ['father', 'brother', 'sister', 'baby'] },
-                    { type: 'sentence', prompt: 'I have a sister AND a brother', words: ['I', 'have', 'a', 'sister', 'AND', 'brother', 'the', 'two'] }
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the vegetables!' },
+                    { type: 'choice', question: 'Which vegetable is orange?', options: ['broccoli', 'carrot', 'cucumber', 'corn'], answer: 'carrot' },
+                    { type: 'choice', question: 'Which vegetable is yellow?', options: ['tomato', 'cucumber', 'corn', 'potato'], answer: 'corn' }
                 ]
             },
-            body: {
+            6: {
                 vocab: [
-                    { emoji: '👁️', word: 'eye', translation: 'I see with my eyes' },
-                    { emoji: '👃', word: 'nose', translation: 'I smell with my nose' },
-                    { emoji: '👂', word: 'ear', translation: 'I hear with my ears' },
-                    { emoji: '👄', word: 'mouth', translation: 'I eat with my mouth' },
-                    { emoji: '✋', word: 'hand', translation: 'I hold things with my hands' },
-                    { emoji: '🦶', word: 'foot', translation: 'I walk with my feet' },
-                    { emoji: '💪', word: 'arm', translation: 'my arm connects my hand' },
-                    { emoji: '🦵', word: 'leg', translation: 'my leg connects my foot' }
+                    { emoji: '🥛', word: 'milk', desc: 'a white drink from cows' },
+                    { emoji: '🧃', word: 'juice', desc: 'a sweet drink from fruit' },
+                    { emoji: '💧', word: 'water', desc: 'a clear drink we need every day' },
+                    { emoji: '☕', word: 'tea', desc: 'a hot drink' },
+                    { emoji: '🥤', word: 'soda', desc: 'a fizzy sweet drink' },
+                    { emoji: '🍫', word: 'hot chocolate', desc: 'a warm chocolate drink' }
                 ],
+                sentences: ['I drink milk', 'Water is good for you', 'I like orange juice', 'Hot chocolate is yummy'],
                 questions: [
-                    { type: 'vocab', emoji: '👁️', correctAnswer: 'eye', options: ['eye', 'nose', 'ear', 'mouth'] },
-                    { type: 'sentence', prompt: 'I see with my eyes', words: ['I', 'see', 'with', 'my', 'eyes', 'ears', 'a', 'the'] },
-                    { type: 'vocab', emoji: '👂', correctAnswer: 'ear', options: ['eye', 'nose', 'ear', 'mouth'] },
-                    { type: 'sentence', prompt: 'I have two hands', words: ['I', 'have', 'two', 'hands', 'one', 'feet', 'a', 'hand'] },
-                    { type: 'sentence', prompt: 'I walk with my feet', words: ['I', 'walk', 'with', 'my', 'feet', 'hands', 'a', 'the'] },
-                    { type: 'vocab', emoji: '👄', correctAnswer: 'mouth', options: ['eye', 'nose', 'ear', 'mouth'] }
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the drinks!' },
+                    { type: 'choice', question: 'What do we drink when we are thirsty?', options: ['soda', 'water', 'hot chocolate', 'tea'], answer: 'water' },
+                    { type: 'choice', question: 'Which drink is white?', options: ['juice', 'soda', 'milk', 'tea'], answer: 'milk' }
+                ]
+            },
+            7: {
+                vocab: [
+                    { emoji: '🍪', word: 'cookie', desc: 'a sweet crunchy snack' },
+                    { emoji: '🍿', word: 'popcorn', desc: 'a snack we eat at movies' },
+                    { emoji: '🥨', word: 'pretzel', desc: 'a salty twisted snack' },
+                    { emoji: '🍩', word: 'donut', desc: 'a sweet round snack with a hole' },
+                    { emoji: '🧁', word: 'cupcake', desc: 'a small cake' },
+                    { emoji: '🍫', word: 'chocolate', desc: 'a sweet brown treat' }
+                ],
+                sentences: ['I eat a cookie', 'Popcorn is crunchy', 'I like chocolate', 'Donuts are sweet'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the snacks!' },
+                    { type: 'choice', question: 'Which snack has a hole in the middle?', options: ['cookie', 'donut', 'cupcake', 'pretzel'], answer: 'donut' },
+                    { type: 'choice', question: 'Which snack do we eat at the movies?', options: ['chocolate', 'popcorn', 'cookie', 'cupcake'], answer: 'popcorn' }
+                ]
+            },
+            8: {
+                vocab: [
+                    { emoji: '🍳', word: 'breakfast', desc: 'the first meal in the morning' },
+                    { emoji: '🥪', word: 'lunch', desc: 'the meal in the middle of the day' },
+                    { emoji: '🍝', word: 'dinner', desc: 'the meal in the evening' },
+                    { emoji: '🥞', word: 'pancakes', desc: 'a breakfast food' },
+                    { emoji: '🍕', word: 'pizza', desc: 'a popular food with cheese' },
+                    { emoji: '🌮', word: 'taco', desc: 'a food in a shell' }
+                ],
+                sentences: ['I eat breakfast', 'Lunch is at noon', 'We have pizza for dinner', 'I like pancakes'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the meals!' },
+                    { type: 'choice', question: 'Which meal do we eat in the morning?', options: ['lunch', 'dinner', 'breakfast', 'pizza'], answer: 'breakfast' },
+                    { type: 'choice', question: 'Which meal do we eat in the evening?', options: ['breakfast', 'pancakes', 'lunch', 'dinner'], answer: 'dinner' }
+                ]
+            },
+            9: {
+                vocab: [
+                    { emoji: '🔴', word: 'red', desc: 'the color of an apple' },
+                    { emoji: '🔵', word: 'blue', desc: 'the color of the sky' },
+                    { emoji: '🟢', word: 'green', desc: 'the color of grass' },
+                    { emoji: '🟡', word: 'yellow', desc: 'the color of the sun' },
+                    { emoji: '🟣', word: 'purple', desc: 'a mix of red and blue' },
+                    { emoji: '🟠', word: 'orange', desc: 'a mix of red and yellow' }
+                ],
+                sentences: ['The apple is red', 'The sky is blue', 'I see green grass', 'The sun is yellow'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the colors!' },
+                    { type: 'choice', question: 'What color is the sky?', options: ['red', 'green', 'blue', 'yellow'], answer: 'blue' },
+                    { type: 'choice', question: 'What color is grass?', options: ['purple', 'green', 'orange', 'red'], answer: 'green' }
+                ]
+            },
+            10: {
+                vocab: [
+                    { emoji: '⭕', word: 'circle', desc: 'a round shape' },
+                    { emoji: '⬜', word: 'square', desc: 'a shape with four equal sides' },
+                    { emoji: '🔺', word: 'triangle', desc: 'a shape with three sides' },
+                    { emoji: '⭐', word: 'star', desc: 'a shape with points' },
+                    { emoji: '❤️', word: 'heart', desc: 'a love shape' },
+                    { emoji: '▭', word: 'rectangle', desc: 'a long square' }
+                ],
+                sentences: ['I draw a circle', 'The box is a square', 'I see a star', 'I make a heart'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the shapes!' },
+                    { type: 'choice', question: 'Which shape is round?', options: ['square', 'circle', 'triangle', 'star'], answer: 'circle' },
+                    { type: 'choice', question: 'Which shape has three sides?', options: ['circle', 'square', 'triangle', 'heart'], answer: 'triangle' }
+                ]
+            },
+            11: {
+                vocab: [
+                    { emoji: '1️⃣', word: 'one', desc: 'the number 1' },
+                    { emoji: '2️⃣', word: 'two', desc: 'the number 2' },
+                    { emoji: '3️⃣', word: 'three', desc: 'the number 3' },
+                    { emoji: '4️⃣', word: 'four', desc: 'the number 4' },
+                    { emoji: '5️⃣', word: 'five', desc: 'the number 5' },
+                    { emoji: '🔟', word: 'ten', desc: 'the number 10' }
+                ],
+                sentences: ['I have one cat', 'I see two dogs', 'I count to five', 'I am ten years old'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the numbers!' },
+                    { type: 'choice', question: 'How many hands do you have?', options: ['one', 'two', 'three', 'four'], answer: 'two' },
+                    { type: 'choice', question: 'How many fingers on one hand?', options: ['three', 'four', 'five', 'ten'], answer: 'five' }
+                ]
+            },
+            12: {
+                vocab: [
+                    { emoji: '1️⃣1️⃣', word: 'eleven', desc: 'the number 11' },
+                    { emoji: '1️⃣2️⃣', word: 'twelve', desc: 'the number 12' },
+                    { emoji: '1️⃣5️⃣', word: 'fifteen', desc: 'the number 15' },
+                    { emoji: '2️⃣0️⃣', word: 'twenty', desc: 'the number 20' }
+                ],
+                sentences: ['I count to twelve', 'I am fifteen', 'I have twenty pencils'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'choice', question: 'What comes after ten?', options: ['nine', 'eleven', 'twelve', 'twenty'], answer: 'eleven' },
+                    { type: 'choice', question: 'How many is a dozen?', options: ['ten', 'eleven', 'twelve', 'fifteen'], answer: 'twelve' }
+                ]
+            },
+            13: {
+                vocab: [
+                    { emoji: '👨', word: 'father', desc: 'your dad' },
+                    { emoji: '👩', word: 'mother', desc: 'your mom' },
+                    { emoji: '👦', word: 'brother', desc: 'a boy in your family' },
+                    { emoji: '👧', word: 'sister', desc: 'a girl in your family' },
+                    { emoji: '👴', word: 'grandfather', desc: 'your dad\'s or mom\'s father' },
+                    { emoji: '👵', word: 'grandmother', desc: 'your dad\'s or mom\'s mother' }
+                ],
+                sentences: ['I love my mother', 'My father is tall', 'I play with my brother', 'My grandmother is kind'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the family members!' },
+                    { type: 'choice', question: 'Who is your mom?', options: ['father', 'mother', 'sister', 'brother'], answer: 'mother' },
+                    { type: 'choice', question: 'Who is your dad?', options: ['grandfather', 'brother', 'father', 'sister'], answer: 'father' }
+                ]
+            },
+            14: {
+                vocab: [
+                    { emoji: '🖐️', word: 'hand', desc: 'you have two hands' },
+                    { emoji: '🦶', word: 'foot', desc: 'you walk with your feet' },
+                    { emoji: '💪', word: 'arm', desc: 'connects your hand to your body' },
+                    { emoji: '🦵', word: 'leg', desc: 'connects your foot to your body' },
+                    { emoji: '👂', word: 'ear', desc: 'you hear with your ears' },
+                    { emoji: '👃', word: 'nose', desc: 'you smell with your nose' }
+                ],
+                sentences: ['I wave my hand', 'I kick with my foot', 'I have two arms', 'I hear with my ears'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the body parts!' },
+                    { type: 'choice', question: 'What do you use to hear?', options: ['nose', 'ear', 'hand', 'foot'], answer: 'ear' },
+                    { type: 'choice', question: 'What do you use to walk?', options: ['hand', 'arm', 'foot', 'nose'], answer: 'foot' }
+                ]
+            },
+            15: {
+                vocab: [
+                    { emoji: '👀', word: 'eyes', desc: 'you see with your eyes' },
+                    { emoji: '👃', word: 'nose', desc: 'you smell with your nose' },
+                    { emoji: '👄', word: 'mouth', desc: 'you eat and talk with your mouth' },
+                    { emoji: '👂', word: 'ears', desc: 'you hear with your ears' },
+                    { emoji: '😊', word: 'smile', desc: 'a happy face' },
+                    { emoji: '🦷', word: 'teeth', desc: 'white things in your mouth' }
+                ],
+                sentences: ['I see with my eyes', 'I smell with my nose', 'I smile with my mouth', 'I brush my teeth'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the face parts!' },
+                    { type: 'choice', question: 'What do you use to see?', options: ['nose', 'mouth', 'eyes', 'ears'], answer: 'eyes' },
+                    { type: 'choice', question: 'What do you use to talk?', options: ['eyes', 'nose', 'mouth', 'teeth'], answer: 'mouth' }
+                ]
+            },
+            16: {
+                vocab: [
+                    { emoji: '👕', word: 'shirt', desc: 'you wear it on top' },
+                    { emoji: '👔', word: 'tie', desc: 'boys wear it with a shirt' },
+                    { emoji: '🧥', word: 'jacket', desc: 'you wear it when it\'s cold' },
+                    { emoji: '👗', word: 'dress', desc: 'girls wear it' },
+                    { emoji: '🎽', word: 'sweater', desc: 'a warm top' }
+                ],
+                sentences: ['I wear a shirt', 'My jacket is warm', 'She wears a dress', 'I like my sweater'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the clothes!' },
+                    { type: 'choice', question: 'What do you wear when it\'s cold?', options: ['shirt', 'jacket', 'tie', 'dress'], answer: 'jacket' }
+                ]
+            },
+            17: {
+                vocab: [
+                    { emoji: '👖', word: 'pants', desc: 'you wear them on your legs' },
+                    { emoji: '👗', word: 'skirt', desc: 'girls wear it on the bottom' },
+                    { emoji: '🩳', word: 'shorts', desc: 'short pants for summer' },
+                    { emoji: '👙', word: 'swimsuit', desc: 'you wear it to swim' }
+                ],
+                sentences: ['I wear pants', 'My shorts are blue', 'She wears a skirt', 'I swim in my swimsuit'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the bottoms!' },
+                    { type: 'choice', question: 'What do you wear in summer?', options: ['pants', 'shorts', 'swimsuit', 'skirt'], answer: 'shorts' }
+                ]
+            },
+            18: {
+                vocab: [
+                    { emoji: '👟', word: 'shoes', desc: 'you wear them on your feet' },
+                    { emoji: '🧦', word: 'socks', desc: 'you wear them before shoes' },
+                    { emoji: '👒', word: 'hat', desc: 'you wear it on your head' },
+                    { emoji: '🧢', word: 'cap', desc: 'a hat with a front part' },
+                    { emoji: '🥾', word: 'boots', desc: 'shoes for rain or snow' }
+                ],
+                sentences: ['I wear shoes', 'My socks are white', 'I wear a hat', 'I need boots for rain'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the accessories!' },
+                    { type: 'choice', question: 'What do you wear on your feet?', options: ['hat', 'shoes', 'cap', 'socks'], answer: 'shoes' }
+                ]
+            },
+            19: {
+                vocab: [
+                    { emoji: '☀️', word: 'sunny', desc: 'bright and warm' },
+                    { emoji: '🌧️', word: 'rainy', desc: 'water falls from the sky' },
+                    { emoji: '☁️', word: 'cloudy', desc: 'clouds in the sky' },
+                    { emoji: '❄️', word: 'snowy', desc: 'white snow falls' },
+                    { emoji: '🌬️', word: 'windy', desc: 'the wind blows' }
+                ],
+                sentences: ['It is sunny today', 'It is rainy', 'I see clouds', 'It is snowy and cold'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the weather!' },
+                    { type: 'choice', question: 'When is it hot outside?', options: ['rainy', 'snowy', 'sunny', 'windy'], answer: 'sunny' }
+                ]
+            },
+            20: {
+                vocab: [
+                    { emoji: '🌸', word: 'spring', desc: 'flowers grow' },
+                    { emoji: '☀️', word: 'summer', desc: 'hot and sunny' },
+                    { emoji: '🍂', word: 'fall', desc: 'leaves fall down' },
+                    { emoji: '❄️', word: 'winter', desc: 'cold and snowy' }
+                ],
+                sentences: ['Spring is beautiful', 'Summer is hot', 'I like fall', 'Winter is cold'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the seasons!' },
+                    { type: 'choice', question: 'Which season is cold?', options: ['spring', 'summer', 'fall', 'winter'], answer: 'winter' }
+                ]
+            },
+            21: {
+                vocab: [
+                    { emoji: '📅', word: 'Monday', desc: 'first day of the week' },
+                    { emoji: '📅', word: 'Tuesday', desc: 'second day' },
+                    { emoji: '📅', word: 'Wednesday', desc: 'middle of the week' },
+                    { emoji: '📅', word: 'Friday', desc: 'last school day' },
+                    { emoji: '🎉', word: 'Saturday', desc: 'weekend day' },
+                    { emoji: '🎉', word: 'Sunday', desc: 'weekend day' }
+                ],
+                sentences: ['Today is Monday', 'I like Friday', 'Saturday is fun', 'Sunday I rest'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'choice', question: 'Which day starts the week?', options: ['Sunday', 'Monday', 'Friday', 'Saturday'], answer: 'Monday' }
+                ]
+            },
+            22: {
+                vocab: [
+                    { emoji: '✏️', word: 'pencil', desc: 'you write with it' },
+                    { emoji: '📚', word: 'book', desc: 'you read it' },
+                    { emoji: '📓', word: 'notebook', desc: 'you write notes in it' },
+                    { emoji: '✂️', word: 'scissors', desc: 'you cut with them' },
+                    { emoji: '🖍️', word: 'crayon', desc: 'you color with it' },
+                    { emoji: '📏', word: 'ruler', desc: 'you measure with it' }
+                ],
+                sentences: ['I write with a pencil', 'I read my book', 'I cut with scissors', 'I color with crayons'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match school supplies!' },
+                    { type: 'choice', question: 'What do you use to write?', options: ['book', 'pencil', 'scissors', 'ruler'], answer: 'pencil' }
+                ]
+            },
+            23: {
+                vocab: [
+                    { emoji: '🪑', word: 'chair', desc: 'you sit on it' },
+                    { emoji: '📋', word: 'desk', desc: 'you work at it' },
+                    { emoji: '📖', word: 'board', desc: 'teacher writes on it' },
+                    { emoji: '🚪', word: 'door', desc: 'you walk through it' },
+                    { emoji: '🪟', word: 'window', desc: 'you look outside' }
+                ],
+                sentences: ['I sit on a chair', 'My desk is clean', 'I see the board', 'I look out the window'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match classroom items!' },
+                    { type: 'choice', question: 'What do you sit on?', options: ['desk', 'chair', 'door', 'window'], answer: 'chair' }
+                ]
+            },
+            24: {
+                vocab: [
+                    { emoji: '🧸', word: 'teddy bear', desc: 'a soft toy bear' },
+                    { emoji: '🎮', word: 'video game', desc: 'a game on TV' },
+                    { emoji: '🪀', word: 'yo-yo', desc: 'a toy that goes up and down' },
+                    { emoji: '🎲', word: 'dice', desc: 'you roll them in games' },
+                    { emoji: '🪁', word: 'kite', desc: 'it flies in the sky' },
+                    { emoji: '🎨', word: 'art set', desc: 'you paint and draw with it' }
+                ],
+                sentences: ['I hug my teddy bear', 'I play video games', 'I fly my kite', 'I paint with my art set'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the toys!' },
+                    { type: 'choice', question: 'Which toy flies in the sky?', options: ['teddy bear', 'kite', 'dice', 'yo-yo'], answer: 'kite' }
+                ]
+            },
+            25: {
+                vocab: [
+                    { emoji: '⚽', word: 'soccer', desc: 'you kick a ball' },
+                    { emoji: '🏀', word: 'basketball', desc: 'you throw a ball in a hoop' },
+                    { emoji: '🎾', word: 'tennis', desc: 'you hit a ball with a racket' },
+                    { emoji: '🏊', word: 'swimming', desc: 'you swim in water' },
+                    { emoji: '🚴', word: 'cycling', desc: 'you ride a bike' }
+                ],
+                sentences: ['I play soccer', 'I like basketball', 'I swim every day', 'I ride my bike'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the sports!' },
+                    { type: 'choice', question: 'Which sport uses a bike?', options: ['soccer', 'swimming', 'cycling', 'tennis'], answer: 'cycling' }
+                ]
+            },
+            26: {
+                vocab: [
+                    { emoji: '🎸', word: 'guitar', desc: 'you play it with strings' },
+                    { emoji: '🎹', word: 'piano', desc: 'you play it with keys' },
+                    { emoji: '🥁', word: 'drums', desc: 'you hit them with sticks' },
+                    { emoji: '🎺', word: 'trumpet', desc: 'you blow into it' },
+                    { emoji: '🎻', word: 'violin', desc: 'you play it with a bow' }
+                ],
+                sentences: ['I play the guitar', 'The piano sounds nice', 'I hit the drums', 'She plays violin'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the instruments!' },
+                    { type: 'choice', question: 'Which has black and white keys?', options: ['guitar', 'piano', 'drums', 'trumpet'], answer: 'piano' }
+                ]
+            },
+            27: {
+                vocab: [
+                    { emoji: '🚗', word: 'car', desc: 'a vehicle for families' },
+                    { emoji: '🚌', word: 'bus', desc: 'many people ride it' },
+                    { emoji: '🚲', word: 'bicycle', desc: 'you ride it with pedals' },
+                    { emoji: '✈️', word: 'airplane', desc: 'it flies in the sky' },
+                    { emoji: '🚂', word: 'train', desc: 'it runs on tracks' },
+                    { emoji: '🚢', word: 'ship', desc: 'it sails on water' }
+                ],
+                sentences: ['I ride in a car', 'The bus is big', 'I ride my bicycle', 'The airplane flies high'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the vehicles!' },
+                    { type: 'choice', question: 'Which flies in the sky?', options: ['car', 'bus', 'airplane', 'bicycle'], answer: 'airplane' }
+                ]
+            },
+            28: {
+                vocab: [
+                    { emoji: '🏫', word: 'school', desc: 'where you learn' },
+                    { emoji: '🏪', word: 'store', desc: 'where you buy things' },
+                    { emoji: '🏥', word: 'hospital', desc: 'where doctors work' },
+                    { emoji: '🏞️', word: 'park', desc: 'where you play outside' },
+                    { emoji: '📚', word: 'library', desc: 'where you read books' }
+                ],
+                sentences: ['I go to school', 'We shop at the store', 'I play at the park', 'I read at the library'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the places!' },
+                    { type: 'choice', question: 'Where do you learn?', options: ['store', 'school', 'park', 'hospital'], answer: 'school' }
+                ]
+            },
+            29: {
+                vocab: [
+                    { emoji: '🛏️', word: 'bedroom', desc: 'where you sleep' },
+                    { emoji: '🍳', word: 'kitchen', desc: 'where you cook' },
+                    { emoji: '🛁', word: 'bathroom', desc: 'where you wash' },
+                    { emoji: '🛋️', word: 'living room', desc: 'where you relax' },
+                    { emoji: '🌳', word: 'garden', desc: 'outside with plants' }
+                ],
+                sentences: ['I sleep in my bedroom', 'Mom cooks in the kitchen', 'I wash in the bathroom', 'We sit in the living room'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the rooms!' },
+                    { type: 'choice', question: 'Where do you sleep?', options: ['kitchen', 'bedroom', 'bathroom', 'living room'], answer: 'bedroom' }
+                ]
+            },
+            30: {
+                vocab: [
+                    { emoji: '🛋️', word: 'sofa', desc: 'you sit on it' },
+                    { emoji: '🪑', word: 'chair', desc: 'one person sits here' },
+                    { emoji: '🛏️', word: 'bed', desc: 'you sleep on it' },
+                    { emoji: '🪞', word: 'table', desc: 'you eat at it' },
+                    { emoji: '📺', word: 'TV', desc: 'you watch shows on it' }
+                ],
+                sentences: ['I sit on the sofa', 'I sleep in my bed', 'We eat at the table', 'I watch TV'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the furniture!' },
+                    { type: 'choice', question: 'What do you sleep on?', options: ['sofa', 'chair', 'bed', 'table'], answer: 'bed' }
+                ]
+            },
+            31: {
+                vocab: [
+                    { emoji: '🍳', word: 'pan', desc: 'you cook in it' },
+                    { emoji: '🔪', word: 'knife', desc: 'you cut with it' },
+                    { emoji: '🥄', word: 'spoon', desc: 'you eat soup with it' },
+                    { emoji: '🍴', word: 'fork', desc: 'you eat with it' },
+                    { emoji: '🥛', word: 'cup', desc: 'you drink from it' },
+                    { emoji: '🍽️', word: 'plate', desc: 'you put food on it' }
+                ],
+                sentences: ['I cook with a pan', 'I eat with a fork', 'I drink from a cup', 'My food is on a plate'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match kitchen items!' },
+                    { type: 'choice', question: 'What do you eat soup with?', options: ['knife', 'fork', 'spoon', 'plate'], answer: 'spoon' }
+                ]
+            },
+            32: {
+                vocab: [
+                    { emoji: '🚿', word: 'shower', desc: 'you wash your body' },
+                    { emoji: '🛁', word: 'bathtub', desc: 'you take a bath' },
+                    { emoji: '🚽', word: 'toilet', desc: 'you use it every day' },
+                    { emoji: '🪥', word: 'toothbrush', desc: 'you brush teeth with it' },
+                    { emoji: '🧼', word: 'soap', desc: 'you wash with it' }
+                ],
+                sentences: ['I take a shower', 'I brush my teeth', 'I wash with soap', 'The bathroom is clean'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match bathroom items!' },
+                    { type: 'choice', question: 'What do you brush teeth with?', options: ['soap', 'toothbrush', 'shower', 'bathtub'], answer: 'toothbrush' }
+                ]
+            },
+            33: {
+                vocab: [
+                    { emoji: '😊', word: 'happy', desc: 'feeling good' },
+                    { emoji: '😢', word: 'sad', desc: 'feeling down' },
+                    { emoji: '😠', word: 'angry', desc: 'feeling mad' },
+                    { emoji: '😨', word: 'scared', desc: 'feeling afraid' },
+                    { emoji: '😴', word: 'tired', desc: 'need to sleep' },
+                    { emoji: '🥳', word: 'excited', desc: 'very happy about something' }
+                ],
+                sentences: ['I am happy', 'She is sad', 'He is angry', 'I feel excited'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the feelings!' },
+                    { type: 'choice', question: 'How do you feel when you smile?', options: ['sad', 'happy', 'angry', 'scared'], answer: 'happy' }
+                ]
+            },
+            34: {
+                vocab: [
+                    { emoji: '⏰', word: 'wake up', desc: 'get out of bed' },
+                    { emoji: '🪥', word: 'brush teeth', desc: 'clean your teeth' },
+                    { emoji: '🍳', word: 'eat breakfast', desc: 'have morning food' },
+                    { emoji: '🎒', word: 'go to school', desc: 'leave for school' },
+                    { emoji: '🛏️', word: 'go to bed', desc: 'sleep at night' }
+                ],
+                sentences: ['I wake up at 7', 'I brush my teeth', 'I eat breakfast', 'I go to bed at 9'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match daily activities!' },
+                    { type: 'choice', question: 'What do you do first in the morning?', options: ['go to bed', 'wake up', 'go to school', 'eat breakfast'], answer: 'wake up' }
+                ]
+            },
+            35: {
+                vocab: [
+                    { emoji: '🏃', word: 'run', desc: 'move very fast' },
+                    { emoji: '🤸', word: 'jump', desc: 'go up in the air' },
+                    { emoji: '⚽', word: 'kick', desc: 'hit with your foot' },
+                    { emoji: '🤾', word: 'throw', desc: 'send something through the air' },
+                    { emoji: '🤝', word: 'catch', desc: 'grab something' }
+                ],
+                sentences: ['I run fast', 'I jump high', 'I kick the ball', 'I throw the ball'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the actions!' },
+                    { type: 'choice', question: 'What do you do with a ball and your foot?', options: ['run', 'jump', 'kick', 'throw'], answer: 'kick' }
+                ]
+            },
+            36: {
+                vocab: [
+                    { emoji: '🚶', word: 'walk', desc: 'move slowly on feet' },
+                    { emoji: '🏃', word: 'run', desc: 'move fast' },
+                    { emoji: '🪑', word: 'sit', desc: 'rest on a chair' },
+                    { emoji: '🧍', word: 'stand', desc: 'be on your feet' },
+                    { emoji: '🛏️', word: 'lie down', desc: 'rest on your back' }
+                ],
+                sentences: ['I walk to school', 'I sit on a chair', 'I stand up', 'I lie down to sleep'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the movements!' },
+                    { type: 'choice', question: 'What do you do when you rest on a chair?', options: ['walk', 'run', 'sit', 'stand'], answer: 'sit' }
+                ]
+            },
+            37: {
+                vocab: [
+                    { emoji: '🌳', word: 'tree', desc: 'a tall plant with leaves' },
+                    { emoji: '🌸', word: 'flower', desc: 'a pretty plant' },
+                    { emoji: '🌿', word: 'leaf', desc: 'green part of a plant' },
+                    { emoji: '🌹', word: 'rose', desc: 'a beautiful flower' },
+                    { emoji: '🌻', word: 'sunflower', desc: 'a big yellow flower' },
+                    { emoji: '🌵', word: 'cactus', desc: 'a plant with spikes' }
+                ],
+                sentences: ['I see a tree', 'The flower is pretty', 'Leaves are green', 'Sunflowers are big'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the plants!' },
+                    { type: 'choice', question: 'Which plant is tall with leaves?', options: ['flower', 'tree', 'rose', 'cactus'], answer: 'tree' }
+                ]
+            },
+            38: {
+                vocab: [
+                    { emoji: '☀️', word: 'sun', desc: 'bright in the sky during the day' },
+                    { emoji: '🌙', word: 'moon', desc: 'you see it at night' },
+                    { emoji: '⭐', word: 'star', desc: 'twinkles at night' },
+                    { emoji: '☁️', word: 'cloud', desc: 'white and fluffy in the sky' },
+                    { emoji: '🌈', word: 'rainbow', desc: 'colorful after rain' }
+                ],
+                sentences: ['The sun is bright', 'I see the moon', 'Stars twinkle', 'I see a rainbow'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match sky things!' },
+                    { type: 'choice', question: 'What shines during the day?', options: ['moon', 'sun', 'star', 'cloud'], answer: 'sun' }
+                ]
+            },
+            39: {
+                vocab: [
+                    { emoji: '🐝', word: 'bee', desc: 'makes honey' },
+                    { emoji: '🦋', word: 'butterfly', desc: 'has pretty wings' },
+                    { emoji: '🐞', word: 'ladybug', desc: 'red with black dots' },
+                    { emoji: '🐜', word: 'ant', desc: 'very small and works hard' },
+                    { emoji: '🦗', word: 'cricket', desc: 'makes sounds at night' }
+                ],
+                sentences: ['I see a bee', 'The butterfly is pretty', 'Ants work together', 'Crickets sing at night'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the insects!' },
+                    { type: 'choice', question: 'Which insect makes honey?', options: ['butterfly', 'ant', 'bee', 'cricket'], answer: 'bee' }
+                ]
+            },
+            40: {
+                vocab: [
+                    { emoji: '🐠', word: 'fish', desc: 'swims in water' },
+                    { emoji: '🐙', word: 'octopus', desc: 'has eight arms' },
+                    { emoji: '🦈', word: 'shark', desc: 'a big fish with teeth' },
+                    { emoji: '🐢', word: 'turtle', desc: 'has a shell' },
+                    { emoji: '🐳', word: 'whale', desc: 'the biggest animal' },
+                    { emoji: '🦀', word: 'crab', desc: 'walks sideways' }
+                ],
+                sentences: ['I see a fish', 'The octopus is smart', 'Whales are huge', 'The crab walks funny'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match ocean animals!' },
+                    { type: 'choice', question: 'Which animal is the biggest?', options: ['fish', 'crab', 'whale', 'turtle'], answer: 'whale' }
+                ]
+            },
+            41: {
+                vocab: [
+                    { emoji: '🦅', word: 'eagle', desc: 'a big strong bird' },
+                    { emoji: '🦜', word: 'parrot', desc: 'a colorful talking bird' },
+                    { emoji: '🦉', word: 'owl', desc: 'awake at night' },
+                    { emoji: '🐧', word: 'penguin', desc: 'a bird that can\'t fly' },
+                    { emoji: '🦆', word: 'duck', desc: 'swims and flies' }
+                ],
+                sentences: ['The eagle flies high', 'The parrot talks', 'The owl is awake at night', 'Penguins swim'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the birds!' },
+                    { type: 'choice', question: 'Which bird can talk?', options: ['eagle', 'parrot', 'owl', 'duck'], answer: 'parrot' }
+                ]
+            },
+            42: {
+                vocab: [
+                    { emoji: '👨‍⚕️', word: 'doctor', desc: 'helps sick people' },
+                    { emoji: '👨‍🏫', word: 'teacher', desc: 'teaches students' },
+                    { emoji: '👨‍🚒', word: 'firefighter', desc: 'puts out fires' },
+                    { emoji: '👮', word: 'police officer', desc: 'keeps us safe' },
+                    { emoji: '👨‍🍳', word: 'chef', desc: 'cooks food' }
+                ],
+                sentences: ['The doctor helps me', 'My teacher is kind', 'Firefighters are brave', 'The chef cooks well'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the jobs!' },
+                    { type: 'choice', question: 'Who teaches students?', options: ['doctor', 'teacher', 'chef', 'firefighter'], answer: 'teacher' }
+                ]
+            },
+            43: {
+                vocab: [
+                    { emoji: '📖', word: 'reading', desc: 'looking at books' },
+                    { emoji: '🎨', word: 'painting', desc: 'making art' },
+                    { emoji: '🎵', word: 'singing', desc: 'making music with your voice' },
+                    { emoji: '💃', word: 'dancing', desc: 'moving to music' },
+                    { emoji: '🎮', word: 'gaming', desc: 'playing video games' }
+                ],
+                sentences: ['I like reading', 'She loves painting', 'We enjoy singing', 'He likes dancing'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match the hobbies!' },
+                    { type: 'choice', question: 'What do you do with books?', options: ['painting', 'reading', 'singing', 'dancing'], answer: 'reading' }
+                ]
+            },
+            44: {
+                vocab: [
+                    { emoji: '🛝', word: 'slide', desc: 'you slide down' },
+                    { emoji: '🤸', word: 'swing', desc: 'you swing back and forth' },
+                    { emoji: '🌳', word: 'tree', desc: 'provides shade' },
+                    { emoji: '🪑', word: 'bench', desc: 'you sit and rest' },
+                    { emoji: '⚽', word: 'ball', desc: 'you play with it' }
+                ],
+                sentences: ['I go down the slide', 'I swing high', 'I sit on the bench', 'I play with a ball'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match park things!' },
+                    { type: 'choice', question: 'What do you go down?', options: ['swing', 'slide', 'bench', 'tree'], answer: 'slide' }
+                ]
+            },
+            45: {
+                vocab: [
+                    { emoji: '🏖️', word: 'sand', desc: 'tiny grains on the beach' },
+                    { emoji: '🌊', word: 'wave', desc: 'water moving' },
+                    { emoji: '🐚', word: 'shell', desc: 'you find it on the beach' },
+                    { emoji: '☀️', word: 'sun', desc: 'shines bright' },
+                    { emoji: '🏊', word: 'swim', desc: 'move in water' }
+                ],
+                sentences: ['I play in the sand', 'I see waves', 'I find shells', 'I swim in the ocean'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match beach things!' },
+                    { type: 'choice', question: 'What moves in the ocean?', options: ['sand', 'shell', 'wave', 'sun'], answer: 'wave' }
+                ]
+            },
+            46: {
+                vocab: [
+                    { emoji: '🌲', word: 'pine tree', desc: 'a tall green tree' },
+                    { emoji: '🦌', word: 'deer', desc: 'an animal in the forest' },
+                    { emoji: '🐿️', word: 'squirrel', desc: 'eats nuts' },
+                    { emoji: '🍄', word: 'mushroom', desc: 'grows on the ground' },
+                    { emoji: '🌿', word: 'fern', desc: 'a green plant' }
+                ],
+                sentences: ['I see pine trees', 'A deer runs', 'Squirrels climb trees', 'I find mushrooms'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match forest things!' },
+                    { type: 'choice', question: 'Which animal eats nuts?', options: ['deer', 'squirrel', 'mushroom', 'fern'], answer: 'squirrel' }
+                ]
+            },
+            47: {
+                vocab: [
+                    { emoji: '🎂', word: 'cake', desc: 'sweet birthday treat' },
+                    { emoji: '🎈', word: 'balloon', desc: 'floats in the air' },
+                    { emoji: '🎁', word: 'present', desc: 'a gift for you' },
+                    { emoji: '🕯️', word: 'candle', desc: 'you blow it out' },
+                    { emoji: '🎉', word: 'party', desc: 'celebration with friends' }
+                ],
+                sentences: ['I eat cake', 'Balloons are colorful', 'I open presents', 'I blow out candles'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match birthday things!' },
+                    { type: 'choice', question: 'What do you blow out?', options: ['cake', 'balloon', 'candle', 'present'], answer: 'candle' }
+                ]
+            },
+            48: {
+                vocab: [
+                    { emoji: '🐘', word: 'big', desc: 'very large' },
+                    { emoji: '🐜', word: 'small', desc: 'very little' },
+                    { emoji: '📏', word: 'long', desc: 'not short' },
+                    { emoji: '📌', word: 'short', desc: 'not long' },
+                    { emoji: '🏔️', word: 'tall', desc: 'very high' }
+                ],
+                sentences: ['The elephant is big', 'The ant is small', 'The rope is long', 'The mountain is tall'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match size words!' },
+                    { type: 'choice', question: 'Which word means very large?', options: ['small', 'short', 'big', 'long'], answer: 'big' }
+                ]
+            },
+            49: {
+                vocab: [
+                    { emoji: '🐆', word: 'fast', desc: 'moves quickly' },
+                    { emoji: '🐢', word: 'slow', desc: 'moves slowly' },
+                    { emoji: '🚀', word: 'quick', desc: 'very fast' },
+                    { emoji: '🦥', word: 'lazy', desc: 'doesn\'t move much' }
+                ],
+                sentences: ['The cheetah is fast', 'The turtle is slow', 'The rocket is quick', 'The sloth is lazy'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match speed words!' },
+                    { type: 'choice', question: 'Which animal is slow?', options: ['cheetah', 'turtle', 'rocket', 'sloth'], answer: 'turtle' }
+                ]
+            },
+            50: {
+                vocab: [
+                    { emoji: '👋', word: 'hello', desc: 'a greeting' },
+                    { emoji: '👋', word: 'goodbye', desc: 'when you leave' },
+                    { emoji: '🙏', word: 'please', desc: 'polite word when asking' },
+                    { emoji: '😊', word: 'thank you', desc: 'when someone helps you' },
+                    { emoji: '😊', word: 'you\'re welcome', desc: 'response to thank you' }
+                ],
+                sentences: ['I say hello', 'I say goodbye', 'I say please', 'I say thank you'],
+                questions: [
+                    { type: 'vocab' },
+                    { type: 'match', question: 'Match greetings!' },
+                    { type: 'choice', question: 'What do you say when you meet someone?', options: ['goodbye', 'hello', 'thank you', 'please'], answer: 'hello' }
                 ]
             }
         };
 
         let progressData = {
-            lessons: [],
-            streak: 0
+            completedTopics: [],
+            stars: 0
         };
 
-        let currentLesson = null;
+        let currentTopic = null;
         let currentQuestionIndex = 0;
         let selectedAnswer = null;
-        let sentenceWords = [];
+        let selectedMatches = [];
 
-        function loadProgress() {
-            if (progressData.lessons.length > 0) {
-                progressData.lessons.forEach((savedLesson, index) => {
-                    if (lessons[index]) {
-                        lessons[index].completed = savedLesson.completed;
-                        lessons[index].locked = savedLesson.locked;
-                    }
-                });
-                document.getElementById('streak-count').textContent = progressData.streak || 0;
-            }
-        }
-
-        function saveProgress() {
-            progressData.lessons = JSON.parse(JSON.stringify(lessons));
-        }
-
-        function renderLessons() {
-            const grid = document.getElementById('lessons-grid');
+        function renderTopics() {
+            const grid = document.getElementById('topics-grid');
             grid.innerHTML = '';
 
-            lessons.forEach((lesson) => {
-                const lessonItem = document.createElement('div');
-                lessonItem.className = 'lesson-item';
-
-                const lessonWrapper = document.createElement('div');
-                lessonWrapper.style.textAlign = 'center';
-
-                const button = document.createElement('button');
-                button.className = 'lesson-button';
-                button.setAttribute('data-category', lesson.category);
-                button.textContent = lesson.emoji;
-
-                if (lesson.completed) {
-                    button.classList.add('completed');
+            topics.forEach(topic => {
+                const card = document.createElement('div');
+                card.className = 'topic-card';
+                if (progressData.completedTopics.includes(topic.id)) {
+                    card.classList.add('completed');
                 }
 
-                if (lesson.locked) {
-                    button.classList.add('locked');
-                }
+                card.innerHTML = `
+                    <span class="topic-emoji">${topic.emoji}</span>
+                    <div class="topic-name">${topic.name}</div>
+                    <div class="topic-subtitle">${topic.subtitle}</div>
+                `;
 
-                button.addEventListener('click', () => handleLessonClick(lesson));
-
-                const label = document.createElement('div');
-                label.className = 'lesson-label';
-                label.textContent = lesson.name;
-
-                lessonWrapper.appendChild(button);
-                lessonWrapper.appendChild(label);
-                lessonItem.appendChild(lessonWrapper);
-                grid.appendChild(lessonItem);
+                card.onclick = () => startTopic(topic);
+                grid.appendChild(card);
             });
 
             updateProgress();
         }
 
-        function handleLessonClick(lesson) {
-            if (lesson.locked) {
-                showCustomAlert('Lesson Locked', 'Complete the previous lessons to unlock this one!', '🔒');
-                return;
-            }
+        function updateProgress() {
+            const completed = progressData.completedTopics.length;
+            const total = topics.length;
+            const percentage = Math.round((completed / total) * 100);
 
-            if (!lessonContent[lesson.category]) {
-                showCustomAlert('Coming Soon!', 'This lesson is being prepared for you. Try other lessons first!', '🚧');
-                return;
-            }
-
-            currentLesson = lesson;
-            currentQuestionIndex = 0;
-            startLesson();
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${completed}/${total}`;
+            document.getElementById('stars-count').textContent = progressData.stars;
         }
 
-        function startLesson() {
+        function startTopic(topic) {
+            currentTopic = topic;
+            currentQuestionIndex = 0;
             document.getElementById('home-view').style.display = 'none';
             document.getElementById('lesson-view').classList.add('active');
             showQuestion();
@@ -1117,327 +1510,291 @@
         }
 
         function showQuestion() {
-            const content = lessonContent[currentLesson.category];
-            if (!content) {
-                exitLesson();
-                return;
-            }
+            const data = lessonData[currentTopic.id];
+            if (!data) return;
 
-            const questions = content.questions;
-            const question = questions[currentQuestionIndex];
-
-            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            const totalQuestions = data.questions.length;
+            const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
             document.getElementById('lesson-progress-fill').style.width = progress + '%';
 
-            const container = document.getElementById('question-container');
-            container.innerHTML = '';
+            const question = data.questions[currentQuestionIndex];
+            const box = document.getElementById('question-box');
+            box.innerHTML = '';
 
             selectedAnswer = null;
-            sentenceWords = [];
+            selectedMatches = [];
 
             if (question.type === 'vocab') {
-                renderVocabQuestion(question, container);
-            } else if (question.type === 'multiple') {
-                renderMultipleChoice(question, container);
-            } else if (question.type === 'sentence') {
-                renderSentenceBuilder(question, container);
-            } else if (question.type === 'translation') {
-                renderTranslation(question, container);
+                renderVocabDisplay(data, box);
+            } else if (question.type === 'match') {
+                renderMatching(data, question, box);
+            } else if (question.type === 'choice') {
+                renderChoice(question, box);
             }
         }
 
-        function renderVocabQuestion(question, container) {
-            container.innerHTML = `
-                <div class="question-header">
-                    <span class="question-type">Vocabulary</span>
-                    <h2 class="question-text">What is this?</h2>
-                </div>
-                <div class="question-image">${question.emoji}</div>
-                <div class="answer-options" id="answer-options"></div>
-                <button class="check-button" id="check-button" disabled>CHECK</button>
-                <div class="feedback" id="feedback"></div>
+        function renderVocabDisplay(data, box) {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            let html = `
+                <div class="question-type-badge">📚 Vocabulary</div>
+                <div class="question-title">Learn These Words!</div>
+                <div class="vocab-display-grid">
             `;
 
-            const optionsContainer = document.getElementById('answer-options');
-            question.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.className = 'answer-option';
-                btn.textContent = option;
-                btn.onclick = () => selectAnswer(option, btn);
-                optionsContainer.appendChild(btn);
+            data.vocab.forEach(item => {
+                html += `
+                    <div class="vocab-card-display">
+                        <div class="vocab-emoji-large">${item.emoji}</div>
+                        <div class="vocab-word-main">${item.word}</div>
+                        <div class="vocab-description">${item.desc}</div>
+                    </div>
+                `;
             });
 
-            document.getElementById('check-button').onclick = () => checkAnswer(question.correctAnswer);
-        }
+            html += `</div>`;
 
-        function renderMultipleChoice(question, container) {
-            container.innerHTML = `
-                <div class="question-header">
-                    <span class="question-type">Multiple Choice</span>
-                    <h2 class="question-text">${question.question}</h2>
-                </div>
-                <div class="answer-options" id="answer-options"></div>
-                <button class="check-button" id="check-button" disabled>CHECK</button>
-                <div class="feedback" id="feedback"></div>
-            `;
-
-            const optionsContainer = document.getElementById('answer-options');
-            question.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.className = 'answer-option';
-                btn.textContent = option;
-                btn.onclick = () => selectAnswer(option, btn);
-                optionsContainer.appendChild(btn);
-            });
-
-            document.getElementById('check-button').onclick = () => checkAnswer(question.correctAnswer);
-        }
-
-        function renderSentenceBuilder(question, container) {
-            container.innerHTML = `
-                <div class="question-header">
-                    <span class="question-type">Build a Sentence</span>
-                    <h2 class="question-text">${question.prompt}</h2>
-                    <p class="question-instruction">Tap the words in the correct order</p>
-                </div>
-                <div class="sentence-area" id="sentence-area"></div>
-                <div class="word-bank" id="word-bank"></div>
-                <button class="check-button" id="check-button" disabled>CHECK</button>
-                <div class="feedback" id="feedback"></div>
-            `;
-
-            const wordBank = document.getElementById('word-bank');
-            const shuffled = [...question.words].sort(() => Math.random() - 0.5);
-
-            shuffled.forEach(word => {
-                const tile = document.createElement('button');
-                tile.className = 'word-tile';
-                tile.textContent = word;
-                tile.onclick = () => addWordToSentence(word, tile);
-                wordBank.appendChild(tile);
-            });
-
-            const sentenceArea = document.getElementById('sentence-area');
-            sentenceArea.onclick = (e) => {
-                if (e.target.classList.contains('sentence-word')) {
-                    removeWordFromSentence(e.target.textContent, e.target);
-                }
-            };
-
-            document.getElementById('check-button').onclick = () => {
-                const userSentence = sentenceWords.join(' ');
-                checkAnswer(question.prompt, userSentence);
-            };
-        }
-
-        function renderTranslation(question, container) {
-            const direction = question.direction === 'tr-en' ? 'Translate to English' : 'Translate';
-            const placeholder = 'Type your answer...';
-
-            container.innerHTML = `
-                <div class="question-header">
-                    <span class="question-type">${direction}</span>
-                    <h2 class="question-text">Translate this sentence</h2>
-                    <p class="question-instruction" style="font-size: 20px; font-weight: 700; color: var(--text-dark);">${question.question}</p>
-                    ${question.hint ? `<p class="question-instruction" style="color: var(--blue-accent); margin-top: 8px;">💡 ${question.hint}</p>` : ''}
-                </div>
-                <input type="text" class="translation-input" id="translation-input" placeholder="${placeholder}">
-                <button class="check-button" id="check-button">CHECK</button>
-                <div class="feedback" id="feedback"></div>
-            `;
-
-            const input = document.getElementById('translation-input');
-            input.addEventListener('input', () => {
-                selectedAnswer = input.value.trim();
-            });
-
-            document.getElementById('check-button').onclick = () => {
-                checkAnswer(question.correctAnswer, input.value.trim(), true);
-            };
-        }
-
-        function selectAnswer(answer, button) {
-            document.querySelectorAll('.answer-option').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            button.classList.add('selected');
-            selectedAnswer = answer;
-            document.getElementById('check-button').disabled = false;
-        }
-
-        function addWordToSentence(word, tile) {
-            if (tile.classList.contains('used')) return;
-
-            sentenceWords.push(word);
-            tile.classList.add('used');
-
-            const sentenceArea = document.getElementById('sentence-area');
-            const wordSpan = document.createElement('span');
-            wordSpan.className = 'sentence-word';
-            wordSpan.textContent = word;
-            sentenceArea.appendChild(wordSpan);
-
-            document.getElementById('check-button').disabled = sentenceWords.length === 0;
-        }
-
-        function removeWordFromSentence(word, element) {
-            const index = sentenceWords.indexOf(word);
-            if (index > -1) {
-                sentenceWords.splice(index, 1);
+            if (data.sentences && data.sentences.length > 0) {
+                html += `<div class="sentence-examples">`;
+                data.sentences.forEach(sentence => {
+                    html += `<div class="sentence-item">${sentence}</div>`;
+                });
+                html += `</div>`;
             }
 
-            element.remove();
+            html += `<button class="check-btn" onclick="nextQuestion()">CONTINUE</button>`;
 
-            const tiles = document.querySelectorAll('.word-tile');
-            tiles.forEach(tile => {
-                if (tile.textContent === word && tile.classList.contains('used')) {
-                    tile.classList.remove('used');
-                }
-            });
-
-            document.getElementById('check-button').disabled = sentenceWords.length === 0;
+            card.innerHTML = html;
+            box.appendChild(card);
         }
 
-        function checkAnswer(correctAnswer, userAnswer = null, isFuzzy = false) {
-            const answer = userAnswer || selectedAnswer;
-            let isCorrect = false;
+        function renderMatching(data, question, box) {
+            const card = document.createElement('div');
+            card.className = 'question-card';
 
-            if (isFuzzy) {
-                const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim();
-                isCorrect = normalize(answer) === normalize(correctAnswer);
+            const shuffledVocab = [...data.vocab].sort(() => Math.random() - 0.5);
+            const leftSide = shuffledVocab.slice(0, 3);
+            const rightSide = [...leftSide].sort(() => Math.random() - 0.5);
+
+            let html = `
+                <div class="question-type-badge">🎯 Match</div>
+                <div class="question-title">${question.question}</div>
+                <div class="matching-grid" id="matching-grid">
+            `;
+
+            leftSide.forEach((item, idx) => {
+                html += `
+                    <div class="match-item" data-word="${item.word}" data-side="left" onclick="selectMatch(this)">
+                        <span class="match-emoji">${item.emoji}</span>
+                    </div>
+                `;
+            });
+
+            rightSide.forEach((item, idx) => {
+                html += `
+                    <div class="match-item" data-word="${item.word}" data-side="right" onclick="selectMatch(this)">
+                        ${item.word}
+                    </div>
+                `;
+            });
+
+            html += `
+                </div>
+                <button class="check-btn" id="check-btn" disabled onclick="checkMatching()">CHECK</button>
+                <div class="feedback-box" id="feedback"></div>
+            `;
+
+            card.innerHTML = html;
+            box.appendChild(card);
+        }
+
+        function selectMatch(element) {
+            if (element.classList.contains('matched')) return;
+
+            const side = element.dataset.side;
+            const word = element.dataset.word;
+
+            if (selectedMatches.length === 0) {
+                element.classList.add('selected');
+                selectedMatches.push({ side, word, element });
+            } else if (selectedMatches[0].side !== side) {
+                selectedMatches.push({ side, word, element });
+                document.getElementById('check-btn').disabled = false;
             } else {
-                isCorrect = answer === correctAnswer;
+                selectedMatches[0].element.classList.remove('selected');
+                selectedMatches = [];
+                element.classList.add('selected');
+                selectedMatches.push({ side, word, element });
             }
+        }
+
+        function checkMatching() {
+            if (selectedMatches.length !== 2) return;
+
+            const [first, second] = selectedMatches;
+            const feedback = document.getElementById('feedback');
+
+            if (first.word === second.word) {
+                first.element.classList.remove('selected');
+                second.element.classList.remove('selected');
+                first.element.classList.add('matched');
+                second.element.classList.add('matched');
+
+                feedback.textContent = '🎉 Correct match!';
+                feedback.className = 'feedback-box correct show';
+
+                selectedMatches = [];
+
+                const allMatched = document.querySelectorAll('.match-item:not(.matched)').length === 0;
+                if (allMatched) {
+                    setTimeout(() => nextQuestion(), 1500);
+                } else {
+                    document.getElementById('check-btn').disabled = true;
+                    setTimeout(() => {
+                        feedback.classList.remove('show');
+                    }, 1500);
+                }
+            } else {
+                first.element.classList.add('incorrect');
+                second.element.classList.add('incorrect');
+
+                feedback.textContent = '❌ Try again!';
+                feedback.className = 'feedback-box incorrect show';
+
+                setTimeout(() => {
+                    first.element.classList.remove('selected', 'incorrect');
+                    second.element.classList.remove('selected', 'incorrect');
+                    feedback.classList.remove('show');
+                    selectedMatches = [];
+                    document.getElementById('check-btn').disabled = true;
+                }, 1500);
+            }
+        }
+
+        function renderChoice(question, box) {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            let html = `
+                <div class="question-type-badge">❓ Question</div>
+                <div class="question-title">${question.question}</div>
+                <div class="options-grid" id="options-grid">
+            `;
+
+            question.options.forEach(option => {
+                html += `
+                    <button class="option-btn" onclick="selectOption(this, '${option}', '${question.answer}')">
+                        ${option}
+                    </button>
+                `;
+            });
+
+            html += `
+                </div>
+                <button class="check-btn" id="check-btn" disabled onclick="checkChoice()">CHECK</button>
+                <div class="feedback-box" id="feedback"></div>
+            `;
+
+            card.innerHTML = html;
+            box.appendChild(card);
+        }
+
+        function selectOption(element, option, answer) {
+            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswer = { option, answer };
+            document.getElementById('check-btn').disabled = false;
+        }
+
+        function checkChoice() {
+            if (!selectedAnswer) return;
 
             const feedback = document.getElementById('feedback');
-            feedback.classList.remove('correct', 'incorrect');
+            const isCorrect = selectedAnswer.option === selectedAnswer.answer;
 
             if (isCorrect) {
-                feedback.textContent = '🎉 Correct! Well done!';
-                feedback.classList.add('correct', 'show');
+                document.querySelector('.option-btn.selected').classList.add('correct');
+                feedback.textContent = '🎉 Excellent! That\'s right!';
+                feedback.className = 'feedback-box correct show';
 
-                document.querySelectorAll('.answer-option.selected, .sentence-area').forEach(el => {
-                    el.classList.add('correct');
-                });
-
-                setTimeout(() => {
-                    nextQuestion();
-                }, 1500);
+                setTimeout(() => nextQuestion(), 1500);
             } else {
-                feedback.textContent = `❌ Incorrect. The correct answer is: ${correctAnswer}`;
-                feedback.classList.add('incorrect', 'show');
-
-                document.querySelectorAll('.answer-option.selected').forEach(el => {
-                    el.classList.add('incorrect');
-                });
+                document.querySelector('.option-btn.selected').classList.add('incorrect');
+                feedback.textContent = `❌ Not quite. The answer is: ${selectedAnswer.answer}`;
+                feedback.className = 'feedback-box incorrect show';
 
                 setTimeout(() => {
-                    feedback.classList.remove('show');
-                    document.querySelectorAll('.answer-option').forEach(el => {
-                        el.classList.remove('incorrect');
+                    document.querySelectorAll('.option-btn').forEach(btn => {
+                        btn.classList.remove('incorrect');
                     });
+                    feedback.classList.remove('show');
                 }, 2000);
             }
 
-            document.getElementById('check-button').disabled = true;
+            document.getElementById('check-btn').disabled = true;
         }
 
         function nextQuestion() {
-            const content = lessonContent[currentLesson.category];
+            const data = lessonData[currentTopic.id];
             currentQuestionIndex++;
 
-            if (currentQuestionIndex >= content.questions.length) {
-                completeLesson();
+            if (currentQuestionIndex >= data.questions.length) {
+                completeTopic();
             } else {
                 showQuestion();
             }
         }
 
-        function completeLesson() {
-            if (!currentLesson.completed) {
-                currentLesson.completed = true;
-
-                const nextLesson = lessons.find(l => l.id === currentLesson.id + 1);
-                if (nextLesson) {
-                    nextLesson.locked = false;
-                }
-
-                progressData.streak = progressData.streak + 1;
-                document.getElementById('streak-count').textContent = progressData.streak;
-
-                saveProgress();
-                renderLessons();
-                createConfetti();
+        function completeTopic() {
+            if (!progressData.completedTopics.includes(currentTopic.id)) {
+                progressData.completedTopics.push(currentTopic.id);
+                progressData.stars += 10;
             }
 
             exitLesson();
-            showCustomAlert('Lesson Complete!', 'Great job! You\'re making amazing progress.', '🎉');
+            renderTopics();
+            showCelebration();
         }
 
-        function updateProgress() {
-            const completed = lessons.filter(l => l.completed).length;
-            const total = lessons.length;
-            const percentage = Math.round((completed / total) * 100);
+        function showCelebration() {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: flex; align-items: center; justify-content: center;';
 
-            const progressFill = document.getElementById('progress-fill');
-            const progressText = document.getElementById('progress-text');
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 32px; padding: 48px 32px; max-width: 450px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="font-size: 100px; margin-bottom: 24px; animation: bounce 1s infinite;">🎉</div>
+                    <h2 style="font-family: 'Chewy', cursive; font-size: 36px; color: #38A3A5; margin-bottom: 16px;">Great Job!</h2>
+                    <p style="font-size: 20px; color: #7F8C8D; margin-bottom: 32px;">You completed this topic! Keep learning!</p>
+                    <button onclick="this.closest('div[style*=fixed]').remove()" style="background: linear-gradient(135deg, #4ECDC4, #38A3A5); color: white; border: none; padding: 20px 48px; border-radius: 20px; font-size: 20px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif;">CONTINUE</button>
+                </div>
+            `;
 
-            progressFill.style.width = percentage + '%';
-            progressText.textContent = percentage + '%';
+            document.body.appendChild(modal);
+            createConfetti();
         }
 
         function createConfetti() {
-            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#FFD93D', '#6C5CE7'];
-            const confettiCount = 50;
-
-            for (let i = 0; i < confettiCount; i++) {
+            const colors = ['#FF6B9D', '#4ECDC4', '#FFE66D', '#FF8C42', '#95E1D3', '#9D65C9'];
+            for (let i = 0; i < 50; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
-                    confetti.style.position = 'fixed';
-                    confetti.style.width = '10px';
-                    confetti.style.height = '10px';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.top = '-10px';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.pointerEvents = 'none';
-                    confetti.style.zIndex = '9999';
-                    confetti.style.animation = 'confettiFall 3s linear';
+                    confetti.style.cssText = `position: fixed; width: 10px; height: 10px; background: ${colors[Math.floor(Math.random() * colors.length)]}; left: ${Math.random() * 100}%; top: -10px; pointer-events: none; z-index: 9999; animation: fall 3s linear;`;
                     document.body.appendChild(confetti);
-
                     setTimeout(() => confetti.remove(), 3000);
                 }, i * 30);
             }
         }
 
-        function showCustomAlert(title, message, icon) {
-            const modal = document.createElement('div');
-            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);';
-
-            modal.innerHTML = `
-                <div style="background: white; border-radius: 24px; padding: 40px 32px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalSlideIn 0.3s ease-out;">
-                    <div style="font-size: 80px; margin-bottom: 20px;">${icon}</div>
-                    <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; color: #1B5E7F; margin-bottom: 12px;">${title}</h2>
-                    <p style="color: #636E72; font-size: 16px; margin-bottom: 24px;">${message}</p>
-                    <button onclick="this.closest('div[style*=fixed]').remove()" style="background: linear-gradient(135deg, #00D084, #00F5A0); color: white; border: none; padding: 16px 40px; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif;">Continue</button>
-                </div>
-            `;
-
-            document.body.appendChild(modal);
-            modal.onclick = (e) => {
-                if (e.target === modal) modal.remove();
-            };
-        }
+        const style = document.createElement('style');
+        style.textContent = '@keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }';
+        document.head.appendChild(style);
 
         function goHome() {
             exitLesson();
         }
 
-        const style = document.createElement('style');
-        style.textContent = '@keyframes confettiFall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } } @keyframes modalSlideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }';
-        document.head.appendChild(style);
-
-        loadProgress();
-        renderLessons();
+        renderTopics();
     </script>
 </body>
 </html>
