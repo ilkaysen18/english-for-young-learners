@@ -904,121 +904,121 @@
         const lessonContent = {
             animals: {
                 vocab: [
-                    { emoji: '🐕', word: 'dog', translation: 'a pet that barks' },
-                    { emoji: '🐈', word: 'cat', translation: 'a pet that meows' },
-                    { emoji: '🐘', word: 'elephant', translation: 'big animal with trunk' },
-                    { emoji: '🦁', word: 'lion', translation: 'king of jungle' },
-                    { emoji: '🐯', word: 'tiger', translation: 'striped wild cat' },
-                    { emoji: '🐼', word: 'panda', translation: 'black and white bear' },
-                    { emoji: '🐦', word: 'bird', translation: 'animal that flies' },
-                    { emoji: '🐟', word: 'fish', translation: 'lives in water' }
+                    { emoji: '🐕', word: 'dog', translation: 'a common pet that barks' },
+                    { emoji: '🐈', word: 'cat', translation: 'a small furry pet that meows' },
+                    { emoji: '🐘', word: 'elephant', translation: 'a large animal with a trunk' },
+                    { emoji: '🦁', word: 'lion', translation: 'the king of the jungle' },
+                    { emoji: '🐯', word: 'tiger', translation: 'a large striped wild cat' },
+                    { emoji: '🐼', word: 'panda', translation: 'a black and white bear' },
+                    { emoji: '🐦', word: 'bird', translation: 'an animal that can fly' },
+                    { emoji: '🐟', word: 'fish', translation: 'an animal that lives in water' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '🐕', correctAnswer: 'dog', options: ['dog', 'cat', 'bird', 'fish'] },
-                    { type: 'multiple', question: 'Which animal is the king of the jungle?', correctAnswer: 'lion', options: ['dog', 'lion', 'cat', 'elephant'] },
-                    { type: 'sentence', prompt: 'I have a dog', words: ['I', 'have', 'a', 'dog', 'cat', 'like', 'is'] },
-                    { type: 'vocab', emoji: '🐘', correctAnswer: 'elephant', options: ['tiger', 'elephant', 'monkey', 'bear'] },
+                    { type: 'vocab', emoji: '🐈', correctAnswer: 'cat', options: ['dog', 'cat', 'bird', 'fish'] },
+                    { type: 'sentence', prompt: 'I see a dog', words: ['I', 'see', 'a', 'dog', 'cat', 'two', 'the'] },
+                    { type: 'sentence', prompt: 'I have a cat', words: ['I', 'have', 'a', 'cat', 'dog', 'see', 'birds'] },
                     { type: 'vocab', emoji: '🐦', correctAnswer: 'bird', options: ['bird', 'cat', 'dog', 'fish'] },
-                    { type: 'multiple', question: 'What animal says "meow"?', correctAnswer: 'cat', options: ['dog', 'cat', 'bird', 'lion'] }
+                    { type: 'sentence', prompt: 'I see dogs AND I see cats', words: ['I', 'see', 'dogs', 'AND', 'cats', 'a', 'the', 'bird'] }
                 ]
             },
             food: {
                 vocab: [
-                    { emoji: '🍎', word: 'apple', translation: 'red or green fruit' },
-                    { emoji: '🍌', word: 'banana', translation: 'yellow fruit' },
-                    { emoji: '🍞', word: 'bread', translation: 'we make toast from this' },
-                    { emoji: '🥛', word: 'milk', translation: 'white drink' },
-                    { emoji: '🍕', word: 'pizza', translation: 'round food with cheese' },
-                    { emoji: '🍔', word: 'burger', translation: 'meat in a bun' },
-                    { emoji: '🍊', word: 'orange', translation: 'orange citrus fruit' },
-                    { emoji: '🍇', word: 'grape', translation: 'small purple or green fruit' }
+                    { emoji: '🍎', word: 'apple', translation: 'a red or green fruit' },
+                    { emoji: '🍌', word: 'banana', translation: 'a long yellow fruit' },
+                    { emoji: '🍞', word: 'bread', translation: 'food made from flour' },
+                    { emoji: '🥛', word: 'milk', translation: 'a white drink' },
+                    { emoji: '🍕', word: 'pizza', translation: 'a round food with cheese' },
+                    { emoji: '🥪', word: 'sandwich', translation: 'food between two pieces of bread' },
+                    { emoji: '🍊', word: 'orange juice', translation: 'a drink made from oranges' },
+                    { emoji: '🍋', word: 'lemonade', translation: 'a sweet drink made from lemons' }
                 ],
                 questions: [
-                    { type: 'vocab', emoji: '🍎', correctAnswer: 'apple', options: ['apple', 'orange', 'banana', 'grape'] },
-                    { type: 'multiple', question: 'What do you drink in the morning?', correctAnswer: 'milk', options: ['pizza', 'burger', 'milk', 'apple'] },
-                    { type: 'sentence', prompt: 'I like pizza', words: ['I', 'like', 'pizza', 'eat', 'drink', 'is', 'the'] },
-                    { type: 'vocab', emoji: '🍌', correctAnswer: 'banana', options: ['apple', 'banana', 'bread', 'milk'] },
-                    { type: 'vocab', emoji: '🍕', correctAnswer: 'pizza', options: ['pizza', 'burger', 'bread', 'milk'] },
-                    { type: 'multiple', question: 'Which fruit is yellow?', correctAnswer: 'banana', options: ['apple', 'orange', 'banana', 'grape'] }
+                    { type: 'vocab', emoji: '🍎', correctAnswer: 'apple', options: ['apple', 'banana', 'bread', 'milk'] },
+                    { type: 'sentence', prompt: 'I eat an apple', words: ['I', 'eat', 'an', 'apple', 'drink', 'a', 'the'] },
+                    { type: 'sentence', prompt: 'I drink milk', words: ['I', 'drink', 'milk', 'eat', 'orange juice', 'a', 'the'] },
+                    { type: 'vocab', emoji: '🥪', correctAnswer: 'sandwich', options: ['sandwich', 'pizza', 'bread', 'milk'] },
+                    { type: 'sentence', prompt: 'I eat a sandwich AND I drink orange juice', words: ['I', 'eat', 'a', 'sandwich', 'AND', 'drink', 'orange juice', 'the', 'milk'] },
+                    { type: 'multiple', question: 'I drink ___', correctAnswer: 'orange juice', options: ['pizza', 'sandwich', 'orange juice', 'bread'] }
                 ]
             },
             colors: {
                 vocab: [
-                    { emoji: '🔴', word: 'red', translation: 'color of apple' },
-                    { emoji: '🔵', word: 'blue', translation: 'color of sky' },
-                    { emoji: '🟢', word: 'green', translation: 'color of grass' },
-                    { emoji: '🟡', word: 'yellow', translation: 'color of sun' },
-                    { emoji: '🟠', word: 'orange', translation: 'color of carrot' },
-                    { emoji: '🟣', word: 'purple', translation: 'mix of red and blue' },
-                    { emoji: '⚫', word: 'black', translation: 'darkest color' },
-                    { emoji: '⚪', word: 'white', translation: 'color of snow' }
+                    { emoji: '🔴', word: 'red', translation: 'the color of an apple' },
+                    { emoji: '🔵', word: 'blue', translation: 'the color of the sky' },
+                    { emoji: '🟢', word: 'green', translation: 'the color of grass' },
+                    { emoji: '🟡', word: 'yellow', translation: 'the color of the sun' },
+                    { emoji: '🟠', word: 'orange', translation: 'the color of a carrot' },
+                    { emoji: '🟣', word: 'purple', translation: 'the color of grapes' },
+                    { emoji: '⚫', word: 'black', translation: 'the darkest color' },
+                    { emoji: '⚪', word: 'white', translation: 'the color of snow' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '🔴', correctAnswer: 'red', options: ['red', 'blue', 'green', 'yellow'] },
-                    { type: 'multiple', question: 'What color is the sky?', correctAnswer: 'blue', options: ['red', 'blue', 'green', 'purple'] },
-                    { type: 'sentence', prompt: 'The apple is red', words: ['The', 'apple', 'is', 'red', 'blue', 'green', 'banana'] },
+                    { type: 'sentence', prompt: 'I see a red apple', words: ['I', 'see', 'a', 'red', 'apple', 'green', 'blue', 'the'] },
                     { type: 'vocab', emoji: '🟢', correctAnswer: 'green', options: ['red', 'blue', 'green', 'yellow'] },
-                    { type: 'vocab', emoji: '🟡', correctAnswer: 'yellow', options: ['red', 'blue', 'green', 'yellow'] },
-                    { type: 'multiple', question: 'What color is grass?', correctAnswer: 'green', options: ['red', 'blue', 'green', 'purple'] }
+                    { type: 'sentence', prompt: 'I see green leaves', words: ['I', 'see', 'green', 'leaves', 'red', 'a', 'the', 'orange'] },
+                    { type: 'sentence', prompt: 'I see orange leaves', words: ['I', 'see', 'orange', 'leaves', 'green', 'a', 'the', 'red'] },
+                    { type: 'multiple', question: 'I see ___ grass', correctAnswer: 'green', options: ['red', 'blue', 'green', 'purple'] }
                 ]
             },
             numbers: {
                 vocab: [
-                    { emoji: '1️⃣', word: 'one', translation: 'number 1' },
-                    { emoji: '2️⃣', word: 'two', translation: 'number 2' },
-                    { emoji: '3️⃣', word: 'three', translation: 'number 3' },
-                    { emoji: '4️⃣', word: 'four', translation: 'number 4' },
-                    { emoji: '5️⃣', word: 'five', translation: 'number 5' },
-                    { emoji: '6️⃣', word: 'six', translation: 'number 6' },
-                    { emoji: '7️⃣', word: 'seven', translation: 'number 7' },
-                    { emoji: '8️⃣', word: 'eight', translation: 'number 8' }
+                    { emoji: '1️⃣', word: 'one', translation: 'the number 1' },
+                    { emoji: '2️⃣', word: 'two', translation: 'the number 2' },
+                    { emoji: '3️⃣', word: 'three', translation: 'the number 3' },
+                    { emoji: '4️⃣', word: 'four', translation: 'the number 4' },
+                    { emoji: '5️⃣', word: 'five', translation: 'the number 5' },
+                    { emoji: '6️⃣', word: 'six', translation: 'the number 6' },
+                    { emoji: '7️⃣', word: 'seven', translation: 'the number 7' },
+                    { emoji: '8️⃣', word: 'eight', translation: 'the number 8' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '1️⃣', correctAnswer: 'one', options: ['one', 'two', 'three', 'four'] },
+                    { type: 'vocab', emoji: '2️⃣', correctAnswer: 'two', options: ['one', 'two', 'three', 'four'] },
+                    { type: 'sentence', prompt: 'I see one dog', words: ['I', 'see', 'one', 'dog', 'two', 'three', 'a', 'the'] },
+                    { type: 'sentence', prompt: 'I have two cats', words: ['I', 'have', 'two', 'cats', 'one', 'three', 'a', 'cat'] },
                     { type: 'vocab', emoji: '5️⃣', correctAnswer: 'five', options: ['three', 'four', 'five', 'six'] },
-                    { type: 'sentence', prompt: 'I have two cats', words: ['I', 'have', 'two', 'cats', 'one', 'dogs', 'is'] },
-                    { type: 'multiple', question: 'How many fingers on one hand?', correctAnswer: 'five', options: ['three', 'four', 'five', 'six'] },
-                    { type: 'vocab', emoji: '8️⃣', correctAnswer: 'eight', options: ['six', 'seven', 'eight', 'nine'] },
-                    { type: 'multiple', question: 'What comes after six?', correctAnswer: 'seven', options: ['five', 'six', 'seven', 'eight'] }
+                    { type: 'sentence', prompt: 'I see five birds', words: ['I', 'see', 'five', 'birds', 'four', 'six', 'a', 'bird'] }
                 ]
             },
             family: {
                 vocab: [
-                    { emoji: '👨', word: 'father', translation: 'dad' },
-                    { emoji: '👩', word: 'mother', translation: 'mom' },
-                    { emoji: '👦', word: 'brother', translation: 'boy in family' },
-                    { emoji: '👧', word: 'sister', translation: 'girl in family' },
-                    { emoji: '👴', word: 'grandfather', translation: 'grandpa' },
-                    { emoji: '👵', word: 'grandmother', translation: 'grandma' },
-                    { emoji: '👶', word: 'baby', translation: 'very young child' },
-                    { emoji: '👨‍👩‍👧‍👦', word: 'family', translation: 'people who love you' }
+                    { emoji: '👨', word: 'father', translation: 'my dad' },
+                    { emoji: '👩', word: 'mother', translation: 'my mom' },
+                    { emoji: '👦', word: 'brother', translation: 'a boy in my family' },
+                    { emoji: '👧', word: 'sister', translation: 'a girl in my family' },
+                    { emoji: '👴', word: 'grandfather', translation: 'my grandpa' },
+                    { emoji: '👵', word: 'grandmother', translation: 'my grandma' },
+                    { emoji: '👶', word: 'baby', translation: 'a very young child' },
+                    { emoji: '👨‍👩‍👧‍👦', word: 'family', translation: 'people I live with' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '👨', correctAnswer: 'father', options: ['father', 'mother', 'brother', 'sister'] },
                     { type: 'vocab', emoji: '👩', correctAnswer: 'mother', options: ['father', 'mother', 'brother', 'sister'] },
-                    { type: 'sentence', prompt: 'I love my mother', words: ['I', 'love', 'my', 'mother', 'father', 'like', 'is'] },
-                    { type: 'multiple', question: 'Who is your dad?', correctAnswer: 'father', options: ['mother', 'father', 'sister', 'brother'] },
-                    { type: 'vocab', emoji: '👴', correctAnswer: 'grandfather', options: ['father', 'grandfather', 'brother', 'uncle'] },
-                    { type: 'vocab', emoji: '👶', correctAnswer: 'baby', options: ['baby', 'boy', 'girl', 'father'] }
+                    { type: 'sentence', prompt: 'I love my mother', words: ['I', 'love', 'my', 'mother', 'father', 'a', 'the', 'see'] },
+                    { type: 'sentence', prompt: 'I see my father', words: ['I', 'see', 'my', 'father', 'mother', 'a', 'the', 'love'] },
+                    { type: 'vocab', emoji: '👦', correctAnswer: 'brother', options: ['father', 'brother', 'sister', 'baby'] },
+                    { type: 'sentence', prompt: 'I have a sister AND a brother', words: ['I', 'have', 'a', 'sister', 'AND', 'brother', 'the', 'two'] }
                 ]
             },
             body: {
                 vocab: [
-                    { emoji: '👁️', word: 'eye', translation: 'we see with this' },
-                    { emoji: '👃', word: 'nose', translation: 'we smell with this' },
-                    { emoji: '👂', word: 'ear', translation: 'we hear with this' },
-                    { emoji: '👄', word: 'mouth', translation: 'we eat with this' },
-                    { emoji: '✋', word: 'hand', translation: 'we hold things' },
-                    { emoji: '🦶', word: 'foot', translation: 'we walk with this' },
-                    { emoji: '💪', word: 'arm', translation: 'connects hand to body' },
-                    { emoji: '🦵', word: 'leg', translation: 'connects foot to body' }
+                    { emoji: '👁️', word: 'eye', translation: 'I see with my eyes' },
+                    { emoji: '👃', word: 'nose', translation: 'I smell with my nose' },
+                    { emoji: '👂', word: 'ear', translation: 'I hear with my ears' },
+                    { emoji: '👄', word: 'mouth', translation: 'I eat with my mouth' },
+                    { emoji: '✋', word: 'hand', translation: 'I hold things with my hands' },
+                    { emoji: '🦶', word: 'foot', translation: 'I walk with my feet' },
+                    { emoji: '💪', word: 'arm', translation: 'my arm connects my hand' },
+                    { emoji: '🦵', word: 'leg', translation: 'my leg connects my foot' }
                 ],
                 questions: [
                     { type: 'vocab', emoji: '👁️', correctAnswer: 'eye', options: ['eye', 'nose', 'ear', 'mouth'] },
-                    { type: 'multiple', question: 'What do you use to see?', correctAnswer: 'eye', options: ['eye', 'nose', 'ear', 'mouth'] },
+                    { type: 'sentence', prompt: 'I see with my eyes', words: ['I', 'see', 'with', 'my', 'eyes', 'ears', 'a', 'the'] },
                     { type: 'vocab', emoji: '👂', correctAnswer: 'ear', options: ['eye', 'nose', 'ear', 'mouth'] },
-                    { type: 'sentence', prompt: 'I have two hands', words: ['I', 'have', 'two', 'hands', 'one', 'feet', 'is'] },
-                    { type: 'multiple', question: 'What do you use to walk?', correctAnswer: 'foot', options: ['hand', 'foot', 'eye', 'mouth'] },
+                    { type: 'sentence', prompt: 'I have two hands', words: ['I', 'have', 'two', 'hands', 'one', 'feet', 'a', 'hand'] },
+                    { type: 'sentence', prompt: 'I walk with my feet', words: ['I', 'walk', 'with', 'my', 'feet', 'hands', 'a', 'the'] },
                     { type: 'vocab', emoji: '👄', correctAnswer: 'mouth', options: ['eye', 'nose', 'ear', 'mouth'] }
                 ]
             }
