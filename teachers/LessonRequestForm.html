@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Send via WhatsApp</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px}
+    label{display:block;margin:10px 0 4px}
+    input,textarea,button{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px}
+    button{margin-top:12px}
+    .small{font-size:0.9rem;color:#666}
+  </style>
+</head>
+<body>
+  <h3>Contact by WhatsApp</h3>
+  <form id="waForm">
+    <label>Recipient phone (international, no + — e.g. 905357397248)</label>
+    <input id="recipient" type="tel" value="905357397248" required />
+
+    <label>Full name</label>
+    <input id="name" type="text" placeholder="Your full name" required />
+
+    <label>Email</label>
+    <input id="email" type="email" placeholder="you@example.com" />
+
+    <label>Phone</label>
+    <input id="phone" type="tel" placeholder="+90 5xx xxx xxxx" />
+
+    <label>Message</label>
+    <textarea id="message" rows="5" placeholder="Write your message..." required></textarea>
+
+    <button type="submit">Open WhatsApp</button>
+    <p class="small">Opens WhatsApp Web or the WhatsApp app. Works on GitHub Pages (static HTML).</p>
+  </form>
+
+  <script>
+    document.getElementById('waForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const recipient = document.getElementById('recipient').value.trim();
+      if(!recipient) return alert('Please set recipient phone in international format.');
+
+      // Build the message template
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const userMsg = document.getElementById('message').value.trim();
+
+      const message =
+`Full name: ${name}
+Email: ${email || '—'}
+Phone: ${phone || '—'}
+
+Message:
+${userMsg}`;
+
+      // encode and open
+      const encoded = encodeURIComponent(message);
+      const url = `https://api.whatsapp.com/send?phone=${recipient}&text=${encoded}&app_absent=0`;
+
+      // open in new tab (works on desktop & mobile)
+      window.open(url, '_blank');
+    });
+  </script>
+</body>
+</html>
