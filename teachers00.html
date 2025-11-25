@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" >
-  <meta name="viewport" content="width=device-width, initial-scale=1" >
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>💡🌏 English Training Hub — Teachers!</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -139,7 +139,7 @@
       place-items:center;
       color:#fff;
       font-weight:700;
-      font-size:1rem;
+      font-size:1.8rem;
       overflow:hidden;
     }
     .avatar img{
@@ -150,7 +150,16 @@
     .info{flex:1;min-width:0}
     .name{font-weight:700;font-size:1rem;margin:0;color:#0a1f7a}
     .meta{font-size:0.9rem;color:var(--muted);margin:6px 0}
-    .bio{color:var(--muted);font-size:0.95rem;margin-top:6px;overflow:hidden}
+    .bio{
+      color:var(--muted);
+      font-size:0.95rem;
+      margin-top:6px;
+      overflow:hidden;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      line-height:1.5;
+    }
     .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
     .tag{
       font-size:0.82rem;
@@ -234,7 +243,7 @@
       background-clip: padding-box, border-box;
     }
     .modal-hero{display:flex;gap:16px;align-items:flex-start;flex-direction:column}
-    .modal .avatar{width:120px;height:120px;border-radius:12px;font-size:28px}
+    .modal .avatar{width:120px;height:120px;border-radius:12px;font-size:3rem}
     .modal h2{margin:0;font-size:1.15rem;color:#0a1f7a;font-weight:800}
     .modal .meta{margin-top:6px;color:var(--muted)}
     .modal .bio{margin-top:12px;color:var(--muted);line-height:1.6}
@@ -276,7 +285,7 @@
       <div class="heading">
         <h1>💡🌏 English Training Hub — Teachers!</h1>
         <div class="subtitle">
-          TEFL & TESOL Certified tutors from Türkiye and abroad — experienced in language teaching for adults and children, exam prep, speaking & vocabulary, and professional English.
+          Native English Tutors with Internationally Accredited Certifications — from Türkiye and abroad — experienced in language teaching for adults and children, exam preparation, speaking and vocabulary, as well as professional English and more! Browse our teacher profiles, and book your Trial Lesson today.
         </div>
       </div>
 
@@ -286,7 +295,7 @@
             <path d="M21 21l-4.35-4.35" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="11" cy="11" r="6" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <input id="q" type="search" placeholder="Search by name, subject, language or city" aria-label="Search teachers" >
+          <input id="q" type="search" placeholder="Search by name, subject, language or city" aria-label="Search teachers">
         </div>
 
         <select id="subject" class="select" aria-label="Filter by subject">
@@ -334,7 +343,7 @@
       <div class="modal-actions">
         <div style="font-weight:700;font-size:1rem;color:#0a1f7a">Hourly: <span id="m-rate" class="rate">₺300</span></div>
         <button id="contactBtn" class="btn">Contact</button>
-        <a id="profileLink" class="outline" href="#">View full profile</a>
+        <a id="profileLink" class="outline" href="#" target="_blank">View full profile</a>
       </div>
     </div>
   </div>
@@ -345,82 +354,163 @@
 
     // Sample teacher data
     const teachers = [
-      {id:1,name:'Rachel teacher',subjects:['English','Individuals','Groups','Kids','Adults','Speaking','Vocabulary'],languages:['English','Turkish'],rate:300,rating:5,reviews:5,city:'Sakarya, TR',bio:'TEFL & TESOL Belgeli Avustralyalı Anadili İngilizce öğretmeni ve 7 yıllık global tecrübe ile İngilizce öğrenmeye hazırsanız - let us begin!',avatar:'images/RachelTeacher.jpg',avatarText:'R.'},
-      {id:2,name:'Elyas teacher',subjects:['English','Individuals','Adults','Fluency','Vocabulary','IELTS Expert','Exam Strategy'],languages:['English','Turkish'],rate:300,rating:5,reviews:10,city:'Sakarya, TR',bio:'Hi, I’m Elyas — an English teacher based in Sakarya. I specialise in exam prep and conversational fluency and have 5+ years of teaching experience. My lessons are practical, clear, and focused on helping you speak confidently and improve quickly.',avatar:'images/ElyasTeacher.jpg',avatarText:'E.'},
-      {id:3,name:'Aykut teacher',subjects:['English','Speaking','Individuals','Groups','Vocabulary'],languages:['English','Turkish'],rating:5,city:'Istanbul, TR',bio:'Native English teacher specialising in individual and group lessons, focusing on speaking and fluency. 5+ years in teaching. Lessons are engaging, interactive and planned according to student goals.',avatar:'images/AykutTeacher.jpg',avatarText:'A.'}
+      {
+        id: 1,
+        name: 'Rachel teacher',
+        subjects: ['English', 'Individuals', 'Groups', 'Kids', 'Adults', 'Speaking', 'Vocabulary'],
+        languages: ['English', 'Turkish'],
+        rate: 300,
+        rating: 5,
+        reviews: 5,
+        city: 'Sakarya, TR',
+        bio: 'TEFL & TESOL Belgeli Avustralyalı Anadili İngilizce öğretmeni ve 7 yıllık global tecrübe ile İngilizce öğrenmeye hazırsanız - let us begin!',
+        avatar: 'https://raw.githubusercontent.com/ilkaysen18/englishtraininghub/mainbranch/teachers/profiles/images/RachelTeacher.jpg',
+        avatarText: 'R',
+        profileUrl: 'https://englishtraininghub.org/teachers/profiles/RachelTeacher'
+      },
+      {
+        id: 2,
+        name: 'Elyas teacher',
+        subjects: ['English', 'Individuals', 'Adults', 'Fluency', 'Vocabulary', 'IELTS Expert', 'Exam Strategy'],
+        languages: ['English', 'Turkish'],
+        rate: 300,
+        rating: 5,
+        reviews: 10,
+        city: 'Sakarya, TR',
+        bio: 'Hi, I\'m Elyas — an English teacher based in Sakarya. I specialise in exam prep and conversational fluency and have 5+ years of teaching experience. My lessons are practical, clear, and focused on helping you speak confidently and improve quickly.',
+        avatar: 'https://raw.githubusercontent.com/ilkaysen18/englishtraininghub/mainbranch/teachers/profiles/images/ElyasTeacher.jpg',
+        avatarText: 'E'
+      },
+      {
+        id: 3,
+        name: 'Aykut teacher',
+        subjects: ['English', 'IELTS', 'IELTS Life Skills', 'UKVI', 'TOEFL', 'PTE', 'Speaking', 'Individuals', 'Groups', 'Vocabulary'],
+        languages: ['English', 'Turkish'],
+        rate: 300,
+        rating: 5,
+        reviews: 5,
+        city: 'Istanbul, TR',
+        bio: 'Hello, I\'m Aykut. I teach English and help students prepare for exams like IELTS, IELTS Life Skills, UKVI, TOEFL, and PTE. For the past few years I\'ve worked with learners one-to-one and in groups, focusing on clear strategies, real improvement, and confident speaking. If you\'re aiming for a strong score, I\'m here to help you achieve your goals.',
+        avatar: 'https://raw.githubusercontent.com/ilkaysen18/englishtraininghub/mainbranch/teachers/profiles/images/AykutTeacher.jpg',
+        avatarText: 'A'
+      }
     ];
 
-    const results=document.getElementById('results');
-    const q=document.getElementById('q');
-    const subject=document.getElementById('subject');
-    const sort=document.getElementById('sort');
-    const clear=document.getElementById('clear');
-    const empty=document.getElementById('empty');
+    const results = document.getElementById('results');
+    const q = document.getElementById('q');
+    const subject = document.getElementById('subject');
+    const sort = document.getElementById('sort');
+    const clear = document.getElementById('clear');
+    const empty = document.getElementById('empty');
 
-    const backdrop=document.getElementById('backdrop');
-    const closeModal=document.getElementById('closeModal');
-    const mAvatar=document.getElementById('m-avatar');
-    const mName=document.getElementById('m-name');
-    const mSub=document.getElementById('m-sub');
-    const mBio=document.getElementById('m-bio');
-    const mRate=document.getElementById('m-rate');
-    const mRating=document.getElementById('m-rating');
-    const contactBtn=document.getElementById('contactBtn');
+    const backdrop = document.getElementById('backdrop');
+    const closeModal = document.getElementById('closeModal');
+    const mAvatar = document.getElementById('m-avatar');
+    const mName = document.getElementById('m-name');
+    const mSub = document.getElementById('m-sub');
+    const mBio = document.getElementById('m-bio');
+    const mRate = document.getElementById('m-rate');
+    const mRating = document.getElementById('m-rating');
+    const contactBtn = document.getElementById('contactBtn');
+    const profileLink = document.getElementById('profileLink');
 
     let lastFocusedElement;
 
     // Initialize subjects filter
-    const subjectsSet=new Set();
-    teachers.forEach(t=>t.subjects.forEach(s=>subjectsSet.add(s)));
-    Array.from(subjectsSet).sort().forEach(s=>{
-      const opt=document.createElement('option'); opt.value=s; opt.textContent=s; subject.appendChild(opt);
+    const subjectsSet = new Set();
+    teachers.forEach(t => t.subjects.forEach(s => subjectsSet.add(s)));
+    Array.from(subjectsSet).sort().forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = s;
+      subject.appendChild(opt);
     });
 
-    function renderStars(n){
-      const whole=Math.round(n*2)/2;
-      let out='';
-      for(let i=1;i<=5;i++){
-        if(i<=Math.floor(whole)) out+='★';
-        else if(i===Math.ceil(whole) && whole%1!==0) out+='☆';
-        else out+='☆';
+    function renderStars(n) {
+      const whole = Math.round(n * 2) / 2;
+      let out = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(whole)) out += '★';
+        else if (i === Math.ceil(whole) && whole % 1 !== 0) out += '☆';
+        else out += '☆';
       }
       return `<span style="color:#f59e0b;font-size:14px;margin-right:6px">${'★'.repeat(Math.round(n))}</span>`;
     }
 
-    function createCard(t){
-      const card=document.createElement('article'); card.className='card'; card.setAttribute('tabindex','0');
+    function createCard(t) {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.setAttribute('tabindex', '0');
 
       // Create avatar with image or fallback to text
-      const av=document.createElement('div');
-      av.className='avatar';
-      if(t.avatar){
-        const img=document.createElement('img');
-        img.src=t.avatar;
-        img.alt=t.name;
-        img.onerror=function(){
+      const av = document.createElement('div');
+      av.className = 'avatar';
+      if (t.avatar) {
+        const img = document.createElement('img');
+        img.src = t.avatar;
+        img.alt = t.name;
+        img.onerror = function() {
           // Fallback to text if image fails to load
-          av.textContent=t.avatarText;
+          av.textContent = t.avatarText;
           av.removeChild(this);
         };
         av.appendChild(img);
       } else {
-        av.textContent=t.avatarText;
+        av.textContent = t.avatarText;
       }
 
-      const info=document.createElement('div'); info.className='info';
-      const name=document.createElement('h3'); name.className='name'; name.textContent=t.name;
-      const meta=document.createElement('div'); meta.className='meta'; meta.textContent=`${t.subjects[0]} • ${t.city}`;
-      const rating=document.createElement('div'); rating.className='rating'; rating.innerHTML=`${renderStars(t.rating)} <span style="color:var(--muted);font-size:0.92rem">(${t.rating} • ${t.reviews})</span>`;
-      const bio=document.createElement('div'); bio.className='bio'; bio.textContent=t.bio.slice(0,120)+(t.bio.length>120?'…':'');
-      const tags=document.createElement('div'); tags.className='tags';
-      t.subjects.slice(0,3).forEach(s=>{const sp=document.createElement('div'); sp.className='tag'; sp.textContent=s; tags.appendChild(sp);});
-      const bottom=document.createElement('div'); bottom.className='card-bottom';
-      const rate=document.createElement('div'); rate.className='rate'; rate.textContent=`₺${t.rate}/hr`;
-      const actions=document.createElement('div'); actions.className='actions';
-      const view=document.createElement('button'); view.className='outline'; view.textContent='View'; view.addEventListener('click',()=>openModal(t));
-      const contact=document.createElement('button'); contact.className='btn'; contact.textContent='Contact'; contact.addEventListener('click',()=>contactTeacher(t));
-      actions.appendChild(view); actions.appendChild(contact);
-      bottom.appendChild(rate); bottom.appendChild(actions);
+      const info = document.createElement('div');
+      info.className = 'info';
+
+      const name = document.createElement('h3');
+      name.className = 'name';
+      name.textContent = t.name;
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = `${t.subjects[0]} • ${t.city}`;
+
+      const rating = document.createElement('div');
+      rating.className = 'rating';
+      rating.innerHTML = `${renderStars(t.rating)} <span style="color:var(--muted);font-size:0.92rem">(${t.rating} • ${t.reviews})</span>`;
+
+      const bio = document.createElement('div');
+      bio.className = 'bio';
+      bio.textContent = t.bio;
+
+      const tags = document.createElement('div');
+      tags.className = 'tags';
+      t.subjects.slice(0, 3).forEach(s => {
+        const sp = document.createElement('div');
+        sp.className = 'tag';
+        sp.textContent = s;
+        tags.appendChild(sp);
+      });
+
+      const bottom = document.createElement('div');
+      bottom.className = 'card-bottom';
+
+      const rate = document.createElement('div');
+      rate.className = 'rate';
+      rate.textContent = `₺${t.rate}/hr`;
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const view = document.createElement('button');
+      view.className = 'outline';
+      view.textContent = 'View';
+      view.addEventListener('click', () => openModal(t));
+
+      const contact = document.createElement('button');
+      contact.className = 'btn';
+      contact.textContent = 'Contact';
+      contact.addEventListener('click', () => contactTeacher(t));
+
+      actions.appendChild(view);
+      actions.appendChild(contact);
+      bottom.appendChild(rate);
+      bottom.appendChild(actions);
 
       info.appendChild(name);
       info.appendChild(meta);
@@ -435,26 +525,29 @@
       return card;
     }
 
-    function render(list){
-      results.innerHTML='';
-      if(!list.length){ empty.style.display='block'; return; }
-      empty.style.display='none';
-      list.forEach(t=>{
+    function render(list) {
+      results.innerHTML = '';
+      if (!list.length) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      list.forEach(t => {
         results.appendChild(createCard(t));
       });
     }
 
-    function openModal(t){
+    function openModal(t) {
       lastFocusedElement = document.activeElement;
 
       // Update modal avatar with image or text
       mAvatar.innerHTML = '';
-      if(t.avatar){
-        const img=document.createElement('img');
-        img.src=t.avatar;
-        img.alt=t.name;
-        img.onerror=function(){
-          mAvatar.textContent=t.avatarText;
+      if (t.avatar) {
+        const img = document.createElement('img');
+        img.src = t.avatar;
+        img.alt = t.name;
+        img.onerror = function() {
+          mAvatar.textContent = t.avatarText;
           mAvatar.removeChild(this);
         };
         mAvatar.appendChild(img);
@@ -467,43 +560,59 @@
       mBio.textContent = t.bio;
       mRate.textContent = `₺${t.rate}`;
       mRating.innerHTML = `${renderStars(t.rating)} <span style="color:var(--muted);font-size:0.92rem">(${t.rating} • ${t.reviews} reviews)</span>`;
-      backdrop.style.display='flex';
-      backdrop.setAttribute('aria-hidden','false');
+
+      // Update profile link
+      if (t.profileUrl) {
+        profileLink.href = t.profileUrl;
+        profileLink.style.display = '';
+      } else {
+        profileLink.style.display = 'none';
+      }
+
+      backdrop.style.display = 'flex';
+      backdrop.setAttribute('aria-hidden', 'false');
     }
 
-    function closeModalFunc(){
-      backdrop.style.display='none';
-      backdrop.setAttribute('aria-hidden','true');
-      if(lastFocusedElement) lastFocusedElement.focus();
+    function closeModalFunc() {
+      backdrop.style.display = 'none';
+      backdrop.setAttribute('aria-hidden', 'true');
+      if (lastFocusedElement) lastFocusedElement.focus();
     }
 
     closeModal.addEventListener('click', closeModalFunc);
-    backdrop.addEventListener('click', (e)=>{ if(e.target===backdrop) closeModalFunc(); });
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeModalFunc();
+    });
 
-    function contactTeacher(t){
+    function contactTeacher(t) {
       const subject = encodeURIComponent(`Lesson request with ${t.name}`);
       const body = encodeURIComponent(`Hi ${t.name},%0D%0A%0D%0AI'd like to book a lesson about ${t.subjects[0]}. Please let me know your availability.%0D%0A%0D%0AThanks!`);
       window.location.href = `https://wa.me/905357397248?text=${body}`;
     }
 
     // Filter & Search
-    function update(){
-      const qv=q.value.trim().toLowerCase();
-      const sub=subject.value;
-      let list=teachers.slice();
-      if(qv) list=list.filter(t=>(t.name+t.subjects.join(' ')+t.languages.join(' ')+t.city).toLowerCase().includes(qv));
-      if(sub) list=list.filter(t=>t.subjects.includes(sub));
-      const s=sort.value;
-      if(s==='rating') list.sort((a,b)=>b.rating-a.rating);
-      else if(s==='price_low') list.sort((a,b)=>a.rate-b.rate);
-      else if(s==='price_high') list.sort((a,b)=>b.rate-a.rate);
+    function update() {
+      const qv = q.value.trim().toLowerCase();
+      const sub = subject.value;
+      let list = teachers.slice();
+      if (qv) list = list.filter(t => (t.name + t.subjects.join(' ') + t.languages.join(' ') + t.city).toLowerCase().includes(qv));
+      if (sub) list = list.filter(t => t.subjects.includes(sub));
+      const s = sort.value;
+      if (s === 'rating') list.sort((a, b) => b.rating - a.rating);
+      else if (s === 'price_low') list.sort((a, b) => a.rate - b.rate);
+      else if (s === 'price_high') list.sort((a, b) => b.rate - a.rate);
       render(list);
     }
 
     q.addEventListener('input', update);
     subject.addEventListener('change', update);
     sort.addEventListener('change', update);
-    clear.addEventListener('click', ()=>{ q.value=''; subject.value=''; sort.value='relevance'; update(); });
+    clear.addEventListener('click', () => {
+      q.value = '';
+      subject.value = '';
+      sort.value = 'relevance';
+      update();
+    });
 
     // Initial render
     render(teachers);
