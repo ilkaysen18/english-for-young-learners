@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rachel teacher - TEFL & TESOL Belgeli İngilizce Öğretmeni</title>
+    <title>Rachel teacher - TEFL & TESOL Certified English Teacher</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -101,8 +101,6 @@
             position: sticky;
             top: 1rem;
             height: fit-content;
-            max-height: calc(100vh - 2rem);
-            overflow-y: auto;
             animation: slideInLeft 0.6s ease-out;
         }
 
@@ -119,8 +117,8 @@
 
         .profile-image-wrapper {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 110px;
+            height: 110px;
             margin: 0 auto 1rem;
         }
 
@@ -139,28 +137,28 @@
             right: 2px;
             background: var(--success-color);
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.95rem;
             border: 2px solid var(--bg-white);
             box-shadow: var(--shadow-sm);
         }
 
         .profile-name {
             text-align: center;
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
             color: var(--text-dark);
         }
 
         .profile-rating {
             text-align: center;
             margin-bottom: 1rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .stars {
@@ -172,6 +170,7 @@
             color: var(--text-light);
             text-decoration: underline;
             font-size: 0.85rem;
+            cursor: pointer;
         }
 
         .profile-info {
@@ -182,7 +181,7 @@
         .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 0.7rem 0;
+            padding: 0.65rem 0;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -204,12 +203,12 @@
 
         .request-lesson-btn {
             width: 100%;
-            padding: 0.8rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border: none;
             border-radius: 50px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             margin-top: 1rem;
@@ -226,6 +225,28 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .review-btn {
+            width: 100%;
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.7rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .review-btn:hover {
+            background: var(--border-color);
+        }
+
         .first-lesson-free {
             text-align: center;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
@@ -233,7 +254,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: 600;
-            margin-top: 0.8rem;
+            margin-top: 0.7rem;
             font-size: 0.85rem;
         }
 
@@ -388,6 +409,44 @@
             border: none;
         }
 
+        /* Modal Tabs */
+        .modal-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-tab {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.2s ease;
+        }
+
+        .modal-tab.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .modal-tab:hover {
+            background: var(--bg-light);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         /* Responsive */
         @media (max-width: 968px) {
             .main-content {
@@ -398,7 +457,6 @@
             .profile-card {
                 position: relative;
                 top: 0;
-                max-height: none;
                 padding: 1.2rem;
             }
 
@@ -461,32 +519,10 @@
                 padding: 0.7rem 1.2rem;
                 font-size: 0.95rem;
             }
-        }
 
-        /* High density screens */
-        @media (max-height: 700px) {
-            .profile-card {
-                position: relative;
-                top: 0;
-            }
-
-            .profile-image-wrapper {
-                width: 100px;
-                height: 100px;
-                margin-bottom: 0.8rem;
-            }
-
-            .profile-name {
-                font-size: 1.4rem;
-                margin-bottom: 0.3rem;
-            }
-
-            .profile-rating {
-                margin-bottom: 0.8rem;
-            }
-
-            .info-row {
-                padding: 0.5rem 0;
+            .modal-tab {
+                font-size: 0.9rem;
+                padding: 0.7rem 0.5rem;
             }
         }
 
@@ -495,34 +531,6 @@
             .dark {
                 color-scheme: dark;
             }
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-
-        .icon-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .icon-btn:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow-md);
         }
 
         .badge {
@@ -585,200 +593,182 @@
                 <div class="profile-rating">
                     <span class="stars">★★★★★</span>
                     <span style="font-weight: 600;">5</span>
-                    <a href="#" onclick="openReviewsModal()" class="rating-link">(5 üye yorumu)</a>
+                    <a onclick="openReviewsReferencesModal('reviews')" class="rating-link">(5 member reviews)</a>
                 </div>
 
                 <div class="profile-info">
                     <div class="info-row">
-                        <span class="info-label">Ücret</span>
-                        <span class="info-value">150₺</span>
+                        <span class="info-label">Rate</span>
+                        <span class="info-value">$40/hr</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Cevaplama</span>
-                        <span class="info-value">15 saat</span>
+                        <span class="info-label">Response</span>
+                        <span class="info-value">15 hours</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Öğrenci</span>
+                        <span class="info-label">Students</span>
                         <span class="info-value">50+</span>
                     </div>
                 </div>
 
                 <button class="request-lesson-btn" onclick="requestLesson()">
                     <span>💬</span>
-                    <span>Ders talep et</span>
+                    <span>Request a Lesson</span>
                 </button>
 
-                <button class="reference-btn" onclick="openReferencesModal()" style="
-                    width: 100%;
-                    padding: 0.6rem 1.2rem;
-                    background: var(--bg-light);
-                    color: var(--text-dark);
-                    border: 2px solid var(--border-color);
-                    border-radius: 25px;
-                    font-size: 0.9rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    margin-top: 0.8rem;
-                    transition: all 0.2s ease;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 0.4rem;
-                ">
-                    <span>📋</span>
-                    <span>Profesyonel Referanslar</span>
+                <button class="review-btn" onclick="leaveReview()">
+                    <span>⭐</span>
+                    <span>Leave a Review</span>
                 </button>
 
-                <div class="first-lesson-free">İlk ders ücretsiz</div>
+                <div class="first-lesson-free">First lesson free</div>
             </aside>
 
             <!-- Main Sections -->
             <main class="main-sections">
                 <!-- Teacher Information -->
                 <section class="section">
-                    <h2 class="section-title">Rachel ile ilgili bilgiler</h2>
+                    <h2 class="section-title">About Rachel</h2>
                     <div class="section-content">
                         <div class="highlight-box">
-                            <span class="badge">TEFL/TESOL Sertifikalı</span>
-                            <span class="badge">Anadili İngilizce</span>
-                            <span class="badge">10+ Yıl Deneyim</span>
+                            <span class="badge">TEFL/TESOL Certified</span>
+                            <span class="badge">Native English Speaker</span>
+                            <span class="badge">10+ Years Experience</span>
                         </div>
 
-                        <p>Merhaba! Ben Rachel, Avustralya'dan TEFL/TESOL sertifikalı bir İngilizce öğretmeniyim. 10 yılı aşkın global öğretim deneyimi ile öğrencilerime İngilizce dilinde akıcılık kazandırmayı hedefliyorum.</p>
+                        <p>Hello! I'm Rachel, a TEFL/TESOL certified English teacher from Australia. With over 10 years of global teaching experience, I help my students achieve fluency in English.</p>
 
-                        <p>Farklı yaş grupları ve seviyelerdeki öğrencilerle çalışma deneyimim var. İster sınavlara hazırlık, ister iş İngilizcesi, ister genel konuşma pratiği olsun, sizin öğrenme hedeflerinize uygun özelleştirilmiş dersler sunuyorum.</p>
+                        <p>I have experience working with students of different ages and levels. Whether it's exam preparation, business English, or general conversation practice, I provide customized lessons tailored to your learning goals.</p>
 
-                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Uzmanlık Alanlarım:</h3>
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Areas of Expertise:</h3>
                         <ul>
-                            <li>Konuşma İngilizcesi ve Akıcılık</li>
-                            <li>İş İngilizcesi ve Profesyonel İletişim</li>
-                            <li>IELTS, TOEFL, Cambridge Sınav Hazırlığı</li>
-                            <li>Akademik İngilizce</li>
-                            <li>Genel İngilizce (A1-C2 Seviyeler)</li>
-                            <li>Telaffuz ve Aksansız Konuşma</li>
+                            <li>Conversational English and Fluency</li>
+                            <li>Business English and Professional Communication</li>
+                            <li>IELTS, TOEFL, Cambridge Exam Preparation</li>
+                            <li>Academic English</li>
+                            <li>General English (A1-C2 Levels)</li>
+                            <li>Pronunciation and Accent Reduction</li>
                         </ul>
 
-                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Eğitim ve Sertifikalar:</h3>
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Education and Certifications:</h3>
                         <ul>
-                            <li>TEFL/TESOL Sertifikası (120 saat)</li>
-                            <li>İngiliz Dili ve Edebiyatı Lisans Derecesi</li>
-                            <li>Çocuklara İngilizce Öğretimi Sertifikası</li>
+                            <li>TEFL/TESOL Certificate (120 hours)</li>
+                            <li>Bachelor's Degree in English Language and Literature</li>
+                            <li>Teaching English to Young Learners Certificate</li>
                         </ul>
                     </div>
                 </section>
 
                 <!-- Lesson Information -->
                 <section class="section">
-                    <h2 class="section-title">Dersle ilgili bilgiler</h2>
+                    <h2 class="section-title">About the Lessons</h2>
                     <div class="section-content">
-                        <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Ders Formatı:</h3>
-                        <p>Derslerim tamamen öğrenci odaklı ve interaktiftir. Her öğrencinin öğrenme stiline ve hedeflerine göre özelleştirilmiş içerikler hazırlıyorum.</p>
+                        <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Lesson Format:</h3>
+                        <p>My lessons are completely student-centered and interactive. I prepare customized content based on each student's learning style and goals.</p>
 
-                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Derslerimde:</h3>
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">In My Lessons:</h3>
                         <ul>
-                            <li>İnteraktif konuşma aktiviteleri</li>
-                            <li>Gerçek hayat senaryoları ve rol oyunları</li>
-                            <li>Güncel haberler ve medya içerikleri ile tartışmalar</li>
-                            <li>Gramer ve kelime çalışmaları (ihtiyaca göre)</li>
-                            <li>Düzenli geri bildirim ve ilerleme takibi</li>
-                            <li>Ödev ve ek materyaller (isteğe bağlı)</li>
+                            <li>Interactive conversation activities</li>
+                            <li>Real-life scenarios and role-playing</li>
+                            <li>Discussions with current news and media content</li>
+                            <li>Grammar and vocabulary work (as needed)</li>
+                            <li>Regular feedback and progress tracking</li>
+                            <li>Homework and additional materials (optional)</li>
                         </ul>
 
                         <div class="highlight-box">
-                            <strong>📍 Ders Yeri:</strong> Online (Zoom, Skype, Google Meet)<br>
-                            <strong>⏰ Ders Süresi:</strong> 60 dakika<br>
-                            <strong>📅 Esnek Programlama:</strong> Hafta içi ve hafta sonu uygun saatler
+                            <strong>📍 Location:</strong> Online (Zoom, Skype, Google Meet)<br>
+                            <strong>⏰ Duration:</strong> 60 minutes<br>
+                            <strong>📅 Flexible Scheduling:</strong> Weekday and weekend availability
                         </div>
 
-                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Hangi Seviyeler İçin:</h3>
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Suitable For:</h3>
                         <ul>
-                            <li>Başlangıç (A1-A2)</li>
-                            <li>Orta Seviye (B1-B2)</li>
-                            <li>İleri Seviye (C1-C2)</li>
-                            <li>Çocuklar (7+ yaş)</li>
-                            <li>Yetişkinler</li>
-                            <li>Profesyoneller</li>
+                            <li>Beginners (A1-A2)</li>
+                            <li>Intermediate (B1-B2)</li>
+                            <li>Advanced (C1-C2)</li>
+                            <li>Children (7+ years)</li>
+                            <li>Adults</li>
+                            <li>Professionals</li>
                         </ul>
                     </div>
                 </section>
 
-
-
                 <!-- Prices -->
                 <section class="section">
-                    <h2 class="section-title">Ücretler</h2>
+                    <h2 class="section-title">Pricing</h2>
                     <div class="section-content">
                         <table class="price-table">
                             <thead>
                                 <tr>
-                                    <th>Ders Paketi</th>
-                                    <th>Ders Sayısı</th>
-                                    <th>Ders Başı Ücret</th>
-                                    <th>Toplam Ücret</th>
+                                    <th>Package</th>
+                                    <th>Lessons</th>
+                                    <th>Per Lesson</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Deneme Dersi</strong></td>
-                                    <td>1 ders</td>
-                                    <td><s>150₺</s> <strong style="color: var(--success-color);">ÜCRETSİZ</strong></td>
-                                    <td><strong style="color: var(--success-color);">0₺</strong></td>
+                                    <td><strong>Trial Lesson</strong></td>
+                                    <td>1 lesson</td>
+                                    <td><s>$40</s> <strong style="color: var(--success-color);">FREE</strong></td>
+                                    <td><strong style="color: var(--success-color);">$0</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>Tek Ders</td>
-                                    <td>1 ders</td>
-                                    <td>150₺</td>
-                                    <td>150₺</td>
+                                    <td>Single Lesson</td>
+                                    <td>1 lesson</td>
+                                    <td>$40</td>
+                                    <td>$40</td>
                                 </tr>
                                 <tr>
-                                    <td>Başlangıç Paketi</td>
-                                    <td>5 ders</td>
-                                    <td>145₺</td>
-                                    <td>725₺</td>
+                                    <td>Starter Package</td>
+                                    <td>5 lessons</td>
+                                    <td>$38</td>
+                                    <td>$190</td>
                                 </tr>
                                 <tr>
-                                    <td>Popüler Paket</td>
-                                    <td>10 ders</td>
-                                    <td>140₺</td>
-                                    <td>1.400₺</td>
+                                    <td>Popular Package</td>
+                                    <td>10 lessons</td>
+                                    <td>$36</td>
+                                    <td>$360</td>
                                 </tr>
                                 <tr>
-                                    <td>Yoğun Eğitim</td>
-                                    <td>20 ders</td>
-                                    <td>135₺</td>
-                                    <td>2.700₺</td>
+                                    <td>Intensive Training</td>
+                                    <td>20 lessons</td>
+                                    <td>$35</td>
+                                    <td>$700</td>
                                 </tr>
                                 <tr>
-                                    <td>Profesyonel Paket</td>
-                                    <td>30 ders</td>
-                                    <td>130₺</td>
-                                    <td>3.900₺</td>
+                                    <td>Professional Package</td>
+                                    <td>30 lessons</td>
+                                    <td>$33</td>
+                                    <td>$990</td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <div class="highlight-box" style="margin-top: 1.5rem;">
-                            <strong>💡 İpucu:</strong> Paket alımlarında ders başı ücret düşüyor! İlk dersiniz ücretsizdir - hiçbir ön ödeme gerekmez.
+                            <strong>💡 Tip:</strong> Per-lesson cost decreases with package purchases! Your first lesson is free - no upfront payment required.
                         </div>
 
-                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Ödeme Seçenekleri:</h3>
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Payment Options:</h3>
                         <ul>
-                            <li>Banka Havalesi / EFT</li>
-                            <li>Kredi Kartı (Taksit İmkanı)</li>
+                            <li>Bank Transfer / Wire Transfer</li>
+                            <li>Credit Card (Installment Available)</li>
                             <li>PayPal</li>
-                            <li>Kapıda Ödeme (Yüz yüze dersler için)</li>
+                            <li>Cash on Delivery (For in-person lessons)</li>
                         </ul>
 
-                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">İptal Politikası:</h3>
-                        <p>Ders saatinden 24 saat önce yapılan iptaller ücretsizdir. Son dakika iptalleri için lütfen benimle iletişime geçin.</p>
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Cancellation Policy:</h3>
+                        <p>Cancellations made 24 hours before the lesson are free. For last-minute cancellations, please contact me.</p>
                     </div>
                 </section>
 
                 <!-- YouTube Video -->
                 <section class="section">
-                    <h2 class="section-title">Tanıtım Videosu</h2>
+                    <h2 class="section-title">Introduction Video</h2>
                     <div class="section-content">
-                        <p style="margin-bottom: 1.5rem;">Beni daha yakından tanımak ve öğretim tarzım hakkında bilgi almak için tanıtım videoma göz atabilirsiniz:</p>
+                        <p style="margin-bottom: 1.5rem;">Watch my introduction video to get to know me better and learn about my teaching style:</p>
 
                         <div class="video-container">
                             <iframe
@@ -789,7 +779,7 @@
                         </div>
 
                         <p style="margin-top: 1.5rem; color: var(--text-light);">
-                            <strong>Video İçeriği:</strong> Kendimi tanıtıyorum, öğretim metodolojim, başarı hikayeleri ve öğrencilerden geri bildirimler hakkında konuşuyorum.
+                            <strong>Video Content:</strong> I introduce myself, discuss my teaching methodology, success stories, and share feedback from students.
                         </p>
                     </div>
                 </section>
@@ -810,6 +800,7 @@
                 justify-content: center;
                 z-index: 9999;
                 animation: fadeIn 0.2s ease;
+                padding: 1rem;
             `;
 
             modal.innerHTML = `
@@ -822,12 +813,12 @@
                     box-shadow: var(--shadow-lg);
                     animation: slideUp 0.3s ease;
                 ">
-                    <h3 style="margin-bottom: 1rem; color: var(--text-dark); font-size: 1.5rem;">Ders Talebi</h3>
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark); font-size: 1.5rem;">Request a Lesson</h3>
                     <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                        Rachel ile ders almak için aşağıdaki formu doldurun. İlk dersiniz ücretsizdir!
+                        Fill out the form below to book a lesson with Rachel. Your first lesson is free!
                     </p>
                     <form id="lessonForm">
-                        <input type="text" placeholder="Adınız Soyadınız" required style="
+                        <input type="text" placeholder="Full Name" required style="
                             width: 100%;
                             padding: 0.8rem;
                             margin-bottom: 1rem;
@@ -837,7 +828,7 @@
                             background: var(--bg-light);
                             color: var(--text-dark);
                         ">
-                        <input type="email" placeholder="E-posta Adresiniz" required style="
+                        <input type="email" placeholder="Email Address" required style="
                             width: 100%;
                             padding: 0.8rem;
                             margin-bottom: 1rem;
@@ -847,7 +838,7 @@
                             background: var(--bg-light);
                             color: var(--text-dark);
                         ">
-                        <input type="tel" placeholder="Telefon Numaranız" required style="
+                        <input type="tel" placeholder="Phone Number" required style="
                             width: 100%;
                             padding: 0.8rem;
                             margin-bottom: 1rem;
@@ -867,12 +858,12 @@
                             background: var(--bg-light);
                             color: var(--text-dark);
                         ">
-                            <option value="">Seviyenizi Seçin</option>
-                            <option>Başlangıç (A1-A2)</option>
-                            <option>Orta Seviye (B1-B2)</option>
-                            <option>İleri Seviye (C1-C2)</option>
+                            <option value="">Select Your Level</option>
+                            <option>Beginner (A1-A2)</option>
+                            <option>Intermediate (B1-B2)</option>
+                            <option>Advanced (C1-C2)</option>
                         </select>
-                        <textarea placeholder="Mesajınız (İsteğe bağlı)" rows="3" style="
+                        <textarea placeholder="Your Message (Optional)" rows="3" style="
                             width: 100%;
                             padding: 0.8rem;
                             margin-bottom: 1.5rem;
@@ -895,7 +886,7 @@
                                 font-size: 1rem;
                                 font-weight: 600;
                                 cursor: pointer;
-                            ">İptal</button>
+                            ">Cancel</button>
                             <button type="submit" style="
                                 flex: 1;
                                 padding: 0.8rem;
@@ -906,7 +897,7 @@
                                 font-size: 1rem;
                                 font-weight: 600;
                                 cursor: pointer;
-                            ">Gönder</button>
+                            ">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -943,9 +934,9 @@
                         text-align: center;
                     ">
                         <div style="font-size: 3rem; margin-bottom: 1rem;">✓</div>
-                        <h3 style="color: var(--success-color); margin-bottom: 1rem;">Başarılı!</h3>
+                        <h3 style="color: var(--success-color); margin-bottom: 1rem;">Success!</h3>
                         <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                            Ders talebiniz Rachel'a iletildi. En kısa sürede sizinle iletişime geçilecektir.
+                            Your lesson request has been sent to Rachel. You will be contacted shortly.
                         </p>
                         <button onclick="this.closest('.fixed, [style*=fixed]').remove()" style="
                             padding: 0.8rem 2rem;
@@ -956,7 +947,7 @@
                             font-size: 1rem;
                             font-weight: 600;
                             cursor: pointer;
-                        ">Tamam</button>
+                        ">OK</button>
                     </div>
                 `;
                 document.body.appendChild(successModal);
@@ -965,7 +956,7 @@
             document.body.appendChild(modal);
         }
 
-        function openReviewsModal() {
+        function leaveReview() {
             const modal = document.createElement('div');
             modal.style.cssText = `
                 position: fixed;
@@ -984,113 +975,199 @@
                     background: var(--bg-white);
                     padding: 2rem;
                     border-radius: 16px;
-                    max-width: 800px;
-                    width: 100%;
-                    max-height: 90vh;
-                    overflow-y: auto;
+                    max-width: 500px;
+                    width: 90%;
                     box-shadow: var(--shadow-lg);
                     animation: slideUp 0.3s ease;
                 ">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">
-                        <h3 style="margin: 0; color: var(--text-dark); font-size: 1.8rem;">👥 Öğrenci Yorumları</h3>
-                        <button onclick="this.closest('.fixed, [style*=fixed]').remove()" style="
-                            width: 32px;
-                            height: 32px;
-                            border: none;
-                            background: var(--bg-light);
-                            border-radius: 50%;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 1.2rem;
-                            color: var(--text-light);
-                        ">×</button>
-                    </div>
-                    
-                    <div class="reviews-content">
-                        <div class="review" style="
-                            background: var(--bg-light);
-                            border-radius: 12px;
-                            padding: 1.5rem;
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark); font-size: 1.5rem;">Leave a Review</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                        Share your experience with Rachel's lessons!
+                    </p>
+                    <form id="reviewForm">
+                        <input type="text" placeholder="Your Name" required style="
+                            width: 100%;
+                            padding: 0.8rem;
                             margin-bottom: 1rem;
-                            border-left: 4px solid var(--primary-color);
-                        ">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Mehmet A.</span>
-                                <span style="color: var(--star-color);">★★★★★</span>
-                            </div>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel ile 3 aydır ders alıyorum ve İngilizce konuşmamda inanılmaz bir gelişme oldu. Sabırlı, profesyonel ve her dersi keyifli hale getiriyor. IELTS sınavına hazırlanıyorum ve onun sayesinde kendime çok daha güveniyorum. Kesinlikle tavsiye ederim!</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">2 hafta önce</p>
-                        </div>
-
-                        <div class="review" style="
+                            border: 2px solid var(--border-color);
+                            border-radius: 8px;
+                            font-size: 16px;
                             background: var(--bg-light);
-                            border-radius: 12px;
-                            padding: 1.5rem;
-                            margin-bottom: 1rem;
-                            border-left: 4px solid var(--primary-color);
+                            color: var(--text-dark);
                         ">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Ayşe K.</span>
-                                <span style="color: var(--star-color);">★★★★★</span>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-dark); font-weight: 600;">Rating:</label>
+                            <div style="display: flex; gap: 0.5rem; font-size: 2rem;">
+                                <span class="star-rating" data-rating="1" style="cursor: pointer; color: var(--border-color);">★</span>
+                                <span class="star-rating" data-rating="2" style="cursor: pointer; color: var(--border-color);">★</span>
+                                <span class="star-rating" data-rating="3" style="cursor: pointer; color: var(--border-color);">★</span>
+                                <span class="star-rating" data-rating="4" style="cursor: pointer; color: var(--border-color);">★</span>
+                                <span class="star-rating" data-rating="5" style="cursor: pointer; color: var(--border-color);">★</span>
                             </div>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">İş İngilizcesi için Rachel'a başvurdum ve çok memnunum. Sunumlarımda ve toplantılarımda artık çok daha rahatım. Dersleri ihtiyacıma özel hazırlıyor ve her zaman pozitif bir enerji ile yaklaşıyor. Harika bir öğretmen!</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">1 ay önce</p>
                         </div>
-
-                        <div class="review" style="
+                        <textarea placeholder="Your Review" rows="4" required style="
+                            width: 100%;
+                            padding: 0.8rem;
+                            margin-bottom: 1.5rem;
+                            border: 2px solid var(--border-color);
+                            border-radius: 8px;
+                            font-size: 16px;
                             background: var(--bg-light);
-                            border-radius: 12px;
-                            padding: 1.5rem;
-                            margin-bottom: 1rem;
-                            border-left: 4px solid var(--primary-color);
-                        ">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Can Y.</span>
-                                <span style="color: var(--star-color);">★★★★★</span>
-                            </div>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">10 yaşındaki oğlum Rachel ile ders alıyor. Çocuklarla çalışma konusunda gerçekten yetenekli. Oğlum derse hevesle giriyor ve her hafta yeni şeyler öğreniyor. İngilizce'ye karşı tutumu tamamen değişti. Teşekkürler Rachel!</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">1 ay önce</p>
+                            color: var(--text-dark);
+                            resize: vertical;
+                            font-family: inherit;
+                        "></textarea>
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="button" onclick="this.closest('.fixed, [style*=fixed]').remove()" style="
+                                flex: 1;
+                                padding: 0.8rem;
+                                background: var(--bg-light);
+                                color: var(--text-dark);
+                                border: 2px solid var(--border-color);
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                            ">Cancel</button>
+                            <button type="submit" style="
+                                flex: 1;
+                                padding: 0.8rem;
+                                background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                            ">Submit Review</button>
                         </div>
-
-                        <div class="review" style="
-                            background: var(--bg-light);
-                            border-radius: 12px;
-                            padding: 1.5rem;
-                            margin-bottom: 1rem;
-                            border-left: 4px solid var(--primary-color);
-                        ">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Elif S.</span>
-                                <span style="color: var(--star-color);">★★★★★</span>
-                            </div>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Cambridge FCE sınavına hazırlanıyordum ve Rachel'ın dersleri sayesinde başarıyla geçtim. Sınav stratejileri ve pratik testler konusunda çok yardımcı oldu. Ayrıca konuşma becerim de çok gelişti. Minnettarım!</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">2 ay önce</p>
-                        </div>
-
-                        <div class="review" style="
-                            background: var(--bg-light);
-                            border-radius: 12px;
-                            padding: 1.5rem;
-                            margin-bottom: 1rem;
-                            border-left: 4px solid var(--primary-color);
-                        ">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Burak T.</span>
-                                <span style="color: var(--star-color);">★★★★★</span>
-                            </div>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Yurtdışında çalışmak için İngilizce geliştirmem gerekiyordu. Rachel ile çalışmak harika bir deneyimdi. Özellikle telaffuz konusunda çok yardımcı oldu ve artık kendimi çok daha iyi ifade edebiliyorum. Profesyonel ve eğlenceli bir öğretmen!</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">3 ay önce</p>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             `;
-            
+
+            // Star rating functionality
+            let selectedRating = 0;
+            const stars = modal.querySelectorAll('.star-rating');
+
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    selectedRating = this.getAttribute('data-rating');
+                    stars.forEach((s, index) => {
+                        if (index < selectedRating) {
+                            s.style.color = 'var(--star-color)';
+                        } else {
+                            s.style.color = 'var(--border-color)';
+                        }
+                    });
+                });
+
+                star.addEventListener('mouseenter', function() {
+                    const rating = this.getAttribute('data-rating');
+                    stars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.style.color = 'var(--star-color)';
+                        } else {
+                            s.style.color = 'var(--border-color)';
+                        }
+                    });
+                });
+            });
+
+            modal.addEventListener('mouseleave', function() {
+                stars.forEach((s, index) => {
+                    if (index < selectedRating) {
+                        s.style.color = 'var(--star-color)';
+                    } else {
+                        s.style.color = 'var(--border-color)';
+                    }
+                });
+            });
+
+            modal.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                if (selectedRating === 0) {
+                    const warningModal = document.createElement('div');
+                    warningModal.style.cssText = `
+                        position: fixed;
+                        inset: 0;
+                        background: rgba(0, 0, 0, 0.6);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 10000;
+                    `;
+                    warningModal.innerHTML = `
+                        <div style="
+                            background: var(--bg-white);
+                            padding: 2rem;
+                            border-radius: 16px;
+                            max-width: 300px;
+                            text-align: center;
+                        ">
+                            <p style="color: var(--text-dark); margin-bottom: 1rem;">Please select a star rating!</p>
+                            <button onclick="this.closest('[style*=fixed]').remove()" style="
+                                padding: 0.5rem 1.5rem;
+                                background: var(--secondary-color);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                            ">OK</button>
+                        </div>
+                    `;
+                    document.body.appendChild(warningModal);
+                    return;
+                }
+
+                modal.remove();
+
+                // Success message
+                const successModal = document.createElement('div');
+                successModal.style.cssText = `
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0, 0, 0, 0.6);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    padding: 1rem;
+                `;
+                successModal.innerHTML = `
+                    <div style="
+                        background: var(--bg-white);
+                        padding: 2rem;
+                        border-radius: 16px;
+                        max-width: 400px;
+                        width: 90%;
+                        box-shadow: var(--shadow-lg);
+                        text-align: center;
+                    ">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+                        <h3 style="color: var(--success-color); margin-bottom: 1rem;">Thank You!</h3>
+                        <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                            Your review has been submitted successfully. It will be visible after approval.
+                        </p>
+                        <button onclick="this.closest('.fixed, [style*=fixed]').remove()" style="
+                            padding: 0.8rem 2rem;
+                            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                        ">OK</button>
+                    </div>
+                `;
+                document.body.appendChild(successModal);
+            });
+
             document.body.appendChild(modal);
         }
 
-        function openReferencesModal() {
+        function openReviewsReferencesModal(activeTab = 'reviews') {
             const modal = document.createElement('div');
             modal.style.cssText = `
                 position: fixed;
@@ -1109,15 +1186,15 @@
                     background: var(--bg-white);
                     padding: 2rem;
                     border-radius: 16px;
-                    max-width: 800px;
+                    max-width: 900px;
                     width: 100%;
                     max-height: 90vh;
                     overflow-y: auto;
                     box-shadow: var(--shadow-lg);
                     animation: slideUp 0.3s ease;
                 ">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">
-                        <h3 style="margin: 0; color: var(--text-dark); font-size: 1.8rem;">📋 Profesyonel Referanslar</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0; color: var(--text-dark); font-size: 1.8rem;">Reviews & References</h3>
                         <button onclick="this.closest('.fixed, [style*=fixed]').remove()" style="
                             width: 32px;
                             height: 32px;
@@ -1132,8 +1209,96 @@
                             color: var(--text-light);
                         ">×</button>
                     </div>
-                    
-                    <div class="references-content">
+
+                    <div class="modal-tabs">
+                        <button class="modal-tab ${activeTab === 'reviews' ? 'active' : ''}" onclick="switchTab(event, 'reviews')">
+                            👥 Student Reviews
+                        </button>
+                        <button class="modal-tab ${activeTab === 'references' ? 'active' : ''}" onclick="switchTab(event, 'references')">
+                            📋 Professional References
+                        </button>
+                    </div>
+
+                    <!-- Reviews Tab -->
+                    <div id="reviews-tab" class="tab-content ${activeTab === 'reviews' ? 'active' : ''}">
+                        <div class="review" style="
+                            background: var(--bg-light);
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            margin-bottom: 1rem;
+                            border-left: 4px solid var(--primary-color);
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Michael A.</span>
+                                <span style="color: var(--star-color);">★★★★★</span>
+                            </div>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">I've been taking lessons with Rachel for 3 months and my English speaking has improved incredibly. She's patient, professional, and makes every lesson enjoyable. I'm preparing for the IELTS exam and feel much more confident thanks to her. Highly recommend!</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">2 weeks ago</p>
+                        </div>
+
+                        <div class="review" style="
+                            background: var(--bg-light);
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            margin-bottom: 1rem;
+                            border-left: 4px solid var(--primary-color);
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Sarah K.</span>
+                                <span style="color: var(--star-color);">★★★★★</span>
+                            </div>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">I contacted Rachel for Business English and I'm very satisfied. I'm now much more comfortable in my presentations and meetings. She customizes lessons to my needs and always approaches with positive energy. Great teacher!</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">1 month ago</p>
+                        </div>
+
+                        <div class="review" style="
+                            background: var(--bg-light);
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            margin-bottom: 1rem;
+                            border-left: 4px solid var(--primary-color);
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">David Y.</span>
+                                <span style="color: var(--star-color);">★★★★★</span>
+                            </div>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">My 10-year-old son takes lessons with Rachel. She's truly talented at working with children. My son eagerly attends lessons and learns new things every week. His attitude toward English has completely changed. Thank you Rachel!</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">1 month ago</p>
+                        </div>
+
+                        <div class="review" style="
+                            background: var(--bg-light);
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            margin-bottom: 1rem;
+                            border-left: 4px solid var(--primary-color);
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Emma S.</span>
+                                <span style="color: var(--star-color);">★★★★★</span>
+                            </div>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">I was preparing for the Cambridge FCE exam and passed successfully thanks to Rachel's lessons. She was very helpful with exam strategies and practice tests. My speaking skills also improved a lot. I'm grateful!</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">2 months ago</p>
+                        </div>
+
+                        <div class="review" style="
+                            background: var(--bg-light);
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            margin-bottom: 1rem;
+                            border-left: 4px solid var(--primary-color);
+                        ">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">James T.</span>
+                                <span style="color: var(--star-color);">★★★★★</span>
+                            </div>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">I needed to improve my English for working abroad. Working with Rachel was a great experience. She was especially helpful with pronunciation and now I can express myself much better. Professional and fun teacher!</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">3 months ago</p>
+                        </div>
+                    </div>
+
+                    <!-- References Tab -->
+                    <div id="references-tab" class="tab-content ${activeTab === 'references' ? 'active' : ''}">
                         <div class="review" style="
                             background: var(--bg-light);
                             border-radius: 12px;
@@ -1145,9 +1310,9 @@
                                 <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Dr. Sarah Wilson</span>
                                 <span style="color: var(--star-color);">★★★★★</span>
                             </div>
-                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">Akademik Koordinatör - British Council İstanbul</p>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel ile 3 yıl boyunca birlikte çalıştım. Öğrenci merkezli yaklaşımı ve yaratıcı öğretim yöntemleri ile her zaman öne çıktı. IELTS hazırlık programlarında %95 başarı oranına ulaştı. Profesyonel gelişime olan bağlılığı takdire şayan.</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">British Council İstanbul - 2020-2023</p>
+                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">Academic Coordinator - British Council Istanbul</p>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">I worked with Rachel for 3 years. She always stood out with her student-centered approach and creative teaching methods. She achieved a 95% success rate in IELTS preparation programs. Her commitment to professional development is commendable.</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">British Council Istanbul - 2020-2023</p>
                         </div>
 
                         <div class="review" style="
@@ -1161,8 +1326,8 @@
                                 <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Hiroshi Tanaka</span>
                                 <span style="color: var(--star-color);">★★★★★</span>
                             </div>
-                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">Okul Müdürü - International Language School, Tokyo</p>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel'ın öğretmenlik becerileri olağanüstü. Farklı kültürlerden öğrencilerle çalışma konusundaki deneyimi ve sabırı sayesinde okulumuzda en çok tercih edilen öğretmenlerden biriydi. Kurumsal eğitim programlarını başarıyla yönetti.</p>
+                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">School Principal - International Language School, Tokyo</p>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel's teaching skills are exceptional. Thanks to her experience and patience working with students from different cultures, she was one of the most preferred teachers at our school. She successfully managed corporate training programs.</p>
                             <p style="font-size: 0.85rem; color: var(--text-light);">International Language School, Tokyo - 2017-2020</p>
                         </div>
 
@@ -1177,9 +1342,9 @@
                                 <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Emily Rodriguez</span>
                                 <span style="color: var(--star-color);">★★★★★</span>
                             </div>
-                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">İnsan Kaynakları Müdürü - Microsoft Türkiye</p>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel, şirketimizin 50+ çalışanına kurumsal İngilizce eğitimi verdi. Özellikle iş İngilizcesi ve sunum becerileri konularında mükemmel sonuçlar aldık. Çalışanlarımızın uluslararası toplantılardaki performansları önemli ölçüde gelişti.</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">Kurumsal Eğitim Danışmanı - 2021-2023</p>
+                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">HR Director - Microsoft Turkey</p>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel provided corporate English training to 50+ employees at our company. We achieved excellent results, especially in business English and presentation skills. Our employees' performance in international meetings improved significantly.</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Corporate Training Consultant - 2021-2023</p>
                         </div>
 
                         <div class="review" style="
@@ -1193,9 +1358,9 @@
                                 <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Prof. Michael Thompson</span>
                                 <span style="color: var(--star-color);">★★★★★</span>
                             </div>
-                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">İngiliz Dili ve Edebiyatı Bölüm Başkanı - Sydney University</p>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel, lisans eğitimi sırasındaki öğrencimdi ve mezuniyet sonrasında öğretmenlik kariyerini yakından takip ettim. Dil öğretimi konusundaki teorik bilgisini pratikte mükemmel bir şekilde uyguluyor. Akademik İngilizce alanında uzmanlığı çok güçlü.</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">Akademik Danışman - Sydney University</p>
+                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">Head of English Language and Literature - Sydney University</p>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel was my student during her undergraduate studies and I've closely followed her teaching career after graduation. She applies her theoretical knowledge in language teaching perfectly in practice. Her expertise in Academic English is very strong.</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Academic Advisor - Sydney University</p>
                         </div>
 
                         <div class="review" style="
@@ -1209,15 +1374,31 @@
                                 <span style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem;">Amanda Clarke</span>
                                 <span style="color: var(--star-color);">★★★★★</span>
                             </div>
-                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">Kıdemli İngilizce Öğretmeni - Private Language Center, Sydney</p>
-                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel ile birlikte çalıştığım en profesyonel ve deneyimli öğretmenlerden biri. IELTS ve TOEFL hazırlık kurslarında işbirliği yaptık. Öğrenci başarı oranlarımız onun katkısıyla büyük artış gösterdi. Meslektaşlarına da mentorluk yapan harika bir öğretmen.</p>
-                            <p style="font-size: 0.85rem; color: var(--text-light);">Meslektaş - Private Language Center, Sydney - 2014-2017</p>
+                            <p style="color: var(--secondary-color); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;">Senior English Teacher - Private Language Center, Sydney</p>
+                            <p style="color: var(--text-light); line-height: 1.7; margin-bottom: 0.5rem;">Rachel is one of the most professional and experienced teachers I've worked with. We collaborated on IELTS and TOEFL preparation courses. Our student success rates increased significantly thanks to her contribution. A great teacher who also mentors her colleagues.</p>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Colleague - Private Language Center, Sydney - 2014-2017</p>
                         </div>
                     </div>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
+        }
+
+        function switchTab(event, tabName) {
+            // Hide all tab contents
+            const tabContents = event.target.closest('[style*="background: var(--bg-white)"]').querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = event.target.closest('.modal-tabs').querySelectorAll('.modal-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
         }
     </script>
 </body>
