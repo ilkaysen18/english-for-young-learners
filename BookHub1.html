@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>E.T.H. Bookshelf — Tutor Presentation</title>
+<style>
+  :root{--bg:#f4f8f8;--card:#fff;--accent:#0b5a72;--muted:#9aaeb0}
+  *{box-sizing:border-box}
+  body{font-family:Inter, system-ui, Arial, sans-serif; margin:0; background:var(--bg); color:#123}
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:#fff;border-bottom:1px solid #e6ecec}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:36px}
+  .controls{display:flex;gap:12px;align-items:center}
+  .btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer}
+  .btn.secondary{background:#fff;color:var(--accent);border:1px solid #e2eef0}
+  .container{padding:22px}
+  .bookshelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}
+  .card{background:var(--card);padding:12px;border-radius:8px;box-shadow:0 6px 18px rgba(10,30,30,0.05);display:flex;flex-direction:column;align-items:center;gap:10px}
+  .cover{width:120px;height:160px;border-radius:4px;object-fit:cover;background:#f0f6f6}
+  .title{font-weight:600;text-align:center;font-size:14px}
+  .meta{font-size:12px;color:var(--muted)}
+  .card .actions{display:flex;gap:8px}
+  .add-card{display:flex;align-items:center;justify-content:center;height:160px;border:2px dashed #d7e6e7;color:var(--muted);cursor:pointer}
+  /* Modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(5,20,22,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+  .modal{width:680px;max-width:100%;background:#fff;padding:18px;border-radius:10px}
+  .form-row{display:flex;gap:10px;margin-bottom:10px}
+  .form-row input,.form-row textarea{flex:1;padding:10px;border:1px solid #e5eef0;border-radius:6px}
+  label{font-size:13px;color:#234}
+  /* Presentation */
+  .present-overlay{position:fixed;inset:0;background:#001b23;color:#fff;display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}
+  .present-slide{max-width:980px;width:100%;height:70vh;background:linear-gradient(135deg, #F9E65C, #67B5FF);border-radius:12px;display:flex;gap:20px;align-items:center;padding:28px}
+  .present-cover{width:280px;height:380px;object-fit:cover;border-radius:6px;background:#fff}
+  .present-meta{flex:1}
+  .controls-bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;display:flex;gap:12px}
+  /* Book viewer: two-page spread */
+  .viewer{max-width:1100px;margin:18px auto;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(10,30,30,0.06);overflow:hidden}
+  .spread{display:flex;gap:18px;padding:22px;background:linear-gradient(135deg, #F9E65C, #67B5FF)}
+  .page{flex:1;background:#fff;padding:18px;border-radius:8px;min-height:560px;box-shadow:inset 0 0 0 1px #eef6f6}
+  .vocab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .vocab-tile{border-radius:8px;padding:8px;text-align:center;border:2px solid transparent;cursor:pointer}
+  .vocab-tile img{width:100%;height:90px;object-fit:cover;border-radius:6px}
+  .vocab-tile.active{border-color:var(--accent)}
+  .exercise{margin-top:12px}
+  .exercise input{padding:8px;border-radius:6px;border:1px solid #e6f0f0;width:100%}
+  .compare-table{width:100%;border-collapse:collapse;margin-top:8px}
+  .compare-table td,.compare-table th{border:1px solid #e8f2f2;padding:8px;text-align:center}
+  .sidebar-note{background:#f9f7ff;padding:12px;border-radius:8px;border-left:6px solid #e3d2ff}
+  @media (max-width:900px){.spread{flex-direction:column}.present-slide{height:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <img src="/mnt/data/b5cfa375-bd4b-4452-8af4-68c67a77f9e3.png" alt="logo" />
+    <div>
+      <div style="font-weight:700">BookHub — brought to you by English Training Hub</div>
+      <div style="font-size:12px;color:var(--muted)">A lightweight bookshelf for presenting course books</div>
+    </div>
+  </div>
+  <div class="controls">
+    <select id="level" style="padding:8px 10px;border-radius:8px;border:1px solid #e6f0f0">
+      <option value="all">All levels</option>
+      <option value="A1">A1</option>
+      <option value="A2">A2</option>
+      <option value="B1">B1</option>
+      <option value="B2">B2</option>
+    </select>
+    <button class="btn" id="openAdd">Add book</button>
+    <button class="btn secondary" id="presentSelected">Present selected</button>
+  </div>
+</header>
+<main class="container">
+  <section style="margin-bottom:18px">
+    <input id="search" placeholder="Search title or author" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e6f0f0" />
+  </section>
+
+  <section class="bookshelf" id="shelf">
+    <!-- Cards rendered by JS -->
+  </section>
+
+  <!-- Book viewer: shows a two-page spread with activities similar to the uploaded sample -->
+  <div id="bookViewer" class="viewer" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 22px;border-bottom:1px solid #eef6f6;background:#fff">
+      <div style="font-weight:700"><span id="viewerTitle"></span></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn secondary" id="closeViewer">Close</button>
+        <button class="btn" id="markNext">Next page</button>
+      </div>
+    </div>
+
+    <div class="spread" id="spread">
+      <div class="page" id="leftPage">
+        <h3 style="margin-top:0">Words — Listen and point</h3>
+        <div class="vocab-grid" id="vocabGrid">
+          <!-- Tiles inserted by JS -->
+        </div>
+
+        <div class="exercise">
+          <h4>Fill the sentences</h4>
+          <ol id="fillList">
+            <li>Birds have two of these. <input data-answer="wings" placeholder="_____" /></li>
+            <li>Chickens lay these. <input data-answer="eggs" placeholder="_____" /></li>
+            <li>These are all over animals' bodies. <input data-answer="skin" placeholder="_____" /></li>
+          </ol>
+          <div style="display:flex;gap:8px;margin-top:8px"><button class="btn" id="checkFill">Check answers</button><button class="btn secondary" id="resetFill">Reset</button></div>
+          <div id="fillResult" style="margin-top:8px"></div>
+        </div>
+      </div>
+
+      <div class="page" id="rightPage">
+        <h3 style="margin-top:0">Before You Read</h3>
+        <div class="sidebar-note">
+          <strong>Think:</strong> What do you know about fish? Do you like frogs? Why / Why not?
+        </div>
+
+        <div style="margin-top:12px">
+          <h4>Compare and contrast</h4>
+          <p style="margin:6px 0">To compare things, we tell how they're the same. To contrast things, we tell how they're different.</p>
+          <table class="compare-table">
+            <tr><th>#</th><th>Feature</th><th>Same</th><th>Different</th></tr>
+            <tr><td>1</td><td>Fur?</td><td><input type="radio" name="r1" value="same" /></td><td><input type="radio" name="r1" value="diff" /></td></tr>
+            <tr><td>2</td><td>Four legs?</td><td><input type="radio" name="r2" value="same" /></td><td><input type="radio" name="r2" value="diff" /></td></tr>
+            <tr><td>3</td><td>Inside or outside?</td><td><input type="radio" name="r3" value="same" /></td><td><input type="radio" name="r3" value="diff" /></td></tr>
+            <tr><td>4</td><td>Big or small?</td><td><input type="radio" name="r4" value="same" /></td><td><input type="radio" name="r4" value="diff" /></td></tr>
+          </table>
+          <div style="display:flex;gap:8px;margin-top:8px"><button class="btn" id="checkCompare">Check</button><button class="btn secondary" id="resetCompare">Reset</button></div>
+          <div id="compareResult" style="margin-top:8px"></div>
+        </div>
+
+        <div style="margin-top:18px">
+          <img src="/mnt/data/7dc431b5-9d37-47e0-88e4-30d79ae1ddfd.png" alt="sample page" style="width:100%;border-radius:8px;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Modal add -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3>Add a book</h3>
+    <div class="form-row">
+      <input id="bookTitle" placeholder="Title" />
+      <input id="bookAuthor" placeholder="Author / Publisher" />
+    </div>
+    <div class="form-row">
+      <input id="bookLevel" placeholder="CEFR level (e.g. B1)" />
+      <input id="bookCover" placeholder="Cover image URL (or local path)" value="/mnt/data/b5cfa375-bd4b-4452-8af4-68c67a77f9e3.png" />
+    </div>
+    <div style="margin-bottom:10px">
+      <label>Description</label>
+      <textarea id="bookDesc" rows="3" placeholder="Short description"></textarea>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn secondary" id="closeModal">Cancel</button>
+      <button class="btn" id="saveBook">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const sampleBooks = [
+  {id:1,title:'Business Hub — Intermediate',author:'E.T.H.',level:'B1',cover:'/mnt/data/b5cfa375-bd4b-4452-8af4-68c67a77f9e3.png',desc:'A practical business English course — sample preview.'},
+  {id:2,title:'General Hub — Beginner',author:'E.T.H.',level:'A1',cover:'/mnt/data/b5cfa375-bd4b-4452-8af4-68c67a77f9e3.png',desc:'Course for everyday English learning.'},
+  {id:3,title:'Kids Hub — Beginner',author:'E.T.H.',level:'A1',cover:'/mnt/data/b5cfa375-bd4b-4452-8af4-68c67a77f9e3.png',desc:'Young learners course.'}
+]
+let books = [...sampleBooks]
+let selected = new Set()
+const shelf = document.getElementById('shelf')
+const modalBg = document.getElementById('modalBg')
+const presentOverlay = document.getElementById('presentOverlay')
+let presentIndex = 0
+
+function render(){
+  const q = document.getElementById('search').value.toLowerCase()
+  const level = document.getElementById('level').value
+  shelf.innerHTML = ''
+  const filtered = books.filter(b=> (level==='all'||b.level===level) && (b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q)))
+  filtered.forEach(b=>{
+    const el = document.createElement('div'); el.className='card';
+    el.innerHTML = `
+      <img class="cover" src="${b.cover}" alt="cover">
+      <div class="title">${b.title}</div>
+      <div class="meta">${b.author} • ${b.level}</div>
+      <div class="actions">
+        <button class="btn secondary selectBtn" data-id="${b.id}">Select</button>
+        <button class="btn" data-id="${b.id}" data-action="present">Present</button>
+        <button class="btn secondary" data-id="${b.id}" data-action="open">Open book</button>
+      </div>
+    `
+    shelf.appendChild(el)
+  })
+}
+
+function openModal(){ document.getElementById('modalBg').style.display='flex' }
+function closeModal(){ document.getElementById('modalBg').style.display='none' }
+
+document.getElementById('openAdd').addEventListener('click',openModal)
+document.getElementById('closeModal').addEventListener('click',closeModal)
+document.getElementById('saveBook').addEventListener('click',()=>{
+  const title = document.getElementById('bookTitle').value || 'Untitled'
+  const author = document.getElementById('bookAuthor').value || 'Unknown'
+  const level = document.getElementById('bookLevel').value || 'A1'
+  const cover = document.getElementById('bookCover').value || '/mnt/data/b5cfa375-bd4b-4452-8af4-68c67a77f9e3.png'
+  const desc = document.getElementById('bookDesc').value || ''
+  const id = Math.max(0,...books.map(b=>b.id))+1
+  books.push({id,title,author,level,cover,desc})
+  closeModal(); render()
+})
+
+document.getElementById('search').addEventListener('input',render)
+document.getElementById('level').addEventListener('change',render)
+
+shelf.addEventListener('click',e=>{
+  if(e.target.matches('[data-action="present"]')){
+    const id = +e.target.dataset.id
+    const idx = books.findIndex(b=>b.id===id)
+    startPresent(idx)
+  }
+  if(e.target.matches('[data-action="open"]')){
+    const id = +e.target.dataset.id
+    openBook(id)
+  }
+  if(e.target.classList.contains('selectBtn')){
+    const id = +e.target.dataset.id
+    if(selected.has(id)){ selected.delete(id); e.target.textContent='Select' } else { selected.add(id); e.target.textContent='Selected' }
+  }
+})
+
+function startPresent(i=0){
+  presentIndex = i
+  // reuse old present overlay if desired (kept simple)
+  const book = books[presentIndex]
+  alert('Presentation start: ' + book.title)
+}
+
+// Book viewer logic
+function openBook(id){
+  const book = books.find(b=>b.id===id)
+  if(!book) return
+  document.getElementById('viewerTitle').textContent = book.title + ' — ' + book.author
+  document.getElementById('bookViewer').style.display='block'
+  // populate vocab tiles (example words like image)
+  const vocab = [
+    {word:'skin',img:'/mnt/data/7dc431b5-9d37-47e0-88e4-30d79ae1ddfd.png'},
+    {word:'mammals',img:'/mnt/data/7dc431b5-9d37-47e0-88e4-30d79ae1ddfd.png'},
+    {word:'eggs',img:'/mnt/data/7dc431b5-9d37-47e0-88e4-30d79ae1ddfd.png'},
+    {word:'amphibians',img:'/mnt/data/7dc431b5-9d37-47e0-88e4-30d79ae1ddfd.png'},
+    {word:'scales',img:'/mnt/data/7dc431b5-9d37-47e0-88e4-30d79ae1ddfd.png'},
+    {word:'gills',img:'/mnt/data/7dc431b5-9d37-47e0-88e4-30d79ae1ddfd.png'}
+  ]
+  const grid = document.getElementById('vocabGrid')
+  grid.innerHTML = ''
+  vocab.forEach(v=>{
+    const d = document.createElement('div'); d.className='vocab-tile';
+    d.innerHTML = `<img src="${v.img}" alt="${v.word}" /><div style="font-weight:600;margin-top:6px">${v.word}</div>`
+    d.addEventListener('click',()=>{ d.classList.toggle('active') })
+    grid.appendChild(d)
+  })
+}
+
+document.getElementById('closeViewer').addEventListener('click',()=>{ document.getElementById('bookViewer').style.display='none' })
+
+document.getElementById('markNext').addEventListener('click',()=>{ alert('Page turned — you can extend this to multi-page viewers.') })
+
+// Fill-in checks
+document.getElementById('checkFill').addEventListener('click',()=>{
+  const inputs = Array.from(document.querySelectorAll('#fillList input'))
+  let correct = 0
+  inputs.forEach(inp=>{ if(inp.value.trim().toLowerCase()===inp.dataset.answer) { inp.style.borderColor='green'; correct++ } else { inp.style.borderColor='red' } })
+  document.getElementById('fillResult').textContent = `Correct ${correct} / ${inputs.length}`
+})
+
+document.getElementById('resetFill').addEventListener('click',()=>{ document.querySelectorAll('#fillList input').forEach(i=>{i.value=''; i.style.borderColor='' }); document.getElementById('fillResult').textContent=''} )
+
+// Compare checks (example correct answers hard-coded for demo)
+document.getElementById('checkCompare').addEventListener('click',()=>{
+  // example: row1 = different, row2 = same, row3 = different, row4 = same
+  const answers = ['diff','same','diff','same']
+  let score=0
+  for(let i=1;i<=4;i++){
+    const sel = document.querySelector(`input[name=r${i}]:checked`)
+    if(sel && sel.value===answers[i-1]) score++
+  }
+  document.getElementById('compareResult').textContent = `Score ${score} / 4`
+})
+
+document.getElementById('resetCompare').addEventListener('click',()=>{ document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false); document.getElementById('compareResult').textContent=''} )
+
+render()
+</script>
+</body>
+</html>
