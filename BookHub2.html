@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bookshelf Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root{
+  --gradient: linear-gradient(135deg, #FFE66D 0%, #51ABFF 100%);
+  --bg: #EFF7FF;
+  --card: #ffffff;
+  --accent: #2578FF;
+  --accent-dark: #1254C8;
+  --accent-light: #E6F1FF;
+  --text: #14334B;
+  --muted: #6B8595;
+  --shadow: 0 6px 20px rgba(0,0,0,0.06);
+  --radius: 12px;
+  --radius-sm: 9px;
+}
+*{box-sizing:border-box}
+body{
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg);
+  color:var(--text);
+  margin:0;
+}
+
+/* HEADER */
+header{
+  padding:24px 32px;
+  background:var(--gradient);
+  color:#0E2A3A;
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+.brand img{height:42px}
+.brand div:first-child{font-size:21px;font-weight:700}
+.brand div:last-child{font-size:13px;opacity:.9}
+
+/* INPUT */
+#search{
+  width:240px;
+  background:#fff;
+  border:1px solid #D9E5EE;
+  border-radius:var(--radius);
+  font-size:15px;
+  padding:12px 14px;
+  color:var(--text);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+}
+#search:focus{border-color:var(--accent);outline:none}
+
+/* BUTTONS */
+.btn{
+  border:0;
+  cursor:pointer;
+  padding:10px 18px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:14px;
+  transition:all .22s ease;
+  background:var(--accent);
+  color:#fff;
+}
+.btn:hover{background:var(--accent-dark)}
+
+.btn.secondary{
+  background:#fff;
+  color:var(--accent);
+  border:1.5px solid #D5E8FF;
+}
+.btn.secondary:hover{
+  background:var(--accent-light);
+}
+
+/* BOOK GRID */
+.bookshelf{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(190px, 1fr));
+  gap:22px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  transition:.22s ease;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+}
+
+.cover{
+  width:140px;
+  height:180px;
+  border-radius:10px;
+  object-fit:cover;
+  background:#f3f9ff;
+  border:1px solid #E3ECF6;
+}
+.title{font-size:15px;font-weight:700;text-align:center}
+.meta{font-size:13px;color:var(--muted)}
+
+/* MODAL */
+.modal-bg{
+  position:fixed;
+  inset:0;
+  display:none;
+  background:rgba(0,0,0,.45);
+  align-items:center;
+  justify-content:center;
+}
+.modal{
+  background:white;
+  padding:22px;
+  border-radius:var(--radius);
+  width:100%;
+  max-width:480px;
+}
+.form-row{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-bottom:14px;
+}
+.form-row input{
+  border:1px solid #D3E1EA;
+  border-radius:var(--radius-sm);
+  padding:10px;
+}
+.form-row input:focus{
+  border-color:var(--accent);
+}
+
+/* MOBILE */
+@media(max-width:700px){
+  .cover{width:120px;height:156px}
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png">
+    <div>
+      <div>My Bookshelf</div>
+      <div>Organize. Read. Grow.</div>
+    </div>
+  </div>
+
+  <input type="search" id="search" placeholder="Search books..." autocomplete="off">
+  <button class="btn" id="addBtn">+ Add Book</button>
+</header>
+
+<main style="padding:30px;">
+  <div class="bookshelf" id="bookshelf"></div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3>Add a Book</h3>
+
+    <div class="form-row">
+      <label>Title</label>
+      <input id="titleInput">
+    </div>
+
+    <div class="form-row">
+      <label>Author</label>
+      <input id="authorInput">
+    </div>
+
+    <div class="form-row">
+      <label>Cover URL</label>
+      <input id="coverInput" placeholder="https://example.com/book.jpg">
+    </div>
+
+    <br>
+    <div style="display:flex; gap:10px;">
+      <button class="btn" id="saveBook">Save</button>
+      <button class="btn secondary" id="cancelModal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const books = [
+  {
+    title: "Atomic Habits",
+    author: "James Clear",
+    cover: "https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg"
+  },
+  {
+    title: "Deep Work",
+    author: "Cal Newport",
+    cover: "https://m.media-amazon.com/images/I/41+e3refnZL.jpg"
+  }
+];
+
+const shelf = document.getElementById("bookshelf");
+const modalBg = document.getElementById("modalBg");
+const addBtn = document.getElementById("addBtn");
+const saveBook = document.getElementById("saveBook");
+const cancelModal = document.getElementById("cancelModal");
+
+const titleInput = document.getElementById("titleInput");
+const authorInput = document.getElementById("authorInput");
+const coverInput = document.getElementById("coverInput");
+
+// Render UI
+function renderBooks(list){
+  shelf.innerHTML = "";
+  list.forEach(b=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img class="cover" src="${b.cover}">
+      <div class="title">${b.title}</div>
+      <div class="meta">${b.author}</div>
+    `;
+    shelf.appendChild(card);
+  });
+}
+renderBooks(books);
+
+// Modal controls
+addBtn.onclick = ()=> modalBg.style.display = "flex";
+cancelModal.onclick = ()=> modalBg.style.display = "none";
+
+saveBook.onclick = ()=>{
+  books.push({
+    title: titleInput.value,
+    author: authorInput.value,
+    cover: coverInput.value || "https://via.placeholder.com/140x180?text=No+Cover"
+  });
+  renderBooks(books);
+  modalBg.style.display = "none";
+  titleInput.value = "";
+  authorInput.value = "";
+  coverInput.value = "";
+};
+
+// Search
+document.getElementById("search").addEventListener("input", e=>{
+  const q = e.target.value.toLowerCase();
+  const filtered = books.filter(
+    b => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q)
+  );
+  renderBooks(filtered);
+});
+</script>
+
+</body>
+</html>
