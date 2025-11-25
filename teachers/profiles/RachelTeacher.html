@@ -1,1 +1,957 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rachel teacher - TEFL & TESOL Belgeli İngilizce Öğretmeni</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FFD93D;
+            --primary-dark: #FFC107;
+            --secondary-color: #4A90E2;
+            --text-dark: #2D3436;
+            --text-light: #636E72;
+            --bg-light: #F8F9FA;
+            --bg-white: #FFFFFF;
+            --border-color: #E1E8ED;
+            --star-color: #FFA502;
+            --success-color: #00D2A0;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
 
+        .dark {
+            --text-dark: #F8F9FA;
+            --text-light: #B2BEC3;
+            --bg-light: #1A1D1F;
+            --bg-white: #252A2E;
+            --border-color: #3A4046;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #50C878 50%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr;
+            gap: 2rem;
+            margin-top: -3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--bg-light);
+            box-shadow: var(--shadow-md);
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--success-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 3px solid var(--bg-white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-name {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .profile-rating {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .stars {
+            color: var(--star-color);
+            margin-right: 0.3rem;
+        }
+
+        .rating-link {
+            color: var(--text-light);
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        .profile-info {
+            border-top: 2px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        .request-lesson-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #50C878 50%, var(--secondary-color) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .request-lesson-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .first-lesson-free {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #50C878 50%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* Main Sections */
+        .main-sections {
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 1rem;
+        }
+
+        .section-content {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+
+        .section-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .section-content li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .section-content li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        /* Reviews */
+        .review {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .review-stars {
+            color: var(--star-color);
+        }
+
+        .review-text {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .review-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        /* Price Table */
+        .price-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .price-table thead {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #50C878 50%, var(--secondary-color) 100%);
+            color: white;
+        }
+
+        .price-table th,
+        .price-table td {
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .price-table tbody tr {
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .price-table tbody tr:hover {
+            background: var(--border-color);
+        }
+
+        /* Video Section */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .profile-card {
+                position: relative;
+                top: 0;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .profile-name {
+                font-size: 1.6rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .profile-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .dark {
+                color-scheme: dark;
+            }
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #50C878 50%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.1), rgba(74, 144, 226, 0.05));
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark mode detection -->
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">English Training Hub</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
+        <div class="main-content">
+            <!-- Profile Card (Sidebar) -->
+            <aside class="profile-card">
+                <div class="profile-image-wrapper">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/ebb6a518987b831f3f4487685832b73c58e36527ebbb67367e0bab57d53f6b11?w=501&h=741" alt="Rachel" class="profile-image">
+                    <div class="verified-badge">✓</div>
+                </div>
+
+                <h1 class="profile-name">Rachel</h1>
+
+                <div class="profile-rating">
+                    <span class="stars">★★★★★</span>
+                    <span style="font-weight: 600;">5</span>
+                    <a href="#reviews" class="rating-link">(5 üye yorumu)</a>
+                </div>
+
+                <div class="profile-info">
+                    <div class="info-row">
+                        <span class="info-label">Ücret</span>
+                        <span class="info-value">150₺</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Cevaplama</span>
+                        <span class="info-value">15 saat</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Öğrenci</span>
+                        <span class="info-value">50+</span>
+                    </div>
+                </div>
+
+                <button class="request-lesson-btn" onclick="requestLesson()">
+                    <span>💬</span>
+                    <span>Ders talep et</span>
+                </button>
+
+                <div class="first-lesson-free">İlk ders ücretsiz</div>
+            </aside>
+
+            <!-- Main Sections -->
+            <main class="main-sections">
+                <!-- Teacher Information -->
+                <section class="section">
+                    <h2 class="section-title">Rachel ile ilgili bilgiler</h2>
+                    <div class="section-content">
+                        <div class="highlight-box">
+                            <span class="badge">TEFL/TESOL Sertifikalı</span>
+                            <span class="badge">Anadili İngilizce</span>
+                            <span class="badge">10+ Yıl Deneyim</span>
+                        </div>
+
+                        <p>Merhaba! Ben Rachel, Avustralya'dan TEFL/TESOL sertifikalı bir İngilizce öğretmeniyim. 10 yılı aşkın global öğretim deneyimi ile öğrencilerime İngilizce dilinde akıcılık kazandırmayı hedefliyorum.</p>
+
+                        <p>Farklı yaş grupları ve seviyelerdeki öğrencilerle çalışma deneyimim var. İster sınavlara hazırlık, ister iş İngilizcesi, ister genel konuşma pratiği olsun, sizin öğrenme hedeflerinize uygun özelleştirilmiş dersler sunuyorum.</p>
+
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Uzmanlık Alanlarım:</h3>
+                        <ul>
+                            <li>Konuşma İngilizcesi ve Akıcılık</li>
+                            <li>İş İngilizcesi ve Profesyonel İletişim</li>
+                            <li>IELTS, TOEFL, Cambridge Sınav Hazırlığı</li>
+                            <li>Akademik İngilizce</li>
+                            <li>Genel İngilizce (A1-C2 Seviyeler)</li>
+                            <li>Telaffuz ve Aksansız Konuşma</li>
+                        </ul>
+
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Eğitim ve Sertifikalar:</h3>
+                        <ul>
+                            <li>TEFL/TESOL Sertifikası (120 saat)</li>
+                            <li>İngiliz Dili ve Edebiyatı Lisans Derecesi</li>
+                            <li>Çocuklara İngilizce Öğretimi Sertifikası</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Lesson Information -->
+                <section class="section">
+                    <h2 class="section-title">Dersle ilgili bilgiler</h2>
+                    <div class="section-content">
+                        <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Ders Formatı:</h3>
+                        <p>Derslerim tamamen öğrenci odaklı ve interaktiftir. Her öğrencinin öğrenme stiline ve hedeflerine göre özelleştirilmiş içerikler hazırlıyorum.</p>
+
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Derslerimde:</h3>
+                        <ul>
+                            <li>İnteraktif konuşma aktiviteleri</li>
+                            <li>Gerçek hayat senaryoları ve rol oyunları</li>
+                            <li>Güncel haberler ve medya içerikleri ile tartışmalar</li>
+                            <li>Gramer ve kelime çalışmaları (ihtiyaca göre)</li>
+                            <li>Düzenli geri bildirim ve ilerleme takibi</li>
+                            <li>Ödev ve ek materyaller (isteğe bağlı)</li>
+                        </ul>
+
+                        <div class="highlight-box">
+                            <strong>📍 Ders Yeri:</strong> Online (Zoom, Skype, Google Meet)<br>
+                            <strong>⏰ Ders Süresi:</strong> 60 dakika<br>
+                            <strong>📅 Esnek Programlama:</strong> Hafta içi ve hafta sonu uygun saatler
+                        </div>
+
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Hangi Seviyeler İçin:</h3>
+                        <ul>
+                            <li>Başlangıç (A1-A2)</li>
+                            <li>Orta Seviye (B1-B2)</li>
+                            <li>İleri Seviye (C1-C2)</li>
+                            <li>Çocuklar (7+ yaş)</li>
+                            <li>Yetişkinler</li>
+                            <li>Profesyoneller</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Student Reviews -->
+                <section class="section" id="reviews">
+                    <h2 class="section-title">Öğrenci yorumları</h2>
+                    <div class="section-content">
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer-name">Mehmet A.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">Rachel ile 3 aydır ders alıyorum ve İngilizce konuşmamda inanılmaz bir gelişme oldu. Sabırlı, profesyonel ve her dersi keyifli hale getiriyor. IELTS sınavına hazırlanıyorum ve onun sayesinde kendime çok daha güveniyorum. Kesinlikle tavsiye ederim!</p>
+                            <p class="review-date">2 hafta önce</p>
+                        </div>
+
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer-name">Ayşe K.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">İş İngilizcesi için Rachel'a başvurdum ve çok memnunum. Sunumlarımda ve toplantılarımda artık çok daha rahatım. Dersleri ihtiyacıma özel hazırlıyor ve her zaman pozitif bir enerji ile yaklaşıyor. Harika bir öğretmen!</p>
+                            <p class="review-date">1 ay önce</p>
+                        </div>
+
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer-name">Can Y.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">10 yaşındaki oğlum Rachel ile ders alıyor. Çocuklarla çalışma konusunda gerçekten yetenekli. Oğlum derse hevesle giriyor ve her hafta yeni şeyler öğreniyor. İngilizce'ye karşı tutumu tamamen değişti. Teşekkürler Rachel!</p>
+                            <p class="review-date">1 ay önce</p>
+                        </div>
+
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer-name">Elif S.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">Cambridge FCE sınavına hazırlanıyordum ve Rachel'ın dersleri sayesinde başarıyla geçtim. Sınav stratejileri ve pratik testler konusunda çok yardımcı oldu. Ayrıca konuşma becerim de çok gelişti. Minnettarım!</p>
+                            <p class="review-date">2 ay önce</p>
+                        </div>
+
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer-name">Burak T.</span>
+                                <span class="review-stars">★★★★★</span>
+                            </div>
+                            <p class="review-text">Yurtdışında çalışmak için İngilizce geliştirmem gerekiyordu. Rachel ile çalışmak harika bir deneyimdi. Özellikle telaffuz konusunda çok yardımcı oldu ve artık kendimi çok daha iyi ifade edebiliyorum. Profesyonel ve eğlenceli bir öğretmen!</p>
+                            <p class="review-date">3 ay önce</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- References -->
+                <section class="section">
+                    <h2 class="section-title">Referanslar</h2>
+                    <div class="section-content">
+                        <div class="highlight-box">
+                            <strong>🎓 Öğretmenlik Geçmişi:</strong>
+                            <p style="margin-top: 0.5rem;">10+ yıl boyunca Avustralya, Türkiye, Japonya ve online platformlarda binlerce öğrenciye İngilizce öğrettim.</p>
+                        </div>
+
+                        <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Önceki Çalışmalarım:</h3>
+                        <ul>
+                            <li><strong>British Council, İstanbul</strong> - İngilizce Öğretmeni (2020-2023)</li>
+                            <li><strong>International Language School, Tokyo</strong> - Kıdemli Öğretmen (2017-2020)</li>
+                            <li><strong>Private Language Center, Sydney</strong> - IELTS Eğitmeni (2014-2017)</li>
+                        </ul>
+
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Başarı Hikayeleri:</h3>
+                        <ul>
+                            <li>100+ öğrenci IELTS ve TOEFL sınavlarını başarıyla geçti</li>
+                            <li>200+ profesyonel iş hayatlarında İngilizce akıcılığına kavuştu</li>
+                            <li>500+ öğrenci dil seviyelerini en az 1 seviye yükseltti</li>
+                            <li>%98 öğrenci memnuniyet oranı</li>
+                        </ul>
+
+                        <div class="highlight-box" style="margin-top: 1.5rem;">
+                            <strong>💼 Kurumsal Deneyim:</strong>
+                            <p style="margin-top: 0.5rem;">Çok uluslu şirketlerde çalışan profesyonellere kurumsal İngilizce eğitimleri verdim. İş görüşmeleri, sunumlar, raporlama ve profesyonel yazışma konularında özel programlar hazırladım.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Prices -->
+                <section class="section">
+                    <h2 class="section-title">Ücretler</h2>
+                    <div class="section-content">
+                        <table class="price-table">
+                            <thead>
+                                <tr>
+                                    <th>Ders Paketi</th>
+                                    <th>Ders Sayısı</th>
+                                    <th>Ders Başı Ücret</th>
+                                    <th>Toplam Ücret</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Deneme Dersi</strong></td>
+                                    <td>1 ders</td>
+                                    <td><s>150₺</s> <strong style="color: var(--success-color);">ÜCRETSİZ</strong></td>
+                                    <td><strong style="color: var(--success-color);">0₺</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Tek Ders</td>
+                                    <td>1 ders</td>
+                                    <td>150₺</td>
+                                    <td>150₺</td>
+                                </tr>
+                                <tr>
+                                    <td>Başlangıç Paketi</td>
+                                    <td>5 ders</td>
+                                    <td>145₺</td>
+                                    <td>725₺</td>
+                                </tr>
+                                <tr>
+                                    <td>Popüler Paket</td>
+                                    <td>10 ders</td>
+                                    <td>140₺</td>
+                                    <td>1.400₺</td>
+                                </tr>
+                                <tr>
+                                    <td>Yoğun Eğitim</td>
+                                    <td>20 ders</td>
+                                    <td>135₺</td>
+                                    <td>2.700₺</td>
+                                </tr>
+                                <tr>
+                                    <td>Profesyonel Paket</td>
+                                    <td>30 ders</td>
+                                    <td>130₺</td>
+                                    <td>3.900₺</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="highlight-box" style="margin-top: 1.5rem;">
+                            <strong>💡 İpucu:</strong> Paket alımlarında ders başı ücret düşüyor! İlk dersiniz ücretsizdir - hiçbir ön ödeme gerekmez.
+                        </div>
+
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">Ödeme Seçenekleri:</h3>
+                        <ul>
+                            <li>Banka Havalesi / EFT</li>
+                            <li>Kredi Kartı (Taksit İmkanı)</li>
+                            <li>PayPal</li>
+                            <li>Kapıda Ödeme (Yüz yüze dersler için)</li>
+                        </ul>
+
+                        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-dark);">İptal Politikası:</h3>
+                        <p>Ders saatinden 24 saat önce yapılan iptaller ücretsizdir. Son dakika iptalleri için lütfen benimle iletişime geçin.</p>
+                    </div>
+                </section>
+
+                <!-- YouTube Video -->
+                <section class="section">
+                    <h2 class="section-title">Tanıtım Videosu</h2>
+                    <div class="section-content">
+                        <p style="margin-bottom: 1.5rem;">Beni daha yakından tanımak ve öğretim tarzım hakkında bilgi almak için tanıtım videoma göz atabilirsiniz:</p>
+
+                        <div class="video-container">
+                            <iframe
+                                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                                allowfullscreen
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                            </iframe>
+                        </div>
+
+                        <p style="margin-top: 1.5rem; color: var(--text-light);">
+                            <strong>Video İçeriği:</strong> Kendimi tanıtıyorum, öğretim metodolojim, başarı hikayeleri ve öğrencilerden geri bildirimler hakkında konuşuyorum.
+                        </p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function requestLesson() {
+            // Create modal
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                animation: fadeIn 0.2s ease;
+            `;
+
+            modal.innerHTML = `
+                <div style="
+                    background: var(--bg-white);
+                    padding: 2rem;
+                    border-radius: 16px;
+                    max-width: 500px;
+                    width: 90%;
+                    box-shadow: var(--shadow-lg);
+                    animation: slideUp 0.3s ease;
+                ">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark); font-size: 1.5rem;">Ders Talebi</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                        Rachel ile ders almak için aşağıdaki formu doldurun. İlk dersiniz ücretsizdir!
+                    </p>
+                    <form id="lessonForm">
+                        <input type="text" placeholder="Adınız Soyadınız" required style="
+                            width: 100%;
+                            padding: 0.8rem;
+                            margin-bottom: 1rem;
+                            border: 2px solid var(--border-color);
+                            border-radius: 8px;
+                            font-size: 16px;
+                            background: var(--bg-light);
+                            color: var(--text-dark);
+                        ">
+                        <input type="email" placeholder="E-posta Adresiniz" required style="
+                            width: 100%;
+                            padding: 0.8rem;
+                            margin-bottom: 1rem;
+                            border: 2px solid var(--border-color);
+                            border-radius: 8px;
+                            font-size: 16px;
+                            background: var(--bg-light);
+                            color: var(--text-dark);
+                        ">
+                        <input type="tel" placeholder="Telefon Numaranız" required style="
+                            width: 100%;
+                            padding: 0.8rem;
+                            margin-bottom: 1rem;
+                            border: 2px solid var(--border-color);
+                            border-radius: 8px;
+                            font-size: 16px;
+                            background: var(--bg-light);
+                            color: var(--text-dark);
+                        ">
+                        <select required style="
+                            width: 100%;
+                            padding: 0.8rem;
+                            margin-bottom: 1rem;
+                            border: 2px solid var(--border-color);
+                            border-radius: 8px;
+                            font-size: 16px;
+                            background: var(--bg-light);
+                            color: var(--text-dark);
+                        ">
+                            <option value="">Seviyenizi Seçin</option>
+                            <option>Başlangıç (A1-A2)</option>
+                            <option>Orta Seviye (B1-B2)</option>
+                            <option>İleri Seviye (C1-C2)</option>
+                        </select>
+                        <textarea placeholder="Mesajınız (İsteğe bağlı)" rows="3" style="
+                            width: 100%;
+                            padding: 0.8rem;
+                            margin-bottom: 1.5rem;
+                            border: 2px solid var(--border-color);
+                            border-radius: 8px;
+                            font-size: 16px;
+                            background: var(--bg-light);
+                            color: var(--text-dark);
+                            resize: vertical;
+                            font-family: inherit;
+                        "></textarea>
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="button" onclick="this.closest('.fixed, [style*=fixed]').remove()" style="
+                                flex: 1;
+                                padding: 0.8rem;
+                                background: var(--bg-light);
+                                color: var(--text-dark);
+                                border: 2px solid var(--border-color);
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                            ">İptal</button>
+                            <button type="submit" style="
+                                flex: 1;
+                                padding: 0.8rem;
+                                background: linear-gradient(135deg, var(--primary-color) 0%, #50C878 50%, var(--secondary-color) 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                cursor: pointer;
+                            ">Gönder</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes slideUp {
+                    from { transform: translateY(30px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            modal.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                modal.remove();
+
+                // Success message
+                const successModal = document.createElement('div');
+                successModal.style.cssText = modal.style.cssText;
+                successModal.innerHTML = `
+                    <div style="
+                        background: var(--bg-white);
+                        padding: 2rem;
+                        border-radius: 16px;
+                        max-width: 400px;
+                        width: 90%;
+                        box-shadow: var(--shadow-lg);
+                        text-align: center;
+                    ">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">✓</div>
+                        <h3 style="color: var(--success-color); margin-bottom: 1rem;">Başarılı!</h3>
+                        <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                            Ders talebiniz Rachel'a iletildi. En kısa sürede sizinle iletişime geçilecektir.
+                        </p>
+                        <button onclick="this.closest('.fixed, [style*=fixed]').remove()" style="
+                            padding: 0.8rem 2rem;
+                            background: linear-gradient(135deg, var(--primary-color) 0%, #50C878 50%, var(--secondary-color) 100%);
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                        ">Tamam</button>
+                    </div>
+                `;
+                document.body.appendChild(successModal);
+            });
+
+            document.body.appendChild(modal);
+        }
+    </script>
+</body>
+</html>
