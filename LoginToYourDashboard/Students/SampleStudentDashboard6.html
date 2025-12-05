@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - English Language Learning Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <style>
+        :root {
+            --primary-yellow: #FFD93D;
+            --bright-yellow: #FFC700;
+            --dark-yellow: #F5B800;
+            --blue-accent: #2E86AB;
+            --dark-blue: #1B5E7F;
+            --text-dark: #2D3436;
+            --text-light: #636E72;
+            --success-green: #00D084;
+            --error-red: #FF6B6B;
+            --shadow: rgba(0, 0, 0, 0.15);
+            --shadow-hover: rgba(0, 0, 0, 0.25);
+        }
+
+        .dark {
+            --primary-yellow: #3A3A3A;
+            --bright-yellow: #4A4A4A;
+            --dark-yellow: #2A2A2A;
+            --blue-accent: #5DADE2;
+            --dark-blue: #3498DB;
+            --text-dark: #E8E8E8;
+            --text-light: #B8B8B8;
+            --shadow: rgba(255, 255, 255, 0.1);
+            --shadow-hover: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--primary-yellow);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--primary-yellow);
+            z-index: 100;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .logo-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .logo-bar {
+            width: 40px;
+            height: 6px;
+            background: var(--blue-accent);
+            border-radius: 3px;
+            animation: slideIn 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .logo-bar:nth-child(2) {
+            width: 35px;
+            animation-delay: 0.1s;
+        }
+
+        .logo-bar:nth-child(3) {
+            width: 30px;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .logo-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+            cursor: pointer;
+        }
+
+        .logo-text .student {
+            color: var(--blue-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 18px;
+        }
+
+        .logo-text .dashboard {
+            background: linear-gradient(135deg, var(--dark-blue), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic;
+            font-size: 26px;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px var(--shadow-hover);
+            min-width: 200px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .dark .dropdown-menu {
+            background: #2D3436;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .dropdown-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(46, 134, 171, 0.1);
+            padding-left: 24px;
+        }
+
+        .dropdown-item-icon {
+            font-size: 20px;
+        }
+
+        .streak-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: var(--dark-blue);
+            backdrop-filter: blur(10px);
+        }
+
+        .streak-flame {
+            font-size: 24px;
+            animation: flicker 2s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            height: 28px;
+            overflow: hidden;
+            margin-bottom: 32px;
+            box-shadow: inset 0 2px 4px var(--shadow);
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success-green), #00F5A0);
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 0 15px rgba(0, 213, 132, 0.5);
+        }
+
+        .lessons-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 20px 0;
+        }
+
+        .lesson-item {
+            display: flex;
+            justify-content: center;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .lesson-item:nth-child(even) {
+            transform: translateX(40px);
+        }
+
+        .lesson-item:nth-child(odd) {
+            transform: translateX(-40px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .lesson-item:nth-child(1) { animation-delay: 0.1s; }
+        .lesson-item:nth-child(2) { animation-delay: 0.2s; }
+        .lesson-item:nth-child(3) { animation-delay: 0.3s; }
+        .lesson-item:nth-child(4) { animation-delay: 0.4s; }
+        .lesson-item:nth-child(5) { animation-delay: 0.5s; }
+        .lesson-item:nth-child(6) { animation-delay: 0.6s; }
+        .lesson-item:nth-child(7) { animation-delay: 0.7s; }
+        .lesson-item:nth-child(8) { animation-delay: 0.8s; }
+
+        .lesson-button {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 6px solid white;
+            background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+            box-shadow: 0 8px 20px var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .lesson-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px var(--shadow-hover);
+            border-color: var(--blue-accent);
+        }
+
+        .lesson-button:active {
+            transform: scale(0.95);
+        }
+
+        .lesson-button.completed::after {
+            content: '✓';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            width: 40px;
+            height: 40px;
+            background: var(--success-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 213, 132, 0.4);
+        }
+
+        .lesson-button.locked {
+            opacity: 0.6;
+            filter: grayscale(100%);
+            cursor: not-allowed;
+        }
+
+        .lesson-button.locked::before {
+            content: '🔒';
+            position: absolute;
+            font-size: 32px;
+            z-index: 2;
+        }
+
+        .lesson-button[data-category="animals"] {
+            background: linear-gradient(135deg, #A8E6CF, #56AB91);
+        }
+
+        .lesson-button[data-category="food"] {
+            background: linear-gradient(135deg, #FFD93D, #FF8C42);
+        }
+
+        .lesson-button[data-category="colors"] {
+            background: linear-gradient(135deg, #FF6B9D, #C06C84, #6C5B7B, #355C7D);
+        }
+
+        .lesson-button[data-category="family"] {
+            background: linear-gradient(135deg, #FFB6B9, #FAE3D9);
+        }
+
+        .lesson-button[data-category="clothes"] {
+            background: linear-gradient(135deg, #B8E6E6, #6C99BB);
+        }
+
+        .lesson-button[data-category="numbers"] {
+            background: linear-gradient(135deg, #E8E8E8, #7F8C8D);
+        }
+
+        .lesson-button[data-category="transport"] {
+            background: linear-gradient(135deg, #FC5C65, #FD7272);
+        }
+
+        .lesson-button[data-category="emotions"] {
+            background: linear-gradient(135deg, #FEE140, #FA709A);
+        }
+
+        .keep-going-section {
+            margin-top: 60px;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeIn 1s ease-out 1s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .keep-going-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .keep-going-icon .logo-icon {
+            transform: scale(0.8);
+        }
+
+        .keep-going-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--dark-blue), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .coming-soon {
+            font-size: 20px;
+            color: var(--blue-accent);
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .lesson-label {
+            text-align: center;
+            margin-top: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-dark);
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Lesson View */
+        .lesson-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-yellow);
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .lesson-view.active {
+            display: block;
+        }
+
+        .lesson-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .back-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px var(--shadow-hover);
+        }
+
+        .lesson-progress-bar {
+            flex: 1;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .lesson-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-green), #00F5A0);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .question-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .question-type {
+            display: inline-block;
+            background: var(--blue-accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .question-instruction {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .vocab-section {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .dark .vocab-section {
+            background: rgba(45, 52, 54, 0.5);
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .vocab-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .dark .vocab-card {
+            background: #2D3436;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px var(--shadow-hover);
+        }
+
+        .vocab-emoji {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .vocab-word {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .vocab-translation {
+            font-size: 14px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .conversation-section {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .dark .conversation-section {
+            background: rgba(45, 52, 54, 0.5);
+        }
+
+        .conversation-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .dark .conversation-item {
+            background: #2D3436;
+        }
+
+        .conversation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .conversation-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .conversation-translation {
+            font-size: 14px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .agree-disagree-section {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .dark .agree-disagree-section {
+            background: rgba(45, 52, 54, 0.5);
+        }
+
+        .agree-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dark .agree-item {
+            background: #2D3436;
+        }
+
+        .agree-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .agree-text {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .collocations-section {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .dark .collocations-section {
+            background: rgba(45, 52, 54, 0.5);
+        }
+
+        .collocation-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .collocation-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .dark .collocation-item {
+            background: #2D3436;
+        }
+
+        .collocation-phrase {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--blue-accent);
+            margin-bottom: 4px;
+        }
+
+        .collocation-example {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-style: italic;
+        }
+
+        .quote-section {
+            background: linear-gradient(135deg, var(--blue-accent), var(--dark-blue));
+            border-radius: 20px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 6px 20px var(--shadow);
+            margin-top: 32px;
+        }
+
+        .quote-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .quote-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            font-style: italic;
+            line-height: 1.5;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            font-family: 'Fredoka', sans-serif;
+            text-align: center;
+        }
+
+        .continue-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--success-green), #00F5A0);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 213, 132, 0.3);
+            font-family: 'Nunito', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 24px;
+        }
+
+        .continue-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 213, 132, 0.4);
+        }
+
+        input, button {
+            font-size: 16px;
+        }
+
+        /* Markdown Styling */
+        .markdown-content {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 32px;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .dark .markdown-content {
+            background: rgba(45, 52, 54, 0.5);
+        }
+
+        .markdown-content h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 32px;
+            color: var(--blue-accent);
+            margin: 32px 0 16px 0;
+            border-bottom: 3px solid var(--blue-accent);
+            padding-bottom: 12px;
+        }
+
+        .markdown-content h1:first-child {
+            margin-top: 0;
+        }
+
+        .markdown-content h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 26px;
+            color: var(--dark-blue);
+            margin: 28px 0 14px 0;
+        }
+
+        .markdown-content h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 22px;
+            color: var(--text-dark);
+            margin: 24px 0 12px 0;
+        }
+
+        .markdown-content p {
+            margin: 12px 0;
+            color: var(--text-dark);
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            margin: 16px 0;
+            padding-left: 28px;
+        }
+
+        .markdown-content li {
+            margin: 8px 0;
+            color: var(--text-dark);
+        }
+
+        .markdown-content a {
+            color: var(--blue-accent);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .markdown-content a:hover {
+            border-bottom-color: var(--blue-accent);
+        }
+
+        .markdown-content code {
+            background: rgba(46, 134, 171, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--dark-blue);
+        }
+
+        .markdown-content pre {
+            background: rgba(45, 52, 54, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .dark .markdown-content pre {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+            color: var(--text-dark);
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--blue-accent);
+            padding-left: 20px;
+            margin: 16px 0;
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .markdown-content th, .markdown-content td {
+            padding: 12px;
+            border: 1px solid rgba(46, 134, 171, 0.2);
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: var(--blue-accent);
+            color: white;
+            font-weight: 700;
+        }
+
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+
+        .markdown-content hr {
+            border: none;
+            border-top: 2px solid rgba(46, 134, 171, 0.2);
+            margin: 24px 0;
+        }
+
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 24px;
+            }
+
+            .vocab-emoji {
+                font-size: 40px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .quote-text {
+                font-size: 18px;
+            }
+
+            .markdown-content {
+                padding: 20px;
+            }
+
+            .markdown-content h1 {
+                font-size: 26px;
+            }
+
+            .markdown-content h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="home-view">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo-icon" onclick="toggleDropdown(event)">
+                    <div class="logo-bar"></div>
+                    <div class="logo-bar"></div>
+                    <div class="logo-bar"></div>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <div class="dropdown-item" onclick="handleLessonsClick()">
+                        <span class="dropdown-item-icon">📚</span>
+                        <span>Lessons</span>
+                    </div>
+                    <div class="dropdown-item" onclick="handleStudentReportClick()">
+                        <span class="dropdown-item-icon">🎓</span>
+                        <span>Student Report</span>
+                    </div>
+                    <div class="dropdown-item" onclick="handleStudentNotesClick()">
+                        <span class="dropdown-item-icon">📝</span>
+                        <span>Student Notes</span>
+                    </div>
+                </div>
+                <div class="logo-text" onclick="goHome()">
+                    <div class="student">STUDENT</div>
+                    <div class="dashboard">Dashboard</div>
+                </div>
+            </div>
+            <div class="streak-info">
+                <span class="streak-flame">🔥</span>
+                <span id="streak-count">0</span>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%">
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+
+            <div class="lessons-grid" id="lessons-grid"></div>
+
+            <div class="keep-going-section">
+                <div class="keep-going-icon">
+                    <div class="logo-icon">
+                        <div class="logo-bar"></div>
+                        <div class="logo-bar"></div>
+                        <div class="logo-bar"></div>
+                    </div>
+                </div>
+                <div class="keep-going-text">KEEP going</div>
+                <div class="coming-soon">more coming soon . . .</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-view" id="lesson-view">
+        <div class="lesson-header">
+            <button class="back-button" onclick="exitLesson()">←</button>
+            <div class="lesson-progress-bar">
+                <div class="lesson-progress-fill" id="lesson-progress-fill"></div>
+            </div>
+        </div>
+        <div class="question-container" id="question-container"></div>
+    </div>
+
+    <div class="lesson-view" id="report-view">
+        <div class="lesson-header">
+            <button class="back-button" onclick="exitReport()">←</button>
+            <div style="flex: 1; text-align: center;">
+                <h2 style="font-family: 'Fredoka', sans-serif; font-size: 20px; color: var(--text-dark); margin: 0;">🎓 Student Report</h2>
+            </div>
+        </div>
+        <div class="question-container" id="report-container">
+            <div style="text-align: center; padding: 40px 20px;">
+                <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                <p style="color: var(--text-light); font-size: 16px;">Loading report...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="lesson-view" id="student-notes-view">
+        <div class="lesson-header">
+            <button class="back-button" onclick="exitStudentNotes()">←</button>
+            <div style="flex: 1; text-align: center;">
+                <h2 style="font-family: 'Fredoka', sans-serif; font-size: 20px; color: var(--text-dark); margin: 0;">📝 Student Notes</h2>
+            </div>
+        </div>
+        <div style="width: 100%; height: calc(100vh - 84px); padding: 0;">
+            <iframe
+                src="https://docs.google.com/document/d/e/2PACX-1vS-z6xtkUTgGUUdMAdID9mj6KVicPynvOdLajn3PoZEGHR90H4VTTIvQSazriHG3gt7JlGFO4NBUgS5/pub?embedded=true"
+                style="width: 100%; height: 100%; border: none;"
+                title="Student Notes">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        const lessons = [
+            { id: 1, category: 'animals', emoji: '🐨', name: 'Animals', completed: false, locked: false },
+            { id: 2, category: 'food', emoji: '🍎', name: 'Food', completed: false, locked: false },
+            { id: 3, category: 'colors', emoji: '🎨', name: 'Colors', completed: false, locked: false },
+            { id: 4, category: 'family', emoji: '👨‍👩‍👧‍👦', name: 'Family', completed: false, locked: true },
+            { id: 5, category: 'clothes', emoji: '👔', name: 'Clothes', completed: false, locked: true },
+            { id: 6, category: 'numbers', emoji: '🔢', name: 'Numbers', completed: false, locked: true },
+            { id: 7, category: 'transport', emoji: '🚌', name: 'Transport', completed: false, locked: true },
+            { id: 8, category: 'emotions', emoji: '😊', name: 'Emotions', completed: false, locked: true }
+        ];
+
+        const lessonContent = {
+            animals: {
+                vocabulary: [
+                    { emoji: '🐕', word: 'dog', translation: 'a common pet that barks' },
+                    { emoji: '🐈', word: 'cat', translation: 'a small furry pet that meows' },
+                    { emoji: '🐘', word: 'elephant', translation: 'a large animal with a trunk' },
+                    { emoji: '🦁', word: 'lion', translation: 'the king of the jungle' },
+                    { emoji: '🐯', word: 'tiger', translation: 'a large striped wild cat' },
+                    { emoji: '🐼', word: 'panda', translation: 'a black and white bear' },
+                    { emoji: '🐦', word: 'bird', translation: 'an animal that can fly' },
+                    { emoji: '🐟', word: 'fish', translation: 'an animal that lives in water' }
+                ],
+                conversations: [
+                    { text: 'Do you have any pets?', translation: 'Asking about someone\'s animals' },
+                    { text: 'I have a dog named Max.', translation: 'Telling about your pet' },
+                    { text: 'My cat loves to sleep.', translation: 'Describing your pet\'s behavior' },
+                    { text: 'What\'s your favorite animal?', translation: 'Asking about preferences' },
+                    { text: 'I saw a lion at the zoo.', translation: 'Talking about past experiences' }
+                ],
+                questions: [
+                    { text: 'What animals can you see in a zoo?', translation: 'Common zoo animals' },
+                    { text: 'Which animal is your favorite and why?', translation: 'Personal preferences' },
+                    { text: 'Do you prefer cats or dogs?', translation: 'Comparing animals' },
+                    { text: 'Have you ever seen wild animals?', translation: 'Past experiences' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'Dogs are better pets than cats.' },
+                    { icon: '👎', text: 'Wild animals should live in zoos.' },
+                    { icon: '👍', text: 'Everyone should have a pet.' },
+                    { icon: '👎', text: 'Birds make good pets.' }
+                ],
+                collocations: [
+                    { phrase: 'wild animal', example: 'Lions are wild animals that live in Africa.' },
+                    { phrase: 'pet dog', example: 'I take my pet dog for a walk every day.' },
+                    { phrase: 'feed the cat', example: 'Don\'t forget to feed the cat in the morning.' },
+                    { phrase: 'endangered species', example: 'Pandas are an endangered species.' },
+                    { phrase: 'animal shelter', example: 'We adopted our dog from an animal shelter.' }
+                ],
+                quote: '"Until one has loved an animal, a part of one\'s soul remains unawakened." - Anatole France'
+            },
+            food: {
+                vocabulary: [
+                    { emoji: '🍎', word: 'apple', translation: 'a sweet red or green fruit' },
+                    { emoji: '🍌', word: 'banana', translation: 'a long yellow fruit' },
+                    { emoji: '🍞', word: 'bread', translation: 'a basic food made from flour' },
+                    { emoji: '🥛', word: 'milk', translation: 'a white drink from cows' },
+                    { emoji: '🍕', word: 'pizza', translation: 'an Italian dish with cheese' },
+                    { emoji: '🍔', word: 'burger', translation: 'a sandwich with meat' },
+                    { emoji: '🍊', word: 'orange', translation: 'a citrus fruit' },
+                    { emoji: '🍇', word: 'grapes', translation: 'small round fruits in bunches' }
+                ],
+                conversations: [
+                    { text: 'What would you like to eat?', translation: 'Asking about food preferences' },
+                    { text: 'I\'m hungry. Let\'s get some pizza.', translation: 'Expressing hunger' },
+                    { text: 'Do you want an apple or a banana?', translation: 'Offering choices' },
+                    { text: 'I usually have bread and milk for breakfast.', translation: 'Talking about meals' },
+                    { text: 'This burger tastes delicious!', translation: 'Expressing enjoyment' }
+                ],
+                questions: [
+                    { text: 'What\'s your favorite food?', translation: 'Personal preferences' },
+                    { text: 'What do you usually eat for breakfast?', translation: 'Daily habits' },
+                    { text: 'Do you like fast food or healthy food?', translation: 'Food choices' },
+                    { text: 'Can you cook? What\'s your specialty?', translation: 'Cooking abilities' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'Pizza is the best food in the world.' },
+                    { icon: '👎', text: 'Eating fast food is always unhealthy.' },
+                    { icon: '👍', text: 'Breakfast is the most important meal.' },
+                    { icon: '👎', text: 'Fruits are better than vegetables.' }
+                ],
+                collocations: [
+                    { phrase: 'fresh fruit', example: 'I buy fresh fruit at the market every week.' },
+                    { phrase: 'healthy diet', example: 'A healthy diet includes vegetables and fruits.' },
+                    { phrase: 'fast food', example: 'Eating too much fast food is bad for you.' },
+                    { phrase: 'home-cooked meal', example: 'I prefer a home-cooked meal to restaurant food.' },
+                    { phrase: 'grab a bite', example: 'Let\'s grab a bite to eat before the movie.' }
+                ],
+                quote: '"One cannot think well, love well, sleep well, if one has not dined well." - Virginia Woolf'
+            },
+            colors: {
+                vocabulary: [
+                    { emoji: '🔴', word: 'red', translation: 'the color of blood' },
+                    { emoji: '🔵', word: 'blue', translation: 'the color of the sky' },
+                    { emoji: '🟢', word: 'green', translation: 'the color of grass' },
+                    { emoji: '🟡', word: 'yellow', translation: 'the color of the sun' },
+                    { emoji: '🟠', word: 'orange', translation: 'a mix of red and yellow' },
+                    { emoji: '🟣', word: 'purple', translation: 'a mix of red and blue' },
+                    { emoji: '⚫', word: 'black', translation: 'the darkest color' },
+                    { emoji: '⚪', word: 'white', translation: 'the lightest color' }
+                ],
+                conversations: [
+                    { text: 'What\'s your favorite color?', translation: 'Asking about preferences' },
+                    { text: 'I love the blue sky today.', translation: 'Describing nature' },
+                    { text: 'That red dress looks beautiful on you.', translation: 'Giving compliments' },
+                    { text: 'The green grass smells fresh.', translation: 'Describing sensations' },
+                    { text: 'Can I have the yellow one, please?', translation: 'Making requests' }
+                ],
+                questions: [
+                    { text: 'What color is your bedroom?', translation: 'Describing places' },
+                    { text: 'Which colors go well together?', translation: 'Color combinations' },
+                    { text: 'Do you prefer bright or dark colors?', translation: 'Personal style' },
+                    { text: 'What does your favorite color say about you?', translation: 'Color psychology' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'Blue is the most calming color.' },
+                    { icon: '👎', text: 'Black and white are not real colors.' },
+                    { icon: '👍', text: 'Bright colors make people happy.' },
+                    { icon: '👎', text: 'Everyone should wear colorful clothes.' }
+                ],
+                collocations: [
+                    { phrase: 'bright colors', example: 'She loves wearing bright colors like yellow and pink.' },
+                    { phrase: 'dark blue', example: 'The ocean looks dark blue today.' },
+                    { phrase: 'go red', example: 'His face went red when he was embarrassed.' },
+                    { phrase: 'true colors', example: 'The competition showed everyone\'s true colors.' },
+                    { phrase: 'black and white', example: 'The answer isn\'t black and white; it\'s complicated.' }
+                ],
+                quote: '"Colors are the smiles of nature." - Leigh Hunt'
+            },
+            family: {
+                vocabulary: [
+                    { emoji: '👨', word: 'father', translation: 'male parent' },
+                    { emoji: '👩', word: 'mother', translation: 'female parent' },
+                    { emoji: '👦', word: 'son', translation: 'male child' },
+                    { emoji: '👧', word: 'daughter', translation: 'female child' },
+                    { emoji: '👴', word: 'grandfather', translation: 'father\'s or mother\'s father' },
+                    { emoji: '👵', word: 'grandmother', translation: 'father\'s or mother\'s mother' },
+                    { emoji: '👫', word: 'siblings', translation: 'brothers and sisters' },
+                    { emoji: '👨‍👩‍👧‍👦', word: 'family', translation: 'group of related people' }
+                ],
+                conversations: [
+                    { text: 'How many people are in your family?', translation: 'Asking about family size' },
+                    { text: 'I live with my parents and two brothers.', translation: 'Describing household' },
+                    { text: 'My grandmother tells the best stories.', translation: 'Talking about relatives' },
+                    { text: 'Do you have any siblings?', translation: 'Asking about brothers/sisters' },
+                    { text: 'We have a big family gathering every Sunday.', translation: 'Family traditions' }
+                ],
+                questions: [
+                    { text: 'How often do you see your extended family?', translation: 'Family relationships' },
+                    { text: 'Who do you look like in your family?', translation: 'Physical resemblance' },
+                    { text: 'What\'s your favorite family tradition?', translation: 'Cultural practices' },
+                    { text: 'Are you close to your siblings?', translation: 'Relationships' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'Family is more important than friends.' },
+                    { icon: '👎', text: 'Children should always live with their parents.' },
+                    { icon: '👍', text: 'Grandparents play an important role in raising children.' },
+                    { icon: '👎', text: 'Small families are better than big families.' }
+                ],
+                collocations: [
+                    { phrase: 'nuclear family', example: 'A nuclear family consists of parents and children.' },
+                    { phrase: 'extended family', example: 'My extended family includes aunts, uncles, and cousins.' },
+                    { phrase: 'family reunion', example: 'We have a family reunion every summer.' },
+                    { phrase: 'close-knit family', example: 'We are a close-knit family who supports each other.' },
+                    { phrase: 'family ties', example: 'Strong family ties are important for happiness.' }
+                ],
+                quote: '"Family is not an important thing. It\'s everything." - Michael J. Fox'
+            },
+            clothes: {
+                vocabulary: [
+                    { emoji: '👔', word: 'tie', translation: 'formal neckwear' },
+                    { emoji: '👕', word: 'shirt', translation: 'upper body clothing' },
+                    { emoji: '👖', word: 'pants', translation: 'leg covering' },
+                    { emoji: '👗', word: 'dress', translation: 'one-piece garment' },
+                    { emoji: '👟', word: 'shoes', translation: 'foot covering' },
+                    { emoji: '🧥', word: 'jacket', translation: 'outer layer' },
+                    { emoji: '🧢', word: 'cap', translation: 'head covering' },
+                    { emoji: '🧦', word: 'socks', translation: 'foot garments' }
+                ],
+                conversations: [
+                    { text: 'What are you wearing today?', translation: 'Asking about outfit' },
+                    { text: 'I need to buy a new jacket for winter.', translation: 'Shopping plans' },
+                    { text: 'That dress looks great on you!', translation: 'Giving compliments' },
+                    { text: 'Do these shoes match my shirt?', translation: 'Asking for fashion advice' },
+                    { text: 'I prefer casual clothes to formal wear.', translation: 'Expressing preferences' }
+                ],
+                questions: [
+                    { text: 'What\'s your favorite outfit?', translation: 'Personal style' },
+                    { text: 'How often do you buy new clothes?', translation: 'Shopping habits' },
+                    { text: 'Do you follow fashion trends?', translation: 'Fashion interest' },
+                    { text: 'What do you wear to special occasions?', translation: 'Formal wear' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'Comfortable clothes are better than fashionable ones.' },
+                    { icon: '👎', text: 'Everyone should wear uniforms to work.' },
+                    { icon: '👍', text: 'Expensive clothes are always better quality.' },
+                    { icon: '👎', text: 'Fashion is a waste of money.' }
+                ],
+                collocations: [
+                    { phrase: 'get dressed', example: 'I get dressed quickly in the morning.' },
+                    { phrase: 'dress code', example: 'Our office has a formal dress code.' },
+                    { phrase: 'try on', example: 'Can I try on these pants?' },
+                    { phrase: 'casual wear', example: 'Friday is casual wear day at our company.' },
+                    { phrase: 'matching outfit', example: 'She always wears a matching outfit.' }
+                ],
+                quote: '"Fashion is about dressing according to what\'s fashionable. Style is more about being yourself." - Oscar de la Renta'
+            },
+            numbers: {
+                vocabulary: [
+                    { emoji: '1️⃣', word: 'one', translation: 'first number' },
+                    { emoji: '2️⃣', word: 'two', translation: 'second number' },
+                    { emoji: '3️⃣', word: 'three', translation: 'third number' },
+                    { emoji: '4️⃣', word: 'four', translation: 'fourth number' },
+                    { emoji: '5️⃣', word: 'five', translation: 'fifth number' },
+                    { emoji: '🔟', word: 'ten', translation: 'one zero' },
+                    { emoji: '💯', word: 'hundred', translation: 'ten times ten' },
+                    { emoji: '🔢', word: 'numbers', translation: 'counting symbols' }
+                ],
+                conversations: [
+                    { text: 'What\'s your phone number?', translation: 'Asking for contact info' },
+                    { text: 'I have three brothers and two sisters.', translation: 'Describing quantity' },
+                    { text: 'The test is on page ten.', translation: 'Giving locations' },
+                    { text: 'How much does this cost?', translation: 'Asking about price' },
+                    { text: 'I need five apples, please.', translation: 'Making requests' }
+                ],
+                questions: [
+                    { text: 'What\'s your favorite number?', translation: 'Personal preferences' },
+                    { text: 'How many languages can you speak?', translation: 'Abilities' },
+                    { text: 'What time do you wake up?', translation: 'Daily routine' },
+                    { text: 'How old are you?', translation: 'Age question' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'Math is important in everyday life.' },
+                    { icon: '👎', text: 'Lucky numbers really affect your life.' },
+                    { icon: '👍', text: 'Everyone should be good at counting.' },
+                    { icon: '👎', text: 'Calculators make people bad at math.' }
+                ],
+                collocations: [
+                    { phrase: 'phone number', example: 'Can you give me your phone number?' },
+                    { phrase: 'round number', example: 'Let\'s make it a round number, like 100.' },
+                    { phrase: 'lucky number', example: 'Seven is my lucky number.' },
+                    { phrase: 'even number', example: 'Two, four, and six are even numbers.' },
+                    { phrase: 'count to ten', example: 'Count to ten before you get angry.' }
+                ],
+                quote: '"Numbers have life; they\'re not just symbols on paper." - Shakuntala Devi'
+            },
+            transport: {
+                vocabulary: [
+                    { emoji: '🚗', word: 'car', translation: 'personal vehicle' },
+                    { emoji: '🚌', word: 'bus', translation: 'public transport vehicle' },
+                    { emoji: '🚂', word: 'train', translation: 'rail transport' },
+                    { emoji: '✈️', word: 'plane', translation: 'air transport' },
+                    { emoji: '🚲', word: 'bicycle', translation: 'two-wheeled vehicle' },
+                    { emoji: '🚕', word: 'taxi', translation: 'hired car' },
+                    { emoji: '🚢', word: 'ship', translation: 'water transport' },
+                    { emoji: '🏍️', word: 'motorcycle', translation: 'motorized bike' }
+                ],
+                conversations: [
+                    { text: 'How do you get to work?', translation: 'Asking about commute' },
+                    { text: 'I take the bus every morning.', translation: 'Describing routine' },
+                    { text: 'The train is faster than the bus.', translation: 'Making comparisons' },
+                    { text: 'Have you ever flown in a plane?', translation: 'Past experiences' },
+                    { text: 'Let\'s take a taxi to the airport.', translation: 'Making suggestions' }
+                ],
+                questions: [
+                    { text: 'What\'s your preferred mode of transportation?', translation: 'Travel preferences' },
+                    { text: 'Do you know how to drive?', translation: 'Abilities' },
+                    { text: 'Have you ever traveled by train?', translation: 'Experiences' },
+                    { text: 'Is public transport good in your city?', translation: 'Local infrastructure' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'Public transport is better than private cars.' },
+                    { icon: '👎', text: 'Everyone should own a car.' },
+                    { icon: '👍', text: 'Bicycles are the best way to travel in cities.' },
+                    { icon: '👎', text: 'Flying is safer than driving.' }
+                ],
+                collocations: [
+                    { phrase: 'catch a bus', example: 'I need to catch a bus at 8 AM.' },
+                    { phrase: 'miss the train', example: 'Hurry up or we\'ll miss the train!' },
+                    { phrase: 'heavy traffic', example: 'There\'s always heavy traffic during rush hour.' },
+                    { phrase: 'public transport', example: 'Public transport is cheap and convenient.' },
+                    { phrase: 'take a taxi', example: 'Let\'s take a taxi home tonight.' }
+                ],
+                quote: '"Life is a journey, not a destination." - Ralph Waldo Emerson'
+            },
+            emotions: {
+                vocabulary: [
+                    { emoji: '😊', word: 'happy', translation: 'feeling joy' },
+                    { emoji: '😢', word: 'sad', translation: 'feeling sorrow' },
+                    { emoji: '😠', word: 'angry', translation: 'feeling mad' },
+                    { emoji: '😨', word: 'scared', translation: 'feeling fear' },
+                    { emoji: '😴', word: 'tired', translation: 'needing rest' },
+                    { emoji: '😍', word: 'love', translation: 'deep affection' },
+                    { emoji: '😰', word: 'worried', translation: 'feeling anxious' },
+                    { emoji: '😎', word: 'confident', translation: 'feeling sure' }
+                ],
+                conversations: [
+                    { text: 'How are you feeling today?', translation: 'Asking about emotions' },
+                    { text: 'I\'m so happy to see you!', translation: 'Expressing joy' },
+                    { text: 'Don\'t be sad, everything will be okay.', translation: 'Comforting someone' },
+                    { text: 'What makes you angry?', translation: 'Asking about triggers' },
+                    { text: 'I feel tired after a long day.', translation: 'Describing state' }
+                ],
+                questions: [
+                    { text: 'What makes you happy?', translation: 'Positive emotions' },
+                    { text: 'How do you deal with stress?', translation: 'Coping mechanisms' },
+                    { text: 'Are you an emotional person?', translation: 'Personality' },
+                    { text: 'What was the happiest day of your life?', translation: 'Memories' }
+                ],
+                agreeDisagree: [
+                    { icon: '👍', text: 'It\'s okay to cry when you\'re sad.' },
+                    { icon: '👎', text: 'Men shouldn\'t show their emotions.' },
+                    { icon: '👍', text: 'Talking about feelings is important.' },
+                    { icon: '👎', text: 'Happy people are always successful.' }
+                ],
+                collocations: [
+                    { phrase: 'deeply moved', example: 'I was deeply moved by the story.' },
+                    { phrase: 'burst into tears', example: 'She burst into tears when she heard the news.' },
+                    { phrase: 'lose your temper', example: 'Try not to lose your temper with the children.' },
+                    { phrase: 'mixed feelings', example: 'I have mixed feelings about moving abroad.' },
+                    { phrase: 'emotional support', example: 'Friends provide emotional support during hard times.' }
+                ],
+                quote: '"The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart." - Helen Keller'
+            }
+        };
+
+        let progressData = {
+            lessons: [],
+            streak: 0
+        };
+
+        let currentLesson = null;
+        let currentSection = 0;
+
+        // Dropdown menu functions
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.classList.toggle('active');
+        }
+
+        function handleLessonsClick() {
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.classList.remove('active');
+            // Scroll to lessons section
+            const lessonsGrid = document.getElementById('lessons-grid');
+            if (lessonsGrid) {
+                lessonsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function handleStudentReportClick() {
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.classList.remove('active');
+            loadStudentReport();
+        }
+
+        function loadStudentReport() {
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('report-view').classList.add('active');
+
+            const reportContainer = document.getElementById('report-container');
+
+            // GitHub raw URL
+            const markdownUrl = 'https://raw.githubusercontent.com/englishtraininghub/englishtraininghub.github.io/LoginToYourDashboard/Students/SampleStudent/Report.md';
+
+            fetch(markdownUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load report');
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    const html = marked.parse(markdown);
+                    reportContainer.innerHTML = `<div class="markdown-content">${html}</div>`;
+                })
+                .catch(error => {
+                    reportContainer.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
+                            <h3 style="color: var(--error-red); font-family: 'Fredoka', sans-serif; margin-bottom: 12px;">Failed to Load Report</h3>
+                            <p style="color: var(--text-light); font-size: 16px; margin-bottom: 24px;">${error.message}</p>
+                            <button onclick="loadStudentReport()" class="continue-button" style="margin-top: 0; max-width: 300px;">Try Again</button>
+                        </div>
+                    `;
+                });
+        }
+
+        function exitReport() {
+            document.getElementById('report-view').classList.remove('active');
+            document.getElementById('home-view').style.display = 'block';
+        }
+
+        function handleStudentNotesClick() {
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.classList.remove('active');
+            loadStudentNotes();
+        }
+
+        function loadStudentNotes() {
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('student-notes-view').classList.add('active');
+        }
+
+        function exitStudentNotes() {
+            document.getElementById('student-notes-view').classList.remove('active');
+            document.getElementById('home-view').style.display = 'block';
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdown-menu');
+            const logoIcon = event.target.closest('.logo-icon');
+
+            if (!logoIcon && dropdown && dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function loadProgress() {
+            if (progressData.lessons.length > 0) {
+                progressData.lessons.forEach((savedLesson, index) => {
+                    if (lessons[index]) {
+                        lessons[index].completed = savedLesson.completed;
+                        lessons[index].locked = savedLesson.locked;
+                    }
+                });
+                document.getElementById('streak-count').textContent = progressData.streak || 0;
+            }
+        }
+
+        function saveProgress() {
+            progressData.lessons = JSON.parse(JSON.stringify(lessons));
+        }
+
+        function renderLessons() {
+            const grid = document.getElementById('lessons-grid');
+            grid.innerHTML = '';
+
+            lessons.forEach((lesson) => {
+                const lessonItem = document.createElement('div');
+                lessonItem.className = 'lesson-item';
+
+                const lessonWrapper = document.createElement('div');
+                lessonWrapper.style.textAlign = 'center';
+
+                const button = document.createElement('button');
+                button.className = 'lesson-button';
+                button.setAttribute('data-category', lesson.category);
+                button.textContent = lesson.emoji;
+
+                if (lesson.completed) {
+                    button.classList.add('completed');
+                }
+
+                if (lesson.locked) {
+                    button.classList.add('locked');
+                }
+
+                button.addEventListener('click', () => handleLessonClick(lesson));
+
+                const label = document.createElement('div');
+                label.className = 'lesson-label';
+                label.textContent = lesson.name;
+
+                lessonWrapper.appendChild(button);
+                lessonWrapper.appendChild(label);
+                lessonItem.appendChild(lessonWrapper);
+                grid.appendChild(lessonItem);
+            });
+
+            updateProgress();
+        }
+
+        function handleLessonClick(lesson) {
+            if (lesson.locked) {
+                showCustomAlert('Lesson Locked', 'Complete the previous lessons to unlock this one!', '🔒');
+                return;
+            }
+
+            currentLesson = lesson;
+            currentSection = 0;
+            startLesson();
+        }
+
+        function startLesson() {
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('lesson-view').classList.add('active');
+            showLessonSection();
+        }
+
+        function exitLesson() {
+            document.getElementById('lesson-view').classList.remove('active');
+            document.getElementById('home-view').style.display = 'block';
+        }
+
+        function showLessonSection() {
+            const content = lessonContent[currentLesson.category];
+            if (!content) {
+                exitLesson();
+                return;
+            }
+
+            const sections = ['vocabulary', 'conversations', 'questions', 'agreeDisagree', 'collocations', 'quote'];
+            const totalSections = sections.length;
+            const progress = ((currentSection + 1) / totalSections) * 100;
+            document.getElementById('lesson-progress-fill').style.width = progress + '%';
+
+            const container = document.getElementById('question-container');
+            container.innerHTML = '';
+
+            const sectionType = sections[currentSection];
+
+            if (sectionType === 'vocabulary') {
+                renderVocabularySection(content, container);
+            } else if (sectionType === 'conversations') {
+                renderConversationsSection(content, container);
+            } else if (sectionType === 'questions') {
+                renderQuestionsSection(content, container);
+            } else if (sectionType === 'agreeDisagree') {
+                renderAgreeDisagreeSection(content, container);
+            } else if (sectionType === 'collocations') {
+                renderCollocationsSection(content, container);
+            } else if (sectionType === 'quote') {
+                renderQuoteSection(content, container);
+            }
+        }
+
+        function renderVocabularySection(content, container) {
+            const section = document.createElement('div');
+            section.className = 'vocab-section';
+
+            const title = document.createElement('h2');
+            title.className = 'section-title';
+            title.textContent = '📚 Vocabulary';
+            section.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'vocab-grid';
+
+            content.vocabulary.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.innerHTML = `
+                    <div class="vocab-emoji">${item.emoji}</div>
+                    <div class="vocab-word">${item.word}</div>
+                    <div class="vocab-translation">${item.translation}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            container.appendChild(section);
+
+            const button = document.createElement('button');
+            button.className = 'continue-button';
+            button.textContent = 'CONTINUE';
+            button.onclick = nextSection;
+            container.appendChild(button);
+        }
+
+        function renderConversationsSection(content, container) {
+            const section = document.createElement('div');
+            section.className = 'conversation-section';
+
+            const title = document.createElement('h2');
+            title.className = 'section-title';
+            title.textContent = '💬 Conversation Sentences';
+            section.appendChild(title);
+
+            content.conversations.forEach(item => {
+                const convItem = document.createElement('div');
+                convItem.className = 'conversation-item';
+                convItem.innerHTML = `
+                    <div class="conversation-text">${item.text}</div>
+                    <div class="conversation-translation">${item.translation}</div>
+                `;
+                section.appendChild(convItem);
+            });
+
+            container.appendChild(section);
+
+            const button = document.createElement('button');
+            button.className = 'continue-button';
+            button.textContent = 'CONTINUE';
+            button.onclick = nextSection;
+            container.appendChild(button);
+        }
+
+        function renderQuestionsSection(content, container) {
+            const section = document.createElement('div');
+            section.className = 'conversation-section';
+
+            const title = document.createElement('h2');
+            title.className = 'section-title';
+            title.textContent = '❓ Conversation Questions';
+            section.appendChild(title);
+
+            content.questions.forEach(item => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'conversation-item';
+                questionItem.innerHTML = `
+                    <div class="conversation-text">${item.text}</div>
+                    <div class="conversation-translation">${item.translation}</div>
+                `;
+                section.appendChild(questionItem);
+            });
+
+            container.appendChild(section);
+
+            const button = document.createElement('button');
+            button.className = 'continue-button';
+            button.textContent = 'CONTINUE';
+            button.onclick = nextSection;
+            container.appendChild(button);
+        }
+
+        function renderAgreeDisagreeSection(content, container) {
+            const section = document.createElement('div');
+            section.className = 'agree-disagree-section';
+
+            const title = document.createElement('h2');
+            title.className = 'section-title';
+            title.textContent = '🤔 Agree or Disagree';
+            section.appendChild(title);
+
+            content.agreeDisagree.forEach(item => {
+                const agreeItem = document.createElement('div');
+                agreeItem.className = 'agree-item';
+                agreeItem.innerHTML = `
+                    <div class="agree-icon">${item.icon}</div>
+                    <div class="agree-text">${item.text}</div>
+                `;
+                section.appendChild(agreeItem);
+            });
+
+            container.appendChild(section);
+
+            const button = document.createElement('button');
+            button.className = 'continue-button';
+            button.textContent = 'CONTINUE';
+            button.onclick = nextSection;
+            container.appendChild(button);
+        }
+
+        function renderCollocationsSection(content, container) {
+            const section = document.createElement('div');
+            section.className = 'collocations-section';
+
+            const title = document.createElement('h2');
+            title.className = 'section-title';
+            title.textContent = '🔗 Common Collocations';
+            section.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'collocation-grid';
+
+            content.collocations.forEach(item => {
+                const collItem = document.createElement('div');
+                collItem.className = 'collocation-item';
+                collItem.innerHTML = `
+                    <div class="collocation-phrase">${item.phrase}</div>
+                    <div class="collocation-example">${item.example}</div>
+                `;
+                grid.appendChild(collItem);
+            });
+
+            section.appendChild(grid);
+            container.appendChild(section);
+
+            const button = document.createElement('button');
+            button.className = 'continue-button';
+            button.textContent = 'CONTINUE';
+            button.onclick = nextSection;
+            container.appendChild(button);
+        }
+
+        function renderQuoteSection(content, container) {
+            const section = document.createElement('div');
+            section.className = 'quote-section';
+            section.innerHTML = `
+                <div class="quote-icon">✨</div>
+                <div class="quote-text">${content.quote}</div>
+            `;
+            container.appendChild(section);
+
+            const button = document.createElement('button');
+            button.className = 'continue-button';
+            button.textContent = 'COMPLETE LESSON';
+            button.onclick = completeLesson;
+            container.appendChild(button);
+        }
+
+        function nextSection() {
+            currentSection++;
+            showLessonSection();
+        }
+
+        function completeLesson() {
+            if (!currentLesson.completed) {
+                currentLesson.completed = true;
+
+                const nextLesson = lessons.find(l => l.id === currentLesson.id + 1);
+                if (nextLesson) {
+                    nextLesson.locked = false;
+                }
+
+                progressData.streak = progressData.streak + 1;
+                document.getElementById('streak-count').textContent = progressData.streak;
+
+                saveProgress();
+                renderLessons();
+                createConfetti();
+            }
+
+            exitLesson();
+            showCustomAlert('Lesson Complete!', 'Great job! You\'re making amazing progress.', '🎉');
+        }
+
+        function updateProgress() {
+            const completed = lessons.filter(l => l.completed).length;
+            const total = lessons.length;
+            const percentage = Math.round((completed / total) * 100);
+
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = percentage + '%';
+        }
+
+        function createConfetti() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#FFD93D', '#6C5CE7'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.animation = 'confettiFall 3s linear';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        function showCustomAlert(title, message, icon) {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);';
+
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 24px; padding: 40px 32px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalSlideIn 0.3s ease-out;">
+                    <div style="font-size: 80px; margin-bottom: 20px;">${icon}</div>
+                    <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; color: #1B5E7F; margin-bottom: 12px;">${title}</h2>
+                    <p style="color: #636E72; font-size: 16px; margin-bottom: 24px;">${message}</p>
+                    <button onclick="this.closest('div[style*=fixed]').remove()" style="background: linear-gradient(135deg, #00D084, #00F5A0); color: white; border: none; padding: 16px 40px; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif;">Continue</button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            modal.onclick = (e) => {
+                if (e.target === modal) modal.remove();
+            };
+        }
+
+        function goHome() {
+            exitLesson();
+            exitReport();
+            exitStudentNotes();
+        }
+
+        const style = document.createElement('style');
+        style.textContent = '@keyframes confettiFall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } } @keyframes modalSlideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }';
+        document.head.appendChild(style);
+
+        loadProgress();
+        renderLessons();
+    </script>
+</body>
+</html>
