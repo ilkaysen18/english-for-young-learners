@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English for Advanced Fluency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F1',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+
+    body {
+        font-family: 'Space Grotesk', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    /* Lesson card hover effect */
+    .lesson-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .lesson-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .lesson-card:hover::before {
+        opacity: 1;
+    }
+    .lesson-card > div {
+        position: relative;
+        z-index: 1;
+    }
+    .lesson-card:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Vocabulary fade-in animation with stagger */
+    .vocab-item {
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+    }
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Smooth transition for dark mode elements */
+    .transition-colors {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Custom gradient backgrounds */
+    .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .content-card {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .dark .content-card {
+        background: rgba(31, 41, 55, 0.95);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    /* Animated header */
+    header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: moveGrid 20s linear infinite;
+    }
+
+    @keyframes moveGrid {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
+    }
+
+    .section-icon {
+        display: inline-block;
+        font-size: 1.75rem;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    /* Question and statement hover effects */
+    .interactive-item {
+        transition: all 0.2s ease;
+        cursor: default;
+    }
+
+    .interactive-item:hover {
+        transform: translateX(4px);
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+    }
+
+    /* Back button */
+    .back-btn {
+        transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+        transform: translateX(-4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    </style>
+</head>
+<body class="text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div class="min-h-screen pb-12">
+        <!-- Header -->
+        <header class="text-white shadow-2xl relative">
+            <div class="container mx-auto px-4 py-8 md:py-12 relative z-10">
+                <h1 class="text-4xl md:text-5xl font-bold text-center mb-3" style="text-shadow: 0 4px 12px rgba(0,0,0,0.3);">🎓 English for Advanced Fluency</h1>
+                <p class="text-center text-lg md:text-xl opacity-95" style="text-shadow: 0 2px 4px rgba(0,0,0,0.2);">20 Lessons for B2 Learners</p>
+            </div>
+        </header>
+
+        <div class="container mx-auto px-4 py-8 md:py-12">
+            <!-- Lesson Selection -->
+            <div id="lessonSelection">
+                <div class="content-card rounded-2xl shadow-2xl p-6 md:p-8 mb-8">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Choose a Lesson:</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <!-- Lesson buttons will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson Content -->
+            <div id="lessonContent" class="hidden">
+                <button onclick="showLessonSelection()" class="back-btn mb-6 px-6 py-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl shadow-lg transition-colors font-semibold text-gray-700 dark:text-gray-200">
+                    ← Back to Lessons
+                </button>
+
+                <div class="content-card rounded-2xl shadow-2xl p-6 md:p-8 mb-6">
+                    <h2 id="lessonTitle" class="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent"></h2>
+                    <p id="lessonSubtitle" class="text-lg text-gray-600 dark:text-gray-400"></p>
+                </div>
+
+                <!-- Vocabulary Section -->
+                <div class="content-card rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 flex items-center text-gray-800 dark:text-gray-100">
+                        <span class="section-icon mr-3">📚</span> Key Vocabulary
+                    </h3>
+                    <div id="vocabularyList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Vocabulary items will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Conversational Questions -->
+                <div class="content-card rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 flex items-center text-gray-800 dark:text-gray-100">
+                        <span class="section-icon mr-3">💬</span> Discussion Questions
+                    </h3>
+                    <div id="questionsList" class="space-y-3">
+                        <!-- Questions will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Agree/Disagree Statements -->
+                <div class="content-card rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 flex items-center text-gray-800 dark:text-gray-100">
+                        <span class="section-icon mr-3">⚖️</span> Agree or Disagree
+                    </h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-5">Express your opinion and justify your position.</p>
+                    <div id="statementsList" class="space-y-3">
+                        <!-- Statements will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Reading Passage -->
+                <div class="content-card rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 flex items-center text-gray-800 dark:text-gray-100">
+                        <span class="section-icon mr-3">📖</span> Reading Passage
+                    </h3>
+                    <div id="articleContent" class="prose dark:prose-invert max-w-none">
+                        <!-- Article will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode setup
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Lesson data
+        const lessons = [
+            {
+                id: 1,
+                title: "Globalization and Trade",
+                subtitle: "The Connected World Economy",
+                vocabulary: [
+                    { word: "interdependence", def: "mutual reliance between countries or entities" },
+                    { word: "outsourcing", def: "contracting work to external organizations, often abroad" },
+                    { word: "tariff", def: "a tax on imported or exported goods" },
+                    { word: "multinational", def: "a company operating in several countries" },
+                    { word: "supply chain", def: "the network between a company and its suppliers" },
+                    { word: "protectionism", def: "shielding domestic industries from foreign competition" },
+                    { word: "trade deficit", def: "when imports exceed exports" },
+                    { word: "economic integration", def: "the unification of economic policies between regions" }
+                ],
+                questions: [
+                    "How has globalization affected your country's economy?",
+                    "What are the main advantages and disadvantages of free trade?",
+                    "Should countries prioritize domestic production or global competition?",
+                    "How do multinational corporations influence local cultures?",
+                    "What role should governments play in regulating international trade?"
+                ],
+                statements: [
+                    "Globalization has created more winners than losers.",
+                    "Countries should protect their domestic industries even if it means higher prices.",
+                    "Multinational corporations have too much power over governments.",
+                    "Free trade agreements benefit wealthy nations more than developing ones.",
+                    "Economic interdependence reduces the likelihood of international conflicts."
+                ],
+                article: {
+                    title: "The Shifting Landscape of Global Trade",
+                    content: "The nature of international trade has undergone dramatic transformation in recent decades. While globalization initially promised prosperity through interconnected markets, recent years have witnessed a resurgence of protectionist policies. The COVID-19 pandemic exposed vulnerabilities in global supply chains, prompting many nations to reconsider their dependence on foreign manufacturing. Simultaneously, geopolitical tensions have led to strategic decoupling in critical sectors like technology and pharmaceuticals. Economists debate whether this trend represents a temporary adjustment or a fundamental shift toward regional trade blocs. Meanwhile, developing nations continue to leverage global trade as a pathway to economic development, though concerns about equitable distribution of benefits persist. The challenge moving forward lies in balancing the efficiency gains of globalization with the need for economic resilience and sovereignty."
+                }
+            },
+            {
+                id: 2,
+                title: "Privacy in the Digital Age",
+                subtitle: "Data, Surveillance, and Personal Rights",
+                vocabulary: [
+                    { word: "surveillance", def: "close observation, especially by authorities" },
+                    { word: "encryption", def: "converting information into code to prevent unauthorized access" },
+                    { word: "data breach", def: "unauthorized access to confidential information" },
+                    { word: "anonymity", def: "the state of being unidentified" },
+                    { word: "metadata", def: "data that provides information about other data" },
+                    { word: "biometric", def: "relating to automated recognition of individuals based on biological traits" },
+                    { word: "consent", def: "permission for something to happen or agreement to do something" },
+                    { word: "transparency", def: "openness and accountability in operations" }
+                ],
+                questions: [
+                    "How much privacy are you willing to sacrifice for convenience?",
+                    "Should governments have access to encrypted communications for security purposes?",
+                    "What responsibilities do tech companies have regarding user data?",
+                    "How has social media changed our expectations of privacy?",
+                    "Do you read privacy policies before accepting them? Why or why not?"
+                ],
+                statements: [
+                    "Privacy is a fundamental human right that should never be compromised.",
+                    "People who have nothing to hide shouldn't worry about surveillance.",
+                    "Social media companies exploit users' personal data unethically.",
+                    "The benefits of personalized online experiences outweigh privacy concerns.",
+                    "Governments should regulate how companies collect and use personal data."
+                ],
+                article: {
+                    title: "The Privacy Paradox: Convenience vs. Control",
+                    content: "Modern consumers face an unprecedented dilemma: they express deep concerns about privacy yet willingly share vast amounts of personal information for minor conveniences. This 'privacy paradox' reveals the complex relationship between technology users and data collection. While 87% of people in recent surveys claim privacy is important to them, behavioral data shows they rarely take protective measures. Tech companies have capitalized on this disconnect, designing consent mechanisms that obscure the true extent of data collection. Meanwhile, regulatory frameworks like GDPR in Europe attempt to shift power back to individuals, though implementation remains challenging. The emergence of biometric authentication, facial recognition, and AI-powered analytics has intensified these concerns. Privacy advocates argue for 'privacy by design' principles, where data protection is built into systems from inception rather than added as an afterthought. As technology continues evolving, society must navigate the tension between innovation, security, and individual autonomy."
+                }
+            },
+            {
+                id: 3,
+                title: "Work-Life Integration",
+                subtitle: "Redefining Professional Boundaries",
+                vocabulary: [
+                    { word: "burnout", def: "physical or mental collapse caused by overwork or stress" },
+                    { word: "flexibility", def: "the ability to adapt to different circumstances" },
+                    { word: "productivity", def: "the effectiveness of productive effort" },
+                    { word: "boundaries", def: "limits that define acceptable behavior or interactions" },
+                    { word: "downtime", def: "time when one is not working or active" },
+                    { word: "sabbatical", def: "a period of paid leave for study or travel" },
+                    { word: "presenteeism", def: "being present at work but not fully productive" },
+                    { word: "compartmentalize", def: "to separate into distinct categories or sections" }
+                ],
+                questions: [
+                    "How do you maintain boundaries between work and personal life?",
+                    "Has remote work improved or worsened work-life balance?",
+                    "What does an ideal work schedule look like to you?",
+                    "Should employees be expected to respond to work messages outside office hours?",
+                    "How important is career success compared to personal fulfillment?"
+                ],
+                statements: [
+                    "The traditional 40-hour work week is outdated and should be reduced.",
+                    "Complete separation between work and personal life is impossible in modern careers.",
+                    "Employers should offer mandatory vacation time to prevent burnout.",
+                    "Working long hours demonstrates commitment and should be rewarded.",
+                    "Technology has made it harder to disconnect from work."
+                ],
+                article: {
+                    title: "Beyond Balance: The Work-Life Integration Movement",
+                    content: "The concept of 'work-life balance' increasingly feels like an antiquated notion in today's fluid professional landscape. Progressive organizations now speak of 'work-life integration,' acknowledging that rigid separation between professional and personal spheres may be neither achievable nor desirable. This paradigm shift recognizes that knowledge workers often think about problems during personal time and handle personal matters during work hours. The key distinction lies in control: employees should determine when and how these spheres intersect. However, this flexibility has a dark side. Without clear boundaries, work can colonize all available time, leading to chronic stress and burnout. The 'right to disconnect' has become a labor issue in several countries, with France pioneering legislation protecting after-hours communication. Meanwhile, the four-day work week gains traction as trials demonstrate maintained productivity with improved well-being. The future may not involve perfect balance but rather intentional integration that honors both professional aspirations and human needs for rest, connection, and meaning beyond work."
+                }
+            },
+            {
+                id: 4,
+                title: "Innovation and Entrepreneurship",
+                subtitle: "Creating Value in Uncertain Markets",
+                vocabulary: [
+                    { word: "disruptive", def: "causing radical change to an existing industry or market" },
+                    { word: "scalability", def: "the capacity to grow and manage increased demand" },
+                    { word: "venture capital", def: "financing provided to startups with high growth potential" },
+                    { word: "iteration", def: "repetition of a process to refine or improve outcomes" },
+                    { word: "pivot", def: "a fundamental change in business strategy" },
+                    { word: "intellectual property", def: "creations of the mind protected by law" },
+                    { word: "market saturation", def: "when a market is no longer generating new demand" },
+                    { word: "value proposition", def: "the unique benefit a product or service provides" }
+                ],
+                questions: [
+                    "What characteristics make a successful entrepreneur?",
+                    "Is innovation more important than execution in business?",
+                    "Should governments provide more support for startups and small businesses?",
+                    "How has technology lowered barriers to entrepreneurship?",
+                    "What role does failure play in entrepreneurial success?"
+                ],
+                statements: [
+                    "Anyone can become an entrepreneur with the right mindset and resources.",
+                    "Innovation requires taking significant risks that most people cannot afford.",
+                    "Large corporations stifle innovation more than they promote it.",
+                    "The entrepreneurial culture glorifies overwork and ignores work-life balance.",
+                    "Social entrepreneurship is more valuable than profit-driven business."
+                ],
+                article: {
+                    title: "The Democratization of Innovation",
+                    content: "The barriers to entrepreneurship have never been lower, yet success remains elusive for most. Cloud computing, social media marketing, and accessible development tools enable individuals to launch ventures from their bedrooms. This democratization has spawned a generation of founders, but it has also created saturated markets where differentiation proves challenging. The venture capital model, which prioritizes rapid growth over sustainable profitability, has shaped startup culture in ways both beneficial and problematic. While it enables ambitious projects that might otherwise never receive funding, it also pressures entrepreneurs into growth trajectories that may not align with long-term viability or social good. Meanwhile, innovation increasingly comes not just from Silicon Valley but from emerging markets solving local problems with global applications. The COVID-19 pandemic accelerated digital transformation across industries, creating opportunities while simultaneously intensifying competition. Tomorrow's successful entrepreneurs will likely need to balance technological sophistication with emotional intelligence, ethical considerations with profit motives, and global ambitions with local impact."
+                }
+            },
+            {
+                id: 5,
+                title: "Cultural Identity and Immigration",
+                subtitle: "Belonging in a Globalized World",
+                vocabulary: [
+                    { word: "assimilation", def: "the process of adapting to a new culture" },
+                    { word: "diaspora", def: "a scattered population with common origin in a smaller area" },
+                    { word: "multiculturalism", def: "the coexistence of diverse cultures within a society" },
+                    { word: "xenophobia", def: "fear or hatred of foreigners or strangers" },
+                    { word: "integration", def: "the process of combining or being incorporated into a group" },
+                    { word: "heritage", def: "valued traditions passed down through generations" },
+                    { word: "cosmopolitan", def: "familiar with and at ease in many different cultures" },
+                    { word: "cultural preservation", def: "protecting traditional practices and values from disappearing" }
+                ],
+                questions: [
+                    "How does immigration enrich or challenge a society?",
+                    "Should immigrants be expected to fully adopt their new country's culture?",
+                    "How do you maintain cultural identity while adapting to a new environment?",
+                    "What responsibilities do host countries have toward immigrants?",
+                    "How has globalization affected traditional cultural practices?"
+                ],
+                statements: [
+                    "Immigrants should prioritize integration over preserving their original culture.",
+                    "Multiculturalism strengthens societies more than it divides them.",
+                    "National borders should be more open to allow free movement of people.",
+                    "Cultural identity becomes less important in an increasingly connected world.",
+                    "Immigration policies should prioritize skilled workers over family reunification."
+                ],
+                article: {
+                    title: "Hyphenated Identities: The Third Culture Experience",
+                    content: "The children of immigrants and global migrants increasingly identify with a cultural experience that defies simple categorization. These 'third culture' individuals navigate multiple cultural frameworks simultaneously, developing hybrid identities that draw from multiple sources. While previous generations faced pressure to choose between old and new cultural affiliations, contemporary discourse increasingly embraces multiplicity. However, this fluidity can bring challenges: feelings of belonging nowhere fully, difficulty relating to monocultural peers, and complex negotiations around language, traditions, and values. Research suggests that navigating multiple cultures develops cognitive flexibility and creative problem-solving abilities, yet it can also generate identity confusion and social isolation. Immigration policy debates often miss this nuanced reality, framing integration as a linear process rather than ongoing negotiation. As global mobility increases and digital technologies enable sustained connections across distances, cultural identity becomes less about geography and more about personal synthesis. The question shifts from 'where are you from?' to 'how do you define yourself?' In this context, cultural preservation and evolution are not opposing forces but complementary aspects of living heritage."
+                }
+            },
+            {
+                id: 6,
+                title: "Mental Health Awareness",
+                subtitle: "Breaking the Stigma",
+                vocabulary: [
+                    { word: "stigma", def: "a mark of disgrace associated with a particular circumstance or quality" },
+                    { word: "resilience", def: "the capacity to recover quickly from difficulties" },
+                    { word: "mindfulness", def: "the practice of being present and fully engaged with the current moment" },
+                    { word: "therapy", def: "treatment intended to relieve or heal a disorder" },
+                    { word: "anxiety", def: "a feeling of worry, nervousness, or unease" },
+                    { word: "self-care", def: "the practice of taking action to preserve one's health" },
+                    { word: "coping mechanism", def: "strategies used to deal with stressful situations" },
+                    { word: "emotional intelligence", def: "the ability to understand and manage emotions" }
+                ],
+                questions: [
+                    "How has societal perception of mental health changed in recent years?",
+                    "What prevents people from seeking mental health support?",
+                    "Should mental health days be treated the same as physical sick days?",
+                    "How can workplaces better support employees' mental well-being?",
+                    "What role does social media play in mental health challenges?"
+                ],
+                statements: [
+                    "Mental health is just as important as physical health.",
+                    "The younger generation is too focused on mental health issues.",
+                    "Everyone should have access to affordable therapy and counseling.",
+                    "Social media platforms contribute significantly to anxiety and depression.",
+                    "Medication is over-prescribed for mental health conditions."
+                ],
+                article: {
+                    title: "The Mental Health Crisis: Recognition Without Resources",
+                    content: "Public awareness of mental health issues has reached unprecedented levels, with celebrities openly discussing therapy, diagnoses entering mainstream vocabulary, and companies acknowledging psychological well-being as business priorities. Yet this recognition has not translated into proportional resource allocation. Wait times for mental health services stretch for months in many regions, while practitioners report overwhelming demand they cannot meet. The pandemic exacerbated existing challenges, creating a surge in anxiety and depression that stressed already inadequate systems. Young people appear particularly affected, with studies showing alarming increases in reported mental health struggles among teenagers and young adults. Whether this represents genuinely worsening conditions or simply greater willingness to identify and discuss such issues remains debated. Critics argue that pathologizing normal emotional responses creates dependency on professional intervention for experiences humans have always navigated. Advocates counter that destigmatization allows people to seek help for genuine suffering previously endured in silence. Meanwhile, preventive approaches gain attention: workplace policies promoting work-life balance, school curricula teaching emotional regulation, and public health campaigns emphasizing social connection. The challenge lies not just in treating mental illness but in creating societal conditions that support psychological flourishing."
+                }
+            },
+            {
+                id: 7,
+                title: "Climate Action and Responsibility",
+                subtitle: "Individual vs. Systemic Change",
+                vocabulary: [
+                    { word: "mitigation", def: "action to reduce the severity or impact of something" },
+                    { word: "adaptation", def: "adjusting to actual or expected climate effects" },
+                    { word: "carbon neutral", def: "achieving net zero carbon dioxide emissions" },
+                    { word: "greenwashing", def: "misleading marketing about environmental practices" },
+                    { word: "renewable energy", def: "energy from sources that are naturally replenishing" },
+                    { word: "circular economy", def: "an economic system aimed at eliminating waste" },
+                    { word: "climate justice", def: "linking climate change to human rights and equality" },
+                    { word: "tipping point", def: "a critical threshold beyond which change becomes irreversible" }
+                ],
+                questions: [
+                    "What personal sacrifices are you willing to make to combat climate change?",
+                    "Should individual lifestyle changes or systemic policy reforms be prioritized?",
+                    "How can developing nations balance economic growth with environmental protection?",
+                    "What role should corporations play in addressing climate change?",
+                    "Is it ethical to have children given the climate crisis?"
+                ],
+                statements: [
+                    "Individual actions are insignificant compared to corporate and industrial emissions.",
+                    "Wealthy nations have a greater responsibility to combat climate change.",
+                    "Economic growth and environmental sustainability are fundamentally incompatible.",
+                    "Climate activists who fly on airplanes are hypocrites.",
+                    "Technological innovation will solve climate change without requiring lifestyle changes."
+                ],
+                article: {
+                    title: "Beyond Recycling: Confronting Uncomfortable Climate Truths",
+                    content: "The climate conversation has reached a paradoxical moment: broad acknowledgment of the crisis coexists with inadequate action. While individuals dutifully sort recycling and purchase reusable bags, global emissions continue rising. This gap reveals uncomfortable truths about responsibility and power. Data shows that 100 companies account for 71% of global emissions, suggesting that individual consumer choices, while symbolically important, cannot alone drive necessary transformation. Yet this fact has become a convenient justification for inaction at all levels. The fossil fuel industry strategically promoted 'carbon footprint' concepts to shift responsibility from producers to consumers, while lobbying against meaningful regulation. Meanwhile, genuinely impactful individual choices—reducing air travel, adopting plant-based diets, forgoing car ownership—require sacrifices many are unwilling to make, particularly when systems are designed around these behaviors. Climate justice advocates argue that those least responsible for emissions suffer first and worst from consequences, creating moral imperatives beyond environmental science. As extreme weather intensifies and tipping points approach, the question becomes not whether change will occur but whether it happens through deliberate policy and collective action or through catastrophic collapse forcing adaptation. The window for choosing the former narrows with each passing year."
+                }
+            },
+            {
+                id: 8,
+                title: "Artificial Intelligence Ethics",
+                subtitle: "Navigating Algorithmic Decision-Making",
+                vocabulary: [
+                    { word: "algorithm", def: "a process or set of rules followed by a computer" },
+                    { word: "bias", def: "prejudice in favor of or against something" },
+                    { word: "automation", def: "using technology to perform tasks without human intervention" },
+                    { word: "accountability", def: "the obligation to explain and accept responsibility for actions" },
+                    { word: "machine learning", def: "algorithms that improve through experience" },
+                    { word: "deepfake", def: "synthetic media where a person's likeness is replaced" },
+                    { word: "facial recognition", def: "technology that identifies individuals from facial features" },
+                    { word: "autonomous", def: "acting independently without external control" }
+                ],
+                questions: [
+                    "Should AI systems be allowed to make decisions affecting human lives?",
+                    "How can we ensure AI systems are fair and unbiased?",
+                    "What jobs will AI eliminate, and what new opportunities will it create?",
+                    "Should there be regulations limiting AI development and deployment?",
+                    "How will AI change the nature of creativity and intellectual work?"
+                ],
+                statements: [
+                    "AI will eliminate more jobs than it creates, increasing unemployment.",
+                    "Algorithmic decision-making is more objective than human judgment.",
+                    "AI development should be slowed until ethical frameworks are established.",
+                    "Artists and writers deserve compensation when AI is trained on their work.",
+                    "The benefits of AI outweigh the potential risks and ethical concerns."
+                ],
+                article: {
+                    title: "The Black Box Problem: When Algorithms Rule",
+                    content: "Artificial intelligence increasingly makes decisions that shape human lives—determining loan approvals, criminal sentencing recommendations, job candidate selections, and medical diagnoses. Yet many of these systems operate as 'black boxes': even their creators cannot fully explain how specific decisions are reached. This opacity presents profound accountability challenges. When an algorithm denies someone a mortgage or parole, who bears responsibility for potentially biased or erroneous outcomes? The data used to train AI systems reflects historical patterns, often encoding existing societal biases around race, gender, and class. Without careful intervention, AI perpetuates and potentially amplifies discrimination under the veneer of objective mathematics. Meanwhile, the rapid advance of generative AI has disrupted creative industries, raising questions about authorship, copyright, and the value of human creativity. Some argue these tools democratize creative production; others see exploitation of artists whose work trained these systems without consent or compensation. Regulatory frameworks lag far behind technological capability, creating a governance vacuum that industry self-regulation has proven inadequate to fill. As AI capabilities expand toward and potentially beyond human-level intelligence, questions shift from practical implementation to existential risk. The challenge is not merely making AI systems that work but ensuring they work for human flourishing rather than against it."
+                }
+            },
+            {
+                id: 9,
+                title: "Education Reform",
+                subtitle: "Preparing for an Uncertain Future",
+                vocabulary: [
+                    { word: "pedagogy", def: "the method and practice of teaching" },
+                    { word: "rote learning", def: "memorization through repetition without understanding" },
+                    { word: "critical thinking", def: "objective analysis and evaluation to form judgment" },
+                    { word: "literacy", def: "competence or knowledge in a specified area" },
+                    { word: "standardized testing", def: "uniform examinations administered to many students" },
+                    { word: "vocational", def: "relating to occupation or employment" },
+                    { word: "autodidact", def: "a self-taught person" },
+                    { word: "competency-based", def: "focusing on demonstrable skills rather than time spent" }
+                ],
+                questions: [
+                    "Is the traditional education system preparing students for the modern world?",
+                    "Should universities be free for all students?",
+                    "What skills will be most valuable in the future job market?",
+                    "How should education balance practical skills with theoretical knowledge?",
+                    "Is standardized testing an effective measure of student achievement?"
+                ],
+                statements: [
+                    "The current education system prioritizes memorization over critical thinking.",
+                    "A university degree is becoming less valuable and more expensive.",
+                    "Vocational training should receive equal respect as academic education.",
+                    "Technology in classrooms improves learning outcomes for students.",
+                    "Standardized testing should be abolished in favor of alternative assessments."
+                ],
+                article: {
+                    title: "Beyond the Classroom: Lifelong Learning in the 21st Century",
+                    content: "The industrial-era model of education—standardized curriculum, age-based cohorts, teacher-centered instruction—persists despite dramatic changes in how we work and learn. Critics argue this system produces compliant workers rather than innovative thinkers, prioritizes test performance over genuine understanding, and fails to develop the adaptive capacities required in rapidly changing economies. The rise of online learning platforms has democratized access to knowledge, enabling anyone with internet connectivity to acquire skills previously gatekept by expensive institutions. Yet completion rates for online courses remain low, suggesting that access to information differs fundamentally from effective learning. Meanwhile, student debt has reached crisis proportions in many countries, prompting questions about whether degrees retain value commensurate with their cost. The shift toward competency-based credentials and microcredentials challenges traditional degree programs, though employer acceptance remains uneven. Perhaps most fundamentally, the acceleration of technological change means that specific knowledge and skills become obsolete faster than ever before. This reality suggests that learning how to learn—metacognitive abilities, adaptability, and self-directed curiosity—may matter more than any particular content. The education of the future may need to be less about front-loading knowledge in youth and more about cultivating capacity for continuous learning throughout life."
+                }
+            },
+            {
+                id: 10,
+                title: "Healthcare Systems and Access",
+                subtitle: "Medicine, Markets, and Equity",
+                vocabulary: [
+                    { word: "universal healthcare", def: "health coverage for all citizens regardless of ability to pay" },
+                    { word: "preventive care", def: "healthcare focused on disease prevention" },
+                    { word: "pharmaceutical", def: "relating to medicinal drugs" },
+                    { word: "chronic condition", def: "a health condition that lasts a year or more" },
+                    { word: "telemedicine", def: "remote medical consultation using technology" },
+                    { word: "health equity", def: "fair access to health opportunities and outcomes" },
+                    { word: "public health", def: "health of populations rather than individuals" },
+                    { word: "out-of-pocket", def: "healthcare costs paid directly by patients" }
+                ],
+                questions: [
+                    "Should healthcare be considered a human right or a market commodity?",
+                    "How can countries balance healthcare quality with cost control?",
+                    "What are the advantages and disadvantages of universal healthcare systems?",
+                    "Should pharmaceutical companies be allowed to patent life-saving drugs?",
+                    "How has technology changed access to healthcare services?"
+                ],
+                statements: [
+                    "All citizens should have access to free basic healthcare.",
+                    "Private healthcare provides better quality than public systems.",
+                    "Prevention is more important than treatment in healthcare.",
+                    "Pharmaceutical companies charge excessive prices for essential medications.",
+                    "Healthcare spending should prioritize the young over the elderly."
+                ],
+                article: {
+                    title: "The Healthcare Paradox: Innovation and Inequality",
+                    content: "Modern medicine achieves miracles that would seem like science fiction to previous generations: gene therapies, precision oncology, robotic surgery, and organs grown from stem cells. Yet these innovations remain inaccessible to billions of people who lack basic healthcare services. The United States spends far more per capita on healthcare than any other nation while achieving worse outcomes on many metrics and leaving millions uninsured. This paradox reflects fundamental tensions between healthcare as a human right and as a profit-generating industry. Pharmaceutical companies argue that high drug prices fund research and development for future treatments, while critics point to massive marketing expenditures and executive compensation packages. The COVID-19 pandemic exposed profound inequities within and between nations: wealthy countries hoarded vaccines while poorer nations struggled to access basic supplies. It also accelerated adoption of telemedicine, demonstrating that geographic barriers to care can be overcome with appropriate technology and policy. Meanwhile, aging populations in developed nations strain healthcare budgets, prompting difficult questions about resource allocation and end-of-life care. The challenge ahead involves not just developing new treatments but ensuring equitable access to them, shifting focus from expensive interventions to prevention and public health, and reconciling the tension between healthcare as a public good and as a source of private profit."
+                }
+            },
+            {
+                id: 11,
+                title: "Urban Planning and Smart Cities",
+                subtitle: "Designing Livable Futures",
+                vocabulary: [
+                    { word: "infrastructure", def: "basic physical systems and facilities needed for operation" },
+                    { word: "density", def: "the quantity of people or things in a given area" },
+                    { word: "gentrification", def: "renovating districts leading to displacement of lower-income residents" },
+                    { word: "transit-oriented", def: "development prioritizing public transportation access" },
+                    { word: "green space", def: "areas of grass, trees, or vegetation in urban environments" },
+                    { word: "mixed-use", def: "areas combining residential, commercial, and other functions" },
+                    { word: "walkability", def: "how friendly an area is to walking" },
+                    { word: "smart city", def: "urban area using technology to improve services and quality of life" }
+                ],
+                questions: [
+                    "What makes a city livable and sustainable?",
+                    "Should cities prioritize cars or pedestrians and cyclists?",
+                    "How can urban areas balance growth with quality of life?",
+                    "What are the social impacts of gentrification?",
+                    "How will cities need to adapt to climate change?"
+                ],
+                statements: [
+                    "High-density urban living is more sustainable than suburban sprawl.",
+                    "Gentrification benefits cities more than it harms existing communities.",
+                    "Cars should be banned from city centers to reduce pollution.",
+                    "Smart city technology invades privacy more than it improves life.",
+                    "Every city should prioritize green spaces even at the expense of development."
+                ],
+                article: {
+                    title: "Reimagining Urban Spaces: The 15-Minute City",
+                    content: "The concept of the '15-minute city'—where residents can access most necessities within a quarter-hour walk or bike ride—has captured the imagination of urban planners worldwide. This model challenges decades of car-centric development that segregated residential areas from commerce, work, and recreation, requiring long commutes and creating automobile dependence. Proponents argue this approach reduces emissions, promotes health through active transportation, strengthens community bonds, and improves quality of life. Critics, particularly in the United States, have characterized such planning as restricting freedom of movement, though this framing misunderstands the concept fundamentally. Implementation faces significant obstacles: existing infrastructure cannot easily be reconfigured, property values and gentrification concerns arise when neighborhoods become more desirable, and political will often prioritizes continued development over thoughtful redesign. Meanwhile, smart city technologies promise efficiency through sensors, data analytics, and interconnected systems—but raise privacy concerns about pervasive surveillance. The COVID-19 pandemic forced a rethinking of urban spaces, with outdoor dining expanding into streets, bike lanes proliferating, and remote work reducing commuting pressure. As climate change intensifies, cities face existential questions about resilience: water management during drought and flood, cooling strategies during heat waves, and adapting to rising seas. The urban areas of tomorrow must reconcile competing demands for density and livability, efficiency and equity, innovation and sustainability."
+                }
+            },
+            {
+                id: 12,
+                title: "Media Literacy and Misinformation",
+                subtitle: "Truth in the Information Age",
+                vocabulary: [
+                    { word: "misinformation", def: "false information spread unintentionally" },
+                    { word: "disinformation", def: "false information spread deliberately to deceive" },
+                    { word: "fact-checking", def: "verifying claims made in media" },
+                    { word: "echo chamber", def: "environment where beliefs are amplified by repetition" },
+                    { word: "credibility", def: "the quality of being trusted and believed" },
+                    { word: "propaganda", def: "information used to promote particular political views" },
+                    { word: "viral", def: "content that spreads rapidly through social sharing" },
+                    { word: "algorithmic curation", def: "content selection by automated systems" }
+                ],
+                questions: [
+                    "How can individuals distinguish reliable information from misinformation?",
+                    "What responsibility do social media platforms have for content they host?",
+                    "Has the internet improved or degraded the quality of public discourse?",
+                    "Should misinformation be censored, and if so, who decides what qualifies?",
+                    "How has media consumption changed in your lifetime?"
+                ],
+                statements: [
+                    "Social media platforms should be held liable for misinformation shared on them.",
+                    "Traditional journalism is more reliable than citizen journalism and social media.",
+                    "People believe misinformation because it confirms their existing beliefs.",
+                    "Government regulation of online content threatens free speech.",
+                    "Media literacy should be a mandatory subject in schools."
+                ],
+                article: {
+                    title: "The Epistemic Crisis: When Nobody Agrees on Reality",
+                    content: "Democratic societies have historically functioned on the premise of shared reality: while citizens might disagree about solutions, they could at least agree on basic facts. This consensus has fractured. Algorithmic content curation creates personalized information environments where people encounter radically different 'facts.' The business model of engagement-driven social media incentivizes emotional, divisive content over accuracy, rewarding sensationalism and outrage. Meanwhile, the collapse of local journalism has eliminated many communities' shared information sources, replaced by partisan outlets and unvetted social media. The term 'fake news' has been weaponized to dismiss legitimate journalism, while actual fabrications spread faster than corrections. Deepfakes and AI-generated content threaten to eliminate even photographic and video evidence as reliable truth markers. Trust in institutions—media, science, government—has eroded, sometimes due to legitimate failures but often due to coordinated campaigns to sow doubt. The result is an epistemic crisis where productive debate becomes impossible because participants cannot agree on foundational facts. Fact-checking initiatives and media literacy education offer partial solutions, but they struggle against the scale and speed of viral misinformation. Some argue that the marketplace of ideas will self-correct, but this faith seems increasingly naive when algorithms optimize for engagement rather than truth. As AI-generated content becomes indistinguishable from human-created material, the challenge intensifies. Restoring shared reality may be the defining challenge for information-age democracies."
+                }
+            },
+            {
+                id: 13,
+                title: "Economic Inequality",
+                subtitle: "Wealth Distribution and Social Mobility",
+                vocabulary: [
+                    { word: "inequality", def: "difference in size, degree, or circumstances between groups" },
+                    { word: "wealth gap", def: "the difference in assets between rich and poor" },
+                    { word: "progressive taxation", def: "tax system where rates increase with income" },
+                    { word: "social mobility", def: "ability to move between economic classes" },
+                    { word: "meritocracy", def: "a system where success is based on ability and effort" },
+                    { word: "redistribution", def: "distributing resources more evenly through policy" },
+                    { word: "universal basic income", def: "regular payment to all citizens regardless of employment" },
+                    { word: "capital gains", def: "profit from selling assets like stocks or property" }
+                ],
+                questions: [
+                    "What level of economic inequality is acceptable in a society?",
+                    "Should there be a limit on how wealthy individuals can become?",
+                    "What policies would most effectively reduce economic inequality?",
+                    "Is economic inequality primarily caused by unfair systems or individual choices?",
+                    "How does economic inequality affect social cohesion and democracy?"
+                ],
+                statements: [
+                    "Extreme wealth inequality is morally wrong and economically harmful.",
+                    "Wealthy individuals have earned their money and should not be forced to share it.",
+                    "Universal basic income would reduce poverty more effectively than current welfare systems.",
+                    "Economic inequality provides necessary incentives for innovation and hard work.",
+                    "Inheritance perpetuates inequality and should be heavily taxed."
+                ],
+                article: {
+                    title: "The Concentration of Wealth: New Gilded Age or Natural Outcome?",
+                    content: "Wealth inequality has reached levels not seen since the 1920s in many developed nations. The richest 1% now own more wealth than the bottom 90% combined in several countries. This concentration has multiple causes: globalization allowing capital to seek the highest returns anywhere in the world, technology creating winner-take-all markets, declining labor union power reducing workers' bargaining leverage, tax policies favoring capital over labor, and the compounding nature of investment returns that allows wealth to generate more wealth faster than wages can. Defenders of the current system argue that inequality reflects differences in talent, effort, and risk-taking, and that attempts at redistribution stifle innovation and growth. They point out that absolute living standards have improved even as relative inequality has increased. Critics counter that such extreme inequality undermines democracy as wealthy individuals and corporations exert disproportionate political influence, reduces social mobility as advantages become entrenched across generations, and creates instability that harms economic growth. The pandemic exacerbated these trends, with billionaire wealth soaring while millions lost jobs and savings. Proposed solutions range from moderate reforms like higher marginal tax rates to radical restructuring like universal basic income or wealth caps. The debate fundamentally concerns what kind of society we want: one where market outcomes are treated as inherently just, or one where democratic institutions actively shape distribution toward some conception of fairness and opportunity."
+                }
+            },
+            {
+                id: 14,
+                title: "Space Exploration",
+                subtitle: "Humanity's Final Frontier",
+                vocabulary: [
+                    { word: "extraterrestrial", def: "relating to or from outside Earth" },
+                    { word: "orbit", def: "the curved path of an object around a star or planet" },
+                    { word: "colonization", def: "establishing settlements in new territories" },
+                    { word: "astronomical", def: "relating to astronomy or extremely large" },
+                    { word: "probe", def: "an unmanned exploratory spacecraft" },
+                    { word: "sustainability", def: "ability to maintain over time" },
+                    { word: "microgravity", def: "very weak gravity as experienced in space" },
+                    { word: "terrestrial", def: "relating to Earth or land" }
+                ],
+                questions: [
+                    "Should governments prioritize space exploration or Earth-based problems?",
+                    "What are the potential benefits and risks of colonizing other planets?",
+                    "Should space resources be privately owned or considered common heritage?",
+                    "How might the discovery of extraterrestrial life change human society?",
+                    "Is space tourism an exciting development or wasteful extravagance?"
+                ],
+                statements: [
+                    "Money spent on space exploration should be used to solve problems on Earth first.",
+                    "Colonizing Mars could be essential for humanity's long-term survival.",
+                    "Private companies are better suited for space exploration than government agencies.",
+                    "Space tourism is an irresponsible waste of resources given current global challenges.",
+                    "Humans have a right to exploit resources found in space."
+                ],
+                article: {
+                    title: "The New Space Race: Billionaires and National Pride",
+                    content: "Space exploration has entered a new era characterized by private sector leadership and renewed geopolitical competition. Companies like SpaceX, Blue Origin, and others have achieved what once seemed the exclusive domain of nation-states, drastically reducing launch costs and making ambitious projects financially viable. This commercialization has democratizing potential—bringing space access to more entities—but also raises concerns about inequality extending beyond Earth and celestial resources enriching private corporations. Meanwhile, nations including the United States, China, Russia, India, and the United Arab Emirates pursue lunar bases, Mars missions, and other projects blending scientific discovery with strategic positioning. Critics question whether humanity should focus on space when confronting climate change, poverty, and pandemic threats on Earth. Proponents counter that space technology drives innovation benefiting terrestrial applications, that placing 'all our eggs in one basket' risks species extinction from asteroid impact or other catastrophes, and that exploration represents humanity's highest aspirations. The question of space governance looms large: existing treaties declare celestial bodies the 'common heritage of mankind,' but enforcement mechanisms remain weak. As mining asteroids and establishing off-world colonies transition from science fiction to engineering challenges, humanity must decide whether space represents a fresh start to avoid Earth's mistakes or an arena to export and amplify our worst tendencies toward exploitation, inequality, and conflict."
+                }
+            },
+            {
+                id: 15,
+                title: "The Future of Work",
+                subtitle: "Automation and Employment",
+                vocabulary: [
+                    { word: "automation", def: "use of technology to perform tasks without human intervention" },
+                    { word: "gig economy", def: "labor market characterized by short-term contracts and freelance work" },
+                    { word: "upskilling", def: "learning new skills to remain employable" },
+                    { word: "obsolescence", def: "the process of becoming outdated or no longer useful" },
+                    { word: "productivity", def: "the effectiveness of productive effort" },
+                    { word: "precarious", def: "uncertain or insecure" },
+                    { word: "labor displacement", def: "workers losing jobs due to technological change" },
+                    { word: "human capital", def: "the skills and knowledge of workers" }
+                ],
+                questions: [
+                    "Which industries will be most affected by automation in the next decade?",
+                    "Should there be taxes on companies that replace workers with automation?",
+                    "How can workers prepare for an automated future?",
+                    "Is the gig economy empowering for workers or exploitative?",
+                    "What will give human workers an advantage over AI and robots?"
+                ],
+                statements: [
+                    "Most jobs will be automated within the next 50 years.",
+                    "Universal basic income is necessary in an increasingly automated economy.",
+                    "The gig economy provides flexibility that traditional employment cannot match.",
+                    "Automation will create more jobs than it destroys.",
+                    "Governments should slow automation to protect employment."
+                ],
+                article: {
+                    title: "Beyond Full Employment: Reimagining Work's Role in Society",
+                    content: "Predictions about automation's impact on employment have oscillated between utopian visions of leisure society and dystopian warnings of mass unemployment. The reality, as always, proves more complex. While technology has historically created more jobs than it destroyed, this time may differ: artificial intelligence can perform cognitive tasks previously considered uniquely human, and the pace of change may outstrip society's ability to adapt and retrain workers. Evidence suggests a polarization—growth in high-skill jobs and low-skill service positions, while middle-skill routine work diminishes. This hollowing of the middle class has political and social implications beyond economics. Meanwhile, the gig economy has created flexibility for some workers but precarity for others, with independent contractors lacking benefits and protections of traditional employment. The pandemic accelerated several trends: remote work normalization, automation investment as businesses sought to reduce labor dependencies, and questioning whether tying healthcare and identity to employment makes sense. Some envision a future where universal basic income enables people to pursue meaningful activities beyond market-validated work. Others warn this could create a dependent population while concentrating wealth among automation's owners. Perhaps the fundamental question is not whether technology will eliminate jobs—some displacement seems inevitable—but whether economic gains from automation are broadly shared or accrue primarily to capital owners, and whether society can reimagine human purpose beyond employment."
+                }
+            },
+            {
+                id: 16,
+                title: "Cryptocurrency and Digital Finance",
+                subtitle: "Decentralizing Money and Value",
+                vocabulary: [
+                    { word: "blockchain", def: "a distributed digital ledger recording transactions" },
+                    { word: "decentralized", def: "distributed control rather than central authority" },
+                    { word: "volatility", def: "liability to change rapidly and unpredictably" },
+                    { word: "speculative", def: "risky investment hoping for quick profit" },
+                    { word: "fiat currency", def: "government-issued currency not backed by physical commodity" },
+                    { word: "mining", def: "validating cryptocurrency transactions using computational power" },
+                    { word: "digital wallet", def: "software for storing cryptocurrency" },
+                    { word: "regulatory framework", def: "system of rules governing an activity" }
+                ],
+                questions: [
+                    "Will cryptocurrency eventually replace traditional currency?",
+                    "Should governments regulate cryptocurrency, and if so, how?",
+                    "What are the main advantages and disadvantages of decentralized finance?",
+                    "Is cryptocurrency primarily used for legitimate transactions or illegal activity?",
+                    "How might blockchain technology transform industries beyond finance?"
+                ],
+                statements: [
+                    "Cryptocurrency represents the future of money and financial freedom.",
+                    "Bitcoin is primarily a speculative asset rather than a functional currency.",
+                    "Governments should ban cryptocurrency due to its use in illegal activities.",
+                    "Blockchain technology will revolutionize many industries in the coming decades.",
+                    "The environmental cost of cryptocurrency mining is unacceptable."
+                ],
+                article: {
+                    title: "Digital Gold or Digital Mirage? The Cryptocurrency Debate",
+                    content: "Cryptocurrency arrived with promises to democratize finance, free money from government manipulation, and empower individuals with financial sovereignty. Bitcoin enthusiasts see it as 'digital gold'—a store of value insulated from inflation and political interference. The reality has proven more complicated. Extreme price volatility makes cryptocurrency impractical for everyday transactions; most holders treat it as speculative investment rather than functional currency. The environmental impact of proof-of-work mining—consuming electricity equivalent to entire nations—has drawn criticism, though some networks have transitioned to less energy-intensive validation methods. Meanwhile, cryptocurrency's association with ransomware, money laundering, and illicit marketplaces has attracted regulatory scrutiny. Governments face a dilemma: regulating too heavily might stifle innovation and push activity to jurisdictions with lighter oversight, while insufficient regulation enables fraud and systemic risk. Some nations have banned cryptocurrency entirely; others embrace it, with El Salvador adopting Bitcoin as legal tender. Beyond currency, blockchain technology promises applications in supply chain management, digital identity, voting systems, and more—though many proposed uses remain theoretical or could be achieved with conventional databases. The rise of central bank digital currencies represents an ironic twist: governments deploying blockchain technology to maintain monetary control rather than cede it. Whether cryptocurrency represents a fundamental reimagining of money or a speculative bubble will likely remain contentious until either widespread adoption or catastrophic collapse settles the question."
+                }
+            },
+            {
+                id: 17,
+                title: "Aging Societies",
+                subtitle: "Demographics and Generational Challenges",
+                vocabulary: [
+                    { word: "demographics", def: "statistical data about populations" },
+                    { word: "life expectancy", def: "average time a person is expected to live" },
+                    { word: "pension", def: "regular payment made during retirement" },
+                    { word: "caregiver", def: "a person who provides care for the sick or elderly" },
+                    { word: "geriatric", def: "relating to old people and their care" },
+                    { word: "dependency ratio", def: "proportion of dependents to working-age population" },
+                    { word: "longevity", def: "long duration of life" },
+                    { word: "intergenerational", def: "relating to or affecting several generations" }
+                ],
+                questions: [
+                    "How should societies adapt to aging populations?",
+                    "Should the retirement age be increased as life expectancy rises?",
+                    "What responsibilities do adult children have toward aging parents?",
+                    "How can healthcare systems handle the increasing elderly population?",
+                    "What are the economic implications of declining birth rates?"
+                ],
+                statements: [
+                    "The retirement age should increase in line with life expectancy.",
+                    "Elderly people receive too many resources at the expense of younger generations.",
+                    "Children have a moral obligation to care for their aging parents.",
+                    "Immigration is necessary to offset declining birth rates in developed countries.",
+                    "Society does not value or respect elderly people enough."
+                ],
+                article: {
+                    title: "The Silver Tsunami: Unprecedented Demographic Shift",
+                    content: "For the first time in human history, many societies have more people over 65 than under 15. This demographic revolution creates challenges without precedent or obvious solutions. Japan, Italy, South Korea, and other nations face shrinking working-age populations supporting growing numbers of retirees, straining pension systems designed when life expectancy was shorter and birth rates higher. Healthcare costs rise as elderly populations require more intensive medical care, particularly in final years of life. The 'sandwich generation' finds itself caring simultaneously for aging parents and young children, creating emotional and financial stress. Some propose raising retirement ages, but this disadvantages workers in physically demanding jobs and those from lower socioeconomic backgrounds who tend to have shorter life expectancies. Immigration could offset workforce shortages, but political resistance remains strong in many countries. Technology offers partial solutions: assistive devices enabling independent living longer, telemedicine reducing transportation barriers, and potentially care robots to address caregiver shortages. Yet fundamental questions persist about quality versus quantity of life—whether extending lifespan without corresponding healthspan creates suffering—and about intergenerational equity in resource distribution. Younger generations express frustration about funding benefits they doubt will exist when they retire, while elderly individuals who contributed throughout working lives resent being framed as burdens. Some economists argue that demographic decline could benefit the environment and quality of life, but the transition period presents enormous challenges to economic systems premised on perpetual growth."
+                }
+            },
+            {
+                id: 18,
+                title: "Food Systems and Agriculture",
+                subtitle: "Feeding the Future",
+                vocabulary: [
+                    { word: "sustainable", def: "able to be maintained without depleting resources" },
+                    { word: "monoculture", def: "cultivation of a single crop over a wide area" },
+                    { word: "organic", def: "produced without synthetic chemicals" },
+                    { word: "genetically modified", def: "organisms with altered DNA for desired traits" },
+                    { word: "food security", def: "reliable access to sufficient affordable food" },
+                    { word: "vertical farming", def: "growing crops in stacked layers indoors" },
+                    { word: "food desert", def: "area with limited access to affordable nutritious food" },
+                    { word: "agrochemical", def: "chemicals used in agriculture" }
+                ],
+                questions: [
+                    "How can we sustainably feed a growing global population?",
+                    "Should genetically modified crops be embraced or restricted?",
+                    "What are the environmental impacts of industrial agriculture?",
+                    "Is organic food worth the additional cost?",
+                    "How might climate change affect global food production?"
+                ],
+                statements: [
+                    "Industrial agriculture is destroying the environment and must be reformed.",
+                    "Genetically modified crops are necessary to feed the world's growing population.",
+                    "Everyone should reduce meat consumption for environmental reasons.",
+                    "Local food production is more important than global food trade.",
+                    "Organic farming cannot produce enough food for global populations."
+                ],
+                article: {
+                    title: "Agricultural Crossroads: Efficiency, Sustainability, and Justice",
+                    content: "Modern agriculture faces contradictory demands: produce more food for growing populations, reduce environmental impact, improve nutritional quality, ensure farmer livelihoods, and remain affordable for consumers. Industrial agriculture achieved remarkable productivity gains through mechanization, synthetic fertilizers, pesticides, and specialized crop varieties. This intensification enabled a smaller percentage of the population to feed everyone else, freeing labor for other economic sectors. However, this system's costs have become increasingly apparent: depleted soils, contaminated water, reduced biodiversity, antibiotic resistance from livestock operations, and contribution to climate change through emissions and deforestation. The organic movement offers alternatives but faces criticism about lower yields, higher costs, and whether it could scale to feed billions. Genetically modified crops promise drought resistance, enhanced nutrition, and reduced pesticide use, yet face consumer resistance and concerns about corporate control of seed supply. Meanwhile, food waste remains staggering—roughly one-third of production never consumed—while millions experience food insecurity. Technology enthusiasts promote vertical farming, cultured meat, and precision agriculture using AI and sensors to optimize inputs. These innovations could revolutionize food production but currently remain expensive and energy-intensive. Perhaps most fundamentally, the question is not just how much food we can produce but how equitably it is distributed, whether farming systems regenerate or degrade ecosystems, and whether agricultural communities can maintain viable livelihoods. The path forward likely involves not a single solution but diverse approaches adapted to local conditions and values."
+                }
+            },
+            {
+                id: 19,
+                title: "Gender Equality Progress",
+                subtitle: "Rights, Representation, and Reality",
+                vocabulary: [
+                    { word: "gender parity", def: "equal representation and status between genders" },
+                    { word: "glass ceiling", def: "invisible barrier to advancement faced by women" },
+                    { word: "patriarchy", def: "system of society dominated by men" },
+                    { word: "empowerment", def: "process of becoming stronger and more confident" },
+                    { word: "pay gap", def: "difference in earnings between demographic groups" },
+                    { word: "maternity leave", def: "time off work for mothers around childbirth" },
+                    { word: "gender stereotype", def: "generalized view about roles appropriate for each gender" },
+                    { word: "intersectionality", def: "interconnected nature of social categorizations creating overlapping discrimination" }
+                ],
+                questions: [
+                    "Has your country achieved gender equality, and if not, what barriers remain?",
+                    "What policies would most effectively advance gender equality?",
+                    "How do traditional gender roles affect men and women differently?",
+                    "Should there be quotas for women in leadership positions?",
+                    "How has the conversation about gender evolved in recent years?"
+                ],
+                statements: [
+                    "Gender equality has essentially been achieved in developed countries.",
+                    "Mandatory quotas for women in leadership positions are necessary.",
+                    "The gender pay gap primarily results from women's choices rather than discrimination.",
+                    "Traditional gender roles harm men as much as they harm women.",
+                    "Feminism has gone too far and now discriminates against men."
+                ],
+                article: {
+                    title: "Unfinished Revolution: Gender Equality's Uneven Progress",
+                    content: "The status of gender equality presents a paradox: significant legal and social progress coexisting with persistent inequalities. Women now comprise the majority of university graduates in many countries, yet remain underrepresented in executive leadership and political power. Legal equality has been largely achieved in democratic nations, yet gender-based violence remains endemic and enforcement of existing laws often fails. The gender pay gap has narrowed but persists, with debates about whether remaining differences reflect discrimination, career interruptions for caregiving, occupational segregation, or negotiation behaviors. Parental leave policies reveal broader tensions: generous maternity leave can become a hiring liability for women, while insufficient leave burdens families and reinforces traditional divisions of labor. Some Nordic countries pioneered 'use it or lose it' paternity leave, attempting to normalize caregiving as a male responsibility. Meanwhile, women in many parts of the world still lack fundamental rights to education, property ownership, or bodily autonomy. The #MeToo movement demonstrated both progress—women's experiences being taken seriously—and the prevalence of harassment and assault previously tolerated or ignored. Discussions have expanded beyond binary gender categories to recognize non-binary and transgender identities, though this evolution faces resistance. Critics of contemporary feminism argue that biological differences justify certain disparities and that focus on gender equality ignores other important inequalities. The path forward requires addressing not just formal equality but deeply embedded cultural norms, workplace structures that assume workers have no caregiving responsibilities, and economic systems that undervalue care work. True gender equality may require reimagining work, family, and society more fundamentally than simply opening previously male-dominated spaces to women."
+                }
+            },
+            {
+                id: 20,
+                title: "Democratic Participation",
+                subtitle: "Civic Engagement and Governance",
+                vocabulary: [
+                    { word: "civic duty", def: "obligations of citizens to their community and government" },
+                    { word: "voter turnout", def: "percentage of eligible voters who cast ballots" },
+                    { word: "representative democracy", def: "system where citizens elect officials to make decisions" },
+                    { word: "political polarization", def: "divergence of political attitudes toward ideological extremes" },
+                    { word: "grassroots", def: "movement driven by community members rather than leaders" },
+                    { word: "accountability", def: "being responsible and having to explain actions" },
+                    { word: "deliberative", def: "involving careful consideration and discussion" },
+                    { word: "apathy", def: "lack of interest or concern" }
+                ],
+                questions: [
+                    "What motivates people to participate in democratic processes?",
+                    "Should voting be mandatory in democratic countries?",
+                    "How can young people be encouraged to engage in politics?",
+                    "Has social media strengthened or weakened democracy?",
+                    "What are the main challenges facing democracy today?"
+                ],
+                statements: [
+                    "Voting should be mandatory to ensure democratic legitimacy.",
+                    "Political polarization is destroying productive democratic discourse.",
+                    "Young people are less politically engaged than previous generations.",
+                    "Social media has given ordinary citizens more political power.",
+                    "Politicians care more about being reelected than serving the public interest."
+                ],
+                article: {
+                    title: "Democracy Under Strain: Participation in an Age of Distrust",
+                    content: "Democratic institutions face a crisis of confidence. Trust in government, media, expertise, and fellow citizens has declined markedly in many established democracies. Voter turnout remains low, particularly among young people, suggesting disengagement or alienation from political processes. Yet simultaneously, social movements demonstrate capacity for mass mobilization around specific issues, from climate action to racial justice. This suggests not general apathy but rather disillusionment with traditional political structures. The rise of populist movements across the political spectrum reflects frustration with perceived unresponsive elites and economic systems that seem rigged against ordinary people. Social media promised to democratize political discourse, enabling direct communication between citizens and leaders, facilitating organization of protests and movements. The reality has proven more complex: algorithmic amplification of extreme positions, echo chambers reinforcing existing beliefs, coordinated disinformation campaigns, and harassment driving people from public discourse. Meanwhile, actual policymaking often seems disconnected from electoral results, with corporate lobbying and bureaucratic inertia limiting what elected officials can achieve. Some propose reforms: ranked-choice voting to reduce polarization, citizen assemblies to deliberate on complex issues, stronger campaign finance regulations to reduce money's influence, civic education to prepare informed participants. Others argue the fundamental problem lies deeper—that representative democracy struggles to address long-term challenges like climate change, that economic inequality translates into political inequality, or that human tribal psychology makes constructive democratic discourse impossible at scale. Whether democracy represents the permanent endpoint of political development or merely one phase in ongoing evolution remains an open question. What seems clear is that democratic health requires not just institutional structures but active, informed participation and shared commitment to democratic norms."
+                }
+            }
+        ];
+
+        // Generate lesson buttons
+        function generateLessonButtons() {
+            const container = document.querySelector('#lessonSelection .grid');
+            lessons.forEach(lesson => {
+                const button = document.createElement('button');
+                button.className = 'lesson-card text-white font-bold py-5 px-4 rounded-xl shadow-lg';
+                button.innerHTML = `
+                    <div class="text-xl mb-1">Lesson ${lesson.id}</div>
+                    <div class="text-xs opacity-90 leading-tight">${lesson.title}</div>
+                `;
+                button.onclick = () => loadLesson(lesson.id);
+                container.appendChild(button);
+            });
+        }
+
+        // Load a specific lesson
+        function loadLesson(lessonId) {
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+
+            // Update title
+            document.getElementById('lessonTitle').textContent = `Lesson ${lesson.id}: ${lesson.title}`;
+            document.getElementById('lessonSubtitle').textContent = lesson.subtitle;
+
+            // Update vocabulary
+            const vocabList = document.getElementById('vocabularyList');
+            vocabList.innerHTML = '';
+            lesson.vocabulary.forEach((vocab, index) => {
+                const item = document.createElement('div');
+                item.className = 'vocab-item bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-4 rounded-xl border border-purple-100 dark:border-gray-600';
+                item.style.animationDelay = `${index * 0.05}s`;
+                item.innerHTML = `
+                    <div class="font-bold text-lg mb-1 bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">${vocab.word}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-300">${vocab.def}</div>
+                `;
+                vocabList.appendChild(item);
+            });
+
+            // Update questions
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            lesson.questions.forEach((question, index) => {
+                const item = document.createElement('div');
+                item.className = 'interactive-item bg-gray-50 dark:bg-gray-700 p-4 rounded-xl border-l-4 border-purple-500';
+                item.innerHTML = `<div class="flex items-start"><span class="text-2xl mr-3">💭</span><span class="text-gray-700 dark:text-gray-200">${question}</span></div>`;
+                questionsList.appendChild(item);
+            });
+
+            // Update statements
+            const statementsList = document.getElementById('statementsList');
+            statementsList.innerHTML = '';
+            lesson.statements.forEach((statement, index) => {
+                const item = document.createElement('div');
+                item.className = 'interactive-item bg-gray-50 dark:bg-gray-700 p-4 rounded-xl border-l-4 border-indigo-500';
+                item.innerHTML = `<div class="flex items-start"><span class="text-2xl mr-3">💡</span><span class="text-gray-700 dark:text-gray-200">${statement}</span></div>`;
+                statementsList.appendChild(item);
+            });
+
+            // Update article
+            const articleContent = document.getElementById('articleContent');
+            articleContent.innerHTML = `
+                <h4 class="font-bold text-2xl mb-4 bg-gradient-to-r from-[#667eea] to-[#764ba2] bg-clip-text text-transparent">${lesson.article.title}</h4>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">${lesson.article.content}</p>
+            `;
+
+            // Show lesson content, hide selection
+            document.getElementById('lessonSelection').classList.add('hidden');
+            document.getElementById('lessonContent').classList.remove('hidden');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show lesson selection
+        function showLessonSelection() {
+            document.getElementById('lessonSelection').classList.remove('hidden');
+            document.getElementById('lessonContent').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        generateLessonButtons();
+    </script>
+</body>
+</html>
