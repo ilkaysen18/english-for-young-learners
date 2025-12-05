@@ -91,7 +91,7 @@
         <!-- Header -->
         <header class="bg-primary text-white shadow-lg">
             <div class="container mx-auto px-4 py-6">
-                <h1 class="text-3xl md:text-4xl font-bold text-center hero-text" style="color: #0a1f7a; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">🇬🇧 English for Fluency</h1>
+                <h1 class="text-3xl md:text-4xl font-bold text-center hero-text" style="color: #0a1f7a; text-shadow: 0 2px 4px rgba(0,0,0,0.15);">🗣️ English for Fluency</h1>
                 <p class="text-center mt-2 hero-text" style="color: #f0f0f0; animation-delay: 0.1s;">Master English Through Engaging Lessons</p>
             </div>
         </header>
@@ -110,14 +110,14 @@
 
                 <!-- Level Selection Cards -->
                 <div class="grid md:grid-cols-2 gap-8 card-container">
-                    <!-- A2-B1 Level Card -->
-                    <a href="https://englishtraininghub.org/languages/english/spk.html"
+                    <!-- Intermediate Level Card -->
+                    <a href="https://englishtraininghub.org/languages/english/spk-intermediate.html"
                        class="level-card rounded-lg shadow-lg p-8 block text-decoration-none hover:no-underline">
                         <div class="text-center">
                             <div class="text-6xl mb-4">📘</div>
-                            <h3 class="text-2xl md:text-3xl font-bold mb-3 text-primary">A2-B1 Learners</h3>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-3 text-primary">Intermediate Learners</h3>
                             <p class="text-gray-600 dark:text-gray-300 mb-6 text-base md:text-lg">
-                                Elementary to Intermediate
+                                B1-B2 Level
                             </p>
                             <div class="space-y-3 text-left mb-6">
                                 <div class="flex items-start">
@@ -143,14 +143,14 @@
                         </div>
                     </a>
 
-                    <!-- B2 Level Card -->
-                    <a href="https://englishtraininghub.org/languages/english/spk-B2.html"
+                    <!-- Advanced Level Card -->
+                    <a href="https://englishtraininghub.org/languages/english/spk-advanced.html"
                        class="level-card rounded-lg shadow-lg p-8 block text-decoration-none hover:no-underline">
                         <div class="text-center">
                             <div class="text-6xl mb-4">📗</div>
-                            <h3 class="text-2xl md:text-3xl font-bold mb-3 text-primary">B2 Learners</h3>
+                            <h3 class="text-2xl md:text-3xl font-bold mb-3 text-primary">Advanced Learners</h3>
                             <p class="text-gray-600 dark:text-gray-300 mb-6 text-base md:text-lg">
-                                Upper Intermediate
+                                C1-C2 Level
                             </p>
                             <div class="space-y-3 text-left mb-6">
                                 <div class="flex items-start">
@@ -194,7 +194,7 @@
         <!-- Footer -->
         <footer class="bg-gray-100 dark:bg-gray-900 py-6 mt-12">
             <div class="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400">
-                <p>🌟 Build your English fluency one lesson at a time</p>
+                <p>Build your English fluency one lesson at a time! 💡 Brought to you by English Training Hub! © <span id="year"></span> — All Rights Reserved.</p>
             </div>
         </footer>
     </div>
@@ -211,6 +211,8 @@
                 document.documentElement.classList.remove('dark');
             }
         });
+          // Auto-update year
+        document.getElementById("year").textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
