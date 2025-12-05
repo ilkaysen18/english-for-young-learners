@@ -944,13 +944,13 @@
                         <span class="dropdown-item-icon">📚</span>
                         <span>Lessons</span>
                     </div>
+                    <div class="dropdown-item" onclick="handleStudentReportClick()">
+                        <span class="dropdown-item-icon">🎓</span>
+                        <span>Student Report</span>
+                    </div>
                     <div class="dropdown-item" onclick="handleStudentNotesClick()">
                         <span class="dropdown-item-icon">📝</span>
                         <span>Student Notes</span>
-                    </div>
-                    <div class="dropdown-item" onclick="handleDocumentClick()">
-                        <span class="dropdown-item-icon">📄</span>
-                        <span>Document</span>
                     </div>
                 </div>
                 <div class="logo-text" onclick="goHome()">
@@ -997,33 +997,33 @@
         <div class="question-container" id="question-container"></div>
     </div>
 
-    <div class="lesson-view" id="notes-view">
+    <div class="lesson-view" id="report-view">
         <div class="lesson-header">
-            <button class="back-button" onclick="exitNotes()">←</button>
+            <button class="back-button" onclick="exitReport()">←</button>
             <div style="flex: 1; text-align: center;">
-                <h2 style="font-family: 'Fredoka', sans-serif; font-size: 20px; color: var(--text-dark); margin: 0;">📝 Student Notes</h2>
+                <h2 style="font-family: 'Fredoka', sans-serif; font-size: 20px; color: var(--text-dark); margin: 0;">🎓 Student Report</h2>
             </div>
         </div>
-        <div class="question-container" id="notes-container">
+        <div class="question-container" id="report-container">
             <div style="text-align: center; padding: 40px 20px;">
                 <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
-                <p style="color: var(--text-light); font-size: 16px;">Loading notes...</p>
+                <p style="color: var(--text-light); font-size: 16px;">Loading report...</p>
             </div>
         </div>
     </div>
 
-    <div class="lesson-view" id="document-view">
+    <div class="lesson-view" id="student-notes-view">
         <div class="lesson-header">
-            <button class="back-button" onclick="exitDocument()">←</button>
+            <button class="back-button" onclick="exitStudentNotes()">←</button>
             <div style="flex: 1; text-align: center;">
-                <h2 style="font-family: 'Fredoka', sans-serif; font-size: 20px; color: var(--text-dark); margin: 0;">📄 Document</h2>
+                <h2 style="font-family: 'Fredoka', sans-serif; font-size: 20px; color: var(--text-dark); margin: 0;">📄 Student Notes</h2>
             </div>
         </div>
         <div style="width: 100%; height: calc(100vh - 84px); padding: 0;">
             <iframe
                 src="https://docs.google.com/document/d/e/2PACX-1vS-z6xtkUTgGUUdMAdID9mj6KVicPynvOdLajn3PoZEGHR90H4VTTIvQSazriHG3gt7JlGFO4NBUgS5/pub?embedded=true"
                 style="width: 100%; height: 100%; border: none;"
-                title="Student Document">
+                title="Sample Student Notes">
             </iframe>
         </div>
     </div>
@@ -1391,46 +1391,46 @@
             }
         }
 
-        function handleStudentNotesClick() {
+        function handleStudentReportClick() {
             const dropdown = document.getElementById('dropdown-menu');
             dropdown.classList.remove('active');
-            loadStudentNotes();
+            loadStudentReport();
         }
 
-        function loadStudentNotes() {
+        function loadStudentReport() {
             document.getElementById('home-view').style.display = 'none';
-            document.getElementById('notes-view').classList.add('active');
+            document.getElementById('report-view').classList.add('active');
 
-            const notesContainer = document.getElementById('notes-container');
+            const reportContainer = document.getElementById('report-container');
 
             // GitHub raw URL - convert the GitHub web URL to raw content URL
-            const markdownUrl = 'https://raw.githubusercontent.com/englishtraininghub/englishtraininghub.github.io/LoginToYourDashboard/Students/StudentNotes/SampleStudentNotes.md';
+            const markdownUrl = 'https://raw.githubusercontent.com/englishtraininghub/englishtraininghub.github.io/LoginToYourDashboard/Students/SampleStudent/Report.md';
 
             fetch(markdownUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to load notes');
+                        throw new Error('Failed to load report');
                     }
                     return response.text();
                 })
                 .then(markdown => {
                     const html = marked.parse(markdown);
-                    notesContainer.innerHTML = `<div class="markdown-content">${html}</div>`;
+                    reportContainer.innerHTML = `<div class="markdown-content">${html}</div>`;
                 })
                 .catch(error => {
-                    notesContainer.innerHTML = `
+                    reportContainer.innerHTML = `
                         <div style="text-align: center; padding: 40px 20px;">
                             <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
-                            <h3 style="color: var(--error-red); font-family: 'Fredoka', sans-serif; margin-bottom: 12px;">Failed to Load Notes</h3>
+                            <h3 style="color: var(--error-red); font-family: 'Fredoka', sans-serif; margin-bottom: 12px;">Failed to Load Report</h3>
                             <p style="color: var(--text-light); font-size: 16px; margin-bottom: 24px;">${error.message}</p>
-                            <button onclick="loadStudentNotes()" class="continue-button" style="margin-top: 0; max-width: 300px;">Try Again</button>
+                            <button onclick="loadStudentReport()" class="continue-button" style="margin-top: 0; max-width: 300px;">Try Again</button>
                         </div>
                     `;
                 });
         }
 
-        function exitNotes() {
-            document.getElementById('notes-view').classList.remove('active');
+        function exitReport() {
+            document.getElementById('report-view').classList.remove('active');
             document.getElementById('home-view').style.display = 'block';
         }
 
@@ -1440,13 +1440,13 @@
             loadDocument();
         }
 
-        function loadDocument() {
+        function loadStudentNotes() {
             document.getElementById('home-view').style.display = 'none';
-            document.getElementById('document-view').classList.add('active');
+            document.getElementById('student-notes-view').classList.add('active');
         }
 
-        function exitDocument() {
-            document.getElementById('document-view').classList.remove('active');
+        function exitStudentNotes() {
+            document.getElementById('student-notes-view').classList.remove('active');
             document.getElementById('home-view').style.display = 'block';
         }
 
