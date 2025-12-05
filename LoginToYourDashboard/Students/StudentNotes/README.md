@@ -45,18 +45,6 @@ skill shortages
 
 
 
-he's **German** **/** he's a **German man**
-
-
-
-
-
-they don't prefer to **have children**
-
-
-
-
-
 \- hiring foreign workers
 
 \- incentives for new parents 
@@ -101,8 +89,6 @@ they don't prefer to **have children**
 
 \- promote a healthy lifestyle for **retirees / retired people** 
 
-\- my father **had retired** when he was xxx years old 
-
 \- extend/increase life expectancy
 
 \- **mobile health (sector)**
@@ -111,9 +97,9 @@ they don't prefer to **have children**
 
 (future)
 
-when the balance *collapse**s***
+"when the balance *collapse**s***
 
-the world ***will***<i> collapse</i> too
+the world ***will***<i> collapse</i> too"
 
 
 
